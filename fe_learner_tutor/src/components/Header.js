@@ -10,7 +10,7 @@ const Header = () => {
                 </h1>
                 <div className="search-box ms-auto">
                     <div className="input-group">
-                        <input type="text" placeholder="Search for anything" className="form-control" style={{ width: '400px' }} />
+                        <input type="text" placeholder="Search for anything" className="form-control" style={{ width: '200px' }} />
                         <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }}>
                             <i class="fas fa-search"></i>
                         </button>
@@ -60,7 +60,7 @@ const Header = () => {
                             </ul>
                         </li>
                         <li>
-                            <a href="contact.html">Contact</a>
+                            <Link to="/business-register">MeowLish Business</Link>
                         </li>
                         <li>
                             <Link to="/login">Log in</Link>
