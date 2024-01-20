@@ -10,6 +10,8 @@ import Learning from './components/learner/course/MyLearning';
 import CourseList from './components/tutor/course/CourseList';
 import CreateCourse from './components/tutor/course/CreateCourse';
 import BusinessSignUp from './components/BusinessSignUp';
+import CreateVideoCourse from './components/tutor/course/CreateVideoCourse';
+import CreateClassCourse from './components/tutor/course/CreateClassCourse';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         <Route path="/my-courses/learning" element={<Learning />} />
         <Route path="/tutor/courses" element={<CourseList />} />
         <Route path="/tutor/courses/create" element={<CreateCourse />} />
+        <Route path="/tutor/courses/create/create-video-course" element={<CreateVideoCourse />} />
+        <Route path="/tutor/courses/create/create-class-course" element={<CreateClassCourse />} />
         {/* Add more routes as needed */}
       </Routes>
     </div>
