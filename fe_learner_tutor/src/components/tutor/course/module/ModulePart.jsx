@@ -43,7 +43,7 @@ const ModulePart = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className='card-body'>
-                                            <h4 className="header-title">Create a Video course: Course ABC</h4>
+                                            <h4 className="header-title">Create a Video course: Course ABC | Module ABC </h4>
                                             <h4>Lesson</h4>
                                             {/* ... (Add fields for lesson) */}
                                             <div className="form-group mb-0">

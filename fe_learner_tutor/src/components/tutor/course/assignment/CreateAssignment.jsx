@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
-
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import the styles
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 
 const CreateAssignment = () => {
-
     const navigate = useNavigate();
-
 
     const [formData, setFormData] = useState({
         image: '',
         price: '',
         fullname: '',
         tags: '',
-        description: ''
-
+        description: '',
     });
 
+    const handleChange = (value) => {
+        setFormData({
+            ...formData,
+            description: value,
+        });
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        navigate("/tutor/courses/create/create-video-course/create-lesson")
-
+        // Add your form submission logic here if needed
+        navigate('/tutor/courses/create/create-video-course/create-lesson');
     };
 
     return (
@@ -31,36 +35,50 @@ const CreateAssignment = () => {
             <div id="wrapper">
                 <Header />
                 <Sidebar />
-                {/* ============================================================== */}
-                {/* Start Page Content here */}
-                {/* ============================================================== */}
                 <div className="content-page">
                     <div className="content">
                         {/* Start Content*/}
                         <div className="container-fluid">
                             {/* start page title */}
-                            <div>
-                                <div className="row">
-                                    <div className="col-12">
+                            <div className="row">
+                                <div className="col-12">
+                                    <form
+                                        method="post"
+                                        className="dropzone"
+                                        id="myAwesomeDropzone"
+                                        data-plugin="dropzone"
+                                        data-previews-container="#file-previews"
+                                        data-upload-preview-template="#uploadPreviewTemplate"
+                                        data-parsley-validate
+                                    >
                                         <div className="card">
-                                            <div className="card-body">
-                                                Text Editor
-                                                <input type="text" name="document"/>
-                                            </div> {/* end card-body*/}
-                                        </div> {/* end card*/}
-                                    </div>{/* end col */}
-                                </div>
-                                {/* end row */}
+                                            <div className='card-body'>
+                                                <h4 className="header-title">Create a Video course: Course ABC | Module ABC</h4>
 
-                           
+                                                <label htmlFor="video">Question * :</label>
+                                                <ReactQuill
+                                                    value={formData.description}
+                                                    onChange={handleChange}
+                                                    style={{ height: '300px' }}
+                                                />
+
+
+                                            </div>
+
+                                        </div>
+                                        <div className="form-group mb-0 text-center">
+                                            <button type="submit" className="btn btn-primary" >
+                                                Continue
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
 
                         </div>
                     </div>
                 </div>
-                {/* ============================================================== */}
-                {/* End Page content */}
-                {/* ============================================================== */}
                 <Footer />
             </div>
 
@@ -78,7 +96,7 @@ const CreateAssignment = () => {
 
                 .content-page {
                     flex: 1;
-                    width: 100%;
+                    width: 85%;
                     text-align: left;
                 }
             `}
