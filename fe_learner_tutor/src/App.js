@@ -12,6 +12,13 @@ import CreateCourse from './components/tutor/course/CreateCourse';
 import BusinessSignUp from './components/BusinessSignUp';
 import CreateVideoCourse from './components/tutor/course/CreateVideoCourse';
 import CreateClassCourse from './components/tutor/course/CreateClassCourse';
+import ListClassCourse from './components/tutor/course/ListClassCourse';
+import ListVideoCourse from './components/tutor/course/ListVideoCourse';
+import CreateVideoCourseModule from './components/tutor/course/module/CreateVideoCourseModule';
+import CreateLesson from './components/tutor/course/lesson/CreateLesson';
+import ModulePart from './components/tutor/course/module/ModulePart';
+import CreateQuiz from './components/tutor/course/quiz/CreateQuiz';
+import CreateAssignment from './components/tutor/course/assignment/CreateAssignment';
 
 function App() {
   return (
@@ -27,7 +34,15 @@ function App() {
         <Route path="/my-courses/learning" element={<Learning />} />
         <Route path="/tutor/courses" element={<CourseList />} />
         <Route path="/tutor/courses/create" element={<CreateCourse />} />
+        <Route path="/tutor/courses/list-video-course" element={<ListVideoCourse />} />
+        <Route path="/tutor/courses/list-class-course" element={<ListClassCourse />} />
+        <Route path="/tutor/courses/create" element={<CreateCourse />} />
         <Route path="/tutor/courses/create/create-video-course" element={<CreateVideoCourse />} />
+        <Route path="/tutor/courses/create/create-video-course/create-module" element={<CreateVideoCourseModule />} />
+        <Route path="/tutor/courses/create/create-video-course/create-module/module-part" element={<ModulePart />} />
+        <Route path="/tutor/courses/create/create-video-course/create-lesson" element={<CreateLesson />} />
+        <Route path="/tutor/courses/create/create-video-course/create-assignment" element={<CreateAssignment />} />
+        <Route path="/tutor/courses/create/create-video-course/create-quiz" element={<CreateQuiz />} />
         <Route path="/tutor/courses/create/create-class-course" element={<CreateClassCourse />} />
         {/* Add more routes as needed */}
       </Routes>

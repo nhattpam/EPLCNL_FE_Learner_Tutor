@@ -41,19 +41,32 @@ const Sidebar = () => {
                     <div id="sidebar-menu">
                         <ul id="side-menu">
                             <li>
-                                <Link to={"/home"} data-toggle="collapse">
+                                <Link to={"/tutor/courses"} data-toggle="collapse">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg>
                                     <span> Dashboards </span>
                                 </Link>
 
                             </li>
+
                             <li>
-                                <Link to={"/list-center"}>
+                                <a href="#sidebarEcommercess" data-toggle="collapse">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder-plus"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
                                     <span> Courses </span>
-                                </Link>
-                            </li>
+                                    <span className="menu-arrow" />
+                                </a>
+                                <div className="collapse" id="sidebarEcommercess">
+                                    <ul className="nav-second-level">
+                                        <li>
+                                            <Link to={"/tutor/courses/list-video-course"}>Video course</Link>
+                                        </li>
+                                        <li>
+                                            <Link to={"/tutor/courses/list-class-course"}>Class course</Link>
+                                        </li>
+                                   
 
+                                    </ul>
+                                </div>
+                            </li>
                             <li>
                                 <a href="#sidebarEcommerces" data-toggle="collapse">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>

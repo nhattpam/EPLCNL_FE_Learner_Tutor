@@ -2,36 +2,29 @@ import React, { useState } from 'react';
 import Footer from '../Footer';
 import Header from '../Header';
 import Sidebar from '../Sidebar';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 const CreateVideoCourse = () => {
+
+    const navigate = useNavigate();
+
 
     const [formData, setFormData] = useState({
         image: '',
         price: '',
         fullname: '',
         tags: '',
-        description: '',
+        description: ''
+
     });
-
-    const [showFirstForm, setShowFirstForm] = useState(true);
-
-    const navigate = useNavigate();
 
 
     const handleContinue = (event) => {
         event.preventDefault();
         // Perform any necessary form validation or processing here
 
-        // Switch to the new form
-        setShowFirstForm(false);
-    };
+        navigate("/tutor/courses/create/create-video-course/create-module")
 
-    const handleButtonClick = () => {
-        // Additional logic for button click, if needed
-        // For example, you can perform some action when the button is clicked
-        // Switch to the new form
-        setShowFirstForm(false);
     };
 
     return (
@@ -54,7 +47,6 @@ const CreateVideoCourse = () => {
                                             <h4 className="header-title">Create a Video course</h4>
 
                                             {/* Combined Form and Image Upload */}
-                                            {showFirstForm && (
                                                 <form
                                                     method="post"
                                                     className="dropzone"
@@ -81,6 +73,15 @@ const CreateVideoCourse = () => {
                                                         <label htmlFor="fullname">Course name * :</label>
                                                         <input type="text" className="form-control" name="fullname" id="fullname" />
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label for="category">Category *:</label>
+                                                        <select id="category" class="form-control" required="">
+                                                            <option value="">Choose..</option>
+                                                            <option value="press">Ielts</option>
+                                                            <option value="net">Toefl</option>
+                                                            <option value="mouth">Toeic</option>
+                                                        </select>
+                                                    </div>
                                                     <div className="form-group">
                                                         <label htmlFor="price">Price * :</label>
                                                         <input type="number" id="price" className="form-control" name="price" data-parsley-trigger="change" />
@@ -105,41 +106,12 @@ const CreateVideoCourse = () => {
                                                         />
                                                     </div>
                                                     <div className="form-group mb-0">
-                                                        <button type="submit" className="btn btn-primary" onClick={handleContinue}>
+                                                        <button type="submit" className="btn btn-primary" >
                                                             Continue
                                                         </button>
 
                                                     </div>
                                                 </form>
-
-                                            )}
-
-                                            {/* End Combined Form */}
-                                            {/* New form */}
-                                            {!showFirstForm && (
-                                                <form>
-                                                    {/* Use the same form data state for the new form */}
-                                                    <h4>New Form</h4>
-                                                    <div className="form-group">
-                                                        <label htmlFor="fullname">Course name * :</label>
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            name="fullname"
-                                                            id="fullname"
-                                                            value={formData.fullname}
-                                                            onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
-                                                            />
-                                                    </div>
-                                                    {/* ... (Add other form fields using the same approach) */}
-                                                    <div className="form-group mb-0">
-                                                        <button type="button" className="btn btn-primary" onClick={() => handleButtonClick()}>
-                                                            Continue
-                                                        </button>
-
-                                                    </div>
-                                                </form>
-                                            )}
 
 
                                         </div>
