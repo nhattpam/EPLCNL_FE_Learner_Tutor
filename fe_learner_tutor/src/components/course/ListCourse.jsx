@@ -12,7 +12,7 @@ const ListCourse = () => {
                 <div className="breadcrumbs">
                     <div className="container">
                         <h2>Courses</h2>
-                        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+                        <p>Learn English online as well as offline with Linearthinking method, dedicated teachers, supporting technology platform, guaranteed output. </p>
                     </div>
                 </div>{/* End Breadcrumbs */}
                 {/* ======= Courses Section ======= */}

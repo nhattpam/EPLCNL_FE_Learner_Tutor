@@ -48,7 +48,7 @@ const SignUp = () => {
                   </div>
 
                   <div className="d-grid">
-                    <button className="btn btn-primary btn-login text-uppercase fw-bold" type="submit" style={{ backgroundColor: '#f58d04' }}>
+                  <button className="btn btn-primary btn-login text-uppercase fw-bold" type="submit" style={{ backgroundColor: '#f58d04', border: '5px solid #f58d04', borderRadius: '20px', }}>
                       Sign up
                     </button>
                   </div>

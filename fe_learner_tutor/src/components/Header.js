@@ -30,32 +30,25 @@ const Header = () => {
                             </a>
                             <ul>
                                 <li>
-                                    <a href="#">Ielts</a>
+                                    <a href="#">A1 - BEGINNER</a>
                                 </li>
-                                <li className="dropdown">
-                                    <a href="#">
-                                        <span>Deep Drop Down</span> <i className="bi bi-chevron-right" />
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="#">Ielts</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Toffo</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Toeic</a>
-                                        </li>
-                                    </ul>
+                                  <li>
+                                    <a href="#">A2 - ELEMENTARY</a>
                                 </li>
                                 <li>
-                                    <a href="#">Toeic</a>
+                                    <a href="#">B1 - INTERMEDIATE</a>
                                 </li>
                                 <li>
-                                    <a href="#">PTE</a>
+                                    <a href="#">B2 - UPPER INTERMEDIATE</a>
                                 </li>
                                 <li>
-                                    <Link to="/list-course">List Courses</Link>
+                                    <a href="#">C1 - ADVANCED</a>
+                                </li>
+                                <li>
+                                    <a href="#">C2 - PROFICIENT</a>
+                                </li>
+                                <li>
+                                    <Link to="/list-course">LIST COURSE</Link>
                                 </li>
                             </ul>
                         </li>
