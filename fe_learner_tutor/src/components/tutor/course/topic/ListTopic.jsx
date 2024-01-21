@@ -1,10 +1,10 @@
 import React from 'react'
-import Footer from '../Footer'
-import Header from '../Header'
-import Sidebar from '../Sidebar'
+import Footer from '../../Footer'
+import Header from '../../Header'
+import Sidebar from '../../Sidebar'
 import { Link } from 'react-router-dom'
 
-const ListClassCourse = () => {
+const ListTopic = () => {
   return (
     <>
       <div id="wrapper">
@@ -25,7 +25,7 @@ const ListClassCourse = () => {
                       <ol className="breadcrumb m-0">
                       </ol>
                     </div>
-                    <h4 className="page-title">List Class Course</h4>
+                    <h4 className="page-title">List Topic Of Lesson ABC</h4>
                   </div>
                 </div>
               </div>
@@ -70,7 +70,7 @@ const ListClassCourse = () => {
                             <td>22 Jun 1972</td>
                             <td><span className="badge label-table badge-success">Active</span></td>
                             <td>
-                              <Link to={"/check-center"}>
+                              <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
                                 <i class="fa-regular fa-eye"></i>
                               </Link>
                             </td>
@@ -82,7 +82,7 @@ const ListClassCourse = () => {
                             <td>3 Oct 1981</td>
                             <td><span className="badge label-table badge-secondary">Disabled</span></td>
                             <td>
-                              <Link to={"/check-center"}>
+                              <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
                                 <i class="fa-regular fa-eye"></i>
                               </Link>
                             </td>
@@ -94,7 +94,7 @@ const ListClassCourse = () => {
                             <td>19 Apr 1969</td>
                             <td><span className="badge label-table badge-danger">Suspended</span></td>
                             <td>
-                              <Link to={"/check-center"}>
+                              <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
                                 <i class="fa-regular fa-eye"></i>
                               </Link>
                             </td>
@@ -131,4 +131,4 @@ const ListClassCourse = () => {
   )
 }
 
-export default ListClassCourse
+export default ListTopic

@@ -93,7 +93,7 @@ const CreateVideoCourseModule = () => {
 
                 .content-page {
                     flex: 1;
-                    width: 100%;
+                    width: 85%;
                     text-align: left;
                 }
             `}

@@ -130,7 +130,7 @@ const CreateVideoCourse = () => {
             <style>
                 {`
                 body, #wrapper {
-                    height: 100%;
+                    height: 85%;
                     margin: 0;
                 }
 
@@ -141,7 +141,7 @@ const CreateVideoCourse = () => {
 
                 .content-page {
                     flex: 1;
-                    width: 100%;
+                    width: 85%;
                     text-align: left;
                 }
             `}

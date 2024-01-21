@@ -6,7 +6,7 @@ import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 
-const CreateAssignment = () => {
+const EditTopic = () => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -44,8 +44,6 @@ const CreateAssignment = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="header-title">Create a Video course: Course ABC | Module ABC</h4>
-
                                             <form
                                                 method="post"
                                                 className="dropzone"
@@ -55,18 +53,31 @@ const CreateAssignment = () => {
                                                 data-upload-preview-template="#uploadPreviewTemplate"
                                                 data-parsley-validate
                                             >
+                                                <div className="card">
+                                                    <div className='card-body'>
+                                                        <h4 className="header-title">Create a Class course: Course ABC | Module ABC</h4>
+                                                        <div className="form-group">
+                                                            <label htmlFor="roomLink">Material Link * :</label>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="material"
+                                                                id="material"
+
+                                                            />
+                                                        </div>
+                                                        <label htmlFor="video">Description * :</label>
+                                                        <ReactQuill
+                                                            value={formData.description}
+                                                            onChange={handleChange}
+                                                            style={{ height: '300px' }}
+                                                        />
 
 
-                                                <label htmlFor="video">Question * :</label>
-                                                <ReactQuill
-                                                    value={formData.description}
-                                                    onChange={handleChange}
-                                                    style={{ height: '300px' }}
-                                                />
+                                                    </div>
 
-
-
-                                                <div className="form-group mb-0">
+                                                </div>
+                                                <div className="form-group mb-0 ">
                                                     <button type="submit" className="btn btn-primary" >
                                                         Continue
                                                     </button>
@@ -108,4 +119,4 @@ const CreateAssignment = () => {
     );
 };
 
-export default CreateAssignment;
+export default EditTopic;

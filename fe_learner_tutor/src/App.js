@@ -19,6 +19,12 @@ import CreateLesson from './components/tutor/course/lesson/CreateLesson';
 import ModulePart from './components/tutor/course/module/ModulePart';
 import CreateQuiz from './components/tutor/course/quiz/CreateQuiz';
 import CreateAssignment from './components/tutor/course/assignment/CreateAssignment';
+import CreateClassCourseModule from './components/tutor/course/module/CreateClassCourseModule';
+import ClassModulePart from './components/tutor/course/module/ClassModulePart';
+import CreateTopic from './components/tutor/course/topic/CreateTopic';
+import ListTopic from './components/tutor/course/topic/ListTopic';
+import EditTopic from './components/tutor/course/topic/EditTopic';
+import CreateClassLesson from './components/tutor/course/lesson/CreateClassLesson';
 
 function App() {
   return (
@@ -43,7 +49,15 @@ function App() {
         <Route path="/tutor/courses/create/create-video-course/create-lesson" element={<CreateLesson />} />
         <Route path="/tutor/courses/create/create-video-course/create-assignment" element={<CreateAssignment />} />
         <Route path="/tutor/courses/create/create-video-course/create-quiz" element={<CreateQuiz />} />
+        {/* ---------------------------------------------------------------------------------------------------------- */}
         <Route path="/tutor/courses/create/create-class-course" element={<CreateClassCourse />} />
+        <Route path="/tutor/courses/create/create-class-course/create-class-module" element={<CreateClassCourseModule />} />
+        <Route path="/tutor/courses/create/create-class-course/create-class-module/class-module-part" element={<ClassModulePart />} />
+        <Route path="/tutor/courses/create/create-class-course/create-class-lesson" element={<CreateClassLesson />} />
+        <Route path="/tutor/courses/create/create-class-course/create-topic" element={<CreateTopic />} />
+        <Route path="/tutor/courses/create/create-class-course/list-topic" element={<ListTopic />} />
+        <Route path="/tutor/courses/create/create-class-course/edit-topic" element={<EditTopic />} />
+
         {/* Add more routes as needed */}
       </Routes>
     </div>

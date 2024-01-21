@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-
 import { Link, useNavigate } from "react-router-dom";
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 
 const CreateLesson = () => {
-
     const navigate = useNavigate();
-
 
     const [formData, setFormData] = useState({
         image: '',
@@ -16,14 +13,11 @@ const CreateLesson = () => {
         fullname: '',
         tags: '',
         description: ''
-
     });
-
 
     const handleSubmit = (event) => {
         event.preventDefault();
         navigate("/tutor/courses/create/create-video-course/create-lesson")
-
     };
 
     return (
@@ -31,14 +25,9 @@ const CreateLesson = () => {
             <div id="wrapper">
                 <Header />
                 <Sidebar />
-                {/* ============================================================== */}
-                {/* Start Page Content here */}
-                {/* ============================================================== */}
                 <div className="content-page">
                     <div className="content">
-                        {/* Start Content*/}
                         <div className="container-fluid">
-                            {/* start page title */}
                             <div className="row">
                                 <div className="col-12">
                                     <div className="card">
@@ -58,7 +47,7 @@ const CreateLesson = () => {
                                                     <input
                                                         name="file"
                                                         type="file"
-                                                        accept="video/*" // Specify accepted file types as video
+                                                        accept="video/*"
                                                         multiple
                                                     />
                                                 </div>
@@ -66,20 +55,19 @@ const CreateLesson = () => {
                                                     <i className="h1 text-muted dripicons-cloud-upload" />
                                                     <h3>Drop files here or click to upload.</h3>
                                                 </div>
-                                                {/* Preview */}
                                                 <div className="dropzone-previews mt-3" id="file-previews" />
-                                                {/* Your existing form fields */}
+
                                                 <h4 className="header-title mt-4">Information</h4>
                                                 <div className="form-group">
                                                     <label htmlFor="name">Lesson name * :</label>
                                                     <input type="text" className="form-control" name="name" id="name" />
                                                 </div>
-                                                
+
                                                 <div className="form-group">
-                                                    <label htmlFor="material">Materials  * :</label>
+                                                    <label htmlFor="material">Materials * :</label>
                                                     <input type="text" className="form-control" name="material" id="material" />
                                                 </div>
-                                                
+
                                                 <div className="form-group">
                                                     <label htmlFor="message">Reading * :</label>
                                                     <textarea
@@ -92,26 +80,23 @@ const CreateLesson = () => {
                                                         data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.."
                                                         data-parsley-validation-threshold={10}
                                                         defaultValue={''}
+                                                        style={{ minHeight: '100px' }}
                                                     />
                                                 </div>
+
                                                 <div className="form-group mb-0">
-                                                    <button type="submit" className="btn btn-primary" >
+                                                    <button type="submit" className="btn btn-primary">
                                                         Continue
                                                     </button>
-
                                                 </div>
                                             </form>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* ============================================================== */}
-                {/* End Page content */}
-                {/* ============================================================== */}
                 <Footer />
             </div>
 
@@ -129,8 +114,12 @@ const CreateLesson = () => {
 
                 .content-page {
                     flex: 1;
-                    width: 100%;
+                    width:85%;
                     text-align: left;
+                }
+
+                .form-group {
+                    margin-bottom: 10px;
                 }
             `}
             </style>
