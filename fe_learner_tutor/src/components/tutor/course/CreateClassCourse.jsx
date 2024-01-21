@@ -76,10 +76,13 @@ const CreateClassCourse = () => {
                                                     <div class="form-group">
                                                         <label for="category">Category *:</label>
                                                         <select id="category" class="form-control" required="">
-                                                            <option value="">Choose..</option>
-                                                            <option value="press">Ielts</option>
-                                                            <option value="net">Toefl</option>
-                                                            <option value="mouth">Toeic</option>
+                                                        <option value="">Choose..</option>
+                                                            <option value="press">A1</option>
+                                                            <option value="net">A2</option>
+                                                            <option value="press">B1</option>
+                                                            <option value="net">B2</option>
+                                                            <option value="press">C1</option>
+                                                            <option value="net">C2</option>
                                                         </select>
                                                     </div>
                                                     <div className="form-group">

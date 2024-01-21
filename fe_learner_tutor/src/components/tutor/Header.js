@@ -5,7 +5,7 @@ const Header = () => {
     return (
         <>
             {/* Topbar Start */}
-            <div className="navbar-custom">
+            <div className="navbar-custom" style={{ backgroundColor: '#f58d04' }}>
                 <div className="container-fluid">
                     <ul className="list-unstyled topnav-menu float-right mb-0">
                         <li className="d-none d-lg-block">
@@ -80,7 +80,7 @@ const Header = () => {
                     {/* LOGO */}
                     <div className="logo-box">
                         <Link to={"/dashboard"} className="logo logo-light text-center">
-                            <span style={{ fontFamily: 'Comic Sans MS', fontSize: '24px', fontWeight: 'bold', color: '#f58d04' }}>
+                            <span style={{ fontFamily: 'Comic Sans MS', fontSize: '24px', fontWeight: 'bold', color: '#fff' }}>
                                 MEOWLISH
                             </span>
                         </Link>

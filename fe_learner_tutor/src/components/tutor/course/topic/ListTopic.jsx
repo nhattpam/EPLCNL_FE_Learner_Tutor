@@ -54,21 +54,19 @@ const ListTopic = () => {
                       <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
                         <thead>
                           <tr>
-                            <th data-toggle="true">First Name</th>
-                            <th>Last Name</th>
-                            <th data-hide="phone">Job Title</th>
-                            <th data-hide="phone, tablet">DOB</th>
-                            <th data-hide="phone, tablet">Status</th>
+                            <th data-toggle="true">Topic Name</th>
+                            <th>Description</th>
+                            <th data-hide="phone">Created Date</th>
+                            <th data-hide="phone, tablet">Updated Date</th>
                             <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Isidra</td>
-                            <td>Boudreaux</td>
-                            <td>Traffic Court Referee</td>
+                            <td>Pronunciation basic for new learner</td>
+                            <td>Grammar, Vocabulary</td>
                             <td>22 Jun 1972</td>
-                            <td><span className="badge label-table badge-success">Active</span></td>
+                            <td>22 Jun 1972</td>
                             <td>
                               <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
                                 <i class="fa-regular fa-eye"></i>
@@ -76,23 +74,10 @@ const ListTopic = () => {
                             </td>
                           </tr>
                           <tr>
-                            <td>Shona</td>
-                            <td>Woldt</td>
-                            <td>Airline Transport Pilot</td>
-                            <td>3 Oct 1981</td>
-                            <td><span className="badge label-table badge-secondary">Disabled</span></td>
-                            <td>
-                              <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
-                                <i class="fa-regular fa-eye"></i>
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Granville</td>
-                            <td>Leonardo</td>
-                            <td>Business Services Sales Representative</td>
-                            <td>19 Apr 1969</td>
-                            <td><span className="badge label-table badge-danger">Suspended</span></td>
+                            <td>Pronunciation basic for new learner</td>
+                            <td>Grammar, Vocabulary</td>
+                            <td>22 Jun 1972</td>
+                            <td>22 Jun 1972</td>
                             <td>
                               <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
                                 <i class="fa-regular fa-eye"></i>

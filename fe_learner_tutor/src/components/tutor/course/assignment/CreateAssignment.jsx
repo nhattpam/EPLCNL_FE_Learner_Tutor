@@ -55,19 +55,18 @@ const CreateAssignment = () => {
                                                 data-upload-preview-template="#uploadPreviewTemplate"
                                                 data-parsley-validate
                                             >
-
-
-                                                <label htmlFor="video">Question * :</label>
-                                                <ReactQuill
-                                                    value={formData.description}
-                                                    onChange={handleChange}
-                                                    style={{ height: '300px' }}
-                                                />
-
-
-
-                                                <div className="form-group mb-0">
-                                                    <button type="submit" className="btn btn-primary" >
+                                                <div className="card">
+                                                    <div className='card-body'>
+                                                        <label htmlFor="video">Question * :</label>
+                                                        <ReactQuill
+                                                            value={formData.description}
+                                                            onChange={handleChange}
+                                                            style={{ height: '300px' }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="form-group mb-0  ">
+                                                    <button type="submit" className="btn btn-primary " style={{marginLeft: '23px', marginTop: '10px'}} >
                                                         Continue
                                                     </button>
                                                 </div>

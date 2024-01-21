@@ -58,20 +58,24 @@ const CourseList = () => {
                                             <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
                                                 <thead>
                                                     <tr>
-                                                        <th data-toggle="true">First Name</th>
-                                                        <th>Last Name</th>
-                                                        <th data-hide="phone">Job Title</th>
-                                                        <th data-hide="phone, tablet">DOB</th>
+                                                        <th data-hide="phone">Image</th>
+                                                        <th>CODE</th>
+                                                        <th data-toggle="true">Course Name</th>
+                                                        <th data-toggle="true">Category</th>
+                                                        <th data-hide="phone, ">Type</th>
                                                         <th data-hide="phone, tablet">Status</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>Isidra</td>
-                                                        <td>Boudreaux</td>
+                                                        <td>
+                                                            <img src='https://imgv2-2-f.scribdassets.com/img/document/450288336/original/b650a3aafc/1704919648?v=1' style={{ height: '50px', width: '30px' }}></img>
+                                                        </td>
+                                                        <td>FL22</td>
                                                         <td>Traffic Court Referee</td>
-                                                        <td>22 Jun 1972</td>
+                                                        <td>A1</td>
+                                                        <td>Video Course</td>
                                                         <td><span className="badge label-table badge-success">Active</span></td>
                                                         <td>
                                                             <Link to={"/check-center"}>
@@ -80,11 +84,14 @@ const CourseList = () => {
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Shona</td>
-                                                        <td>Woldt</td>
-                                                        <td>Airline Transport Pilot</td>
-                                                        <td>3 Oct 1981</td>
-                                                        <td><span className="badge label-table badge-secondary">Disabled</span></td>
+                                                        <td>
+                                                            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4AAU6sJHMKCLdsw83LpkP5JDJHFSONg4tUA&usqp=CAU' style={{ height: '50px', width: '30px' }}></img>
+                                                        </td>
+                                                        <td>KO21</td>
+                                                        <td>Saw Court Referee</td>
+                                                        <td>C1</td>
+                                                        <td>Class Course</td>
+                                                        <td><span className="badge label-table badge-success">Active</span></td>
                                                         <td>
                                                             <Link to={"/check-center"}>
                                                                 <i class="fa-regular fa-eye"></i>
@@ -92,17 +99,21 @@ const CourseList = () => {
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Granville</td>
-                                                        <td>Leonardo</td>
-                                                        <td>Business Services Sales Representative</td>
-                                                        <td>19 Apr 1969</td>
-                                                        <td><span className="badge label-table badge-danger">Suspended</span></td>
+                                                        <td>
+                                                            <img src='https://m.media-amazon.com/images/I/518Mac+q-VL._AC_UF894,1000_QL80_.jpg' style={{ height: '50px', width: '30px' }}></img>
+                                                        </td>
+                                                        <td>MO11</td>
+                                                        <td>Dens Court Referee</td>
+                                                        <td>C2</td>
+                                                        <td>Video Course</td>
+                                                        <td><span className="badge label-table badge-danger">InActive</span></td>
                                                         <td>
                                                             <Link to={"/check-center"}>
                                                                 <i class="fa-regular fa-eye"></i>
                                                             </Link>
                                                         </td>
                                                     </tr>
+
                                                 </tbody>
                                                 <tfoot>
                                                     <tr className="active">

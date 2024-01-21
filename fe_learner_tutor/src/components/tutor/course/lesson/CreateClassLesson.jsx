@@ -49,7 +49,7 @@ const CreateClassLesson = () => {
                         data-parsley-validate
                       >
                         <div className="form-group">
-                          <label htmlFor="startTime">Start Time * :</label>
+                          <label htmlFor="startTime">Start Time * :</label>&nbsp;
                           <DatePicker
                             selected={formData.startTime}
                             onChange={(date) =>
@@ -64,7 +64,7 @@ const CreateClassLesson = () => {
                         </div>
 
                         <div className="form-group">
-                          <label htmlFor="endTime">End Time * :</label>
+                          <label htmlFor="endTime">End Time * :</label>&nbsp;
                           <DatePicker
                             selected={formData.endTime}
                             onChange={(date) =>
