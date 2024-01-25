@@ -13,6 +13,8 @@ const SignIn = ({ setIsLoggedIn }) => {
     const [token, setBearerToken] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [showNotification, setShowNotification] = useState(false);
+
 
 
     const handleEmailChange = (e) => {
@@ -22,6 +24,26 @@ const SignIn = ({ setIsLoggedIn }) => {
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     };
+
+    const showErrorMessage = (message) => {
+        setError(message);
+        setShowNotification(true);
+
+        // Hide the notification after 5 seconds
+        setTimeout(() => {
+            setShowNotification(false);
+        }, 5000);
+    };
+
+    // Use useEffect to update the state after a delay
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowNotification(false);
+        }, 5000);
+
+        // Clear the timer on component unmount or when the notification is closed manually
+        return () => clearTimeout(timer);
+    }, [showNotification]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,15 +84,21 @@ const SignIn = ({ setIsLoggedIn }) => {
                     // localStorage.setItem('centerId', accountData.center.id);
                     // const storedCenterId = localStorage.getItem('centerId');
                     // console.log("This is centerId from localStorage:", storedCenterId);
+                    showErrorMessage('Login failed. Please try again.');
+
                 }
             } else {
                 // setIsLoggedIn(false);
                 setError('Login failed. Please try again.');
+                showErrorMessage('Login failed. Please try again.');
+
             }
         } catch (error) {
             console.log('Login failed:', error);
             // setIsLoggedIn(false);
             setError('Login failed. Please try again.');
+            showErrorMessage('Login failed. Please try again.');
+
         }
     };
 
@@ -83,15 +111,20 @@ const SignIn = ({ setIsLoggedIn }) => {
                         <div className="card border-0 shadow rounded-3 my-5">
                             <div className="card-body p-4">
                                 <h5 className="card-title mb-4 fw-bold fs-5">Log in to your MeowLish account</h5>
-                                <form  onSubmit={handleSubmit}>
+                                {showNotification && (
+                                    <div className="alert alert-danger" role="alert">
+                                        {error}
+                                    </div>
+                                )}
+                                <form onSubmit={handleSubmit}>
                                     <div className="form-floating mb-3">
                                         <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" value={email}
-                                        onChange={handleEmailChange}/>
+                                            onChange={handleEmailChange} />
                                         <label htmlFor="floatingInput">Email address</label>
                                     </div>
                                     <div className="form-floating mb-3">
                                         <input type="password" className="form-control" id="floatingPassword" placeholder="Password" value={password}
-                                            onChange={handlePasswordChange}/>
+                                            onChange={handlePasswordChange} />
                                         <label htmlFor="floatingPassword">Password</label>
                                     </div>
 
