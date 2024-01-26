@@ -40,6 +40,9 @@ function App() {
         <Route path="/my-courses/learning" element={<Learning />} />
         <Route path="/tutor/courses" element={<CourseList />} />
         <Route path="/tutor/courses/create" element={<CreateCourse />} />
+        {/* list course by tutorID */}
+        <Route path="/tutor/course/list-course-by-tutor/:tutorId" element={<CourseList />} />
+        {/* list course by tutorID */}
         <Route path="/tutor/courses/list-video-course" element={<ListVideoCourse />} />
         <Route path="/tutor/courses/list-class-course" element={<ListClassCourse />} />
         <Route path="/tutor/courses/create" element={<CreateCourse />} />

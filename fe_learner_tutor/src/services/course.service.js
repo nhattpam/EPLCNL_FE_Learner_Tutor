@@ -3,23 +3,23 @@ import axios from "axios";
 const API_URL = "https://localhost:7215/api";
 
 
-class TutorService {
+class CourseService {
 
   token = '';
 
   setToken(token) {
     this.token = token;
   }
-  saveTutor(tutor) {
-    return axios.post(API_URL + "/tutors/", tutor, {
+  savecourse(course) {
+    return axios.post(API_URL + "/courses/", course, {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }
     });
   }
 
-  getAllTutor() {
-    return axios.get(API_URL + "/tutors", {
+  getAllcourse() {
+    return axios.get(API_URL + "/courses", {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }
@@ -28,8 +28,8 @@ class TutorService {
   
 
 
-  updateTutor(id, tutor) {
-    return axios.put(API_URL + "/tutors/" + id, tutor, {
+  updatecourse(id, course) {
+    return axios.put(API_URL + "/courses/" + id, course, {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }
@@ -37,20 +37,20 @@ class TutorService {
   }
 
 
-  getTutorById(id) {
-    return axios.get(API_URL + "/tutors/" + id, {
+  getcourseById(id) {
+    return axios.get(API_URL + "/courses/" + id, {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }
     });
   }
 
-  getAllCoursesByTutor(id) {
-    return axios.get(`${API_URL}/tutors/${id}/courses`, {
+  getAllCoursesBycourse(id) {
+    return axios.get(`${API_URL}/courses/${id}/courses`, {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }
     });
   }
 }
-export default new TutorService;
+export default new CourseService;

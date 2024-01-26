@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'; import Header from '.
 import Footer from './Footer';
 import authenticationService from '../services/authentication.service';
 import accountService from '../services/account.service';
+import tutorService from '../services/tutor.service';
 
 
 const SignIn = ({ setIsLoggedIn }) => {
@@ -15,6 +16,9 @@ const SignIn = ({ setIsLoggedIn }) => {
     const navigate = useNavigate();
     const [showNotification, setShowNotification] = useState(false);
 
+
+        //get tutorId by accountId
+        const tutorsResponse = tutorService.getAllTutor();
 
 
     const handleEmailChange = (e) => {
@@ -71,10 +75,22 @@ const SignIn = ({ setIsLoggedIn }) => {
 
                     console.log("This is accountId: " + decodedToken.Id.toString())
 
-                    const accountResponse = await accountService.getAccountById(decodedToken.Id);
-                    const accountData = accountResponse.data;
+                    console.log((await tutorsResponse).data);
 
-                    console.log(JSON.stringify(accountData))
+                     // Find the center with matching accountId
+                     const matchedTutor = (await tutorsResponse).data.find(tutor => tutor.account.id === decodedToken.Id);
+
+                     if (matchedTutor) {
+                         console.log("This is tutorId:", matchedTutor.id);
+
+                         // Access centerId from localStorage
+                         localStorage.setItem('tutorId', matchedTutor.id);
+                         const storedTutorId = localStorage.getItem('tutorId');
+                         console.log("This is tutorId from localStorage:", storedTutorId);
+                     } else {
+                         console.log("No matching center found for the given accountId");
+                     }
+
 
 
                     navigate('/tutor/courses');
