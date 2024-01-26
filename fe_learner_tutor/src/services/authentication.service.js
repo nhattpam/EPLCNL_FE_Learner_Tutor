@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API_URL = "https://localhost:7215/api/authentications";
-
+// const API_URL = "https://localhost:7215/api/authentications";
+// const API_URL = "https://localhost:7215/api";
+const API_URL = "https://nhatpmse.twentytwo.asia/api";
 
 class AuthenticationService {
 
@@ -12,7 +13,7 @@ class AuthenticationService {
     }
 
     loginUser(email, password) {
-        return axios.post(API_URL + "/login", {
+        return axios.post(API_URL + "/authentications/login", {
             email: email,
             password: password,
         });

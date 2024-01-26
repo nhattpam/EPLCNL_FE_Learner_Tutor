@@ -17,8 +17,8 @@ const SignIn = ({ setIsLoggedIn }) => {
     const [showNotification, setShowNotification] = useState(false);
 
 
-        //get tutorId by accountId
-        const tutorsResponse = tutorService.getAllTutor();
+    //get tutorId by accountId
+    const tutorsResponse = tutorService.getAllTutor();
 
 
     const handleEmailChange = (e) => {
@@ -77,23 +77,23 @@ const SignIn = ({ setIsLoggedIn }) => {
 
                     console.log((await tutorsResponse).data);
 
-                     // Find the center with matching accountId
-                     const matchedTutor = (await tutorsResponse).data.find(tutor => tutor.account.id === decodedToken.Id);
+                    // Find the center with matching accountId
+                    const matchedTutor = (await tutorsResponse).data.find(tutor => tutor.account.id === decodedToken.Id);
 
-                     if (matchedTutor) {
-                         console.log("This is tutorId:", matchedTutor.id);
+                    if (matchedTutor) {
+                        console.log("This is tutorId:", matchedTutor.id);
 
-                         // Access centerId from localStorage
-                         localStorage.setItem('tutorId', matchedTutor.id);
-                         const storedTutorId = localStorage.getItem('tutorId');
-                         console.log("This is tutorId from localStorage:", storedTutorId);
-                     } else {
-                         console.log("No matching center found for the given accountId");
-                     }
+                        // Access centerId from localStorage
+                        localStorage.setItem('tutorId', matchedTutor.id);
+                        const storedTutorId = localStorage.getItem('tutorId');
+                        console.log("This is tutorId from localStorage:", storedTutorId);
+                    } else {
+                        console.log("No matching center found for the given accountId");
+                    }
 
 
-
-                    navigate('/tutor/courses');
+                    const storedTutorId = localStorage.getItem('tutorId');
+                    navigate(`/tutor/course/list-course-by-tutor/${storedTutorId}`);
 
                     // setAccount(accountData);
                     // Access centerId from localStorage

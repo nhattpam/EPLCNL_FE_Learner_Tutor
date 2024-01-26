@@ -1,22 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../Footer';
 import Header from '../Header';
 import Sidebar from '../Sidebar';
 import { Link, useNavigate } from "react-router-dom";
+import courseService from '../../../services/course.service';
+import categoryService from '../../../services/category.service';
 
 const CreateVideoCourse = () => {
 
+
+    const tutorId = localStorage.getItem('tutorId');
     const navigate = useNavigate();
 
 
-    const [formData, setFormData] = useState({
-        image: '',
-        price: '',
-        fullname: '',
-        tags: '',
-        description: ''
 
+    const [course, setCourse] = useState({
+        name: "",
+        description: "",
+        code: "",
+        imageUrl: "",
+        tutorId: tutorId,
+        stockPrice: "",
+        isOnlineClass: false,
+        categoryId: "",
+        tags: "",
     });
+
+
+    const [errors, setErrors] = useState({});
+    const [msg, setMsg] = useState("");
+
+    //list category
+    const [categoryList, setCategoryList] = useState([]);
+
+    useEffect(() => {
+        categoryService
+            .getAllcategory()
+            .then((res) => {
+                console.log(res.data);
+                setCategoryList(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
 
 
     const handleContinue = (event) => {
@@ -25,6 +53,65 @@ const CreateVideoCourse = () => {
 
         navigate("/tutor/courses/create/create-video-course/create-module")
 
+    };
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setCourse({ ...course, [e.target.name]: value });
+    }
+
+    const validateForm = () => {
+        let isValid = true;
+        const errors = {};
+
+        if (course.name.trim() === '') {
+            errors.name = 'Course Name is required';
+            isValid = false;
+        }
+
+        if (course.description.trim() === '') {
+            errors.description = 'Description is required';
+            isValid = false;
+        }
+
+        if (course.code.trim() === '') {
+            errors.code = 'Code is required';
+            isValid = false;
+        }
+
+        if (course.tags.trim() === '') {
+            errors.tags = 'Tags is required';
+            isValid = false;
+        }
+
+        if (course.stockPrice.trim() === '') {
+            errors.stockPrice = 'Price is required';
+            isValid = false;
+        } else if (isNaN(course.stockPrice) || +course.stockPrice <= 0) {
+            errors.price = 'Price should be a positive number';
+            isValid = false;
+        }
+
+        setErrors(errors);
+        return isValid;
+    };
+
+
+    const submitCourse = async (e) => {
+        e.preventDefault();
+
+        if (validateForm()) {
+            try {
+                // Save account
+                console.log(JSON.stringify(course))
+                const courseResponse = await courseService.savecourse(course);
+
+                navigate(`/tutor/course/list-course-by-tutor/${tutorId}`);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
     };
 
     return (
@@ -47,75 +134,86 @@ const CreateVideoCourse = () => {
                                             <h4 className="header-title">Create a Video course</h4>
 
                                             {/* Combined Form and Image Upload */}
-                                                <form
-                                                    method="post"
-                                                    className="dropzone"
-                                                    id="myAwesomeDropzone"
-                                                    data-plugin="dropzone"
-                                                    data-previews-container="#file-previews"
-                                                    data-upload-preview-template="#uploadPreviewTemplate"
-                                                    data-parsley-validate
-                                                    onSubmit={handleContinue}
-                                                >
-                                                    <label htmlFor="image">Image * :</label>
-                                                    <div className="fallback">
-                                                        <input name="file" type="file" multiple />
-                                                    </div>
-                                                    <div className="dz-message needsclick">
-                                                        <i className="h1 text-muted dripicons-cloud-upload" />
-                                                        <h3>Drop files here or click to upload.</h3>
-                                                    </div>
-                                                    {/* Preview */}
-                                                    <div className="dropzone-previews mt-3" id="file-previews" />
-                                                    {/* Your existing form fields */}
-                                                    <h4 className="header-title mt-4">Information</h4>
-                                                    <div className="form-group">
-                                                        <label htmlFor="fullname">Course name * :</label>
-                                                        <input type="text" className="form-control" name="fullname" id="fullname" />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="category">Category *:</label>
-                                                        <select id="category" class="form-control" required="">
-                                                            <option value="">Choose..</option>
-                                                            <option value="press">A1</option>
-                                                            <option value="net">A2</option>
-                                                            <option value="press">B1</option>
-                                                            <option value="net">B2</option>
-                                                            <option value="press">C1</option>
-                                                            <option value="net">C2</option>
-                                                            
-                                                        </select>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label htmlFor="price">Price * :</label>
-                                                        <input type="number" id="price" className="form-control" name="price" data-parsley-trigger="change" />
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label htmlFor="tags">Tags * :</label>
-                                                        <input type="text" id="tags" className="form-control" name="tags" data-parsley-trigger="change" />
-                                                    </div>
+                                            <form
+                                                method="post"
+                                                className="dropzone"
+                                                id="myAwesomeDropzone"
+                                                data-plugin="dropzone"
+                                                data-previews-container="#file-previews"
+                                                data-upload-preview-template="#uploadPreviewTemplate"
+                                                data-parsley-validate
+                                                // onSubmit={handleContinue}
+                                                onSubmit={(e) => submitCourse(e)}
+                                            >
+                                                <label htmlFor="image">Image * :</label>
+                                                <div className="fallback">
+                                                    <input name="file" type="file" multiple />
+                                                </div>
+                                                <div className="dz-message needsclick">
+                                                    <i className="h1 text-muted dripicons-cloud-upload" />
+                                                    <h3>Drop files here or click to upload.</h3>
+                                                </div>
+                                                {/* Preview */}
+                                                <div className="dropzone-previews mt-3" id="file-previews" />
+                                                {/* Your existing form fields */}
+                                                <h4 className="header-title mt-4">Information</h4>
+                                                <div className="form-group">
+                                                    <label htmlFor="name">Course name * :</label>
+                                                    <input type="text" className="form-control" name="name" id="name" value={course.name} onChange={(e) => handleChange(e)} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="code">Code * :</label>
+                                                    <input type="text" className="form-control" name="code" id="code" value={course.code} onChange={(e) => handleChange(e)} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="categoryId">Category *:</label>
+                                                    <select
+                                                        className="form-control"
+                                                        id="categoryId"
+                                                        name="categoryId"
+                                                        value={course.categoryId}
+                                                        onChange={handleChange}
+                                                    >
+                                                        <option value="">Select Category</option>
+                                                        {categoryList.map((cate) => (
+                                                            <option key={cate.id} value={cate.id}>
+                                                                {cate? cate.name : 'Unknown Category'}
+                                                            </option>
+                                                        ))}
 
-                                                    <div className="form-group">
-                                                        <label htmlFor="message">Description * :</label>
-                                                        <textarea
-                                                            id="message"
-                                                            className="form-control"
-                                                            name="message"
-                                                            data-parsley-trigger="keyup"
-                                                            data-parsley-minlength={20}
-                                                            data-parsley-maxlength={100}
-                                                            data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.."
-                                                            data-parsley-validation-threshold={10}
-                                                            defaultValue={''}
-                                                        />
-                                                    </div>
-                                                    <div className="form-group mb-0">
-                                                        <button type="submit" className="btn btn-primary" >
-                                                            Continue
-                                                        </button>
+                                                    </select>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="stockPrice">Price * :</label>
+                                                    <input type="number" id="stockPrice" className="form-control" name="stockPrice" data-parsley-trigger="change" value={course.stockPrice} onChange={(e) => handleChange(e)} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="tags">Tags * :</label>
+                                                    <input type="text" id="tags" className="form-control" name="tags" data-parsley-trigger="change" value={course.tags} onChange={(e) => handleChange(e)} />
+                                                </div>
 
-                                                    </div>
-                                                </form>
+                                                <div className="form-group">
+                                                    <label htmlFor="description">Description * :</label>
+                                                    <textarea
+                                                        id="description"
+                                                        className="form-control"
+                                                        name="description"
+                                                        data-parsley-trigger="keyup"
+                                                        data-parsley-minlength={20}
+                                                        data-parsley-maxlength={100}
+                                                        data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.."
+                                                        data-parsley-validation-threshold={10}
+                                                        defaultValue={''}
+                                                        value={course.description} onChange={(e) => handleChange(e)}
+                                                    />
+                                                </div>
+                                                <div className="form-group mb-0">
+                                                    <button type="submit" className="btn btn-primary" >
+                                                        Continue
+                                                    </button>
+
+                                                </div>
+                                            </form>
 
 
                                         </div>
