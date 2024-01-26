@@ -14,7 +14,6 @@ const CreateVideoCourse = () => {
     const navigate = useNavigate();
 
 
-
     const [course, setCourse] = useState({
         name: "",
         description: "",
@@ -62,11 +61,9 @@ const CreateVideoCourse = () => {
     }, []);
 
 
-    const handleContinue = (event) => {
-        event.preventDefault();
-        // Perform any necessary form validation or processing here
+    const handleContinue = (storedCourseId) => {
 
-        navigate("/tutor/courses/create/create-video-course/create-module")
+        navigate(`/tutor/courses/create/create-video-course/create-module/${storedCourseId}`)
 
     };
 
@@ -114,40 +111,45 @@ const CreateVideoCourse = () => {
 
     const submitCourse = async (e) => {
         e.preventDefault();
-    
+
         if (validateForm()) {
             try {
                 // Save account
                 let imageUrl = course.imageUrl; // Keep the existing imageUrl if available
-    
+
                 if (file) {
                     // Upload image and get the link
                     const imageData = new FormData();
                     imageData.append('file', file);
                     const imageResponse = await courseService.uploadImage(imageData);
-    
+
                     // Update the imageUrl with the link obtained from the API
                     imageUrl = imageResponse.data;
-    
+
                     // Log the imageUrl after updating
                     console.log("this is url: " + imageUrl);
                 }
-    
+
                 // Save course
                 const courseData = { ...course, imageUrl }; // Create a new object with updated imageUrl
                 const courseResponse = await courseService.savecourse(courseData);
 
-                console.log(JSON.stringify(course));
-    
-                navigate(`/tutor/course/list-course-by-tutor/${tutorId}`);
+                // console.log(JSON.stringify(courseResponse));
+                // console.log(courseResponse.data);
+                const courseJson = JSON.stringify(courseResponse.data);
+
+                const courseJsonParse = JSON.parse(courseJson);
+
+                // navigate(`/tutor/course/list-course-by-tutor/${tutorId}`);
+                handleContinue(courseJsonParse.id);
             } catch (error) {
                 console.log(error);
             }
         }
     };
-    
-    
-    
+
+
+
 
     return (
         <>
@@ -183,8 +185,7 @@ const CreateVideoCourse = () => {
                                                 <label htmlFor="imageUrl">Image * :</label>
                                                 <Dropzone
                                                     onDrop={handleFileDrop}
-                                                    accept={['image/*']}
-                                                    multiple={false}
+                                                    accept="image/*" multiple={false}
                                                     maxSize={5000000} // Maximum file size (5MB)
                                                 >
                                                     {({ getRootProps, getInputProps }) => (
