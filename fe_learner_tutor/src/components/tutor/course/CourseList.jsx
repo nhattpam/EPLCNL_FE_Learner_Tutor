@@ -127,7 +127,9 @@ const CourseList = () => {
                                                 <tbody>
                                                     {currentCourses.map((course) => (
                                                         <tr key={course.id}>
-                                                            <td>{course.imageUrl}</td>
+                                                            <td>
+                                                                <img src={course.imageUrl} style={{height: '50px', width: '70px'}}></img>
+                                                                </td>
                                                             <td>{course.code}</td>
                                                             <td>{course.name}</td>
                                                             <td>{course.category.name}</td>

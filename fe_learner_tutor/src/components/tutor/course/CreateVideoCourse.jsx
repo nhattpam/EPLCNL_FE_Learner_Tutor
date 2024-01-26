@@ -5,6 +5,7 @@ import Sidebar from '../Sidebar';
 import { Link, useNavigate } from "react-router-dom";
 import courseService from '../../../services/course.service';
 import categoryService from '../../../services/category.service';
+import Dropzone from 'react-dropzone';
 
 const CreateVideoCourse = () => {
 
@@ -25,6 +26,20 @@ const CreateVideoCourse = () => {
         categoryId: "",
         tags: "",
     });
+
+    const [file, setFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState("");
+
+
+    const handleFileDrop = (acceptedFiles) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            setFile(acceptedFiles[0]);
+
+            // Set the image preview URL
+            const previewUrl = URL.createObjectURL(acceptedFiles[0]);
+            setImagePreview(previewUrl);
+        }
+    };
 
 
     const [errors, setErrors] = useState({});
@@ -99,20 +114,40 @@ const CreateVideoCourse = () => {
 
     const submitCourse = async (e) => {
         e.preventDefault();
-
+    
         if (validateForm()) {
             try {
                 // Save account
-                console.log(JSON.stringify(course))
-                const courseResponse = await courseService.savecourse(course);
+                let imageUrl = course.imageUrl; // Keep the existing imageUrl if available
+    
+                if (file) {
+                    // Upload image and get the link
+                    const imageData = new FormData();
+                    imageData.append('file', file);
+                    const imageResponse = await courseService.uploadImage(imageData);
+    
+                    // Update the imageUrl with the link obtained from the API
+                    imageUrl = imageResponse.data;
+    
+                    // Log the imageUrl after updating
+                    console.log("this is url: " + imageUrl);
+                }
+    
+                // Save course
+                const courseData = { ...course, imageUrl }; // Create a new object with updated imageUrl
+                const courseResponse = await courseService.savecourse(courseData);
 
+                console.log(JSON.stringify(course));
+    
                 navigate(`/tutor/course/list-course-by-tutor/${tutorId}`);
-
             } catch (error) {
                 console.log(error);
             }
         }
     };
+    
+    
+    
 
     return (
         <>
@@ -145,14 +180,27 @@ const CreateVideoCourse = () => {
                                                 // onSubmit={handleContinue}
                                                 onSubmit={(e) => submitCourse(e)}
                                             >
-                                                <label htmlFor="image">Image * :</label>
-                                                <div className="fallback">
-                                                    <input name="file" type="file" multiple />
-                                                </div>
-                                                <div className="dz-message needsclick">
-                                                    <i className="h1 text-muted dripicons-cloud-upload" />
-                                                    <h3>Drop files here or click to upload.</h3>
-                                                </div>
+                                                <label htmlFor="imageUrl">Image * :</label>
+                                                <Dropzone
+                                                    onDrop={handleFileDrop}
+                                                    accept={['image/*']}
+                                                    multiple={false}
+                                                    maxSize={5000000} // Maximum file size (5MB)
+                                                >
+                                                    {({ getRootProps, getInputProps }) => (
+                                                        <div {...getRootProps()} className="fallback">
+                                                            <input {...getInputProps()} />
+                                                            <div className="dz-message needsclick">
+                                                                <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                <h3>Drop files here or click to upload.</h3>
+                                                            </div>
+                                                            {imagePreview && (
+                                                                <img src={imagePreview} alt="Preview" style={{ maxWidth: "100%", maxHeight: "200px", marginTop: "10px" }} />
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </Dropzone>
+
                                                 {/* Preview */}
                                                 <div className="dropzone-previews mt-3" id="file-previews" />
                                                 {/* Your existing form fields */}
@@ -177,7 +225,7 @@ const CreateVideoCourse = () => {
                                                         <option value="">Select Category</option>
                                                         {categoryList.map((cate) => (
                                                             <option key={cate.id} value={cate.id}>
-                                                                {cate? cate.name : 'Unknown Category'}
+                                                                {cate ? cate.name : 'Unknown Category'}
                                                             </option>
                                                         ))}
 

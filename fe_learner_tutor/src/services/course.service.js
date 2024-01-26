@@ -11,6 +11,7 @@ class CourseService {
   setToken(token) {
     this.token = token;
   }
+
   savecourse(course) {
     return axios.post(API_URL + "/courses/", course, {
       headers: {
@@ -40,6 +41,14 @@ class CourseService {
 
   getcourseById(id) {
     return axios.get(API_URL + "/courses/" + id, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
+  uploadImage(course) {
+    return axios.post(API_URL + "/courses/upload-images/", course, {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }
