@@ -47,7 +47,7 @@ function App() {
         <Route path="/tutor/courses/list-class-course" element={<ListClassCourse />} />
         <Route path="/tutor/courses/create" element={<CreateCourse />} />
         <Route path="/tutor/courses/create/create-video-course" element={<CreateVideoCourse />} />
-        <Route path="/tutor/courses/create/create-video-course/create-module/:storedCourse" element={<CreateVideoCourseModule />} />
+        <Route path="/tutor/courses/create/create-video-course/create-module/:storedCourseId" element={<CreateVideoCourseModule />} />
         <Route path="/tutor/courses/create/create-video-course/create-module/module-part" element={<ModulePart />} />
         <Route path="/tutor/courses/create/create-video-course/create-lesson" element={<CreateLesson />} />
         <Route path="/tutor/courses/create/create-video-course/create-assignment" element={<CreateAssignment />} />
