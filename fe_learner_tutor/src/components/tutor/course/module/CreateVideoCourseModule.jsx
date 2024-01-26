@@ -47,6 +47,12 @@ const CreateVideoCourseModule = () => {
     setModule({ ...module, [e.target.name]: value });
   }
 
+  const handleContinue = (storedModuleId) => {
+
+    navigate(`/tutor/courses/create/create-video-course/create-module/module-part/${storedModuleId}`)
+
+  };
+
   const validateForm = () => {
     let isValid = true;
     const errors = {};
@@ -74,19 +80,19 @@ const CreateVideoCourseModule = () => {
 
         setMsg('Module Added Successfully');
 
-        // navigate(`/list-tutor/${centerId}`);
+        const moduleJson = JSON.stringify(moduleResponse.data);
 
+        const moduleJsonParse = JSON.parse(moduleJson);
+
+        handleContinue(moduleJsonParse.id);
+        
       } catch (error) {
         console.log(error);
       }
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    navigate("/tutor/courses/create/create-video-course/create-module/module-part")
-
-  };
+  
 
   return (
     <>
@@ -121,7 +127,7 @@ const CreateVideoCourseModule = () => {
                           <button
                             type="submit"
                             className="btn btn-primary"
-                            // onClick={handleSubmit}
+                          // onClick={handleSubmit}
                           >
                             Create Module
                           </button>

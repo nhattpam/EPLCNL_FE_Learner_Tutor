@@ -48,7 +48,7 @@ function App() {
         <Route path="/tutor/courses/create" element={<CreateCourse />} />
         <Route path="/tutor/courses/create/create-video-course" element={<CreateVideoCourse />} />
         <Route path="/tutor/courses/create/create-video-course/create-module/:storedCourseId" element={<CreateVideoCourseModule />} />
-        <Route path="/tutor/courses/create/create-video-course/create-module/module-part" element={<ModulePart />} />
+        <Route path="/tutor/courses/create/create-video-course/create-module/module-part/:storedModuleId" element={<ModulePart />} />
         <Route path="/tutor/courses/create/create-video-course/create-lesson" element={<CreateLesson />} />
         <Route path="/tutor/courses/create/create-video-course/create-assignment" element={<CreateAssignment />} />
         <Route path="/tutor/courses/create/create-video-course/create-quiz" element={<CreateQuiz />} />
