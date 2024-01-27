@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
+import moduleService from '../../../../services/module.service';
 
 const CreateLesson = () => {
     const navigate = useNavigate();
+
+    const [module, setModule] = useState({
+        name: "",
+    });
 
     const [formData, setFormData] = useState({
         image: '',
@@ -14,6 +19,23 @@ const CreateLesson = () => {
         tags: '',
         description: ''
     });
+
+
+    const { storedModuleId } = useParams();
+
+    useEffect(() => {
+        if (storedModuleId) {
+            moduleService
+                .getModuleById(storedModuleId)
+                .then((res) => {
+                    setModule(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [storedModuleId]);
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -32,7 +54,7 @@ const CreateLesson = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className='card-body'>
-                                            <h4 className="header-title">Create a Video course: Course ABC</h4>
+                                            <h4 className="header-title">Create a Video course: Course ABC | Module {module.name} </h4>
                                             <form
                                                 method="post"
                                                 className="dropzone"

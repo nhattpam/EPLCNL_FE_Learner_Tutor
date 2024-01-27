@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
-
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
+import moduleService from '../../../../services/module.service';
 
 const ModulePart = () => {
 
     const navigate = useNavigate();
+
+    const [module, setModule] = useState({
+        name: "",
+    });
+
 
 
     const [formData, setFormData] = useState({
@@ -18,6 +23,21 @@ const ModulePart = () => {
         description: ''
 
     });
+
+    const { storedModuleId } = useParams();
+
+    useEffect(() => {
+        if (storedModuleId) {
+            moduleService
+                .getModuleById(storedModuleId)
+                .then((res) => {
+                    setModule(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [storedModuleId]);
 
 
     const handleSubmit = (event) => {
@@ -43,7 +63,7 @@ const ModulePart = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className='card-body'>
-                                            <h4 className="header-title">Create a Video course: Course ABC | Module ABC </h4>
+                                            <h4 className="header-title">Create a Video course: Course ABC | Module {module.name} </h4>
                                             <h4>Lesson</h4>
                                             {/* ... (Add fields for lesson) */}
                                             <div className="form-group mb-0">
@@ -51,7 +71,7 @@ const ModulePart = () => {
                                                     type="button"
                                                     className="btn btn-primary"
                                                     onClick={() =>
-                                                        navigate("/tutor/courses/create/create-video-course/create-lesson")
+                                                        navigate(`/tutor/courses/create/create-video-course/create-lesson/${storedModuleId}`)
 
                                                     }
                                                 >
@@ -66,7 +86,7 @@ const ModulePart = () => {
                                                     type="button"
                                                     className="btn btn-primary"
                                                     onClick={() =>
-                                                        navigate("/tutor/courses/create/create-video-course/create-quiz")
+                                                        navigate(`/tutor/courses/create/create-video-course/create-quiz/${storedModuleId}`)
 
                                                     }
                                                 >
@@ -81,7 +101,7 @@ const ModulePart = () => {
                                                     type="button"
                                                     className="btn btn-primary"
                                                     onClick={() =>
-                                                        navigate("/tutor/courses/create/create-video-course/create-assignment")
+                                                        navigate(`/tutor/courses/create/create-video-course/create-assignment/${storedModuleId}`)
                                                     }
                                                 >
                                                     Add Assignment
