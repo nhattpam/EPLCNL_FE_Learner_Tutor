@@ -1,57 +1,98 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import classLessonService from '../../../../services/class-lesson.service';
+import classTopicService from '../../../../services/class-topic.service';
 
 const CreateTopic = () => {
   const navigate = useNavigate();
+  const { storedClassLessonId } = useParams();
+  const [createdTopics, setCreatedTopics] = useState([]);
 
-  const [formData, setFormData] = useState({
-    image: '',
-    price: '',
-    fullname: '',
-    tags: '',
-    description: '',
-    startTime: new Date(),
-    endTime: new Date(),
+  const [classLesson, setClassLesson] = useState({
+    classHours: '',
+    classUrl: '',
   });
 
-  const [topics, setTopics] = useState([]); // State to store created topics
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (storedClassLessonId) {
+      classLessonService
+        .getClassLessonById(storedClassLessonId)
+        .then((res) => {
+          setClassLesson(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [storedClassLessonId]);
 
-    // Add the new topic to the topics array
-    const newTopic = {
-      startTime: formData.startTime,
-      endTime: formData.endTime,
-      roomLink: formData.roomLink,
-      topic: formData.topic,
-    };
 
-    setTopics([...topics, newTopic]);
-    setFormData({
-      image: '',
-      price: '',
-      fullname: '',
-      tags: '',
-      description: '',
-      startTime: formData.startTime,
-      endTime: formData.endTime,
-      roomLink: '',
-      topic: '',
-    });
-  };
-
+  //create class topic
+  const [classTopic, setClassTopic] = useState({
+    name: "",
+    description: "",
+    materialUrl: "",
+    classLessonId: storedClassLessonId
+  });
 
   const handleListTopics = () => {
-    navigate("/tutor/courses/create/create-class-course/list-topic")
+    navigate("/tutor/courses/create/create-class-course/list-topic");
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setClassTopic({ ...classTopic, [e.target.name]: value });
+  }
+
+  const listTopicsByClassLessonId = async (storedClassLessonId) => {
+    try {
+      const listClassTopicsByClassLesson = await classLessonService.getAllClassTopicsByClassLesson(storedClassLessonId);
+  
+      console.log('this is list:', listClassTopicsByClassLesson.data);
+  
+     setCreatedTopics(listClassTopicsByClassLesson.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+
+
+
+  const submitClassTopic = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Save account
+      const classTopicResponse = await classTopicService.saveClassTopic(classTopic);
+
+      // console.log(JSON.stringify(courseResponse));
+      // console.log(courseResponse.data);
+      const classTopicJson = JSON.stringify(classTopicResponse.data);
+
+      const classTopicJsonParse = JSON.parse(classTopicJson);
+
+      console.log(classTopicJsonParse)
+
+      await listTopicsByClassLessonId(storedClassLessonId);
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 
+  useEffect(() => {
+    if (storedClassLessonId) {
+      listTopicsByClassLessonId(storedClassLessonId);
+    }
+  }, [storedClassLessonId]);
   return (
     <>
       <div id="wrapper">
@@ -75,36 +116,18 @@ const CreateTopic = () => {
                         data-previews-container="#file-previews"
                         data-upload-preview-template="#uploadPreviewTemplate"
                         data-parsley-validate
+                        onSubmit={(e) => submitClassTopic(e)}
                       >
                         <div className="form-group">
-                          <label htmlFor="startTime">Start Time * :</label>
-                          <DatePicker
-                            selected={formData.startTime}
-                            onChange={(date) =>
-                              setFormData({ ...formData, startTime: date })
-                            }
-                            showTimeSelect
-                            showTimeSelectOnly
-                            dateFormat="h:mm aa"
-                            timeIntervals={15}
+                          <input
+                            type="text"
                             className="form-control"
+                            name="classHours"
+                            id="classHours"
+                            value={classLesson.classHours}
                           />
                         </div>
 
-                        <div className="form-group">
-                          <label htmlFor="endTime">End Time * :</label>
-                          <DatePicker
-                            selected={formData.endTime}
-                            onChange={(date) =>
-                              setFormData({ ...formData, endTime: date })
-                            }
-                            showTimeSelect
-                            showTimeSelectOnly
-                            dateFormat="h:mm aa"
-                            timeIntervals={15}
-                            className="form-control"
-                          />
-                        </div>
 
                         <div className="form-group">
                           <label htmlFor="roomLink">Room Link * :</label>
@@ -113,42 +136,31 @@ const CreateTopic = () => {
                             className="form-control"
                             name="roomLink"
                             id="roomLink"
-                            value={formData.roomLink}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                roomLink: e.target.value,
-                              })
-                            }
+                            value={classLesson.classUrl}
+                            o
                           />
                         </div>
 
                         <div className="form-group">
-                          <label htmlFor="topic">Topic * :</label>
-                          <textarea
-                            id="topic"
-                            className="form-control"
-                            name="topic"
-                            data-parsley-trigger="keyup"
-                            data-parsley-minlength={20}
-                            data-parsley-maxlength={100}
-                            data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.."
-                            data-parsley-validation-threshold={10}
-                            value={formData.topic}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                topic: e.target.value,
-                              })
-                            }
-                          />
-                        </div>
+                          <h2 htmlFor="topic">Topic</h2>
 
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="name">Name * :</label>
+                          <input type="text" className="form-control" name="name" id="name" value={classTopic.name} onChange={(e) => handleChange(e)} />
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="code">Description * :</label>
+                          <input type="text" className="form-control" name="description" id="description" value={classTopic.description} onChange={(e) => handleChange(e)} />
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="code">Materials * :</label>
+                          <input type="text" className="form-control" name="materialUrl" id="materialUrl" value={classTopic.materialUrl} onChange={(e) => handleChange(e)} />
+                        </div>
                         <div className="form-group mb-0">
                           <button
                             type="submit"
                             className="btn btn-primary mr-2"
-                            onClick={handleSubmit}
                           >
                             Create Topic
                           </button>
@@ -165,17 +177,17 @@ const CreateTopic = () => {
                       {/* Display created topics */}
                       <div>
                         <h4>Created Topics:</h4>
-                        <ul>
-                          {topics.map((topic, index) => (
-                            <li key={index}>
-                              <strong>Start Time:</strong> {topic.startTime.toLocaleTimeString()} |
-                              <strong> End Time:</strong> {topic.endTime.toLocaleTimeString()} |
-                              <strong> Room Link:</strong> {topic.roomLink} |
-                              <strong> Topic:</strong> {topic.topic}
-                            </li>
-                          ))}
-                        </ul>
+                        {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
+                          <ul>
+                            {createdTopics.map((topic) => (
+                              <li key={topic.id}>{topic.name}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>No topics created yet.</p>
+                        )}
                       </div>
+
                     </div>
                   </div>
                 </div>
