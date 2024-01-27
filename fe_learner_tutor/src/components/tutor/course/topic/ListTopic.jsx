@@ -1,10 +1,73 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Footer from '../../Footer'
 import Header from '../../Header'
 import Sidebar from '../../Sidebar'
 import { Link } from 'react-router-dom'
+import classLessonService from '../../../../services/class-lesson.service';
 
 const ListTopic = () => {
+
+  const { storedClassLessonId } = useParams();
+  const [classTopicList, setClassTopicList] = useState([]);
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+  const [classTopicsPerPage] = useState(5);
+
+
+  const [classLesson, setClassLesson] = useState({
+    classHours: '',
+    classUrl: '',
+  });
+
+  useEffect(() => {
+    if (storedClassLessonId) {
+      classLessonService
+        .getClassLessonById(storedClassLessonId)
+        .then((res) => {
+          setClassLesson(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [storedClassLessonId]);
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  useEffect(() => {
+    classLessonService
+      .getAllClassTopicsByClassLesson(storedClassLessonId)
+      .then((res) => {
+        console.log(res.data);
+        setClassTopicList(res.data);
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [storedClassLessonId]);
+
+  const filteredClassTopics = classTopicList
+    .filter((classTopic) => {
+      return (
+        classTopic.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+
+      );
+    });
+
+  const pageCount = Math.ceil(filteredClassTopics.length / classTopicsPerPage);
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
+
+  const offset = currentPage * classTopicsPerPage;
+  const currentClassTopics = filteredClassTopics.slice(offset, offset + classTopicsPerPage);
+
   return (
     <>
       <div id="wrapper">
@@ -25,7 +88,7 @@ const ListTopic = () => {
                       <ol className="breadcrumb m-0">
                       </ol>
                     </div>
-                    <h4 className="page-title">List Topic Of Lesson ABC</h4>
+                    <h4 className="page-title">List Topic Of Lesson {classLesson.classHours}</h4>
                   </div>
                 </div>
               </div>
@@ -62,38 +125,21 @@ const ListTopic = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>Pronunciation basic for new learner</td>
-                            <td>Grammar, Vocabulary</td>
-                            <td>22 Jun 1972</td>
-                            <td>22 Jun 1972</td>
-                            <td>
-                              <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
-                                <i class="fa-regular fa-eye"></i>
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Pronunciation basic for new learner</td>
-                            <td>Grammar, Vocabulary</td>
-                            <td>22 Jun 1972</td>
-                            <td>22 Jun 1972</td>
-                            <td>
-                              <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
-                                <i class="fa-regular fa-eye"></i>
-                              </Link>
-                            </td>
-                          </tr>
+                          {currentClassTopics.map((classTopic) => (
+                            <tr key={classTopic.id}>
+                              <td>{classTopic.name}</td>
+                              <td>{classTopic.description}</td>
+                              <td>{classTopic.createdDate}</td>
+                              <td>{classTopic.updatedDate}</td>
+                              <td>
+                                <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
+                                  <i class="fa-regular fa-eye"></i>
+                                </Link>
+                              </td>
+                            </tr>
+                          ))}
                         </tbody>
-                        <tfoot>
-                          <tr className="active">
-                            <td colSpan={5}>
-                              <div className="text-right">
-                                <ul className="pagination pagination-rounded justify-content-end footable-pagination m-t-10 mb-0" />
-                              </div>
-                            </td>
-                          </tr>
-                        </tfoot>
+
                       </table>
                     </div> {/* end .table-responsive*/}
                   </div> {/* end card-box */}

@@ -62,7 +62,7 @@ function App() {
         <Route path="/tutor/courses/create/create-class-course/create-class-module/class-module-part/:storedModuleId" element={<ClassModulePart />} />
         <Route path="/tutor/courses/create/create-class-course/create-class-lesson/:storedModuleId" element={<CreateClassLesson />} />
         <Route path="/tutor/courses/create/create-class-course/create-topic/:storedClassLessonId" element={<CreateTopic />} />
-        <Route path="/tutor/courses/create/create-class-course/list-topic" element={<ListTopic />} />
+        <Route path="/tutor/courses/create/create-class-course/list-topic/:storedClassLessonId" element={<ListTopic />} />
         <Route path="/tutor/courses/create/create-class-course/edit-topic" element={<EditTopic />} />
 
         {/* Add more routes as needed */}

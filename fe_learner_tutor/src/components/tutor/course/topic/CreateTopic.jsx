@@ -42,7 +42,7 @@ const CreateTopic = () => {
   });
 
   const handleListTopics = () => {
-    navigate("/tutor/courses/create/create-class-course/list-topic");
+    navigate(`/tutor/courses/create/create-class-course/list-topic/${storedClassLessonId}`);
   };
 
   const handleChange = (e) => {
@@ -106,7 +106,7 @@ const CreateTopic = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        Create a Class course: Course ABC | Class 20-01-2024
+                        Create a Class course: Course ABC | Class 20-01-2024 | Lesson {classLesson.classHours}
                       </h4>
                       <form
                         method="post"
