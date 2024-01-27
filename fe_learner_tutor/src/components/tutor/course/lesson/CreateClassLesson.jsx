@@ -19,6 +19,16 @@ const CreateClassLesson = () => {
     classModuleId: storedModuleId,
   });
 
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
+  const handleChangeStartTime = (date) => {
+    setStartTime(date);
+  };
+
+  const handleChangeEndTime = (date) => {
+    setEndTime(date);
+  };
+
   const [module, setModule] = useState({
     name: '',
   });
@@ -45,10 +55,10 @@ const CreateClassLesson = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const classHours = `${classLesson.startTime.toLocaleTimeString([], {
+    const classHours = `${startTime.toLocaleTimeString([], {
       hour: 'numeric',
       minute: '2-digit',
-    })} - ${classLesson.endTime.toLocaleTimeString([], {
+    })} - ${endTime.toLocaleTimeString([], {
       hour: 'numeric',
       minute: '2-digit',
     })}`;
@@ -95,12 +105,13 @@ const CreateClassLesson = () => {
                         data-upload-preview-template="#uploadPreviewTemplate"
                         data-parsley-validate
                       >
+
                         <div className="form-group">
                           <label htmlFor="startTime">Start Time * :</label>&nbsp;
                           <DatePicker
-                            selected={classLesson.startTime}
+                            selected={startTime}
                             onChange={(date) =>
-                              setClassLesson({ ...classLesson, startTime: date })
+                              handleChangeStartTime(date)
                             }
                             showTimeSelect
                             showTimeSelectOnly
@@ -113,9 +124,9 @@ const CreateClassLesson = () => {
                         <div className="form-group">
                           <label htmlFor="endTime">End Time * :</label>&nbsp;
                           <DatePicker
-                            selected={classLesson.endTime}
+                            selected={endTime}
                             onChange={(date) =>
-                              setClassLesson({ ...classLesson, endTime: date })
+                              handleChangeEndTime(date)
                             }
                             showTimeSelect
                             showTimeSelectOnly
@@ -124,6 +135,8 @@ const CreateClassLesson = () => {
                             className="form-control"
                           />
                         </div>
+
+
 
                         <div className="form-group">
                           <label htmlFor="classUrl">Room Link * :</label>
