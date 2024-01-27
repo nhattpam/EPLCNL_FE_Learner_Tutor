@@ -39,6 +39,21 @@ const CreateClassLesson = () => {
     setClassLesson({ ...classLesson, classUrl: value });
   };
 
+  useEffect(() => {
+    const classHours = `${startTime.toLocaleTimeString([], {
+      hour: 'numeric',
+      minute: '2-digit',
+    })} - ${endTime.toLocaleTimeString([], {
+      hour: 'numeric',
+      minute: '2-digit',
+    })}`;
+
+    // Use the callback function to ensure the latest state is used
+    setClassLesson((prevClassLesson) => ({
+      ...prevClassLesson,
+      classHours: classHours,
+    }));
+  }, [startTime, endTime]);
 
   useEffect(() => {
     if (storedModuleId) {
@@ -55,17 +70,9 @@ const CreateClassLesson = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const classHours = `${startTime.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
-    })} - ${endTime.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
-    })}`;
-    setClassLesson({ ...classLesson, classHours });
 
 
-    console.log(classLesson)
+    console.log(classLesson);
     // Save class lesson
     const classLessonResponse = await classLessonService.saveClassLesson(classLesson);
 
