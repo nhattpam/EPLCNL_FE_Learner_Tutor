@@ -130,7 +130,7 @@ const CreateAssignment = () => {
                                                 </div>
                                                 <div className="form-group mb-0  ">
                                                     <button type="submit" className="btn btn-primary " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                                                        Continue
+                                                        Create
                                                     </button>
                                                 </div>
                                             </form>

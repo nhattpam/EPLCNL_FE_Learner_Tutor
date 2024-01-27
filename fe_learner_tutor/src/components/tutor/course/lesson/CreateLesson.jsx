@@ -12,15 +12,6 @@ const CreateLesson = () => {
         name: "",
     });
 
-    const [formData, setFormData] = useState({
-        image: '',
-        price: '',
-        fullname: '',
-        tags: '',
-        description: ''
-    });
-
-
     const { storedModuleId } = useParams();
 
     useEffect(() => {

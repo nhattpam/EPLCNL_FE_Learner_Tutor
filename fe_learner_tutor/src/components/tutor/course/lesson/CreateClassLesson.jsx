@@ -1,27 +1,74 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import classModuleService from '../../../../services/class-module.service';
+import classLessonService from '../../../../services/class-lesson.service';
 
 const CreateClassLesson = () => {
   const navigate = useNavigate();
+  const { storedModuleId } = useParams();
 
-  const [formData, setFormData] = useState({
-    image: '',
-    price: '',
-    fullname: '',
-    tags: '',
-    description: '',
-    startTime: new Date(),
-    endTime: new Date(),
+
+  const [classLesson, setClassLesson] = useState({
+    classHours: '',
+    classUrl: '',
+    classModuleId: storedModuleId,
   });
 
-  const handleSubmit = (event) => {
+  const [module, setModule] = useState({
+    name: '',
+  });
+
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setClassLesson({ ...classLesson, classUrl: value });
+  };
+
+
+  useEffect(() => {
+    if (storedModuleId) {
+      classModuleService
+        .getModuleById(storedModuleId)
+        .then((res) => {
+          setModule(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [storedModuleId]);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    navigate('/tutor/courses/create/create-class-course/create-topic');
+    const classHours = `${classLesson.startTime.toLocaleTimeString([], {
+      hour: 'numeric',
+      minute: '2-digit',
+    })} - ${classLesson.endTime.toLocaleTimeString([], {
+      hour: 'numeric',
+      minute: '2-digit',
+    })}`;
+    setClassLesson({ ...classLesson, classHours });
+
+
+    console.log(classLesson)
+    // Save class lesson
+    const classLessonResponse = await classLessonService.saveClassLesson(classLesson);
+
+    // console.log(JSON.stringify(courseResponse));
+    // console.log(courseResponse.data);
+    const classLessonJson = JSON.stringify(classLessonResponse.data);
+
+    const classLessonJsonParse = JSON.parse(classLessonJson);
+
+    console.log('thanh cong: ' + classLessonJsonParse.id)
+
+    // navigate(`/tutor/course/list-course-by-tutor/${tutorId}`);
+    navigate(`/tutor/courses/create/create-class-course/create-topic/${classLessonJsonParse.id}`);
   };
 
   return (
@@ -37,7 +84,7 @@ const CreateClassLesson = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        Create a Class course: Course ABC | Class 20-01-2024
+                        Create a Class course: Course ABC | Class {module.startDate}
                       </h4>
                       <form
                         method="post"
@@ -51,9 +98,9 @@ const CreateClassLesson = () => {
                         <div className="form-group">
                           <label htmlFor="startTime">Start Time * :</label>&nbsp;
                           <DatePicker
-                            selected={formData.startTime}
+                            selected={classLesson.startTime}
                             onChange={(date) =>
-                              setFormData({ ...formData, startTime: date })
+                              setClassLesson({ ...classLesson, startTime: date })
                             }
                             showTimeSelect
                             showTimeSelectOnly
@@ -66,9 +113,9 @@ const CreateClassLesson = () => {
                         <div className="form-group">
                           <label htmlFor="endTime">End Time * :</label>&nbsp;
                           <DatePicker
-                            selected={formData.endTime}
+                            selected={classLesson.endTime}
                             onChange={(date) =>
-                              setFormData({ ...formData, endTime: date })
+                              setClassLesson({ ...classLesson, endTime: date })
                             }
                             showTimeSelect
                             showTimeSelectOnly
@@ -79,15 +126,16 @@ const CreateClassLesson = () => {
                         </div>
 
                         <div className="form-group">
-                          <label htmlFor="roomLink">Room Link * :</label>
+                          <label htmlFor="classUrl">Room Link * :</label>
                           <input
                             type="text"
                             className="form-control"
-                            name="roomLink"
-                            id="roomLink"
+                            name="classUrl"
+                            id="classUrl"
+                            value={classLesson.classUrl}
+                            onChange={handleChange} // Pass the function directly
                           />
                         </div>
-
 
                         <div className="form-group mb-0">
                           <button

@@ -63,7 +63,7 @@ const CreateClassCourse = () => {
 
     const handleContinue = (storedCourseId) => {
 
-        navigate(`/tutor/courses/create/create-video-course/create-module/${storedCourseId}`)
+        navigate(`/tutor/courses/create/create-class-course/create-class-module/${storedCourseId}`)
 
     };
 

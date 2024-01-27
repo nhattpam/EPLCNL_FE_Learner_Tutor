@@ -25,6 +25,8 @@ import CreateTopic from './components/tutor/course/topic/CreateTopic';
 import ListTopic from './components/tutor/course/topic/ListTopic';
 import EditTopic from './components/tutor/course/topic/EditTopic';
 import CreateClassLesson from './components/tutor/course/lesson/CreateClassLesson';
+import EditCourse from './components/tutor/course/EditCourse';
+import EditModule from './components/tutor/course/module/EditModule';
 
 function App() {
   return (
@@ -52,12 +54,14 @@ function App() {
         <Route path="/tutor/courses/create/create-video-course/create-lesson/:storedModuleId" element={<CreateLesson />} />
         <Route path="/tutor/courses/create/create-video-course/create-assignment/:storedModuleId" element={<CreateAssignment />} />
         <Route path="/tutor/courses/create/create-video-course/create-quiz/:storedModuleId" element={<CreateQuiz />} />
+        <Route path="/tutor/courses/edit-course/:courseId" element={<EditCourse />} />
+        <Route path="/tutor/courses/edit-module/:moduleId" element={<EditModule />} />
         {/* ---------------------------------------------------------------------------------------------------------- */}
         <Route path="/tutor/courses/create/create-class-course" element={<CreateClassCourse />} />
-        <Route path="/tutor/courses/create/create-class-course/create-class-module" element={<CreateClassCourseModule />} />
-        <Route path="/tutor/courses/create/create-class-course/create-class-module/class-module-part" element={<ClassModulePart />} />
-        <Route path="/tutor/courses/create/create-class-course/create-class-lesson" element={<CreateClassLesson />} />
-        <Route path="/tutor/courses/create/create-class-course/create-topic" element={<CreateTopic />} />
+        <Route path="/tutor/courses/create/create-class-course/create-class-module/:storedCourseId" element={<CreateClassCourseModule />} />
+        <Route path="/tutor/courses/create/create-class-course/create-class-module/class-module-part/:storedModuleId" element={<ClassModulePart />} />
+        <Route path="/tutor/courses/create/create-class-course/create-class-lesson/:storedModuleId" element={<CreateClassLesson />} />
+        <Route path="/tutor/courses/create/create-class-course/create-topic/:storedClassLessonId" element={<CreateTopic />} />
         <Route path="/tutor/courses/create/create-class-course/list-topic" element={<ListTopic />} />
         <Route path="/tutor/courses/create/create-class-course/edit-topic" element={<EditTopic />} />
 

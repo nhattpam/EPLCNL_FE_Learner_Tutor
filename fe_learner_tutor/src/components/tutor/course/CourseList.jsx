@@ -148,7 +148,7 @@ const CourseList = () => {
                                                                 )}
                                                             </td>
                                                             <td>
-                                                                <Link to={`/edit-course/${course.id}`}>
+                                                                <Link to={`/tutor/courses/edit-course/${course.id}`}>
                                                                     <i className="fa-regular fa-eye"></i>
                                                                 </Link>
                                                             </td>

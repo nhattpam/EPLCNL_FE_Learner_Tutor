@@ -1,30 +1,87 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useNavigate } from 'react-router-dom';
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
+import courseService from '../../../../services/course.service';
+import classModuleService from '../../../../services/class-module.service';
 
 const CreateClassCourseModule = () => {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+  const [msg, setMsg] = useState('');
 
-  const [formData, setFormData] = useState({
-    moduleName: '',
-    selectedDate: null,
+
+  const [course, setCourse] = useState({
+    name: "",
+  });
+
+  const { storedCourseId } = useParams();
+
+  useEffect(() => {
+    if (storedCourseId) {
+      courseService
+        .getCourseById(storedCourseId)
+        .then((res) => {
+          setCourse(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [storedCourseId]);
+
+  const [module, setModule] = useState({
+    startDate: new Date(), // Initialize startDate with the current date
+    courseId: storedCourseId
   });
 
   const handleChange = (date) => {
-    setFormData({
-      ...formData,
-      selectedDate: date,
-    });
+    setModule({ ...module, startDate: date });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    navigate('/tutor/courses/create/create-class-course/create-class-lesson');
+  const handleSubmit = (storedModuleId) => {
+    // Handle your form submission logic here
+    // Redirect to the next page or perform any other actions
+    navigate(`/tutor/courses/create/create-class-course/create-class-lesson/${storedModuleId}`);
   };
+
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {};
+
+
+    setErrors(errors);
+    return isValid;
+  };
+
+
+  const submitModule = async (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      try {
+        // Save account
+        console.log(JSON.stringify(module))
+        const moduleResponse = await classModuleService.saveModule(module);
+        console.log(moduleResponse.data);
+
+        setMsg('Module Added Successfully');
+
+        const moduleJson = JSON.stringify(moduleResponse.data);
+
+        const moduleJsonParse = JSON.parse(moduleJson);
+
+        handleSubmit(moduleJsonParse.id);
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
 
   return (
     <>
@@ -38,23 +95,22 @@ const CreateClassCourseModule = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <h4 className="header-title">Create a Class Course | Course ABC</h4>
-                      <form onSubmit={handleSubmit}>
+                      <h4 className="header-title">Create a Class course: Course {course.name}</h4>
+                      <form onSubmit={(e) => submitModule(e)}>
                         <div className="form-group">
                           <label htmlFor="moduleName">Class Date:</label> &nbsp;
                           <DatePicker
                             className="form-control"
-                            selected={formData.selectedDate}
-                            onChange={handleChange}
+                            selected={module.startDate} // Use selected instead of value
+                            onChange={(date) => handleChange(date)}
                             dateFormat="dd/MM/yyyy"
                             placeholderText="Select Date"
                           />
                         </div>
                         <div className="form-group mb-0">
                           <button
-                            type="button"
+                            type="submit" // Change type to submit
                             className="btn btn-primary"
-                            onClick={handleSubmit}
                           >
                             Create Lesson
                           </button>
