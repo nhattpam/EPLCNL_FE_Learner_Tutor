@@ -4,7 +4,6 @@ import Footer from '../../Footer'
 import Header from '../../Header'
 import Sidebar from '../../Sidebar'
 import { Link } from 'react-router-dom'
-import lessonService from '../../../../services/class-lesson.service';
 import moduleService from '../../../../services/module.service';
 
 const ListLesson = () => {
