@@ -30,6 +30,7 @@ import EditModule from './components/tutor/course/module/EditModule';
 import ListLesson from './components/tutor/course/lesson/ListLesson';
 import ListQuiz from './components/tutor/course/quiz/ListQuiz';
 import ListAssignment from './components/tutor/course/assignment/ListAssignment';
+import EditClassModule from './components/tutor/course/module/EditClassModule';
 
 function App() {
   return (
@@ -70,6 +71,7 @@ function App() {
         <Route path="/tutor/courses/create/create-class-course/create-topic/:storedClassLessonId" element={<CreateTopic />} />
         <Route path="/tutor/courses/create/create-class-course/list-topic/:storedClassLessonId" element={<ListTopic />} />
         <Route path="/tutor/courses/create/create-class-course/edit-topic" element={<EditTopic />} />
+        <Route path="/tutor/courses/edit-class-module/:moduleId" element={<EditClassModule />} />
 
         {/* Add more routes as needed */}
       </Routes>

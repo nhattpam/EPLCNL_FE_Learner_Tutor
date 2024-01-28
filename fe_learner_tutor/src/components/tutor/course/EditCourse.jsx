@@ -48,6 +48,11 @@ const EditCourse = () => {
         navigate(`/tutor/courses/edit-module/${moduleId}`);
     };
 
+
+    const handleEditClassModule = (moduleId) => {
+        // Add logic to navigate to the module edit page with the moduleId
+        navigate(`/tutor/courses/edit-class-module/${moduleId}`);
+    };
     return (
         <>
             <div id="wrapper">
@@ -103,7 +108,7 @@ const EditCourse = () => {
                                                         <button
                                                             type="button"
                                                             className="btn btn-secondary btn-sm"
-                                                            onClick={() => handleEditModule(module.id)}
+                                                            onClick={() => handleEditClassModule(module.id)}
                                                         >
                                                             Edit
                                                         </button>
