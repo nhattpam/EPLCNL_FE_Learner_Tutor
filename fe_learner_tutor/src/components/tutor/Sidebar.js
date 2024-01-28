@@ -61,10 +61,10 @@ const Sidebar = () => {
                                 <div className="collapse" id="sidebarEcommercess">
                                     <ul className="nav-second-level">
                                         <li>
-                                            <Link to={"/tutor/courses/list-video-course"}>Video course</Link>
+                                            <Link to={`/tutor/courses/list-video-course/${tutorId}`}>Video course</Link>
                                         </li>
                                         <li>
-                                            <Link to={"/tutor/courses/list-class-course"}>Class course</Link>
+                                            <Link to={`/tutor/courses/list-class-course/${tutorId}`}>Class course</Link>
                                         </li>
                                         <li>
                                             <Link to={`/tutor/course/list-course-by-tutor/${tutorId}`}>All courses</Link>

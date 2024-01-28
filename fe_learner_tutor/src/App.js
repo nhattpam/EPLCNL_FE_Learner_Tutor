@@ -45,8 +45,8 @@ function App() {
         {/* list course by tutorID */}
         <Route path="/tutor/course/list-course-by-tutor/:tutorId" element={<CourseList />} />
         {/* list course by tutorID */}
-        <Route path="/tutor/courses/list-video-course" element={<ListVideoCourse />} />
-        <Route path="/tutor/courses/list-class-course" element={<ListClassCourse />} />
+        <Route path="/tutor/courses/list-video-course/:tutorId" element={<ListVideoCourse />} />
+        <Route path="/tutor/courses/list-class-course/:tutorId" element={<ListClassCourse />} />
         <Route path="/tutor/courses/create" element={<CreateCourse />} />
         <Route path="/tutor/courses/create/create-video-course" element={<CreateVideoCourse />} />
         <Route path="/tutor/courses/create/create-video-course/create-module/:storedCourseId" element={<CreateVideoCourseModule />} />

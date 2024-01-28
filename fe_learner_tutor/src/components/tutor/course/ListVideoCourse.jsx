@@ -1,10 +1,67 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Footer from '../Footer'
 import Header from '../Header'
 import Sidebar from '../Sidebar'
 import { Link } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import { IconContext } from 'react-icons';
+import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai"; // icons form react-icons
+import tutorService from '../../../services/tutor.service';
 
 const ListVideoCourse = () => {
+
+    const [courseList, setCourseList] = useState([]);
+
+    const [errors, setErrors] = useState({});
+    const [msg, setMsg] = useState('');
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(0);
+    const [coursesPerPage] = useState(5);
+
+    const { tutorId } = useParams();
+
+    useEffect(() => {
+        tutorService
+            .getAllCoursesByTutor(tutorId)
+            .then((res) => {
+                const videoCourses = res.data.filter(course => course.isOnlineClass === false);
+
+                console.log(res.data);
+                setCourseList(videoCourses);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [tutorId]);
+
+
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    console.log(typeof courseList);
+
+    const filteredCourses = courseList
+        .filter((course) => {
+            return (
+                course.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+
+            );
+        });
+
+    const pageCount = Math.ceil(filteredCourses.length / coursesPerPage);
+
+    const handlePageClick = (data) => {
+        setCurrentPage(data.selected);
+    };
+
+    const offset = currentPage * coursesPerPage;
+    const currentCourses = filteredCourses.slice(offset, offset + coursesPerPage);
+
+
     return (
         <>
             <div id="wrapper">
@@ -25,7 +82,7 @@ const ListVideoCourse = () => {
                                             <ol className="breadcrumb m-0">
                                             </ol>
                                         </div>
-                                        <h4 className="page-title">List Video Course</h4>
+                                        <h4 className="page-title">List course</h4>
                                     </div>
                                 </div>
                             </div>
@@ -49,7 +106,9 @@ const ListVideoCourse = () => {
                                                         </select>
                                                     </div>
                                                     <div className="form-group">
-                                                        <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />
+                                                        <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on"
+                                                            value={searchTerm}
+                                                            onChange={handleSearch} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -62,64 +121,43 @@ const ListVideoCourse = () => {
                                                         <th>CODE</th>
                                                         <th data-toggle="true">Course Name</th>
                                                         <th data-toggle="true">Category</th>
+                                                        <th data-hide="phone, ">Type</th>
                                                         <th data-hide="phone, tablet">Status</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <img src='https://imgv2-2-f.scribdassets.com/img/document/450288336/original/b650a3aafc/1704919648?v=1' style={{ height: '50px', width: '30px' }}></img>
-                                                        </td>
-                                                        <td>FL22</td>
-                                                        <td>Traffic Court Referee</td>
-                                                        <td>A1</td>
-                                                        <td><span className="badge label-table badge-success">Active</span></td>
-                                                        <td>
-                                                            <Link to={"/check-center"}>
-                                                                <i class="fa-regular fa-eye"></i>
-                                                            </Link>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4AAU6sJHMKCLdsw83LpkP5JDJHFSONg4tUA&usqp=CAU' style={{ height: '50px', width: '30px' }}></img>
-                                                        </td>
-                                                        <td>KO21</td>
-                                                        <td>Saw Court Referee</td>
-                                                        <td>C1</td>
-                                                        <td><span className="badge label-table badge-success">Active</span></td>
-                                                        <td>
-                                                            <Link to={"/check-center"}>
-                                                                <i class="fa-regular fa-eye"></i>
-                                                            </Link>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <img src='https://m.media-amazon.com/images/I/518Mac+q-VL._AC_UF894,1000_QL80_.jpg' style={{ height: '50px', width: '30px' }}></img>
-                                                        </td>
-                                                        <td>MO11</td>
-                                                        <td>Dens Court Referee</td>
-                                                        <td>C2</td>
-                                                        <td><span className="badge label-table badge-danger">InActive</span></td>
-                                                        <td>
-                                                            <Link to={"/check-center"}>
-                                                                <i class="fa-regular fa-eye"></i>
-                                                            </Link>
-                                                        </td>
-                                                    </tr>
-
+                                                    {currentCourses.map((course) => (
+                                                        <tr key={course.id}>
+                                                            <td>
+                                                                <img src={course.imageUrl} style={{height: '50px', width: '70px'}}></img>
+                                                                </td>
+                                                            <td>{course.code}</td>
+                                                            <td>{course.name}</td>
+                                                            <td>{course.category.name}</td>
+                                                            <td>
+                                                                {course.isOnlineClass ? (
+                                                                    <span className="badge label-table badge-success">Class</span>
+                                                                ) : (
+                                                                    <span className="badge label-table badge-danger">Video</span>
+                                                                )}
+                                                            </td>
+                                                            <td>
+                                                                {course.isActive ? (
+                                                                    <span className="badge label-table badge-success">Active</span>
+                                                                ) : (
+                                                                    <span className="badge label-table badge-danger">Inactive</span>
+                                                                )}
+                                                            </td>
+                                                            <td>
+                                                                <Link to={`/tutor/courses/edit-course/${course.id}`}>
+                                                                    <i className="fa-regular fa-eye"></i>
+                                                                </Link>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
                                                 </tbody>
-                                                <tfoot>
-                                                    <tr className="active">
-                                                        <td colSpan={5}>
-                                                            <div className="text-right">
-                                                                <ul className="pagination pagination-rounded justify-content-end footable-pagination m-t-10 mb-0" />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tfoot>
+
                                             </table>
                                         </div> {/* end .table-responsive*/}
                                     </div> {/* end card-box */}
@@ -127,7 +165,39 @@ const ListVideoCourse = () => {
                             </div>
                             {/* end row */}
 
+                            {/* Pagination */}
+                            <div className='container-fluid'>
+                                {/* Pagination */}
+                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                    <ReactPaginate
+                                        previousLabel={
+                                            <IconContext.Provider value={{ color: "#000", size: "23px" }}>
+                                                <AiFillCaretLeft />
+                                            </IconContext.Provider>
+                                        }
+                                        nextLabel={
+                                            <IconContext.Provider value={{ color: "#000", size: "23px" }}>
+                                                <AiFillCaretRight />
+                                            </IconContext.Provider>
+                                        } breakLabel={'...'}
+                                        breakClassName={'page-item'}
+                                        breakLinkClassName={'page-link'}
+                                        pageCount={pageCount}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={handlePageClick}
+                                        containerClassName={'pagination'}
+                                        activeClassName={'active'}
+                                        previousClassName={'page-item'}
+                                        nextClassName={'page-item'}
+                                        pageClassName={'page-item'}
+                                        previousLinkClassName={'page-link'}
+                                        nextLinkClassName={'page-link'}
+                                        pageLinkClassName={'page-link'}
+                                    />
+                                </div>
 
+                            </div>
 
                         </div> {/* container */}
                     </div> {/* content */}
