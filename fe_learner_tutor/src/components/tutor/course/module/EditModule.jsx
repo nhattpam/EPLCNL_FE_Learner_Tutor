@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import moduleService from '../../../../services/module.service';
 
 const EditModule = () => {
@@ -24,7 +24,7 @@ const EditModule = () => {
                 .getModuleById(moduleId)
                 .then((res) => {
                     setModule(res.data);
-                    console.log(module)
+                    // console.log(module)
                 })
                 .catch((error) => {
                     console.log(error);
@@ -59,23 +59,27 @@ const EditModule = () => {
                                         <div className="form-group">
                                             <h5>Assignments: {module.assignments?.length || 0}</h5>
                                             <ul>
-                                                {module.assignments?.map((assignment) => (
-                                                    <li key={assignment.id}>{assignment.questionText}</li>
-                                                ))}
+                                                <Link to={`/tutor/courses/list-assignment/${module.id}`}>
+                                                    View All
+                                                </Link>
                                             </ul>
                                         </div>
 
                                         <div className="form-group">
                                             <h5>Lessons: {module.lessons?.length || 0}</h5>
                                             <ul>
-                                                {/* Map over lessons and display information */}
+                                                <Link to={`/tutor/courses/list-lesson/${module.id}`}>
+                                                    View All
+                                                </Link>
                                             </ul>
                                         </div>
 
                                         <div className="form-group">
                                             <h5>Quizzes: {module.quizzes?.length || 0}</h5>
                                             <ul>
-                                                {/* Map over quizzes and display information */}
+                                                <Link to={`/tutor/courses/list-quiz/${module.id}`}>
+                                                    View All
+                                                </Link>
                                             </ul>
                                         </div>
 

@@ -44,5 +44,29 @@ class ModuleService {
       }
     });
   }
+
+  getAllLessonsByModule(id) {
+    return axios.get(`${API_URL}/modules/${id}/lessons`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
+  getAllQuizzesByModule(id) {
+    return axios.get(`${API_URL}/modules/${id}/quizzes`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
+  getAllAssignmentsByModule(id) {
+    return axios.get(`${API_URL}/modules/${id}/assignments`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new ModuleService;
