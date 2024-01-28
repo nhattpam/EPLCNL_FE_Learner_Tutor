@@ -11,18 +11,9 @@ const ModulePart = () => {
 
     const [module, setModule] = useState({
         name: "",
+        course : []
     });
 
-
-
-    const [formData, setFormData] = useState({
-        image: '',
-        price: '',
-        fullname: '',
-        tags: '',
-        description: ''
-
-    });
 
     const { storedModuleId } = useParams();
 
@@ -63,7 +54,7 @@ const ModulePart = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className='card-body'>
-                                            <h4 className="header-title">Create a Video course: Course ABC | Module {module.name} </h4>
+                                            <h4 className="header-title">Create a Video course: Course {module.course ? module.course.name : 'N/A'} | Module {module.name} </h4>
                                             <h4>Lesson</h4>
                                             {/* ... (Add fields for lesson) */}
                                             <div className="form-group mb-0">

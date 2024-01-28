@@ -87,7 +87,7 @@ const EditClassModule = () => {
                                             {classTopicList.map((classTopic) => (
                                                 <ul>
                                                     {classTopic.name} &nbsp;
-                                                    <Link to={`/detail/${classTopic.id}`}>  <i class="fa-regular fa-eye"></i></Link>
+                                                    <Link to={`/tutor/courses/edit-topic/${classTopic.id}`}>  <i class="fa-regular fa-eye"></i></Link>
                                                 </ul>
                                             ))}
 

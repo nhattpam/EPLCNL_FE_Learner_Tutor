@@ -107,7 +107,7 @@ const CreateAssignment = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="header-title">Create a Video course: Course ABC | Module {module.name} </h4>
+                                            <h4 className="header-title">Create a Video course: Course {module.course ? module.course.name : 'N/A'} | Module {module.name} </h4>
 
                                             <form
                                                 method="post"

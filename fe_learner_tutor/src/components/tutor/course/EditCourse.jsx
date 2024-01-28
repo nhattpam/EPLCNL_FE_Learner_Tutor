@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Header from '../Header';
 import Sidebar from '../Sidebar';
 import Footer from '../Footer';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import courseService from '../../../services/course.service';
+import moduleService from '../../../services/module.service';
 
 const EditCourse = () => {
 
@@ -27,6 +28,10 @@ const EditCourse = () => {
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
 
+    const [moduleList, setModuleList] = useState([]);
+    const [classModuleList, setClassModuleList] = useState([]);
+
+
     const { courseId } = useParams();
 
     useEffect(() => {
@@ -41,6 +46,33 @@ const EditCourse = () => {
                 });
         }
     }, [courseId]);
+
+    useEffect(() => {
+        courseService
+            .getAllModulesByCourse(courseId)
+            .then((res) => {
+                console.log(res.data);
+                setModuleList(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [courseId]);
+
+    useEffect(() => {
+        courseService
+            .getAllClassModulesByCourse(courseId)
+            .then((res) => {
+                console.log(res.data);
+                setClassModuleList(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [courseId]);
+
 
 
     const handleEditModule = (moduleId) => {
@@ -88,8 +120,9 @@ const EditCourse = () => {
 
                                         <div className="form-group">
                                             <label>Modules:</label>
+
                                             <ul className="list-group">
-                                                {course.modules.map((module) => (
+                                                {moduleList.map((module) => (
                                                     <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center">
                                                         {module.name}
                                                         <button
@@ -102,9 +135,9 @@ const EditCourse = () => {
                                                     </li>
                                                 ))}
 
-                                                {course.classModules.map((module) => (
+                                                {classModuleList.map((module) => (
                                                     <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center">
-                                                        {module.startDate}
+                                                        {module.startDate !== null ? module.startDate : "No start date"}
                                                         <button
                                                             type="button"
                                                             className="btn btn-secondary btn-sm"
@@ -118,16 +151,21 @@ const EditCourse = () => {
                                         </div>
 
 
-                                        <div className="form-group mb-0">
+                                        <div className="form-group mb-2">
+                                            <Link
+                                                type="button"
+                                                className="btn btn-success mr-2"
+                                                to={`/tutor/courses/create/create-video-course/create-module/${course.id}`}
+                                            >
+                                                <i className="bi bi-plus"></i> Create new module
+                                            </Link>
+
                                             <button
                                                 type="submit"
                                                 className="btn btn-danger"
                                             >
                                                 <i className="bi bi-x-lg"></i> Request to delete
                                             </button>
-
-
-
                                         </div>
                                     </form>
                                 </div> {/* end card-box*/}

@@ -4,6 +4,7 @@ import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 import moduleService from '../../../../services/module.service';
+import lessonService from '../../../../services/lesson.service';
 
 const CreateLesson = () => {
     const navigate = useNavigate();
@@ -28,6 +29,40 @@ const CreateLesson = () => {
     }, [storedModuleId]);
 
 
+    //tao lesson
+    const [lesson, setLesson] = useState({
+        name: "",
+        moduleId: storedModuleId,
+        videoUrl: "",
+        reading: ""
+    });
+
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setLesson({ ...lesson, [e.target.name]: value });
+    }
+
+    const submitLesson = async (e) => {
+        e.preventDefault();
+    
+        try {
+          // Save account
+          const lessonResponse = await lessonService.savelesson(lesson);
+    
+          // console.log(JSON.stringify(courseResponse));
+          // console.log(courseResponse.data);
+          const lessonJson = JSON.stringify(lessonResponse.data);
+    
+          const lessonJsonParse = JSON.parse(lessonJson);
+    
+          console.log(lessonJsonParse)
+    
+    
+        } catch (error) {
+          console.log(error);
+        }
+      };
     const handleSubmit = (event) => {
         event.preventDefault();
         navigate("/tutor/courses/create/create-video-course/create-lesson")
@@ -45,7 +80,7 @@ const CreateLesson = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className='card-body'>
-                                            <h4 className="header-title">Create a Video course: Course ABC | Module {module.name} </h4>
+                                            <h4 className="header-title">Create a Video course: {module.course ? module.course.name : 'N/A'} | Module {module.name} </h4>
                                             <form
                                                 method="post"
                                                 className="dropzone"
@@ -54,6 +89,7 @@ const CreateLesson = () => {
                                                 data-previews-container="#file-previews"
                                                 data-upload-preview-template="#uploadPreviewTemplate"
                                                 data-parsley-validate
+                                                onSubmit={(e) => submitLesson(e)}
                                             >
                                                 <label htmlFor="video">Video * :</label>
                                                 <div className="fallback">
@@ -73,7 +109,7 @@ const CreateLesson = () => {
                                                 <h4 className="header-title mt-4">Information</h4>
                                                 <div className="form-group">
                                                     <label htmlFor="name">Lesson name * :</label>
-                                                    <input type="text" className="form-control" name="name" id="name" />
+                                                    <input type="text" className="form-control" name="name" id="name" value={lesson.name} onChange={(e) => handleChange(e)} />
                                                 </div>
 
                                                 <div className="form-group">
@@ -82,11 +118,11 @@ const CreateLesson = () => {
                                                 </div>
 
                                                 <div className="form-group">
-                                                    <label htmlFor="message">Reading * :</label>
+                                                    <label htmlFor="reading">Reading * :</label>
                                                     <textarea
-                                                        id="message"
+                                                        id="reading"
                                                         className="form-control"
-                                                        name="message"
+                                                        name="reading"
                                                         data-parsley-trigger="keyup"
                                                         data-parsley-minlength={20}
                                                         data-parsley-maxlength={100}
@@ -94,6 +130,8 @@ const CreateLesson = () => {
                                                         data-parsley-validation-threshold={10}
                                                         defaultValue={''}
                                                         style={{ minHeight: '100px' }}
+                                                        value={lesson.reading}
+                                                        onChange={(e) => handleChange(e)} 
                                                     />
                                                 </div>
 

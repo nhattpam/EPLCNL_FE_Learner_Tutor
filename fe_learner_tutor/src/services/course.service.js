@@ -47,6 +47,24 @@ class CourseService {
     });
   }
 
+  getAllModulesByCourse(id) {
+    return axios.get(`${API_URL}/courses/${id}/modules`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
+  getAllClassModulesByCourse(id) {
+    return axios.get(`${API_URL}/courses/${id}/class-modules`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
+
+
   uploadImage(course) {
     return axios.post(API_URL + "/courses/upload-images/", course, {
       headers: {
@@ -54,6 +72,8 @@ class CourseService {
       }
     });
   }
+
+  
 
 }
 export default new CourseService;
