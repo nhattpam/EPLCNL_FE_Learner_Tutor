@@ -63,6 +63,12 @@ const BusinessSignUp = () => {
                 })
                 .catch((error) => {
                     console.log(error);
+                    setMsg('Thanks for joining us. We will contact you soon through your email!');
+                    setShowNotification(true);
+                    // Hide notification after 2 seconds
+                    setTimeout(() => {
+                        setShowNotification(false);
+                    }, 5000);
                 });
         }
     }
