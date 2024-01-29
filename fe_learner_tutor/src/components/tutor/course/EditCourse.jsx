@@ -150,23 +150,64 @@ const EditCourse = () => {
                                             </ul>
                                         </div>
 
+                                        {(!course.isOnlineClass) && (
+                                            <div className="form-group mb-2">
+                                                <>
+                                                    {moduleList.length === 0 && (
+                                                        <p>No modules available.</p>
+                                                    )}
+                                                    <Link
+                                                        type="button"
+                                                        className="btn btn-success mr-2"
+                                                        to={`/tutor/courses/create/create-video-course/create-module/${course.id}`}
+                                                    >
+                                                        <i className="bi bi-plus"></i> Create new module
+                                                    </Link>
 
-                                        <div className="form-group mb-2">
-                                            <Link
-                                                type="button"
-                                                className="btn btn-success mr-2"
-                                                to={`/tutor/courses/create/create-video-course/create-module/${course.id}`}
-                                            >
-                                                <i className="bi bi-plus"></i> Create new module
-                                            </Link>
 
-                                            <button
-                                                type="submit"
-                                                className="btn btn-danger"
-                                            >
-                                                <i className="bi bi-x-lg"></i> Request to delete
-                                            </button>
-                                        </div>
+                                                    <button
+                                                        type="submit"
+                                                        className="btn btn-danger"
+                                                    >
+                                                        <i className="bi bi-x-lg"></i> Request to delete
+                                                    </button>
+                                                </>
+
+
+                                            </div>
+
+                                        )}
+                                        {(course.isOnlineClass) && (
+                                            <div className="form-group mb-2">
+                                                <>
+                                                    {classModuleList.length === 0 && (
+                                                        <p>No modules available.</p>
+                                                    )}
+                                                    <Link
+                                                        type="button"
+                                                        className="btn btn-success mr-2"
+                                                        to={`/tutor/courses/create/create-class-course/create-class-module/${course.id}`}
+                                                    >
+                                                        <i className="bi bi-plus"></i> Create new module
+                                                    </Link>
+
+
+                                                    <button
+                                                        type="submit"
+                                                        className="btn btn-danger"
+                                                    >
+                                                        <i className="bi bi-x-lg"></i> Request to delete
+                                                    </button>
+                                                </>
+
+
+                                            </div>
+
+                                        )}
+
+
+
+
                                     </form>
                                 </div> {/* end card-box*/}
                             </div> {/* end col*/}
