@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import the styles
+import 'react-quill/dist/quill.snow.css';
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
@@ -12,10 +12,8 @@ const EditLesson = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState('');
-  // const { storedModuleId } = useParams();
   const { lessonId } = useParams();
 
-  //tao lesson
   const [lesson, setLesson] = useState({
     name: "",
     moduleId: "",
@@ -36,7 +34,6 @@ const EditLesson = () => {
     }
   }, [lessonId]);
 
-
   useEffect(() => {
     if (lesson.moduleId) {
       moduleService
@@ -50,13 +47,9 @@ const EditLesson = () => {
     }
   }, [lesson.moduleId]);
 
-
-
   const [module, setModule] = useState({
     name: "",
   });
-
-
 
   const handleChangeLesson = (value) => {
     setLesson({ ...lesson, questionText: value });
@@ -79,7 +72,6 @@ const EditLesson = () => {
     return isValid;
   };
 
-
   const submitLesson = async (e) => {
     e.preventDefault();
 
@@ -96,13 +88,11 @@ const EditLesson = () => {
 
         const lessonJsonParse = JSON.parse(lessonJson);
 
-
       } catch (error) {
         console.log(error);
       }
     }
   };
-
 
   return (
     <>
@@ -111,14 +101,12 @@ const EditLesson = () => {
         <Sidebar />
         <div className="content-page">
           <div className="content">
-            {/* Start Content*/}
             <div className="container-fluid">
-              {/* start page title */}
               <div className="row">
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <h4 className="header-title">Create a Video course: Course {module.course?.name} | Module {module.name} </h4>
+                      <h4 className="header-title">Edit Video Course: Course {module.course?.name} | Module {module.name}</h4>
 
                       <form
                         method="post"
@@ -128,12 +116,24 @@ const EditLesson = () => {
                         data-previews-container="#file-previews"
                         data-upload-preview-template="#uploadPreviewTemplate"
                         data-parsley-validate
-                        onSubmit={submitLesson} >
+                        onSubmit={submitLesson}>
+
                         <div className="card">
                           <div className='card-body'>
                             <label htmlFor="video">Video Url * :</label>
                             <input type="text" className="form-control" name="videoUrl" id="videoUrl" value={lesson.videoUrl} readOnly />
                           </div>
+
+                          <div className='card-body'>
+                            <label htmlFor="video">Video Preview:</label>
+                            {lesson.videoUrl && (
+                              <video controls width="100%" height="300">
+                                <source src={lesson.videoUrl} type="video/mp4" />
+                                Your browser does not support the video tag.
+                              </video>
+                            )}
+                          </div>
+
                           <div className='card-body'>
                             <label htmlFor="video">Reading * :</label>
                             <ReactQuill
@@ -143,6 +143,7 @@ const EditLesson = () => {
                             />
                           </div>
                         </div>
+
                         <div className="form-group mb-0  ">
                           <button type="submit" className="btn btn-primary " style={{ marginLeft: '23px', marginTop: '10px' }} >
                             Edit
@@ -151,11 +152,8 @@ const EditLesson = () => {
                       </form>
                     </div>
                   </div>
-
                 </div>
-
               </div>
-
             </div>
           </div>
         </div>

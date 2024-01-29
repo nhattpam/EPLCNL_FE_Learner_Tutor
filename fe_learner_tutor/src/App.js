@@ -34,6 +34,7 @@ import EditClassModule from './components/tutor/course/module/EditClassModule';
 import EditLesson from './components/tutor/course/lesson/EditLesson';
 import EditQuiz from './components/tutor/course/quiz/EditQuiz';
 import EditAssignment from './components/tutor/course/assignment/EditAssignment';
+import TutorDashboard from './components/tutor/dashboard/TutorDashboard';
 
 function App() {
   return (
@@ -81,7 +82,9 @@ function App() {
         <Route path="/tutor/courses/edit-topic/:classTopicId" element={<EditTopic />} />
         <Route path="/tutor/courses/edit-class-module/:moduleId" element={<EditClassModule />} />
 
-        {/* Add more routes as needed */}
+        {/* dashboard */}
+        <Route path="/tutor-dashboard" element={<TutorDashboard />} />
+
       </Routes>
     </div>
   );
