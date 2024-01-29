@@ -17,6 +17,11 @@ const EditModule = () => {
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
     const { moduleId } = useParams();
+    //get number of lessons, assignments, quizzes
+    const [lessonList, setLessonList] = useState([]);
+    const [quizList, setQuizList] = useState([]);
+    const [assignmentList, setAssignmentList] = useState([]);
+
 
     useEffect(() => {
         if (moduleId) {
@@ -30,6 +35,45 @@ const EditModule = () => {
                     console.log(error);
                 });
         }
+    }, [moduleId]);
+
+    useEffect(() => {
+        moduleService
+            .getAllLessonsByModule(moduleId)
+            .then((res) => {
+                console.log(res.data);
+                setLessonList(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [moduleId]);
+
+    useEffect(() => {
+        moduleService
+            .getAllAssignmentsByModule(moduleId)
+            .then((res) => {
+                console.log(res.data);
+                setAssignmentList(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [moduleId]);
+
+    useEffect(() => {
+        moduleService
+            .getAllQuizzesByModule(moduleId)
+            .then((res) => {
+                console.log(res.data);
+                setQuizList(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, [moduleId]);
 
     const handleEditModule = (moduleId) => {
@@ -57,7 +101,7 @@ const EditModule = () => {
                                         </div>
 
                                         <div className="form-group">
-                                            <h5>Assignments: {module.assignments?.length || 0}</h5>
+                                            <h5>Assignments: {assignmentList.length || 0}</h5>
                                             <ul>
                                                 <Link to={`/tutor/courses/list-assignment/${module.id}`}>
                                                     View All
@@ -66,7 +110,7 @@ const EditModule = () => {
                                         </div>
 
                                         <div className="form-group">
-                                            <h5>Lessons: {module.lessons?.length || 0}</h5>
+                                            <h5>Lessons: {lessonList.length || 0}</h5>
                                             <ul>
                                                 <Link to={`/tutor/courses/list-lesson/${module.id}`}>
                                                     View All
@@ -75,7 +119,7 @@ const EditModule = () => {
                                         </div>
 
                                         <div className="form-group">
-                                            <h5>Quizzes: {module.quizzes?.length || 0}</h5>
+                                            <h5>Quizzes: {quizList.length || 0}</h5>
                                             <ul>
                                                 <Link to={`/tutor/courses/list-quiz/${module.id}`}>
                                                     View All

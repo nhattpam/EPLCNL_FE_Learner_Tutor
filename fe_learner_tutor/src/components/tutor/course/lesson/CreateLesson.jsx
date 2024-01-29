@@ -5,8 +5,11 @@ import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 import moduleService from '../../../../services/module.service';
 import lessonService from '../../../../services/lesson.service';
+import ReactQuill from 'react-quill';
 
 const CreateLesson = () => {
+    const tutorId = localStorage.getItem('tutorId');
+
     const navigate = useNavigate();
 
     const [module, setModule] = useState({
@@ -43,30 +46,35 @@ const CreateLesson = () => {
         setLesson({ ...lesson, [e.target.name]: value });
     }
 
+    const handleReadingChange = (value) => {
+        setLesson({ ...lesson, reading: value });
+    };
+
     const submitLesson = async (e) => {
         e.preventDefault();
-    
+
         try {
-          // Save account
-          const lessonResponse = await lessonService.savelesson(lesson);
-    
-          // console.log(JSON.stringify(courseResponse));
-          // console.log(courseResponse.data);
-          const lessonJson = JSON.stringify(lessonResponse.data);
-    
-          const lessonJsonParse = JSON.parse(lessonJson);
-    
-          console.log(lessonJsonParse)
-    
-    
+
+            console.log(lesson)
+            // Save account
+            const lessonResponse = await lessonService.savelesson(lesson);
+
+            // console.log(JSON.stringify(courseResponse));
+            // console.log(courseResponse.data);
+            const lessonJson = JSON.stringify(lessonResponse.data);
+
+            const lessonJsonParse = JSON.parse(lessonJson);
+
+            console.log(lessonJsonParse)
+
+            navigate(`/tutor/course/list-course-by-tutor/${tutorId}`)
+
+
         } catch (error) {
-          console.log(error);
+            console.log(error);
         }
-      };
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        navigate("/tutor/courses/create/create-video-course/create-lesson")
     };
+
 
     return (
         <>
@@ -119,26 +127,22 @@ const CreateLesson = () => {
 
                                                 <div className="form-group">
                                                     <label htmlFor="reading">Reading * :</label>
-                                                    <textarea
-                                                        id="reading"
-                                                        className="form-control"
-                                                        name="reading"
-                                                        data-parsley-trigger="keyup"
-                                                        data-parsley-minlength={20}
-                                                        data-parsley-maxlength={100}
-                                                        data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.."
-                                                        data-parsley-validation-threshold={10}
-                                                        defaultValue={''}
-                                                        style={{ minHeight: '100px' }}
+                                                    <ReactQuill
                                                         value={lesson.reading}
-                                                        onChange={(e) => handleChange(e)} 
+                                                        onChange={handleReadingChange} 
+                                                        style={{ height: '300px' }}
                                                     />
                                                 </div>
 
-                                                <div className="form-group mb-0">
-                                                    <button type="submit" className="btn btn-primary">
-                                                        Continue
-                                                    </button>
+
+                                                <div className="card">
+                                                    <div className='card-body'>
+                                                        <div className="form-group mb-0">
+                                                            <button type="submit" className="btn btn-primary">
+                                                                Continue
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>

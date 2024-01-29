@@ -31,6 +31,9 @@ import ListLesson from './components/tutor/course/lesson/ListLesson';
 import ListQuiz from './components/tutor/course/quiz/ListQuiz';
 import ListAssignment from './components/tutor/course/assignment/ListAssignment';
 import EditClassModule from './components/tutor/course/module/EditClassModule';
+import EditLesson from './components/tutor/course/lesson/EditLesson';
+import EditQuiz from './components/tutor/course/quiz/EditQuiz';
+import EditAssignment from './components/tutor/course/assignment/EditAssignment';
 
 function App() {
   return (
@@ -60,9 +63,14 @@ function App() {
         <Route path="/tutor/courses/create/create-video-course/create-quiz/:storedModuleId" element={<CreateQuiz />} />
         <Route path="/tutor/courses/edit-course/:courseId" element={<EditCourse />} />
         <Route path="/tutor/courses/edit-module/:moduleId" element={<EditModule />} />
+        <Route path="/tutor/courses/edit-lesson/:lessonId" element={<EditLesson />} />
         <Route path="/tutor/courses/list-lesson/:storedModuleId" element={<ListLesson />} />
-        <Route path="/tutor/courses/list-quiz/:storedModuleId" element={<ListQuiz />} />
         <Route path="/tutor/courses/list-assignment/:storedModuleId" element={<ListAssignment />} />
+        <Route path="/tutor/courses/edit-assignment/:assignmentId" element={<EditAssignment />} />
+        <Route path="/tutor/courses/edit-quiz/:quizId" element={<EditQuiz />} />
+        <Route path="/tutor/courses/list-quiz/:storedModuleId" element={<ListQuiz />} />
+
+
         {/* ---------------------------------------------------------------------------------------------------------- */}
         <Route path="/tutor/courses/create/create-class-course" element={<CreateClassCourse />} />
         <Route path="/tutor/courses/create/create-class-course/create-class-module/:storedCourseId" element={<CreateClassCourseModule />} />

@@ -7,6 +7,7 @@ import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 import moduleService from '../../../../services/module.service';
 import assignmentService from '../../../../services/assignment.service';
+import DateTimePicker from 'react-datetime-picker';
 
 const CreateAssignment = () => {
     const navigate = useNavigate();
@@ -34,6 +35,7 @@ const CreateAssignment = () => {
     //tao assignment
     const [assignment, setAssignment] = useState({
         questionText: "",
+        deadline: 5, // set a default value for minutes
         moduleId: storedModuleId
     });
 
@@ -48,50 +50,50 @@ const CreateAssignment = () => {
     const validateForm = () => {
         let isValid = true;
         const errors = {};
-    
+
         if (assignment.questionText.trim() === '') {
-          errors.questionText = 'Question is required';
-          isValid = false;
+            errors.questionText = 'Question is required';
+            isValid = false;
         }
-    
-    
+        if (!assignment.deadline) {
+            errors.deadline = 'Time is required';
+            isValid = false;
+        }
+
         setErrors(errors);
         return isValid;
-      };
-    
-    
-      const submitAssignment = async (e) => {
-        e.preventDefault();
-    
-        if (validateForm()) {
-          try {
-            // Save account
-            console.log(JSON.stringify(assignment))
-            const assignmentResponse = await assignmentService.saveAssignment(assignment);
-            console.log(assignmentResponse.data);
-    
-            setMsg('Assignment Added Successfully');
-    
-            const assignmentJson = JSON.stringify(assignmentResponse.data);
-    
-            const assignmentJsonParse = JSON.parse(assignmentJson);
-    
-            
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      };
-    
-
-
-
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Add your form submission logic here if needed
-        navigate('/tutor/courses/create/create-video-course/create-lesson');
     };
+
+
+    const submitAssignment = async (e) => {
+        e.preventDefault();
+
+        if (validateForm()) {
+            try {
+                // Save account
+                console.log(JSON.stringify(assignment))
+                const assignmentResponse = await assignmentService.saveAssignment(assignment);
+                console.log(assignmentResponse.data);
+
+                setMsg('Assignment Added Successfully');
+
+                const assignmentJson = JSON.stringify(assignmentResponse.data);
+
+                const assignmentJsonParse = JSON.parse(assignmentJson);
+
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
+
+   const handleMinutesChange = (e) => {
+        const minutes = parseInt(e.target.value, 10);
+        setAssignment({ ...assignment, deadline: minutes });
+    };
+
 
     return (
         <>
@@ -117,8 +119,22 @@ const CreateAssignment = () => {
                                                 data-previews-container="#file-previews"
                                                 data-upload-preview-template="#uploadPreviewTemplate"
                                                 data-parsley-validate
-                                                onSubmit={(e) => submitAssignment(e)}>
+                                                onSubmit={submitAssignment} >
                                                 <div className="card">
+                                                    <div className='card-body'>
+                                                        <label htmlFor="video">Time * :</label>
+                                                        <select
+                                                            value={assignment.deadline}
+                                                            onChange={handleMinutesChange}
+                                                            className="form-control"
+                                                        >
+                                                            {[5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map((minutes) => (
+                                                                <option key={minutes} value={minutes}>
+                                                                    {minutes} minutes
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
                                                     <div className='card-body'>
                                                         <label htmlFor="video">Question * :</label>
                                                         <ReactQuill

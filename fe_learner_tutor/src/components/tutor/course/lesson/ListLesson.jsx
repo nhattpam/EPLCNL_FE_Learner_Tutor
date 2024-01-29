@@ -122,7 +122,7 @@ const ListLesson = () => {
                                                 <thead>
                                                     <tr>
                                                         <th data-toggle="true">Lesson Name</th>
-                                                        <th>Description</th>
+                                                        <th>Video Url</th>
                                                         <th data-hide="phone">Created Date</th>
                                                         <th data-hide="phone, tablet">Updated Date</th>
                                                         <th>Action</th>
@@ -132,11 +132,11 @@ const ListLesson = () => {
                                                     {currentLessons.map((lesson) => (
                                                         <tr key={lesson.id}>
                                                             <td>{lesson.name}</td>
-                                                            <td>{lesson.description}</td>
+                                                            <td>{lesson.videoUrl}</td>
                                                             <td>{lesson.createdDate}</td>
                                                             <td>{lesson.updatedDate}</td>
                                                             <td>
-                                                                <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
+                                                                <Link to={`/tutor/courses/edit-lesson/${lesson.id}`}>
                                                                     <i class="fa-regular fa-eye"></i>
                                                                 </Link>
                                                             </td>

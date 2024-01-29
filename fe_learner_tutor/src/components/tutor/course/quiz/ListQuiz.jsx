@@ -136,7 +136,7 @@ const ListQuiz = () => {
                                                             <td>{quiz.createdDate}</td>
                                                             <td>{quiz.updatedDate}</td>
                                                             <td>
-                                                                <Link to={"/tutor/courses/create/create-class-course/edit-topic"}>
+                                                                <Link to={`/tutor/courses/edit-quiz/${quiz.id}`}>
                                                                     <i class="fa-regular fa-eye"></i>
                                                                 </Link>
                                                             </td>
