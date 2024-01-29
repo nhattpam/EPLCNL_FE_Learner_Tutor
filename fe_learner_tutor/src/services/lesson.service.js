@@ -55,5 +55,13 @@ class LessonService {
     });
   }
 
+  uploadVideo(lesson) {
+    return axios.post(API_URL + "/lessons/upload-videos/", lesson, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
 }
 export default new LessonService;

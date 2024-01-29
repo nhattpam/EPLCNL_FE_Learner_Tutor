@@ -6,6 +6,7 @@ import Footer from '../../Footer';
 import moduleService from '../../../../services/module.service';
 import lessonService from '../../../../services/lesson.service';
 import ReactQuill from 'react-quill';
+import Dropzone from 'react-dropzone';
 
 const CreateLesson = () => {
     const tutorId = localStorage.getItem('tutorId');
@@ -40,6 +41,20 @@ const CreateLesson = () => {
         reading: ""
     });
 
+    const [file, setFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState("");
+
+
+    const handleFileDrop = (acceptedFiles) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            setFile(acceptedFiles[0]);
+
+            // Set the image preview URL
+            const previewUrl = URL.createObjectURL(acceptedFiles[0]);
+            setImagePreview(previewUrl);
+        }
+    };
+
 
     const handleChange = (e) => {
         const value = e.target.value;
@@ -54,10 +69,27 @@ const CreateLesson = () => {
         e.preventDefault();
 
         try {
+            // Save account
+            let videoUrl = lesson.videoUrl; // Keep the existing imageUrl if available
+
+            if (file) {
+                // Upload image and get the link
+                const videoData = new FormData();
+                videoData.append('file', file);
+                const videoResponse = await lessonService.uploadVideo(videoData);
+
+                // Update the imageUrl with the link obtained from the API
+                videoUrl = videoResponse.data;
+
+                // Log the imageUrl after updating
+                console.log("this is url: " + videoUrl);
+            }
 
             console.log(lesson)
+            const lessonData = { ...lesson, videoUrl }; // Create a new object with updated imageUrl
+
             // Save account
-            const lessonResponse = await lessonService.savelesson(lesson);
+            const lessonResponse = await lessonService.savelesson(lessonData);
 
             // console.log(JSON.stringify(courseResponse));
             // console.log(courseResponse.data);
@@ -100,18 +132,30 @@ const CreateLesson = () => {
                                                 onSubmit={(e) => submitLesson(e)}
                                             >
                                                 <label htmlFor="video">Video * :</label>
-                                                <div className="fallback">
-                                                    <input
-                                                        name="file"
-                                                        type="file"
-                                                        accept="video/*"
-                                                        multiple
-                                                    />
-                                                </div>
-                                                <div className="dz-message needsclick">
-                                                    <i className="h1 text-muted dripicons-cloud-upload" />
-                                                    <h3>Drop files here or click to upload.</h3>
-                                                </div>
+                                                <Dropzone
+                                                    onDrop={handleFileDrop}
+                                                    accept="image/*" multiple={false}
+                                                    maxSize={5000000} // Maximum file size (5MB)
+                                                >
+                                                    {({ getRootProps, getInputProps }) => (
+                                                        <div {...getRootProps()} className="fallback">
+                                                            <input {...getInputProps()} />
+                                                            <div className="dz-message needsclick">
+                                                                <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                <h3>Drop files here or click to upload.</h3>
+                                                            </div>
+                                                            {imagePreview && (
+                                                                <div>
+                                                                    {/* Video Preview */}
+                                                                    <video controls width="100%" height="200">
+                                                                        <source src={imagePreview} type="video/mp4" />
+                                                                        Your browser does not support the video tag.
+                                                                    </video>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </Dropzone>
                                                 <div className="dropzone-previews mt-3" id="file-previews" />
 
                                                 <h4 className="header-title mt-4">Information</h4>
@@ -129,7 +173,7 @@ const CreateLesson = () => {
                                                     <label htmlFor="reading">Reading * :</label>
                                                     <ReactQuill
                                                         value={lesson.reading}
-                                                        onChange={handleReadingChange} 
+                                                        onChange={handleReadingChange}
                                                         style={{ height: '300px' }}
                                                     />
                                                 </div>
