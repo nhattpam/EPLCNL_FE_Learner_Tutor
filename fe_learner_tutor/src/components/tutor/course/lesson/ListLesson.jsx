@@ -89,7 +89,7 @@ const ListLesson = () => {
                                             <ol className="breadcrumb m-0">
                                             </ol>
                                         </div>
-                                        <h4 className="page-title">List Lesson Of Module {module.name}</h4>
+                                        <h4 className="page-title">List Lesson Of Course {module.course?.name} | Module {module.name}</h4>
                                     </div>
                                 </div>
                             </div>

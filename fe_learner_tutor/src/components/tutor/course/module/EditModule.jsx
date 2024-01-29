@@ -48,7 +48,7 @@ const EditModule = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="card-box">
-                                    <h4 className="header-title">Module Information</h4>
+                                    <h4 className="header-title">Course {module.course?.name} | Module Information</h4>
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="form-group">
