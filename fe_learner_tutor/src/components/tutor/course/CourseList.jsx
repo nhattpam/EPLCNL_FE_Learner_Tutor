@@ -26,7 +26,7 @@ const CourseList = () => {
         tutorService
             .getAllCoursesByTutor(tutorId)
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 setCourseList(res.data);
 
             })
@@ -40,7 +40,7 @@ const CourseList = () => {
         setSearchTerm(event.target.value);
     };
 
-    console.log(typeof courseList);
+    // console.log(typeof courseList);
 
     const filteredCourses = courseList
         .filter((course) => {

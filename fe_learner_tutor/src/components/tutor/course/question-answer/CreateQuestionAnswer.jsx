@@ -53,16 +53,19 @@ const CreateQuestionAnswer = () => {
     });
 
     const handleChange = (e) => {
-        const value = e.target.value;
-        setQuestionAnswer({ ...questionAnswer, [e.target.name]: value });
+        const { name, value, type, checked } = e.target;
+        const inputValue = type === 'checkbox' ? checked : value;
+
+        setQuestionAnswer({ ...questionAnswer, [name]: inputValue });
     }
+
 
 
     const listQuestionAnswersByQuestion = async (storedQuestionId) => {
         try {
             const listQuestionAnswersByQuestion = await questionService.getAllQuestionAnswersByQuestion(storedQuestionId);
 
-            console.log('this is list:', listQuestionAnswersByQuestion.data);
+            // console.log('this is list:', listQuestionAnswersByQuestion.data);
 
             setCreatedQuestionAnswers(listQuestionAnswersByQuestion.data);
         } catch (error) {
@@ -75,33 +78,45 @@ const CreateQuestionAnswer = () => {
         e.preventDefault();
 
         try {
-
             // Convert position to integer
             const positionAsInt = parseInt(questionAnswer.position, 10);
 
             // Update questionAnswer.position with the converted integer value
             questionAnswer.position = positionAsInt;
 
-            questionAnswer.isAnswer = questionAnswer.isAnswer === "true";
-
-
-            console.log(JSON.stringify(questionAnswer))
-
+            console.log(JSON.stringify(questionAnswer));
 
             const questionAnswerResponse = await questionAnswerService.saveQuestionAnswer(questionAnswer);
-            console.log(questionAnswerResponse.data);
+            // console.log(questionAnswerResponse.data);
 
             setMsg('Answer Added Successfully');
 
-            const questionJson = JSON.stringify(questionAnswerResponse.data);
-            const questionJsonParse = JSON.parse(questionJson);
+            const questionAnswerJson = JSON.stringify(questionAnswerResponse.data);
+            const questionAnswerJsonParse = JSON.parse(questionAnswerJson);
 
-            navigate(`/tutor/courses/create/create-video-course/create-question-answer/${questionJsonParse.id}`);
+            await listQuestionAnswersByQuestion(storedQuestionId);
 
+            // navigate(`/tutor/courses/create/create-video-course/create-question-answer/${questionJsonParse.id}`);
         } catch (error) {
             console.log(error);
         }
     };
+
+
+    const handleDeleteQuestionAnswer = async (questionAnswerId) => {
+        try {
+            // Delete the question answer
+            const response = await questionAnswerService.deleteQuestionAnswer(questionAnswerId);
+            console.log(response);
+            // Reload the question answer list
+            await listQuestionAnswersByQuestion(storedQuestionId);
+            // Optionally, display a success message
+            setMsg('Question answer deleted successfully');
+        } catch (error) {
+            console.error('Error deleting question answer:', error);
+        }
+    };
+
 
 
 
@@ -168,7 +183,10 @@ const CreateQuestionAnswer = () => {
                                                 {Array.isArray(createdQuestionAnswers) && createdQuestionAnswers.length > 0 ? (
                                                     <ul>
                                                         {createdQuestionAnswers.map((answer) => (
-                                                            <li key={answer.id}>{answer.answerText}</li>
+                                                            <li key={answer.id}>
+                                                                Answer: {answer.answerText} - Position: {answer.position} - {answer.isAnswer ? "Is Answer" : "Not an Answer"}
+                                                                <Link onClick={() => handleDeleteQuestionAnswer(answer.id)}><i className="far fa-trash-alt"></i></Link>
+                                                            </li>
                                                         ))}
                                                     </ul>
                                                 ) : (

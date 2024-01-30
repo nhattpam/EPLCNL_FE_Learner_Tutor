@@ -43,5 +43,13 @@ class QuestionAnswerService {
       }
     });
   }
+
+  deleteQuestionAnswer(id){
+    return axios.delete(API_URL + "/question-answers/" + id, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new QuestionAnswerService;

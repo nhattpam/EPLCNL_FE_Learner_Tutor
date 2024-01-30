@@ -5,6 +5,7 @@ import Footer from '../../Footer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import quizService from '../../../../services/quiz.service';
 import questionService from '../../../../services/question.service';
+import questionAnswerService from '../../../../services/question-answer.service';
 
 const EditQuestion = () => {
 
@@ -54,9 +55,20 @@ const EditQuestion = () => {
 
 
 
-    const handleEditQuestionAnswer = (questionAnswerId) => {
-        // Add logic to navigate to the module edit page with the moduleId
-        navigate(`/tutor/courses/edit-question-answer/${questionAnswerId}`);
+    const handleDeleteQuestionAnswer = async (questionAnswerId) => {
+        try {
+            // Delete the question answer
+            const response = await questionAnswerService.deleteQuestionAnswer(questionAnswerId);
+            console.log(response)
+            // Reload the question answer list
+            const updatedQuestionAnswerList = await questionService.getAllQuestionAnswersByQuestion(questionId);
+            setQuestionAnswerList(updatedQuestionAnswerList.data);
+
+            // Optionally, display a success message
+            setMsg('Question answer deleted successfully');
+        } catch (error) {
+            console.error('Error deleting question answer:', error);
+        }
     };
 
 
@@ -102,14 +114,12 @@ const EditQuestion = () => {
                                             <ul className="list-group">
                                                 {questionAnswerList.map((questionAnswer) => (
                                                     <li key={questionAnswer.id} className="list-group-item d-flex justify-content-between align-items-center">
-                                                        {questionAnswer.answerText} 
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-secondary btn-sm"
-                                                            onClick={() => handleEditQuestionAnswer(question.id)}
+                                                        {questionAnswer.answerText}
+                                                        <Link
+                                                            onClick={() => handleDeleteQuestionAnswer(questionAnswer.id)}
                                                         >
-                                                            Edit
-                                                        </button>
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </Link>
                                                     </li>
                                                 ))}
 
