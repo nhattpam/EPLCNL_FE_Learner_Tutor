@@ -179,10 +179,10 @@ const EditTopic = () => {
                           <label htmlFor="code">Description * :</label>
                           <input type="text" className="form-control" name="description" id="description" value={classTopic.description} onChange={(e) => handleChange(e)} />
                         </div>
-                        <div className="form-group">
+                        {/* <div className="form-group">
                           <label htmlFor="code">Materials * :</label>
                           <input type="text" className="form-control" name="materialUrl" id="materialUrl" value={classTopic.materialUrl} onChange={(e) => handleChange(e)} />
-                        </div>
+                        </div> */}
                         <div className="form-group mb-0">
                           <button
                             type="submit"
@@ -192,10 +192,16 @@ const EditTopic = () => {
                           </button>
                           <button
                             type="button"
-                            className="btn btn-secondary"
+                            className="btn btn-secondary mr-2"
                             onClick={handleListTopics}
                           >
                             List Topics
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-warning"
+                          >
+                            View Materials
                           </button>
                         </div>
                       </form>

@@ -38,6 +38,10 @@ import TutorDashboard from './components/tutor/dashboard/TutorDashboard';
 import CreateQuestion from './components/tutor/course/question/CreateQuestion';
 import EditQuestion from './components/tutor/course/question/EditQuestion';
 import CreateQuestionAnswer from './components/tutor/course/question-answer/CreateQuestionAnswer';
+import CreateClassTopicMaterial from './components/tutor/course/material/CreateClassTopicMaterial';
+import CreateLessonMaterial from './components/tutor/course/material/CreateLessonMaterial';
+import ListClassTopicMaterial from './components/tutor/course/material/ListClassTopicMaterial';
+import ListLessonMaterial from './components/tutor/course/material/ListLessonMaterial';
 
 function App() {
   return (
@@ -76,6 +80,8 @@ function App() {
         <Route path="/tutor/courses/create/create-video-course/create-question/:storedQuizId" element={<CreateQuestion />} />
         <Route path="/tutor/courses/edit-question/:questionId" element={<EditQuestion />} />
         <Route path="/tutor/courses/create/create-video-course/create-question-answer/:storedQuestionId" element={<CreateQuestionAnswer />} />
+        <Route path="/tutor/courses/create-lesson-material/:lessonId" element={<CreateLessonMaterial />} />
+        <Route path="/tutor/courses/list-material-by-lesson/:lessonId" element={<ListLessonMaterial />} />
 
 
         {/* ---------------------------------------------------------------------------------------------------------- */}
@@ -87,6 +93,8 @@ function App() {
         <Route path="/tutor/courses/create/create-class-course/list-topic/:storedClassLessonId" element={<ListTopic />} />
         <Route path="/tutor/courses/edit-topic/:storedClassTopicId" element={<EditTopic />} />
         <Route path="/tutor/courses/edit-class-module/:moduleId" element={<EditClassModule />} />
+        <Route path="/tutor/courses/create-class-material/:classTopicId" element={<CreateClassTopicMaterial />} />
+        <Route path="/tutor/courses/list-material-by-topic/:classTopicId" element={<ListClassTopicMaterial />} />
 
         {/* dashboard */}
         <Route path="/tutor-dashboard" element={<TutorDashboard />} />

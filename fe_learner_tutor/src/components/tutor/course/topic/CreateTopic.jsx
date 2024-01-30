@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
@@ -172,10 +172,10 @@ const CreateTopic = () => {
                           <label htmlFor="code">Description * :</label>
                           <input type="text" className="form-control" name="description" id="description" value={classTopic.description} onChange={(e) => handleChange(e)} />
                         </div>
-                        <div className="form-group">
+                        {/* <div className="form-group">
                           <label htmlFor="code">Materials * :</label>
                           <input type="text" className="form-control" name="materialUrl" id="materialUrl" value={classTopic.materialUrl} onChange={(e) => handleChange(e)} />
-                        </div>
+                        </div> */}
                         <div className="form-group mb-0">
                           <button
                             type="submit"
@@ -199,7 +199,7 @@ const CreateTopic = () => {
                         {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
                           <ul>
                             {createdTopics.map((topic) => (
-                              <li key={topic.id}>{topic.name}</li>
+                              <li key={topic.id}>Topic: <span style={{fontWeight: 'bold'}}>{topic.name}</span> &nbsp;&nbsp;&nbsp;&nbsp;<span><Link to={`/tutor/courses/list-material-by-topic/${topic.id}`}>View materials</Link></span></li> 
                             ))}
                           </ul>
                         ) : (
