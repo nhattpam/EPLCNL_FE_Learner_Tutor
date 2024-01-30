@@ -91,50 +91,39 @@ const CreateQuestion = () => {
         e.preventDefault();
 
         try {
-
             // Save account
-            let questionImageUrl = question.questionImageUrl; // Keep the existing imageUrl if available
-            let questionAudioUrl = question.questionAudioUrl; // Keep the existing imageUrl if available
+            let questionImageUrl = question.questionImageUrl;
+            let questionAudioUrl = question.questionAudioUrl;
 
             if (file) {
-                // Upload image and get the link
                 const imageData = new FormData();
                 imageData.append('file', file);
                 const imageResponse = await questionService.uploadImage(imageData);
-
-                // Update the imageUrl with the link obtained from the API
                 questionImageUrl = imageResponse.data;
+            }
 
-                // Log the imageUrl after updating
-                console.log("this is url: " + questionImageUrl);
-
+            if (file2) {
                 const audioData = new FormData();
                 audioData.append('file', file2);
                 const audioResponse = await questionService.uploadAudio(audioData);
-
-                // Update the imageUrl with the link obtained from the API
                 questionAudioUrl = audioResponse.data;
-
-                // Log the imageUrl after updating
-                console.log("this is url: " + questionAudioUrl);
-
             }
 
             // Save course
-            const questionData = { ...question, questionImageUrl: questionImageUrl, questionAudioUrl: questionAudioUrl }; // Create a new object with updated imageUrl
-            // Save account
-            console.log(JSON.stringify(questionData))
-            const questionResponse = await questionService.saveQuestion(questionData);
-            console.log(questionResponse.data);
+            const questionData = { ...question, questionImageUrl, questionAudioUrl };
+            console.log(JSON.stringify(questionData));
 
-            setMsg('Question Added Successfully');
+            if (validateForm()) {
+                const questionResponse = await questionService.saveQuestion(questionData);
+                console.log(questionResponse.data);
 
-            const questionJson = JSON.stringify(questionResponse.data);
+                setMsg('Question Added Successfully');
 
-            const questionJsonParse = JSON.parse(questionJson);
+                const questionJson = JSON.stringify(questionResponse.data);
+                const questionJsonParse = JSON.parse(questionJson);
 
-            navigate(`/tutor/courses/create/create-video-course/create-quetion/${questionJsonParse.id}`)
-
+                navigate(`/tutor/courses/create/create-video-course/create-question-answer/${questionJsonParse.id}`);
+            }
 
         } catch (error) {
             console.log(error);
@@ -194,7 +183,7 @@ const CreateQuestion = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="header-title">Create a Video course: Course {module.course?.name} | Module {quiz.module?.name} </h4>
+                                            <h4 className="header-title">Create a Video course: Course {module.course?.name} | Module {quiz.module?.name} | Quiz {quiz.name}</h4>
 
                                             <form
                                                 method="post"

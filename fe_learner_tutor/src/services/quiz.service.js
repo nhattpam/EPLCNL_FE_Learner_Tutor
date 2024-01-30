@@ -46,5 +46,13 @@ class QuizService {
     });
   }
 
+  getAllQuestionsByQuiz(id) {
+    return axios.get(`${API_URL}/quizzes/${id}/questions`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
 }
 export default new QuizService;

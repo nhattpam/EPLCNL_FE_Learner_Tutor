@@ -60,5 +60,13 @@ class QuestionService {
       }
     });
   }
+
+  getAllQuestionAnswersByQuestion(id) {
+    return axios.get(`${API_URL}/questions/${id}/question-answers`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new QuestionService;
