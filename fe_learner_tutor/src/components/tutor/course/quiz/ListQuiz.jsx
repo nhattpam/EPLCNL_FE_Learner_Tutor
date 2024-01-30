@@ -122,7 +122,8 @@ const ListQuiz = () => {
                                                 <thead>
                                                     <tr>
                                                         <th data-toggle="true">Quiz Name</th>
-                                                        <th>Description</th>
+                                                        <th>Grade to pass</th>
+                                                        <th>Times</th>
                                                         <th data-hide="phone">Created Date</th>
                                                         <th data-hide="phone, tablet">Updated Date</th>
                                                         <th>Action</th>
@@ -132,7 +133,8 @@ const ListQuiz = () => {
                                                     {currentQuizs.map((quiz) => (
                                                         <tr key={quiz.id}>
                                                             <td>{quiz.name}</td>
-                                                            <td>{quiz.description}</td>
+                                                            <td>{quiz.gradeToPass}</td>
+                                                            <td>{quiz.deadline}</td>
                                                             <td>{quiz.createdDate}</td>
                                                             <td>{quiz.updatedDate}</td>
                                                             <td>

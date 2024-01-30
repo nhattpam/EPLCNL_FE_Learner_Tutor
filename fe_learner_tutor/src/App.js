@@ -35,6 +35,7 @@ import EditLesson from './components/tutor/course/lesson/EditLesson';
 import EditQuiz from './components/tutor/course/quiz/EditQuiz';
 import EditAssignment from './components/tutor/course/assignment/EditAssignment';
 import TutorDashboard from './components/tutor/dashboard/TutorDashboard';
+import CreateQuestion from './components/tutor/course/question/CreateQuestion';
 
 function App() {
   return (
@@ -70,7 +71,7 @@ function App() {
         <Route path="/tutor/courses/edit-assignment/:assignmentId" element={<EditAssignment />} />
         <Route path="/tutor/courses/edit-quiz/:quizId" element={<EditQuiz />} />
         <Route path="/tutor/courses/list-quiz/:storedModuleId" element={<ListQuiz />} />
-
+        <Route path="/tutor/courses/create/create-video-course/create-question/:storedQuizId" element={<CreateQuestion />} />
 
         {/* ---------------------------------------------------------------------------------------------------------- */}
         <Route path="/tutor/courses/create/create-class-course" element={<CreateClassCourse />} />
