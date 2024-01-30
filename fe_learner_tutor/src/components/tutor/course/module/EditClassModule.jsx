@@ -94,12 +94,12 @@ const EditClassModule = () => {
                                         </div>
 
                                         <div className="form-group mb-0">
-                                            <button
-                                                type="submit"
-                                                className="btn btn-danger"
+                                            <Link
+                                                to={`/tutor/courses/create/create-class-course/create-topic/${module.classLesson.id}`}
+                                                className="btn btn-success"
                                             >
-                                                <i className="bi bi-x-lg"></i> Request to delete
-                                            </button>
+                                                <i className="bi bi-plus"></i> Create new topic
+                                            </Link>
                                         </div>
                                     </form>
                                 </div> {/* end card-box*/}

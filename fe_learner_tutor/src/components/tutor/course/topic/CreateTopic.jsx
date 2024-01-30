@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import classLessonService from '../../../../services/class-lesson.service';
 import classTopicService from '../../../../services/class-topic.service';
+import classModuleService from '../../../../services/class-module.service';
 
 const CreateTopic = () => {
   const navigate = useNavigate();
@@ -18,6 +19,11 @@ const CreateTopic = () => {
     classUrl: '',
   });
 
+  const [classModule, setClassModule] = useState({
+    startDate: '',
+  });
+
+ 
 
   useEffect(() => {
     if (storedClassLessonId) {
@@ -32,6 +38,19 @@ const CreateTopic = () => {
     }
   }, [storedClassLessonId]);
 
+
+  useEffect(() => {
+    if (classLesson.classModuleId) {
+      classModuleService
+        .getModuleById(classLesson.classModuleId)
+        .then((res) => {
+          setClassModule(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [classLesson.classModuleId]);
 
   //create class topic
   const [classTopic, setClassTopic] = useState({
@@ -106,7 +125,7 @@ const CreateTopic = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        Create a Class course: Course ABC | Class 20-01-2024 | Lesson {classLesson.classHours}
+                        Create a Class course: Course {classModule.course?.name} | Class {classModule.startDate} | Lesson {classLesson.classHours}
                       </h4>
                       <form
                         method="post"

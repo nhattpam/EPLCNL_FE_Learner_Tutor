@@ -89,7 +89,7 @@ const CreateAssignment = () => {
     };
 
 
-   const handleMinutesChange = (e) => {
+    const handleMinutesChange = (e) => {
         const minutes = parseInt(e.target.value, 10);
         setAssignment({ ...assignment, deadline: minutes });
     };
