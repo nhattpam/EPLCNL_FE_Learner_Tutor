@@ -21,21 +21,24 @@ const ListCourse = () => {
             }
         };
 
+        fetchCourses();
+    }, []); // Empty dependency array to fetch courses only once when the component mounts
+
+    useEffect(() => {
         const fetchAccountInfo = async () => {
-            const accountArray = [];
-            for (const course of courseList) {
-                try {
-                    const response = await accountService.getAccountById(course.tutor.accountId);
-                    const account = response.data;
-                    accountArray.push(account);
-                } catch (error) {
-                    console.log(error);
-                }
+            try {
+                const accountPromises = courseList.map((course) =>
+                    accountService.getAccountById(course.tutor.accountId)
+                );
+
+                const accountResponses = await Promise.all(accountPromises);
+                const accountData = accountResponses.map((response) => response.data);
+                setAccounts(accountData);
+            } catch (error) {
+                console.log(error);
             }
-            setAccounts(accountArray);
         };
 
-        fetchCourses();
         if (courseList.length > 0) {
             fetchAccountInfo();
         }
