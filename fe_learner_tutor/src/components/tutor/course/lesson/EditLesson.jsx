@@ -148,6 +148,9 @@ const EditLesson = () => {
                           <button type="submit" className="btn btn-primary " style={{ marginLeft: '23px', marginTop: '10px' }} >
                             Edit
                           </button>
+                          <Link to={`/tutor/courses/list-material-by-lesson/${lesson.id}`} className="btn btn-warning " style={{ marginLeft: '20px', marginTop: '10px' }} >
+                            View Materials
+                          </Link>
                         </div>
                       </form>
                     </div>

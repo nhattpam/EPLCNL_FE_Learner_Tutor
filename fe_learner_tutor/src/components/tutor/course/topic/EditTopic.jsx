@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
@@ -197,12 +197,12 @@ const EditTopic = () => {
                           >
                             List Topics
                           </button>
-                          <button
-                            type="button"
+                          <Link
+                            to={`/tutor/courses/list-material-by-topic/${classTopic.id}`}
                             className="btn btn-warning"
                           >
                             View Materials
-                          </button>
+                          </Link>
                         </div>
                       </form>
 

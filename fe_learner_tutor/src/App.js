@@ -80,8 +80,8 @@ function App() {
         <Route path="/tutor/courses/create/create-video-course/create-question/:storedQuizId" element={<CreateQuestion />} />
         <Route path="/tutor/courses/edit-question/:questionId" element={<EditQuestion />} />
         <Route path="/tutor/courses/create/create-video-course/create-question-answer/:storedQuestionId" element={<CreateQuestionAnswer />} />
-        <Route path="/tutor/courses/create-lesson-material/:lessonId" element={<CreateLessonMaterial />} />
-        <Route path="/tutor/courses/list-material-by-lesson/:lessonId" element={<ListLessonMaterial />} />
+        <Route path="/tutor/courses/create-lesson-material/:storedLessonId" element={<CreateLessonMaterial />} />
+        <Route path="/tutor/courses/list-material-by-lesson/:storedLessonId" element={<ListLessonMaterial />} />
 
 
         {/* ---------------------------------------------------------------------------------------------------------- */}
@@ -93,8 +93,8 @@ function App() {
         <Route path="/tutor/courses/create/create-class-course/list-topic/:storedClassLessonId" element={<ListTopic />} />
         <Route path="/tutor/courses/edit-topic/:storedClassTopicId" element={<EditTopic />} />
         <Route path="/tutor/courses/edit-class-module/:moduleId" element={<EditClassModule />} />
-        <Route path="/tutor/courses/create-class-material/:classTopicId" element={<CreateClassTopicMaterial />} />
-        <Route path="/tutor/courses/list-material-by-topic/:classTopicId" element={<ListClassTopicMaterial />} />
+        <Route path="/tutor/courses/create-class-material/:storedClassTopicId" element={<CreateClassTopicMaterial />} />
+        <Route path="/tutor/courses/list-material-by-topic/:storedClassTopicId" element={<ListClassTopicMaterial />} />
 
         {/* dashboard */}
         <Route path="/tutor-dashboard" element={<TutorDashboard />} />

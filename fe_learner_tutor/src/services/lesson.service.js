@@ -63,5 +63,13 @@ class LessonService {
     });
   }
 
+  getAllMaterialsByLesson(id) {
+    return axios.get(`${API_URL}/lessons/${id}/lesson-materials`, {
+        headers: {
+            Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+        }
+    });
+}
+
 }
 export default new LessonService;
