@@ -1,7 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // Import useState and useEffect
 import { Link } from 'react-router-dom';
+import categoryService from '../services/category.service';
 
 const Header = () => {
+
+    const [categoryList, setCategoryList] = useState([]);
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const res = await categoryService.getAllcategory();
+                const sortedCategories = res.data.sort((a, b) => a.name.localeCompare(b.name));
+                setCategoryList(sortedCategories);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+
     return (
         <header id="header" className="fixed-top">
             <div className="container d-flex align-items-center">
@@ -29,24 +47,11 @@ const Header = () => {
                                 <span>Course</span> <i className="bi bi-chevron-down" />
                             </a>
                             <ul>
-                                <li>
-                                    <a href="#">A1 - BEGINNER</a>
-                                </li>
-                                  <li>
-                                    <a href="#">A2 - ELEMENTARY</a>
-                                </li>
-                                <li>
-                                    <a href="#">B1 - INTERMEDIATE</a>
-                                </li>
-                                <li>
-                                    <a href="#">B2 - UPPER INTERMEDIATE</a>
-                                </li>
-                                <li>
-                                    <a href="#">C1 - ADVANCED</a>
-                                </li>
-                                <li>
-                                    <a href="#">C2 - PROFICIENT</a>
-                                </li>
+                                {categoryList.map((category) => (
+                                    <li key={category.id}> {/* Add a key to the mapped elements */}
+                                        <a href="#">{category.name}</a>
+                                    </li>
+                                ))}
                                 <li>
                                     <Link to="/list-course">LIST COURSE</Link>
                                 </li>
