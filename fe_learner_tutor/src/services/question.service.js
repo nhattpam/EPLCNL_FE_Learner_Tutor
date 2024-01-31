@@ -46,7 +46,7 @@ class QuestionService {
 
 
   uploadImage(question) {
-    return axios.post(API_URL + "/questions/upload-images/", question, {
+    return axios.post(API_URL + "/questions/image/", question, {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }
@@ -54,7 +54,7 @@ class QuestionService {
   }
 
   uploadAudio(question) {
-    return axios.post(API_URL + "/questions/upload-audios/", question, {
+    return axios.post(API_URL + "/questions/audio/", question, {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }

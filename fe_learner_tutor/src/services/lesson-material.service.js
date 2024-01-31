@@ -49,7 +49,7 @@ class LessonMaterialService {
 
 
   uploadMaterial(lessonMaterial) {
-    return axios.post(API_URL + "/lesson-materials/upload-materials/", lessonMaterial, {
+    return axios.post(API_URL + "/lesson-materials/material/", lessonMaterial, {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }
