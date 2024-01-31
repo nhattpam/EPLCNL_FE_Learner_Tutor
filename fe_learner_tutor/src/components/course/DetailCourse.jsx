@@ -1,8 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Header from '../Header'
 import Footer from '../Footer'
+import { useParams } from 'react-router-dom'
+import courseService from '../../services/course.service'
 
 const DetailCourse = () => {
+
+
+    const { courseId } = useParams();
+
+    const [course, setCourse] = useState({
+       name: ""
+    });
+
+
+    useEffect(() => {
+        if (courseId) {
+            courseService
+                .getCourseById(courseId)
+                .then((res) => {
+                    setCourse(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [courseId]);
     return (
         <>
             <Header />
@@ -19,7 +42,7 @@ const DetailCourse = () => {
                     <div className="container" data-aos="fade-up">
                         <div className="row">
                             <div className="col-lg-8">
-                                <img src="assets/img/course-details.jpg" className="img-fluid" alt />
+                                <img src={course.imageUrl} className="img-fluid" alt />
                                 <h3>Et enim incidunt fuga tempora</h3>
                                 <p>
                                     Qui et explicabo voluptatem et ab qui vero et voluptas. Sint voluptates temporibus quam autem. Atque nostrum voluptatum laudantium a doloremque enim et ut dicta. Nostrum ducimus est iure minima totam doloribus nisi ullam deserunt. Corporis aut officiis sit nihil est. Labore aut sapiente aperiam.
@@ -29,7 +52,7 @@ const DetailCourse = () => {
                             </div>
                             <div className="col-lg-4">
                                 <div className="course-info d-flex justify-content-between align-items-center">
-                                    <h5>Trainer</h5>
+                                    <h5>Tutor</h5>
                                     <p><a href="#">Walter White</a></p>
                                 </div>
                                 <div className="course-info d-flex justify-content-between align-items-center">

@@ -68,7 +68,7 @@ const ListCourse = () => {
                                                 <h4>{course.category?.name}</h4>
                                                 <p className="price">{`$${course.stockPrice}`}</p>
                                             </div>
-                                            <h3><a href={`course-details.html?id=${course.id}`}>{course.name}</a></h3>
+                                            <h3><Link to={`/detail-course/${course.id}`}>{course.name}</Link></h3>
                                             <p>{course.description}</p>
                                             <div className="trainer d-flex justify-content-between align-items-center">
                                                 <div className="trainer-profile d-flex align-items-center">
