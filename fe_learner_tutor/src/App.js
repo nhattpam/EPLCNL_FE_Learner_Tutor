@@ -42,6 +42,7 @@ import CreateClassTopicMaterial from './components/tutor/course/material/CreateC
 import CreateLessonMaterial from './components/tutor/course/material/CreateLessonMaterial';
 import ListClassTopicMaterial from './components/tutor/course/material/ListClassTopicMaterial';
 import ListLessonMaterial from './components/tutor/course/material/ListLessonMaterial';
+import PaymentCallBack from './components/payment/PaymentCallBack';
 
 function App() {
   return (
@@ -98,6 +99,10 @@ function App() {
 
         {/* dashboard */}
         <Route path="/tutor-dashboard" element={<TutorDashboard />} />
+        {/* payment */}
+
+        <Route path="/payment-callback" element={<PaymentCallBack />} />
+
 
       </Routes>
     </div>
