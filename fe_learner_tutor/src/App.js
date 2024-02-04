@@ -43,6 +43,7 @@ import CreateLessonMaterial from './components/tutor/course/material/CreateLesso
 import ListClassTopicMaterial from './components/tutor/course/material/ListClassTopicMaterial';
 import ListLessonMaterial from './components/tutor/course/material/ListLessonMaterial';
 import PaymentCallBack from './components/payment/PaymentCallBack';
+import Invoice from './components/payment/Invoice';
 
 function App() {
   return (
@@ -102,6 +103,7 @@ function App() {
         {/* payment */}
 
         <Route path="/payment-callback" element={<PaymentCallBack />} />
+        <Route path="/invoice/:transactionId" element={<Invoice />} />
 
 
       </Routes>
