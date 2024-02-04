@@ -3,7 +3,6 @@ import axios from "axios";
 // const API_URL = "https://localhost:7215/api";
 const API_URL = "https://nhatpmse.twentytwo.asia/api";
 
-
 class AccountService {
 
   token = '';
@@ -41,6 +40,15 @@ class AccountService {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }
+    });
+  }
+
+  sendMail(id, data) {
+    return axios.post(API_URL + `/accounts/${id}/mail`, data, {
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json', // Add this line to specify the content type
+      },
     });
   }
 }
