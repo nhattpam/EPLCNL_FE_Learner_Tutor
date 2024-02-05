@@ -5,6 +5,7 @@ import Sidebar from '../Sidebar';
 import { Link, useNavigate } from "react-router-dom";
 import courseService from '../../../services/course.service';
 import categoryService from '../../../services/category.service';
+import forumService from '../../../services/forum.service';
 import Dropzone from 'react-dropzone';
 
 const CreateClassCourse = () => {
@@ -25,6 +26,11 @@ const CreateClassCourse = () => {
         categoryId: "",
         tags: "",
     });
+
+    const [forum, setForum] = useState({
+        courseId: ""
+    });
+
 
     const [file, setFile] = useState(null);
     const [imagePreview, setImagePreview] = useState("");
@@ -141,6 +147,9 @@ const CreateClassCourse = () => {
                 const courseJsonParse = JSON.parse(courseJson);
 
                 // navigate(`/tutor/course/list-course-by-tutor/${tutorId}`);
+                 //create forum with courseId
+                 const forumData = { ...forum, courseId:  courseJsonParse.id};
+                 await forumService.saveForum(forumData)
                 handleContinue(courseJsonParse.id);
             } catch (error) {
                 console.log(error);

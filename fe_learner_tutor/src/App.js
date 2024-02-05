@@ -44,6 +44,7 @@ import ListClassTopicMaterial from './components/tutor/course/material/ListClass
 import ListLessonMaterial from './components/tutor/course/material/ListLessonMaterial';
 import PaymentCallBack from './components/payment/PaymentCallBack';
 import Invoice from './components/payment/Invoice';
+import ListForum from './components/tutor/forum/ListForum';
 
 function App() {
   return (
@@ -105,7 +106,8 @@ function App() {
         <Route path="/payment-callback" element={<PaymentCallBack />} />
         <Route path="/invoice/:transactionId" element={<Invoice />} />
 
-
+        {/* forum */}
+        <Route path="/list-forum/:tutorId" element={<ListForum />} />
       </Routes>
     </div>
   );
