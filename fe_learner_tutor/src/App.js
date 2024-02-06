@@ -45,6 +45,7 @@ import ListLessonMaterial from './components/tutor/course/material/ListLessonMat
 import PaymentCallBack from './components/payment/PaymentCallBack';
 import Invoice from './components/payment/Invoice';
 import ListForum from './components/tutor/forum/ListForum';
+import EditForum from './components/tutor/forum/EditForum';
 
 function App() {
   return (
@@ -108,6 +109,7 @@ function App() {
 
         {/* forum */}
         <Route path="/list-forum/:tutorId" element={<ListForum />} />
+        <Route path="/edit-forum/:forumId" element={<EditForum />} />
       </Routes>
     </div>
   );

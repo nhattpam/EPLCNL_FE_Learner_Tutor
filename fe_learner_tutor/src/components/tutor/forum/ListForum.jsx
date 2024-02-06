@@ -113,7 +113,7 @@ const ListForum = () => {
                                                             <td>{forum.id}</td>
                                                             <td>{forum.course.name}</td>
                                                             <td>
-                                                                <Link to={`/tutor/courses/edit-forum/${forum.id}`}>
+                                                                <Link to={`/edit-forum/${forum.id}`}>
                                                                     <i class="fa-regular fa-eye"></i>
                                                                 </Link>
                                                             </td>

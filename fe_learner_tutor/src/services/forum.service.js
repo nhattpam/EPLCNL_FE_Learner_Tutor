@@ -43,5 +43,13 @@ class ForumService {
       }
     });
   }
+
+  getAllClassForumsByForum(id) {
+    return axios.get(`${API_URL}/forums/${id}/account-forums`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new ForumService;
