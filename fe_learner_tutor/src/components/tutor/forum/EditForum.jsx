@@ -53,14 +53,14 @@ const EditForum = () => {
 
     const submitAccountForum = async (e) => {
         e.preventDefault();
-    
+
         // Save account forum
         console.log(JSON.stringify(accountForum))
         const accountForumResponse = await accountForumService.saveAccountForum(accountForum);
         console.log(accountForumResponse.data);
-    
+
         setMsg('AccountForum Added Successfully');
-    
+
         // Fetch updated list of messages after sending a message
         forumService
             .getAllClassForumsByForum(forumId)
@@ -70,67 +70,83 @@ const EditForum = () => {
             .catch((error) => {
                 console.log(error);
             });
-    
+
         // Clear the message input
         setAccountForum({ ...accountForum, message: '' });
     }
 
 
-return (
-    <>
-        <div id="wrapper">
-            <Header />
-            <Sidebar />
-            <div className="content-page">
-                <div className="content">
-                    <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="page-title-box">
-                                    <div className="page-title-right">
-                                        <ol className="breadcrumb m-0">
-                                        </ol>
+    return (
+        <>
+            <div id="wrapper">
+                <Header />
+                <Sidebar />
+                <div className="content-page">
+                    <div className="content">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-12">
+                                    <div className="page-title-box">
+                                        <div className="page-title-right">
+                                            <ol className="breadcrumb m-0">
+                                            </ol>
+                                        </div>
+                                        <h4 className="page-title">Forum for course {forum.course?.name}</h4>
                                     </div>
-                                    <h4 className="page-title">Forum for course {forum.course?.name}</h4>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="card-box">
-                                    <div className="chat-container">
-                                        {accountForumList.map((accountForum) => (
-                                            <div
-                                                className={`chat-message ${accountForum.tutor ? 'left' : 'right'}`}
-                                                key={accountForum.id}
-                                            >
-                                                <div className="message-sender">
-                                                    {accountForum.tutor?.account?.fullName ?? accountForum.learner?.account?.fullName}
-                                                </div>
-                                                <div className="message-content">{accountForum.message}</div>
-                                                <div className="message-date">{accountForum.messagedDate}</div>
-                                            </div>
-                                        ))}
-                                        <form class="msger-inputarea" onSubmit={submitAccountForum} >
-                                            <input type="text" class="msger-input" placeholder="Enter your message..." name='message' id='message' value={accountForum.message} onChange={(e) => handleChange(e)} />
-                                            <button type="submit" class="msger-send-btn">Send</button>
-                                        </form>
+                            <div className="row">
+                                <div className="col-12">
+                                    <div className="card-box">
+                                        <div className="chat-container">
+                                            {accountForumList
+                                                .slice()
+                                                .sort((a, b) => new Date(a.messagedDate) - new Date(b.messagedDate))
+                                                .map((accountForum) => (
+                                                    <div
+                                                        className={`chat-message ${accountForum.tutor ? 'left' : 'right'}`}
+                                                        key={accountForum.id}
+                                                    >
+                                                        <div className="message-sender">
+                                                            {accountForum.tutor?.account?.fullName ?? accountForum.learner?.account?.fullName}
+                                                        </div>
+                                                        <div className="message-content">{accountForum.message}</div>
+                                                        <div className="message-date">{accountForum.messagedDate}</div>
+                                                    </div>
+                                                ))}
+                                            <form class="msger-inputarea" onSubmit={submitAccountForum}>
+                                                <input
+                                                    type="text"
+                                                    class="msger-input"
+                                                    placeholder="Enter your message..."
+                                                    name="message"
+                                                    id="message"
+                                                    value={accountForum.message}
+                                                    onChange={(e) => handleChange(e)}
+                                                />
+                                                <button type="submit" class="msger-send-btn">
+                                                    Send
+                                                </button>
+                                            </form>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
-        <style>
-            {`
+            <style>
+                {`
                     /* Add these styles to your existing CSS file or create a new one */
 
                     .chat-container {
                       display: flex;
                       flex-direction: column;
+                      height: 100%; /* Ensure the chat container takes the full height of its parent */
+
                     }
                     
                     .chat-message {
@@ -138,6 +154,29 @@ return (
                       padding: 10px;
                       border-radius: 8px;
                     }
+
+                    .msger-inputarea {
+                        display: flex;
+                        padding: 10px;
+                        border-top: var(--border);
+                        background: #eee;
+                        position: fixed;
+                        bottom: 0;
+                        width: 70%;
+                        z-index: 1;
+                      }
+                      
+                      .msger-inputarea * {
+                        padding: 10px;
+                        border: none;
+                        border-radius: 3px;
+                        font-size: 1em;
+                      }
+                      
+                      .msger-input {
+                        flex: 1;
+                        background: #ddd;
+                      }
                     
                     .left {
                         align-self: flex-start;
@@ -167,22 +206,7 @@ return (
                         right: 5px;
                       }
 
-                      .msger-inputarea {
-                        display: flex;
-                        padding: 10px;
-                        border-top: var(--border);
-                        background: #eee;
-                      }
-                      .msger-inputarea * {
-                        padding: 10px;
-                        border: none;
-                        border-radius: 3px;
-                        font-size: 1em;
-                      }
-                      .msger-input {
-                        flex: 1;
-                        background: #ddd;
-                      }
+                      
                       .msger-send-btn {
                         margin-left: 10px;
                         background: rgb(0, 196, 65);
@@ -198,9 +222,9 @@ return (
                     /* Adjust the styling according to your design preferences */
                     
                 `}
-        </style>
-    </>
-);
+            </style>
+        </>
+    );
 };
 
 export default EditForum;
