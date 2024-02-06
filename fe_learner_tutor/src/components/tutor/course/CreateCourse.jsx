@@ -96,10 +96,15 @@ const CreateCourse = () => {
             //Hover when move mouse
             <style>
                 {`
-                  .card.cursor-pointer:hover {
-                   background-color: #f8f9fa; /* Change this to your desired hover background color */
-                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Change this to your desired box shadow */
-                     }
+                    .card.cursor-pointer:hover {
+                        background-color: #f8f9fa;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .card.selected {
+                        background-color: #e2e6ea; /* Change this to your selected background color */
+                        border: 2px solid #e2e6ea; /* Change this to your selected border color */
+                    }
                 `}
             </style>
 
