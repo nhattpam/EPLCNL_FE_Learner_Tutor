@@ -101,7 +101,7 @@ return (
                                     <div className="chat-container">
                                         {accountForumList.map((accountForum) => (
                                             <div
-                                                className={`chat-message ${accountForum.tutor ? 'left' : 'right'}`}
+                                                className={`chat-message ${accountForum.tutor ? 'right' : 'left'}`}
                                                 key={accountForum.id}
                                             >
                                                 <div className="message-sender">
