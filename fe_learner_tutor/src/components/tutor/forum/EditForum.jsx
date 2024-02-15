@@ -104,7 +104,7 @@ const EditForum = () => {
                                                 .sort((a, b) => new Date(a.messagedDate) - new Date(b.messagedDate))
                                                 .map((accountForum) => (
                                                     <div
-                                                        className={`chat-message ${accountForum.tutor ? 'left' : 'right'}`}
+                                                        className={`chat-message ${accountForum.tutor ? 'right' : 'left'}`}
                                                         key={accountForum.id}
                                                     >
                                                         <div className="message-sender">
