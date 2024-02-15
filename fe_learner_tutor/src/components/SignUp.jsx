@@ -24,7 +24,7 @@ const SignUp = () => {
     fullName: "",
     phoneNumber: "",
     roleId: "",
-    isActive: true
+    isActive: false
   });
 
 
