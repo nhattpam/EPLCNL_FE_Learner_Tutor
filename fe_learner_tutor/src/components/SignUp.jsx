@@ -74,6 +74,8 @@ const SignUp = () => {
       }
   
       try {
+        account.roleId = roleId;
+        console.log("this is a cccc: " + JSON.stringify(account))
         const res = await accountService.saveAccount(account);
         console.log("Account created:", res.data);
   
