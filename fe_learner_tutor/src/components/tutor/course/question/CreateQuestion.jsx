@@ -183,7 +183,7 @@ const CreateQuestion = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="header-title">Create a Video course: Course {module.course?.name} | Module {quiz.module?.name} | Quiz {quiz.name}</h4>
+                                            <h4 className="header-title">MODULE - <span className='text-success'>{quiz.module?.name}</span> | QUIZ - <span className='text-success'>{quiz.name}</span></h4>
 
                                             <form
                                                 method="post"
@@ -194,7 +194,7 @@ const CreateQuestion = () => {
                                                 data-upload-preview-template="#uploadPreviewTemplate"
                                                 data-parsley-validate
                                                 onSubmit={submitQuestion} >
-                                                <div className="card">
+                                                <div className="card" style={{marginTop: '-20px'}}>
                                                     <div className='card-body'>
                                                         <label htmlFor="defaultGrade">Grade * :</label>
                                                         <input type="number" className="form-control" name="defaultGrade" id="defaultGrade" required value={question.defaultGrade} onChange={(e) => handleChange(e)} />

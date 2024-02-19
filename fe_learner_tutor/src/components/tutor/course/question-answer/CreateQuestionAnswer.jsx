@@ -134,7 +134,7 @@ const CreateQuestionAnswer = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="header-title">Information</h4>
+                                            <h4 className="header-title">CREATING ANSWER FOR QUESTION</h4>
 
                                             <form
                                                 method="post"
@@ -150,12 +150,13 @@ const CreateQuestionAnswer = () => {
                                                 <textarea className="form-control" name="answerText" id="answerText" required value={questionAnswer.answerText} onChange={(e) => handleChange(e)} />
                                                 <label htmlFor="position">Position * :</label>
                                                 <select
-                                                    className="form-control"
+                                                    className="form-control text-center"
                                                     name="position"
                                                     id="position"
                                                     required
                                                     value={questionAnswer.position}
                                                     onChange={(e) => handleChange(e)}
+                                                    style={{width: '20%'}}
                                                 >
                                                     <option value={1}>1</option>
                                                     <option value={2}>2</option>
@@ -172,8 +173,9 @@ const CreateQuestionAnswer = () => {
                                                     onChange={(e) => handleChange(e)}
                                                 />
 
-                                                <button type="submit" className="btn btn-primary form-control" style={{ marginTop: '10px' }} >
-                                                    Create
+                                                <button type="submit" className="btn btn-success form-control" style={{ marginTop: '10px' }} >
+                                                <i class="fas fa-check-double"></i> Create
+
                                                 </button>
                                             </form>
 
@@ -184,8 +186,8 @@ const CreateQuestionAnswer = () => {
                                                     <ul>
                                                         {createdQuestionAnswers.map((answer) => (
                                                             <li key={answer.id}>
-                                                                Answer: {answer.answerText} - Position: {answer.position} - {answer.isAnswer ? "Is Answer" : "Not an Answer"}
-                                                                <Link onClick={() => handleDeleteQuestionAnswer(answer.id)}><i className="far fa-trash-alt"></i></Link>
+                                                                Answer: <span className='text-success'>{answer.answerText}</span> - Position: {answer.position} - <span className='text-success'>{answer.isAnswer ? "Is Answer" : "Not an Answer"}</span>
+                                                                <Link onClick={() => handleDeleteQuestionAnswer(answer.id)} className='text-danger'> <i className="far fa-trash-alt"></i></Link>
                                                             </li>
                                                         ))}
                                                     </ul>

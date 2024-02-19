@@ -110,7 +110,7 @@ const CreateQuiz = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="header-title">Create a Video course: Course {module.course ? module.course.name : 'N/A'} | Module {module.name} </h4>
+                                            <h4 className="header-title">MODULE - <span className='text-success'>{module.name}</span></h4>
 
                                             <form
                                                 method="post"
@@ -121,13 +121,29 @@ const CreateQuiz = () => {
                                                 data-upload-preview-template="#uploadPreviewTemplate"
                                                 data-parsley-validate
                                                 onSubmit={submitQuiz} >
-                                                <div className="card">
+                                                <div className="card" style={{marginTop: '-20px'}}>
+                                                    
+                                                    <div className='card-body'>
+                                                        <label htmlFor="name">Quiz Name * :</label>
+                                                        <input type="text" className="form-control" name="name" id="name" required value={quiz.name} onChange={(e) => handleChange(e)} />
+
+                                                    </div>
+                                                    <div className='card-body'>
+                                                        <label htmlFor="gradeToPass">Grade to pass * :</label>
+                                                        <input type="number" className="form-control" name="gradeToPass" id="gradeToPass"
+                                                         required value={quiz.gradeToPass} onChange={(e) => handleChange(e)}
+                                                         style={{width: '20%'}}
+                                                         />
+
+                                                    </div>
                                                     <div className='card-body'>
                                                         <label htmlFor="video">Time * :</label>
                                                         <select
                                                             value={quiz.deadline}
                                                             onChange={handleMinutesChange}
                                                             className="form-control"
+                                                            style={{width: '20%'}}
+
                                                         >
                                                             {[5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map((minutes) => (
                                                                 <option key={minutes} value={minutes}>
@@ -136,20 +152,11 @@ const CreateQuiz = () => {
                                                             ))}
                                                         </select>
                                                     </div>
-                                                    <div className='card-body'>
-                                                        <label htmlFor="name">Quiz Name * :</label>
-                                                        <input type="text" className="form-control" name="name" id="name" required value={quiz.name} onChange={(e) => handleChange(e)} />
-
-                                                    </div>
-                                                    <div className='card-body'>
-                                                        <label htmlFor="gradeToPass">Grade to pass * :</label>
-                                                        <input type="number" className="form-control" name="gradeToPass" id="gradeToPass" required value={quiz.gradeToPass} onChange={(e) => handleChange(e)}/>
-
-                                                    </div>
                                                 </div>
                                                 <div className="form-group mb-0  ">
-                                                    <button type="submit" className="btn btn-primary " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                                                        Create
+                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                                                    <i class="fas fa-check-double"></i> Create
+
                                                     </button>
                                                 </div>
                                             </form>
