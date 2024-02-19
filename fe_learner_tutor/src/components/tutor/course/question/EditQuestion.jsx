@@ -118,7 +118,7 @@ const EditQuestion = () => {
                                                         <Link
                                                             onClick={() => handleDeleteQuestionAnswer(questionAnswer.id)}
                                                         >
-                                                            <i class="far fa-trash-alt"></i>
+                                                            <i className="far fa-trash-alt text-danger"></i>
                                                         </Link>
                                                     </li>
                                                 ))}

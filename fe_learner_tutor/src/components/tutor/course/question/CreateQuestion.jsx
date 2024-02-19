@@ -262,8 +262,9 @@ const CreateQuestion = () => {
 
                                                 </div>
                                                 <div className="form-group mb-0  ">
-                                                    <button type="submit" className="btn btn-primary " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                                                        Create
+                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                                                    <i class="fas fa-check-double"></i> Create
+
                                                     </button>
                                                 </div>
                                             </form>

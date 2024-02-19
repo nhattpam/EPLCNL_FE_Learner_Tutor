@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer';
 import Header from '../Header';
 import Sidebar from '../Sidebar';
-import { useNavigate, useParams } from 'react-router-dom';
-
 
 const CreateCourse = () => {
     const [courseType, setCourseType] = useState('');
     const navigate = useNavigate();
-
 
     const handleCourseTypeChange = (type) => {
         setCourseType(type);
@@ -16,15 +14,10 @@ const CreateCourse = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Handle the selected course type (video course or class course)
-        console.log('Selected course type:', courseType);
-        // Add your logic to handle the selected course type here
-        if (courseType === 'video-course') {
-            // Handle video course logic
-            navigate("/tutor/courses/create/create-video-course");
 
+        if (courseType === 'video-course') {
+            navigate("/tutor/courses/create/create-video-course");
         } else if (courseType === 'class-course') {
-            // Handle class course logic
             navigate("/tutor/courses/create/create-class-course");
         }
     };
@@ -34,66 +27,45 @@ const CreateCourse = () => {
             <div id="wrapper">
                 <Header />
                 <Sidebar />
-                {/* ============================================================== */}
-                {/* Start Page Content here */}
-                {/* ============================================================== */}
+
                 <div className="content-page">
                     <div className="content">
-                        {/* Start Content*/}
                         <div className="container-fluid">
-                            {/* start page title */}
-
-                            {/* end page title */}
                             <div className="row">
                                 <div className="col-12">
                                     <div className="card-box">
                                         <h1>Create a New Course</h1>
                                         <form onSubmit={handleSubmit}>
                                             <div className="row">
-                                                <div className="col-md-6">
-                                                    <div
-                                                        className={`card cursor-pointer ${courseType === 'video-course' ? 'selected' : ''}`}
-                                                        onClick={() => handleCourseTypeChange('video-course')}
-                                                    >
-                                                        <div className="card-body text-center">
-                                                            <i className="fas fa-video fa-3x mb-2"></i>
-                                                            <h5 className="card-title">Video Course</h5>
-                                                            <p className="card-text">Create a course with video content.</p>
+                                                {['video-course', 'class-course'].map((type) => (
+                                                    <div key={type} className="col-md-6">
+                                                        <div
+                                                            className={`card cursor-pointer ${courseType === type ? 'selected' : ''}`}
+                                                            onClick={() => handleCourseTypeChange(type)}
+                                                        >
+                                                            <div className="card-body text-center">
+                                                                <i className={`fas ${type === 'video-course' ? 'fa-video' : 'fa-chalkboard-teacher'} fa-3x mb-2`}></i>
+                                                                <h5 className="card-title">{type === 'video-course' ? 'Video Course' : 'Class Course'}</h5>
+                                                                <p className="card-text">{`Create a course with ${type === 'video-course' ? 'video' : 'class'} content.`}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div
-                                                        className={`card cursor-pointer ${courseType === 'class-course' ? 'selected' : ''}`}
-                                                        onClick={() => handleCourseTypeChange('class-course')}
-                                                    >
-                                                        <div className="card-body text-center">
-                                                            <i className="fas fa-chalkboard-teacher fa-3x mb-2"></i>
-                                                            <h5 className="card-title">Class Course</h5>
-                                                            <p className="card-text">Create a course with class content.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                ))}
                                             </div>
                                             <div className="mt-3">
-                                                <button type="submit" className="btn btn-primary">Continue</button>
+                                                <button type="submit" className="btn btn-success"><i class="fas fa-forward"></i></button>
                                             </div>
                                         </form>
-                                    </div> {/* end card-box */}
-                                </div> {/* end col */}
+                                    </div>
+                                </div>
                             </div>
-                            {/* end row */}
-                        </div> {/* container */}
-                    </div> {/* content */}
+                        </div>
+                    </div>
                 </div>
-                {/* ============================================================== */}
-                {/* End Page content */}
-                {/* ============================================================== */}
+
                 <Footer />
             </div>
 
-
-            //Hover when move mouse
             <style>
                 {`
                     .card.cursor-pointer:hover {
@@ -102,15 +74,13 @@ const CreateCourse = () => {
                     }
 
                     .card.selected {
-                        background-color: #e2e6ea; /* Change this to your selected background color */
-                        border: 2px solid #e2e6ea; /* Change this to your selected border color */
+                        background-color: #e2e6ea;
+                        border: 2px solid #e2e6ea;
                     }
                 `}
             </style>
-
-
         </>
-    )
-}
+    );
+};
 
 export default CreateCourse;
