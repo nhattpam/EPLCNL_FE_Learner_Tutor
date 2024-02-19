@@ -138,7 +138,7 @@ const EditAssignment = () => {
                         data-upload-preview-template="#uploadPreviewTemplate"
                         data-parsley-validate
                         onSubmit={submitAssignment} >
-                        <div className="card">
+                        <div className="card" style={{marginTop: '-20px'}}>
                           <div className='card-body'>
                             <label htmlFor="video">Time * :</label>
                             <select
