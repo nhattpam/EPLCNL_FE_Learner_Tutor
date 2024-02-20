@@ -96,119 +96,125 @@ const EditCourse = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="card-box">
-                                    <h4 className="header-title">Course Information</h4>
-
-                                    <form id="demo-form" data-parsley-validate>
-                                        <div className="form-group">
-                                            <label htmlFor="name">Course Name * :</label>
-                                            <input type="text" className="form-control" name="name" id="name" value={course.name} readOnly />
+                                    <div className="form-group">
+                                        <h4 className="header-title">Course Information</h4>
+                                        <div className="table-responsive">
+                                            <table className="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Course Name:</th>
+                                                        <td>{course.name}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Code:</th>
+                                                        <td>{course.code}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Price:</th>
+                                                        <td>{course.stockPrice}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Tags:</th>
+                                                        <td>{course.tags}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div className="form-group">
-                                            <label htmlFor="code">Code * :</label>
-                                            <input type="text" id="code" className="form-control" name="code" data-parsley-trigger="change" value={course.code} readOnly />
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label htmlFor="stockPrice">Price * :</label>
-                                            <input type="number" id="stockPrice" className="form-control" name="stockPrice" data-parsley-trigger="change" value={course.stockPrice} readOnly />
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label htmlFor="tags">Tags * :</label>
-                                            <input type="text" id="tags" className="form-control" name="tags" data-parsley-trigger="change" value={course.tags} readOnly />
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label>Modules:</label>
-
-                                            <ul className="list-group">
-                                                {moduleList.map((module) => (
-                                                    <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center">
-                                                        {module.name}
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-secondary btn-sm"
-                                                            onClick={() => handleEditModule(module.id)}
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                    </li>
-                                                ))}
-
-                                                {classModuleList.map((module) => (
-                                                    <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center">
-                                                        {module.startDate !== null ? module.startDate : "No start date"}
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-secondary btn-sm"
-                                                            onClick={() => handleEditClassModule(module.id)}
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-
-                                        {(!course.isOnlineClass) && (
-                                            <div className="form-group mb-2">
-                                                <>
-                                                    {moduleList.length === 0 && (
-                                                        <p>No modules available.</p>
-                                                    )}
-                                                    <Link
-                                                        type="button"
-                                                        className="btn btn-success mr-2"
-                                                        to={`/tutor/courses/create/create-video-course/create-module/${course.id}`}
-                                                    >
-                                                        <i className="bi bi-plus"></i> Create new module
-                                                    </Link>
+                                    </div>
 
 
+                                    <div className="form-group">
+                                        <h5>Modules:</h5>
+
+                                        <ul className="list-group">
+                                            {moduleList.map((module) => (
+                                                <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                                    {module.name}
                                                     <button
-                                                        type="submit"
-                                                        className="btn btn-danger"
-                                                    >
-                                                        <i className="bi bi-x-lg"></i> Request to delete
-                                                    </button>
-                                                </>
-
-
-                                            </div>
-
-                                        )}
-                                        {(course.isOnlineClass) && (
-                                            <div className="form-group mb-2">
-                                                <>
-                                                    {classModuleList.length === 0 && (
-                                                        <p>No modules available.</p>
-                                                    )}
-                                                    <Link
                                                         type="button"
-                                                        className="btn btn-success mr-2"
-                                                        to={`/tutor/courses/create/create-class-course/create-class-module/${course.id}`}
+                                                        onClick={() => handleEditModule(module.id)}
+                                                        className="btn btn-link text-dark"
                                                     >
-                                                        <i className="bi bi-plus"></i> Create new module
-                                                    </Link>
-
-
-                                                    <button
-                                                        type="submit"
-                                                        className="btn btn-danger"
-                                                    >
-                                                        <i className="bi bi-x-lg"></i> Request to delete
+                                                        <i className="far fa-edit"></i>
                                                     </button>
-                                                </>
+                                                </li>
+                                            ))}
+
+                                            {classModuleList.map((module) => (
+                                                <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                                    {module.startDate !== null ? module.startDate : "No start date"}
+                                                    <button
+                                                        type="button"
+                                                        // className="btn btn-secondary btn-sm"
+                                                        className="btn btn-link text-dark"
+                                                        onClick={() => handleEditClassModule(module.id)}
+                                                    >
+                                                        <i className="far fa-edit"></i>
+
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    {(!course.isOnlineClass) && (
+                                        <div className="form-group mb-2">
+                                            <>
+                                                {moduleList.length === 0 && (
+                                                    <p>No modules available.</p>
+                                                )}
+                                                <Link
+                                                    type="button"
+                                                    className="btn btn-success mr-2"
+                                                    to={`/tutor/courses/create/create-video-course/create-module/${course.id}`}
+                                                >
+                                                    <i className="bi bi-plus"></i> Create new module
+                                                </Link>
 
 
-                                            </div>
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-danger"
+                                                >
+                                                    <i className="bi bi-x-lg"></i> Request to delete
+                                                </button>
+                                            </>
 
-                                        )}
+
+                                        </div>
+
+                                    )}
+                                    {(course.isOnlineClass) && (
+                                        <div className="form-group mb-2">
+                                            <>
+                                                {classModuleList.length === 0 && (
+                                                    <p>No modules available.</p>
+                                                )}
+                                                <Link
+                                                    type="button"
+                                                    className="btn btn-success mr-2"
+                                                    to={`/tutor/courses/create/create-class-course/create-class-module/${course.id}`}
+                                                >
+                                                    <i className="bi bi-plus"></i> Create new module
+                                                </Link>
+
+
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-danger"
+                                                >
+                                                    <i className="bi bi-x-lg"></i> Request to delete
+                                                </button>
+                                            </>
+
+
+                                        </div>
+
+                                    )}
 
 
 
 
-                                    </form>
                                 </div> {/* end card-box*/}
                             </div> {/* end col*/}
                         </div>
@@ -235,6 +241,24 @@ const EditCourse = () => {
                         width: 85%;
                         text-align: left;
                     }
+
+                    .grid-container {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        grid-gap: 10px;
+                    }
+                    
+                    .grid-item {
+                        margin-bottom: 15px;
+                    }
+                    
+                    /* Adjustments for small screens */
+                    @media (max-width: 768px) {
+                        .grid-container {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+                    
                 `}
             </style>
         </>

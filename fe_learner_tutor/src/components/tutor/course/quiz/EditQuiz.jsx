@@ -16,7 +16,7 @@ const EditQuiz = () => {
     deadline: "",
     createdDate: "",
     updatedDate: "",
-    module : []
+    module: []
   });
 
 
@@ -75,78 +75,78 @@ const EditQuiz = () => {
             <div className="row">
               <div className="col-12">
                 <div className="card-box">
-                  <h4 className="header-title">Course Information | Module {quiz.module?.name}</h4>
+                  <h4 className="header-title">Quiz Information</h4>
+                  <div className="table-responsive">
+                    <table className="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <th>Quiz Name:</th>
+                          <td>{quiz.name}</td>
+                        </tr>
+                        <tr>
+                          <th>Grade to Pass:</th>
+                          <td>{quiz.gradeToPass}</td>
+                        </tr>
+                        <tr>
+                          <th>Times:</th>
+                          <td>{quiz.deadline}</td>
+                        </tr>
+                        <tr>
+                          <th>Created Date:</th>
+                          <td>{quiz.createdDate}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="form-group">
+                    <h5>Questions:</h5>
 
-                  <form id="demo-form" data-parsley-validate>
-                    <div className="form-group">
-                      <label htmlFor="name">Quiz Name * :</label>
-                      <input type="text" className="form-control" name="name" id="name" value={quiz.name} readOnly />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="code">Grade to pass * :</label>
-                      <input type="number" id="code" className="form-control" name="gradeToPasscode" data-parsley-trigger="change" value={quiz.gradeToPass} readOnly />
-                    </div>
+                    <ul className="list-group">
+                      {questionList.map((question) => (
+                        <li key={question.id} className="list-group-item d-flex justify-content-between align-items-center">
+                          {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-sm"
+                            onClick={() => handleEditQuestion(question.id)}
+                          >
+                            Edit
+                          </button>
+                        </li>
+                      ))}
 
-                    <div className="form-group">
-                      <label htmlFor="stockPrice">Times * :</label>
-                      <input type="number" id="stockPrice" className="form-control" name="stockPrice" data-parsley-trigger="change" value={quiz.deadline} readOnly /> 
-                    </div>
+                    </ul>
+                  </div>
 
-                    <div className="form-group">
-                      <label htmlFor="tags">Created Date * :</label>
-                      <input type="text" id="createdDate" className="form-control" name="createdDate" data-parsley-trigger="change" value={quiz.createdDate} readOnly />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Questions:</label>
-
-                      <ul className="list-group">
-                        {questionList.map((question) => (
-                          <li key={question.id} className="list-group-item d-flex justify-content-between align-items-center">
-                            {question.questionImageUrl} {question.questionAudioUrl} {question.questionText} 
-                            <button
-                              type="button"
-                              className="btn btn-secondary btn-sm"
-                              onClick={() => handleEditQuestion(question.id)}
-                            >
-                              Edit
-                            </button>
-                          </li>
-                        ))}
-
-                      </ul>
-                    </div>
-
-                    <div className="form-group mb-2">
-                      <>
-                        {questionList.length === 0 && (
-                          <p>No questions available.</p>
-                        )}
-                        <Link
-                          type="button"
-                          className="btn btn-success mr-2"
-                          to={`/tutor/courses/create/create-video-course/create-question/${quiz.id}`}
-                        >
-                          <i className="bi bi-plus"></i> Create new question
-                        </Link>
-
-
-                        <button
-                          type="submit"
-                          className="btn btn-danger"
-                        >
-                          <i className="bi bi-x-lg"></i> Request to delete
-                        </button>
-                      </>
+                  <div className="form-group mb-2">
+                    <>
+                      {questionList.length === 0 && (
+                        <p>No questions available.</p>
+                      )}
+                      <Link
+                        type="button"
+                        className="btn btn-success mr-2"
+                        to={`/tutor/courses/create/create-video-course/create-question/${quiz.id}`}
+                      >
+                        <i className="bi bi-plus"></i> Create new question
+                      </Link>
 
 
-                    </div>
+                      <button
+                        type="submit"
+                        className="btn btn-danger"
+                      >
+                        <i className="bi bi-x-lg"></i> Request to delete
+                      </button>
+                    </>
+
+
+                  </div>
 
 
 
 
 
-                  </form>
                 </div> {/* end card-box*/}
               </div> {/* end col*/}
             </div>

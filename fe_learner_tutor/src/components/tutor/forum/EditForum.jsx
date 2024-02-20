@@ -91,7 +91,7 @@ const EditForum = () => {
                                             <ol className="breadcrumb m-0">
                                             </ol>
                                         </div>
-                                        <h4 className="page-title">Forum for course {forum.course?.name}</h4>
+                                        <h4 className="page-title">FORUM OF COURSE - <span className='text-success'>{forum.course?.name}</span></h4>
                                     </div>
                                 </div>
                             </div>

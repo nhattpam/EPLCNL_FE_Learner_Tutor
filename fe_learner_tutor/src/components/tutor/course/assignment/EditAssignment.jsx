@@ -127,7 +127,7 @@ const EditAssignment = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <h4 className="header-title">Create a Video course: Course {module.course?.name} | Module {module.name} </h4>
+                      <h4 className="header-title">COURSE - <span className='text-success'>{module.course?.name}</span> | MODULE - <span className='text-success'>{module.name}</span> </h4>
 
                       <form
                         method="post"
@@ -163,8 +163,8 @@ const EditAssignment = () => {
                           </div>
                         </div>
                         <div className="form-group mb-0  ">
-                          <button type="submit" className="btn btn-primary " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                            Edit
+                          <button type="submit" className="btn btn-warning " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                            <i class="fas fa-check-double"></i> Update
                           </button>
                         </div>
                       </form>

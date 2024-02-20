@@ -92,17 +92,11 @@ const ListLessonMaterial = () => {
                       <div className="row">
                         <div className="col-12 text-sm-center form-inline">
                           {/* Create Tutor Button */}
-                          <Link to={`/tutor/courses/create-lesson-material/${storedLessonId}`} className="btn btn-primary">
-                            Add Material
+                          <Link to={`/tutor/courses/create-lesson-material/${storedLessonId}`} >
+                            <button className="btn btn-success mr-2">
+                              <i className="fas fa-plus-circle"></i> Add
+                            </button>
                           </Link>
-                          <div className="form-group mr-2">
-                            <select id="demo-foo-filter-status" className="custom-select custom-select-sm">
-                              <option value>Show all</option>
-                              <option value="active">Active</option>
-                              <option value="disabled">Disabled</option>
-                              <option value="suspended">Suspended</option>
-                            </select>
-                          </div>
                           <div className="form-group">
                             <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />
                           </div>
@@ -128,39 +122,39 @@ const ListLessonMaterial = () => {
                               <td>{material.createdDate}</td>
                               <td>{material.updatedDate}</td>
                               <td>
-                                <Link to={`/tutor/courses/edit-class-material/${material.id}`}>
+                                <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
                                   <i class="fas fa-trash-alt"></i>
-                              </Link>
-                            </td>
+                                </Link>
+                              </td>
                             </tr>
                           ))}
 
 
-                      </tbody>
+                        </tbody>
 
-                    </table>
+                      </table>
 
-                  </div> {/* end .table-responsive*/}
+                    </div> {/* end .table-responsive*/}
 
-                </div> {/* end card-box */}
-                {currentLessonMaterials.length === 0 && (
-                  <p>No materials yet</p>
-                )}
-              </div> {/* end col */}
-            </div>
-            {/* end row */}
+                  </div> {/* end card-box */}
+                  {currentLessonMaterials.length === 0 && (
+                    <p>No materials yet</p>
+                  )}
+                </div> {/* end col */}
+              </div>
+              {/* end row */}
 
 
 
-          </div> {/* container */}
-        </div> {/* content */}
-      </div>
-      {/* ============================================================== */}
-      {/* End Page content */}
-      {/* ============================================================== */}
+            </div> {/* container */}
+          </div> {/* content */}
+        </div>
+        {/* ============================================================== */}
+        {/* End Page content */}
+        {/* ============================================================== */}
 
-      <Footer />
-    </div >
+        <Footer />
+      </div >
     </>
   )
 }

@@ -11,11 +11,11 @@ import classModuleService from '../../../../services/class-module.service';
 
 const EditTopic = () => {
   const navigate = useNavigate();
-  
+
   const { storedClassTopicId } = useParams();
   const [createdTopics, setCreatedTopics] = useState([]);
 
-  
+
   //create class topic
   const [classTopic, setClassTopic] = useState({
     name: "",
@@ -37,7 +37,7 @@ const EditTopic = () => {
   });
 
 
- 
+
 
   useEffect(() => {
     if (storedClassTopicId) {
@@ -79,15 +79,15 @@ const EditTopic = () => {
   const listTopicsByClassLessonId = async (storedClassLessonId) => {
     try {
       const listClassTopicsByClassLesson = await classLessonService.getAllClassTopicsByClassLesson(storedClassLessonId);
-  
-    //   console.log('this is list:', listClassTopicsByClassLesson.data);
-  
-     setCreatedTopics(listClassTopicsByClassLesson.data);
+
+      //   console.log('this is list:', listClassTopicsByClassLesson.data);
+
+      setCreatedTopics(listClassTopicsByClassLesson.data);
     } catch (error) {
       console.log(error);
     }
   };
-  
+
 
 
 
@@ -132,7 +132,7 @@ const EditTopic = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                         Date {classModule.startDate}
+                        Date - <span className='text-success'>{classModule.startDate}</span>
                       </h4>
                       <form
                         method="post"
@@ -145,6 +145,7 @@ const EditTopic = () => {
                         onSubmit={(e) => submitClassTopic(e)}
                       >
                         <div className="form-group">
+                          <label htmlFor="roomLink">Class Time :</label>
                           <input
                             type="text"
                             className="form-control"
@@ -156,7 +157,7 @@ const EditTopic = () => {
 
 
                         <div className="form-group">
-                          <label htmlFor="roomLink">Room Link * :</label>
+                          <label htmlFor="roomLink">Room Link :</label>
                           <input
                             type="text"
                             className="form-control"
@@ -172,11 +173,11 @@ const EditTopic = () => {
 
                         </div>
                         <div className="form-group">
-                          <label htmlFor="name">Name * :</label>
+                          <label htmlFor="name">Name :</label>
                           <input type="text" className="form-control" name="name" id="name" value={classTopic.name} onChange={(e) => handleChange(e)} />
                         </div>
                         <div className="form-group">
-                          <label htmlFor="code">Description * :</label>
+                          <label htmlFor="code">Description :</label>
                           <input type="text" className="form-control" name="description" id="description" value={classTopic.description} onChange={(e) => handleChange(e)} />
                         </div>
                         {/* <div className="form-group">
@@ -186,22 +187,22 @@ const EditTopic = () => {
                         <div className="form-group mb-0">
                           <button
                             type="submit"
-                            className="btn btn-primary mr-2"
+                            className="btn btn-warning mr-2"
                           >
-                            Update Topic
+                            <i class="fas fa-check-double"></i> Update
                           </button>
                           <button
                             type="button"
                             className="btn btn-secondary mr-2"
                             onClick={handleListTopics}
                           >
-                            List Topics
+                            <i class="fas fa-microchip"></i> List Topics
                           </button>
                           <Link
                             to={`/tutor/courses/list-material-by-topic/${classTopic.id}`}
-                            className="btn btn-warning"
+                            className="btn btn-dark"
                           >
-                            View Materials
+                            <i class="fas fa-file-alt"></i> View Materials
                           </Link>
                         </div>
                       </form>

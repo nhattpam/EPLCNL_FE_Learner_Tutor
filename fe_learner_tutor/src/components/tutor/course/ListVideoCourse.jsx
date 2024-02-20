@@ -82,7 +82,7 @@ const ListVideoCourse = () => {
                                             <ol className="breadcrumb m-0">
                                             </ol>
                                         </div>
-                                        <h4 className="page-title">List course</h4>
+                                        <h4 className="page-title">LIST OF COURSES</h4>
                                     </div>
                                 </div>
                             </div>
@@ -94,17 +94,12 @@ const ListVideoCourse = () => {
                                             <div className="row">
                                                 <div className="col-12 text-sm-center form-inline">
                                                     {/* Create Tutor Button */}
-                                                    <Link to="/tutor/courses/create" className="btn btn-primary">
-                                                        Create Course
+                                                    <Link to="/tutor/courses/create" >
+                                                        <button className="btn btn-success mr-2">
+                                                            <i className="fas fa-plus-circle"></i> Create
+                                                        </button>
                                                     </Link>
-                                                    <div className="form-group mr-2">
-                                                        <select id="demo-foo-filter-status" className="custom-select custom-select-sm">
-                                                            <option value>Show all</option>
-                                                            <option value="active">Active</option>
-                                                            <option value="disabled">Disabled</option>
-                                                            <option value="suspended">Suspended</option>
-                                                        </select>
-                                                    </div>
+
                                                     <div className="form-group">
                                                         <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on"
                                                             value={searchTerm}
@@ -130,8 +125,8 @@ const ListVideoCourse = () => {
                                                     {currentCourses.map((course) => (
                                                         <tr key={course.id}>
                                                             <td>
-                                                                <img src={course.imageUrl} style={{height: '50px', width: '70px'}}></img>
-                                                                </td>
+                                                                <img src={course.imageUrl} style={{ height: '50px', width: '70px' }}></img>
+                                                            </td>
                                                             <td>{course.code}</td>
                                                             <td>{course.name}</td>
                                                             <td>{course.category.name}</td>
@@ -150,7 +145,7 @@ const ListVideoCourse = () => {
                                                                 )}
                                                             </td>
                                                             <td>
-                                                                <Link to={`/tutor/courses/edit-course/${course.id}`}>
+                                                                <Link to={`/tutor/courses/edit-course/${course.id}`} className='text-secondary'>
                                                                     <i className="fa-regular fa-eye"></i>
                                                                 </Link>
                                                             </td>

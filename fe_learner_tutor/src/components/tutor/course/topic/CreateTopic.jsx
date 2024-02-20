@@ -23,7 +23,7 @@ const CreateTopic = () => {
     startDate: '',
   });
 
- 
+
 
   useEffect(() => {
     if (storedClassLessonId) {
@@ -72,15 +72,15 @@ const CreateTopic = () => {
   const listTopicsByClassLessonId = async (storedClassLessonId) => {
     try {
       const listClassTopicsByClassLesson = await classLessonService.getAllClassTopicsByClassLesson(storedClassLessonId);
-  
+
       console.log('this is list:', listClassTopicsByClassLesson.data);
-  
-     setCreatedTopics(listClassTopicsByClassLesson.data);
+
+      setCreatedTopics(listClassTopicsByClassLesson.data);
     } catch (error) {
       console.log(error);
     }
   };
-  
+
 
 
 
@@ -125,7 +125,7 @@ const CreateTopic = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        Create a Class course: Course {classModule.course?.name} | Class {classModule.startDate} | Lesson {classLesson.classHours}
+                        CLASS - <span className='text-success'>{classModule.startDate}</span>  | LESSON - <span className='text-success'>{classLesson.classHours}</span>
                       </h4>
                       <form
                         method="post"
@@ -179,13 +179,13 @@ const CreateTopic = () => {
                         <div className="form-group mb-0">
                           <button
                             type="submit"
-                            className="btn btn-primary mr-2"
+                            className="btn btn-success mr-2"
                           >
-                            Create Topic
+                            <i className="fas fa-plus-circle"></i> Create
                           </button>
                           <button
                             type="button"
-                            className="btn btn-secondary"
+                            className="btn btn-dark"
                             onClick={handleListTopics}
                           >
                             List Topics
@@ -197,9 +197,9 @@ const CreateTopic = () => {
                       <div>
                         <h4>Created Topics:</h4>
                         {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
-                          <ul>
+                          <ul className='text-success'>
                             {createdTopics.map((topic) => (
-                              <li key={topic.id}>Topic: <span style={{fontWeight: 'bold'}}>{topic.name}</span> &nbsp;&nbsp;&nbsp;&nbsp;<span><Link to={`/tutor/courses/list-material-by-topic/${topic.id}`}>View materials</Link></span></li> 
+                              <li key={topic.id}>Topic: <span style={{ fontWeight: 'bold' }}>{topic.name}</span> &nbsp;&nbsp;&nbsp;&nbsp;<span><Link to={`/tutor/courses/list-material-by-topic/${topic.id}`}><span className='text-dark'><i class="fas fa-file-alt"></i> View materials</span></Link></span></li>
                             ))}
                           </ul>
                         ) : (

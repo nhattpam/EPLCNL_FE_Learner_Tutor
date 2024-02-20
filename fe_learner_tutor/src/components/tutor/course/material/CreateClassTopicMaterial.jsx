@@ -8,19 +8,31 @@ import lessonService from '../../../../services/lesson.service';
 import ReactQuill from 'react-quill';
 import Dropzone from 'react-dropzone';
 import lessonMaterialService from '../../../../services/lesson-material.service';
+import classTopicService from '../../../../services/class-topic.service';
 
 const CreateClassTopicMaterial = () => {
 
   const navigate = useNavigate();
 
-  const [module, setModule] = useState({
-    name: "",
+  const [classTopic, setClassTopic] = useState({
+    name: '',
   });
 
   const { storedClassTopicId } = useParams();
 
 
-
+  useEffect(() => {
+    if (storedClassTopicId) {
+      classTopicService
+        .getClassTopicById(storedClassTopicId)
+        .then((res) => {
+          setClassTopic(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [storedClassTopicId]);
   //tao material
   const [material, setMaterial] = useState({
     name: '',
@@ -105,7 +117,7 @@ const CreateClassTopicMaterial = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className='card-body'>
-                      <h4 className="header-title">Add Material For Topic </h4>
+                      <h4 className="header-title">ADD MATERIAL FOR TOPIC - <span className='text-success'>{classTopic.name}</span> </h4>
                       <form
                         method="post"
                         className="dropzone"
@@ -116,7 +128,7 @@ const CreateClassTopicMaterial = () => {
                         data-parsley-validate
                         onSubmit={(e) => submitMaterial(e)}
                       >
-                        <h4 className="header-title mt-4">Information</h4>
+                        <h4 className="header-title">Information</h4>
                         <div className="form-group">
                           <label htmlFor="name">Name * :</label>
                           <input type="text" className="form-control" name="name" id="name" value={material.name} onChange={(e) => handleChange(e)} />
@@ -152,9 +164,10 @@ const CreateClassTopicMaterial = () => {
 
                         <div className="card">
                           <div className='card-body'>
-                            <div className="form-group mb-0">
-                              <button type="submit" className="btn btn-primary">
-                                Continue
+                            <div className="form-group mb-0" style={{marginLeft: '-20px'}}>
+                              <button type="submit" className="btn btn-success">
+                                <i class="fas fa-check-double"></i> Add
+
                               </button>
                             </div>
                           </div>

@@ -52,22 +52,17 @@ const EditLesson = () => {
   });
 
   const handleChangeLesson = (value) => {
-    setLesson({ ...lesson, questionText: value });
+    setLesson({ ...lesson, reading: value });
   };
 
   const validateForm = () => {
     let isValid = true;
     const errors = {};
 
-    if (lesson.questionText.trim() === '') {
-      errors.questionText = 'Question is required';
+    if (lesson.reading.trim() === '') {
+      errors.reading = 'Reading is required';
       isValid = false;
     }
-    if (!lesson.deadline) {
-      errors.deadline = 'Time is required';
-      isValid = false;
-    }
-
     setErrors(errors);
     return isValid;
   };
@@ -106,7 +101,7 @@ const EditLesson = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <h4 className="header-title">Edit Video Course: Course {module.course?.name} | Module {module.name}</h4>
+                      <h4 className="header-title">EDITING LESSON <span className='text-success'>{lesson.name}</span></h4>
 
                       <form
                         method="post"
@@ -137,6 +132,7 @@ const EditLesson = () => {
                           <div className='card-body'>
                             <label htmlFor="video">Reading * :</label>
                             <ReactQuill
+                              name="reading"
                               value={lesson.reading}
                               onChange={handleChangeLesson}
                               style={{ height: '300px' }}
@@ -145,11 +141,12 @@ const EditLesson = () => {
                         </div>
 
                         <div className="form-group mb-0  ">
-                          <button type="submit" className="btn btn-primary " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                            Edit
+                          <button type="submit" className="btn btn-warning " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                            <i class="fas fa-check-double"></i> Update
+
                           </button>
-                          <Link to={`/tutor/courses/list-material-by-lesson/${lesson.id}`} className="btn btn-warning " style={{ marginLeft: '20px', marginTop: '10px' }} >
-                            View Materials
+                          <Link to={`/tutor/courses/list-material-by-lesson/${lesson.id}`} className="btn btn-dark " style={{ marginLeft: '10px', marginTop: '10px' }} >
+                            <i class="fas fa-file-alt"></i> View Materials
                           </Link>
                         </div>
                       </form>

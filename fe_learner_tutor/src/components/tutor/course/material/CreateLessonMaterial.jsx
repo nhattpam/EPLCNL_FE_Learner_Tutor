@@ -13,14 +13,26 @@ const CreateClassMaterial = () => {
 
   const navigate = useNavigate();
 
-  const [module, setModule] = useState({
+  const [lesson, setLesson] = useState({
     name: "",
   });
+
 
   const { storedLessonId } = useParams();
 
 
-
+  useEffect(() => {
+    if (storedLessonId) {
+      lessonService
+        .getLessonById(storedLessonId)
+        .then((res) => {
+          setLesson(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [storedLessonId]);
   //tao material
   const [material, setMaterial] = useState({
     name: '',
@@ -105,7 +117,7 @@ const CreateClassMaterial = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className='card-body'>
-                      <h4 className="header-title">Add Material For Lesson </h4>
+                      <h4 className="header-title">ADD MATERIAL FOR LESSON <span className='text-success'>{lesson.name}</span></h4>
                       <form
                         method="post"
                         className="dropzone"
@@ -152,9 +164,10 @@ const CreateClassMaterial = () => {
 
                         <div className="card">
                           <div className='card-body'>
-                            <div className="form-group mb-0">
-                              <button type="submit" className="btn btn-primary">
-                                Continue
+                            <div className="form-group mb-0" style={{marginLeft: '-20px'}}>
+                              <button type="submit" className="btn btn-success">
+                                <i class="fas fa-check-double"></i> Add
+
                               </button>
                             </div>
                           </div>

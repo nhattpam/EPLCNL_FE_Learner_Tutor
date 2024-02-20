@@ -59,12 +59,16 @@ const EditClassModule = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="card-box">
-                                    <h4 className="header-title">Course {module.course?.name} | Class Information</h4>
+                                    <h4 className="header-title">COURSE -
+                                        <span className='text-success'> {module.course?.name} </span>
+                                        | CLASS INFORMATION</h4>
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="form-group">
-                                            <label htmlFor="name">Start Time * :</label>
-                                            <input type="text" className="form-control" name="startDate" id="startDate" value={module.startDate} readOnly />
+                                            <h5 htmlFor="name">Start Time :</h5>
+                                            <ul>
+                                                {module.startDate}
+                                            </ul>
                                         </div>
 
                                         <div className="form-group">
@@ -75,7 +79,7 @@ const EditClassModule = () => {
                                         </div>
 
                                         <div className="form-group">
-                                            <h5>Class Url</h5>
+                                            <h5>Class Url:</h5>
                                             <ul>
                                                 {module.classLesson.classUrl}
                                             </ul>
@@ -87,7 +91,7 @@ const EditClassModule = () => {
                                             {classTopicList.map((classTopic) => (
                                                 <ul>
                                                     {classTopic.name} &nbsp;
-                                                    <Link to={`/tutor/courses/edit-topic/${classTopic.id}`}>  <i class="fa-regular fa-eye"></i></Link>
+                                                    <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>  <i class="fa-regular fa-eye"></i></Link>
                                                 </ul>
                                             ))}
 

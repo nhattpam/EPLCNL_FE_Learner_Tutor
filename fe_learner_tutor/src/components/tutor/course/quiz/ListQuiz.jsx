@@ -89,7 +89,7 @@ const ListQuiz = () => {
                                             <ol className="breadcrumb m-0">
                                             </ol>
                                         </div>
-                                        <h4 className="page-title">List Quiz Of Module {module.name}</h4>
+                                        <h4 className="page-title">QUIZZES OF MODULE - <span className='text-success'>{module.name}</span></h4>
                                     </div>
                                 </div>
                             </div>
@@ -101,15 +101,12 @@ const ListQuiz = () => {
                                             <div className="row">
                                                 <div className="col-12 text-sm-center form-inline">
                                                     <div className="form-group mr-2">
-                                                    <Link to={`/tutor/courses/create/create-video-course/create-quiz/${storedModuleId}`} className="btn btn-primary">
-                                                        Create
-                                                    </Link>
-                                                        <select id="demo-foo-filter-status" className="custom-select custom-select-sm">
-                                                            <option value>Show all</option>
-                                                            <option value="active">Active</option>
-                                                            <option value="disabled">Disabled</option>
-                                                            <option value="suspended">Suspended</option>
-                                                        </select>
+                                                        <Link to={`/tutor/courses/create/create-video-course/create-quiz/${storedModuleId}`}>
+                                                            <button className="btn btn-success">
+                                                                <i className="fas fa-plus-circle"></i> Create
+                                                            </button>
+                                                        </Link>
+                                                        
                                                     </div>
                                                     <div className="form-group">
                                                         <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />
@@ -138,7 +135,7 @@ const ListQuiz = () => {
                                                             <td>{quiz.createdDate}</td>
                                                             <td>{quiz.updatedDate}</td>
                                                             <td>
-                                                                <Link to={`/tutor/courses/edit-quiz/${quiz.id}`}>
+                                                                <Link to={`/tutor/courses/edit-quiz/${quiz.id}`} className='text-secondary'>
                                                                     <i class="fa-regular fa-eye"></i>
                                                                 </Link>
                                                             </td>

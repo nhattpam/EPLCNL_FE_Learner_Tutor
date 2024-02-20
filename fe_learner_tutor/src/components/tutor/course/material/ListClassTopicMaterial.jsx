@@ -16,6 +16,9 @@ const ListClassTopicMaterial = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [materialsPerPage] = useState(5);
 
+  const [classTopic, setClassTopic] = useState({
+    name: '',
+  });
 
   const [lessonMaterial, setLessonMaterial] = useState({
     name: '',
@@ -23,6 +26,19 @@ const ListClassTopicMaterial = () => {
     createdDate: '',
     updatedDate: ''
   });
+
+  useEffect(() => {
+    if (storedClassTopicId) {
+      classTopicService
+        .getClassTopicById(storedClassTopicId)
+        .then((res) => {
+          setClassTopic(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [storedClassTopicId]);
 
   useEffect(() => {
     if (storedClassTopicId) {
@@ -79,7 +95,7 @@ const ListClassTopicMaterial = () => {
                       <ol className="breadcrumb m-0">
                       </ol>
                     </div>
-                    {/* <h4 className="page-title">List Topic Of Lesson {classLesson.classHours}</h4> */}
+                    <h4 className="page-title">MATERIALS OF TOPIC - <span className='text-success'>{classTopic.name}</span> </h4>
                   </div>
                 </div>
               </div>
@@ -91,17 +107,12 @@ const ListClassTopicMaterial = () => {
                       <div className="row">
                         <div className="col-12 text-sm-center form-inline">
                           {/* Create Tutor Button */}
-                          <Link to={`/tutor/courses/create-class-material/${storedClassTopicId}`} className="btn btn-primary">
-                            Add Material
+                          <Link to={`/tutor/courses/create-class-material/${storedClassTopicId}`} >
+                            <button className="btn btn-success mr-2">
+                              <i className="fas fa-plus-circle"></i> Create
+                            </button>
                           </Link>
-                          <div className="form-group mr-2">
-                            <select id="demo-foo-filter-status" className="custom-select custom-select-sm">
-                              <option value>Show all</option>
-                              <option value="active">Active</option>
-                              <option value="disabled">Disabled</option>
-                              <option value="suspended">Suspended</option>
-                            </select>
-                          </div>
+                         
                           <div className="form-group">
                             <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />
                           </div>
@@ -127,39 +138,39 @@ const ListClassTopicMaterial = () => {
                               <td>{material.createdDate}</td>
                               <td>{material.updatedDate}</td>
                               <td>
-                                <Link to={`/tutor/courses/edit-class-material/${material.id}`}>
+                                <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
                                   <i class="fas fa-trash-alt"></i>
-                              </Link>
-                            </td>
+                                </Link>
+                              </td>
                             </tr>
                           ))}
 
 
-                      </tbody>
+                        </tbody>
 
-                    </table>
+                      </table>
 
-                  </div> {/* end .table-responsive*/}
+                    </div> {/* end .table-responsive*/}
 
-                </div> {/* end card-box */}
-                {currentLessonMaterials.length === 0 && (
-                  <p>No materials yet</p>
-                )}
-              </div> {/* end col */}
-            </div>
-            {/* end row */}
+                  </div> {/* end card-box */}
+                  {currentLessonMaterials.length === 0 && (
+                    <p>No materials yet</p>
+                  )}
+                </div> {/* end col */}
+              </div>
+              {/* end row */}
 
 
 
-          </div> {/* container */}
-        </div> {/* content */}
-      </div>
-      {/* ============================================================== */}
-      {/* End Page content */}
-      {/* ============================================================== */}
+            </div> {/* container */}
+          </div> {/* content */}
+        </div>
+        {/* ============================================================== */}
+        {/* End Page content */}
+        {/* ============================================================== */}
 
-      <Footer />
-    </div >
+        <Footer />
+      </div >
     </>
   )
 }
