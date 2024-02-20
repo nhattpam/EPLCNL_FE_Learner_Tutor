@@ -6,7 +6,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import quizService from '../../../../services/quiz.service';
 import questionService from '../../../../services/question.service';
 import questionAnswerService from '../../../../services/question-answer.service';
-import WaveSurfer from 'wavesurfer.js';
 
 
 const EditQuestion = () => {

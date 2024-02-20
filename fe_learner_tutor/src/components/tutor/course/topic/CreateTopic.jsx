@@ -138,6 +138,7 @@ const CreateTopic = () => {
                         onSubmit={(e) => submitClassTopic(e)}
                       >
                         <div className="form-group">
+                        <label htmlFor="classHours">Class Hours * :</label>
                           <input
                             type="text"
                             className="form-control"
@@ -214,7 +215,6 @@ const CreateTopic = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
 
       <style>

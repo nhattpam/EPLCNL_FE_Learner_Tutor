@@ -120,7 +120,6 @@ const CreateClassCourseModule = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
 
       <style>

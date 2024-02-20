@@ -169,7 +169,6 @@ const ListClassTopicMaterial = () => {
         {/* End Page content */}
         {/* ============================================================== */}
 
-        <Footer />
       </div >
     </>
   )

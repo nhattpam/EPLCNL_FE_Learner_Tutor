@@ -170,7 +170,6 @@ const CreateQuiz = () => {
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
 
             <style>

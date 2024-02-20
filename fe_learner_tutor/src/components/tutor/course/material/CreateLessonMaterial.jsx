@@ -180,7 +180,6 @@ const CreateClassMaterial = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
 
       <style>

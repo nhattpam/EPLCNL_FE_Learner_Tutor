@@ -112,7 +112,6 @@ const EditClassModule = () => {
                         {/* end row*/}
                     </div> {/* container */}
                 </div>
-                <Footer />
             </div>
             <style>
                 {`

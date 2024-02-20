@@ -132,12 +132,12 @@ const EditQuiz = () => {
                       </Link>
 
 
-                      <button
+                      {/* <button
                         type="submit"
                         className="btn btn-danger"
                       >
                         <i className="bi bi-x-lg"></i> Request to delete
-                      </button>
+                      </button> */}
                     </>
 
 
@@ -154,7 +154,6 @@ const EditQuiz = () => {
 
           </div> {/* container */}
         </div>
-        <Footer />
       </div>
       <style>
         {`

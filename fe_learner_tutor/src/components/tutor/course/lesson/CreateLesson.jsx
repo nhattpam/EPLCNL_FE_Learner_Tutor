@@ -216,7 +216,6 @@ const CreateLesson = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
 
       <style>

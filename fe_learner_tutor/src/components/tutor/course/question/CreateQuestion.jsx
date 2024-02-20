@@ -278,7 +278,6 @@ const CreateQuestion = () => {
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
 
             <style>

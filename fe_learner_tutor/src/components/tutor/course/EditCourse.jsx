@@ -97,7 +97,7 @@ const EditCourse = () => {
                             <div className="col-12">
                                 <div className="card-box">
                                     <div className="form-group">
-                                        <h4 className="header-title">Course Information</h4>
+                                        <h4 className="header-title">COURSE INFORMATION</h4>
                                         <div className="table-responsive">
                                             <table className="table table-bordered">
                                                 <tbody>
@@ -224,7 +224,6 @@ const EditCourse = () => {
 
                     </div> {/* container */}
                 </div>
-                <Footer />
             </div>
             <style>
                 {`

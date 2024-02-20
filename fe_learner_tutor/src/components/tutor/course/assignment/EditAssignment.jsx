@@ -178,7 +178,6 @@ const EditAssignment = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
 
       <style>

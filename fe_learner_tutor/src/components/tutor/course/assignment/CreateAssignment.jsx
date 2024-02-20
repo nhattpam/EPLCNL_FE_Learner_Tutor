@@ -171,7 +171,6 @@ const CreateAssignment = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
 
       <style>

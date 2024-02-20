@@ -205,7 +205,6 @@ const CreateQuestionAnswer = () => {
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
 
             <style>

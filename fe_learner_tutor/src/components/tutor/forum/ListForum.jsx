@@ -81,7 +81,7 @@ const ListForum = () => {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="card-box">
-                                        <div className="mb-2">
+                                        {/* <div className="mb-2">
                                             <div className="row">
                                                 <div className="col-12 text-sm-center form-inline">
                                                     <div className="form-group">
@@ -89,7 +89,7 @@ const ListForum = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="table-responsive">
                                             <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
                                                 <thead>

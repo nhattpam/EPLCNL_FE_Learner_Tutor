@@ -5,6 +5,9 @@ import Header from '../../Header'
 import Sidebar from '../../Sidebar'
 import { Link } from 'react-router-dom'
 import moduleService from '../../../../services/module.service';
+import ReactPaginate from 'react-paginate';
+import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
+
 
 const ListAssignment = () => {
 
@@ -147,7 +150,29 @@ const ListAssignment = () => {
                             </div>
                             {/* end row */}
 
-
+                            <div className='container-fluid'>
+                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                                    <ReactPaginate
+                                        previousLabel={<AiFillCaretLeft style={{ color: "#000", fontSize: "14px" }} />}
+                                        nextLabel={<AiFillCaretRight style={{ color: "#000", fontSize: "14px" }} />}
+                                        breakLabel={'...'}
+                                        breakClassName={'page-item'}
+                                        breakLinkClassName={'page-link'}
+                                        pageCount={pageCount}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={handlePageClick}
+                                        containerClassName={'pagination'}
+                                        activeClassName={'active'}
+                                        previousClassName={'page-item'}
+                                        nextClassName={'page-item'}
+                                        pageClassName={'page-item'}
+                                        previousLinkClassName={'page-link'}
+                                        nextLinkClassName={'page-link'}
+                                        pageLinkClassName={'page-link'}
+                                    />
+                                </div>
+                            </div>
 
                         </div> {/* container */}
                     </div> {/* content */}
@@ -156,8 +181,15 @@ const ListAssignment = () => {
                 {/* End Page content */}
                 {/* ============================================================== */}
 
-                <Footer />
             </div>
+            <style>
+                {`
+                .page-item.active .page-link{
+                    background-color: #20c997;
+                    border-color: #20c997;
+                }
+            `}
+            </style>
         </>
     )
 }

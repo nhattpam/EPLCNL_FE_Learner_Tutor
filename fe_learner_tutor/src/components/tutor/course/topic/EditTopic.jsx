@@ -228,7 +228,6 @@ const EditTopic = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
 
       <style>

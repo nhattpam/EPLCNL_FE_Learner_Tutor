@@ -63,7 +63,6 @@ const CreateCourse = () => {
                     </div>
                 </div>
 
-                <Footer />
             </div>
 
             <style>
