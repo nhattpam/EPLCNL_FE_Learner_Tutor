@@ -188,7 +188,7 @@ const CreateTopic = () => {
                             className="btn btn-dark"
                             onClick={handleListTopics}
                           >
-                            List Topics
+                            <i class="fas fa-microchip"></i> List Topics
                           </button>
                         </div>
                       </form>

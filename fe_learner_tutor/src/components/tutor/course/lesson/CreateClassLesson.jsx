@@ -101,7 +101,7 @@ const CreateClassLesson = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        Create a Class course: Course ABC | Class {module.startDate}
+                        CLASS DATE - <span className='text-success'>{module.startDate}</span> 
                       </h4>
                       <form
                         method="post"
@@ -160,10 +160,11 @@ const CreateClassLesson = () => {
                         <div className="form-group mb-0">
                           <button
                             type="submit"
-                            className="btn btn-primary"
+                            className="btn btn-success"
                             onClick={handleSubmit}
                           >
-                            Continue
+                            <i class="fas fa-forward"></i> Continue
+
                           </button>
                         </div>
                       </form>

@@ -95,7 +95,7 @@ const CreateClassCourseModule = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <h4 className="header-title">Create a Class course: Course {course.name}</h4>
+                      <h4 className="header-title">COURSE - <span className='text-success'>{course.name}</span> </h4>
                       <form onSubmit={(e) => submitModule(e)}>
                         <div className="form-group">
                           <label htmlFor="moduleName">Class Date:</label> &nbsp;
@@ -108,11 +108,8 @@ const CreateClassCourseModule = () => {
                           />
                         </div>
                         <div className="form-group mb-0">
-                          <button
-                            type="submit" // Change type to submit
-                            className="btn btn-primary"
-                          >
-                            Create Lesson
+                          <button type="submit" className="btn btn-success">
+                            <i class="fas fa-forward"></i> Continue
                           </button>
                         </div>
                       </form>

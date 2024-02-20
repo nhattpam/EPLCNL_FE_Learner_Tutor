@@ -147,9 +147,9 @@ const CreateClassCourse = () => {
                 const courseJsonParse = JSON.parse(courseJson);
 
                 // navigate(`/tutor/course/list-course-by-tutor/${tutorId}`);
-                 //create forum with courseId
-                 const forumData = { ...forum, courseId:  courseJsonParse.id};
-                 await forumService.saveForum(forumData)
+                //create forum with courseId
+                const forumData = { ...forum, courseId: courseJsonParse.id };
+                await forumService.saveForum(forumData)
                 handleContinue(courseJsonParse.id);
             } catch (error) {
                 console.log(error);
@@ -177,7 +177,7 @@ const CreateClassCourse = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="header-title">Create a Video course</h4>
+                                        <h4 className="header-title">CREATING A COURSE ...</h4>
 
                                             {/* Combined Form and Image Upload */}
                                             <form
@@ -217,37 +217,78 @@ const CreateClassCourse = () => {
                                                 <h4 className="header-title mt-4">Information</h4>
                                                 <div className="form-group">
                                                     <label htmlFor="name">Course name * :</label>
-                                                    <input type="text" className="form-control" name="name" id="name" value={course.name} onChange={(e) => handleChange(e)} />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="code">Code * :</label>
-                                                    <input type="text" className="form-control" name="code" id="code" value={course.code} onChange={(e) => handleChange(e)} />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="categoryId">Category *:</label>
-                                                    <select
+                                                    <input
+                                                        type="text"
                                                         className="form-control"
-                                                        id="categoryId"
-                                                        name="categoryId"
-                                                        value={course.categoryId}
-                                                        onChange={handleChange}
-                                                    >
-                                                        <option value="">Select Category</option>
-                                                        {categoryList.map((cate) => (
-                                                            <option key={cate.id} value={cate.id}>
-                                                                {cate ? cate.name : 'Unknown Category'}
-                                                            </option>
-                                                        ))}
+                                                        name="name"
+                                                        id="name"
+                                                        value={course.name}
+                                                        onChange={(e) => handleChange(e)}
+                                                    />
+                                                </div>
+                                                <div className="form-row">
+                                                    <div className="form-group col-md-6">
+                                                        <label htmlFor="code">Code * :</label>
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            name="code"
+                                                            id="code"
+                                                            value={course.code}
+                                                            onChange={(e) => handleChange(e)}
+                                                            style={{ width: "100%" }}
+                                                        />
+                                                    </div>
+                                                    <div className="form-group col-md-6">
+                                                        <label htmlFor="categoryId">Category *:</label>
+                                                        <select
+                                                            className="form-control"
+                                                            id="categoryId"
+                                                            name="categoryId"
+                                                            value={course.categoryId}
+                                                            onChange={handleChange}
+                                                            style={{ width: "100%" }}
+                                                        >
+                                                            <option value="">Select Category</option>
+                                                            {categoryList.map((cate) => (
+                                                                <option key={cate.id} value={cate.id}>
+                                                                    {cate ? cate.name : "Unknown Category"}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    <div className="form-group col-md-6">
+                                                        <label htmlFor="stockPrice">Price * :</label>
+                                                        <div className="input-group">
+                                                            <input
+                                                                type="number"
+                                                                id="stockPrice"
+                                                                className="form-control"
+                                                                name="stockPrice"
+                                                                data-parsley-trigger="change"
+                                                                value={course.stockPrice}
+                                                                onChange={(e) => handleChange(e)}
+                                                                style={{ width: "60%" }} // Adjusted width to accommodate "USD"
+                                                            />
+                                                            <div className="input-group-append">
+                                                                <span className="input-group-text">USD</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                    </select>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="stockPrice">Price * :</label>
-                                                    <input type="number" id="stockPrice" className="form-control" name="stockPrice" data-parsley-trigger="change" value={course.stockPrice} onChange={(e) => handleChange(e)} />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="tags">Tags * :</label>
-                                                    <input type="text" id="tags" className="form-control" name="tags" data-parsley-trigger="change" value={course.tags} onChange={(e) => handleChange(e)} />
+                                                    <div className="form-group col-md-6">
+                                                        <label htmlFor="tags">Tags * :</label>
+                                                        <input
+                                                            type="text"
+                                                            id="tags"
+                                                            className="form-control"
+                                                            name="tags"
+                                                            data-parsley-trigger="change"
+                                                            value={course.tags}
+                                                            onChange={(e) => handleChange(e)}
+                                                            style={{ width: "100%" }}
+                                                        />
+                                                    </div>
                                                 </div>
 
                                                 <div className="form-group">
@@ -266,10 +307,9 @@ const CreateClassCourse = () => {
                                                     />
                                                 </div>
                                                 <div className="form-group mb-0">
-                                                    <button type="submit" className="btn btn-primary" >
-                                                        Continue
+                                                    <button type="submit" className="btn btn-success">
+                                                        <i class="fas fa-forward"></i> Continue
                                                     </button>
-
                                                 </div>
                                             </form>
 
