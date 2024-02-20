@@ -115,7 +115,9 @@ const EditCourse = () => {
                                                     </tr>
                                                     <tr>
                                                         <th>Tags:</th>
-                                                        <td>{course.tags}</td>
+                                                        <td>
+                                                            <span className="badge label-table badge-warning">{course.tags}</span>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

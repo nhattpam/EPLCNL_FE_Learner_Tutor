@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Header from '../../Header';
 import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
@@ -6,6 +6,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import quizService from '../../../../services/quiz.service';
 import questionService from '../../../../services/question.service';
 import questionAnswerService from '../../../../services/question-answer.service';
+import WaveSurfer from 'wavesurfer.js';
+
 
 const EditQuestion = () => {
 
@@ -25,6 +27,9 @@ const EditQuestion = () => {
 
 
     const { questionId } = useParams();
+
+    const wavesurferRef = useRef(null);
+
 
     useEffect(() => {
         if (questionId) {
@@ -83,29 +88,47 @@ const EditQuestion = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="card-box">
-                                    <h4 className="header-title">Course Information</h4>
+                                    <h4 className="header-title">QUESTION INFORMATION</h4>
 
                                     <form id="demo-form" data-parsley-validate>
-                                        <div className="form-group">
-                                            <label htmlFor="name">Question Text * :</label>
-                                            <input type="text" className="form-control" name="questionText" id="questionText" value={question.questionText} readOnly />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="name">Question Image * :</label>
-                                            <input type="text" className="form-control" name="questionImageUrl" id="questionImageUrl" value={question.questionImageUrl} readOnly />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="name">Question Audio * :</label>
-                                            <input type="text" className="form-control" name="questionAudioUrl" id="questionAudioUrl" value={question.questionAudioUrl} readOnly />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="code">Grade * :</label>
-                                            <input type="number" id="code" className="form-control" name="gradeToPasscode" data-parsley-trigger="change" value={question.defaultGrade} readOnly />
-                                        </div>
+                                        <div className="table-responsive">
+                                            <table className="table table-bordered">
+                                                <tbody>
+                                                    {question.questionText !== "" && (
+                                                        <tr>
+                                                            <th>Question Text</th>
+                                                            <td dangerouslySetInnerHTML={{ __html: question.questionText }} />
+                                                        </tr>
+                                                    )}
 
-                                        <div className="form-group">
-                                            <label htmlFor="tags">Created Date * :</label>
-                                            <input type="text" id="createdDate" className="form-control" name="createdDate" data-parsley-trigger="change" value={question.createdDate} readOnly />
+                                                    {question.questionImageUrl != "" && (
+                                                        <tr>
+                                                            <th>Question Image</th>
+                                                            <td><img src={question.questionImageUrl} style={{ width: '300px', height: '150px' }}></img></td>
+                                                        </tr>
+                                                    )}
+                                                    {question.questionAudioUrl !== "" && (
+                                                        <tr>
+                                                            <th>Question Audio</th>
+                                                            <td>
+                                                                <audio controls>
+                                                                    <source src={question.questionAudioUrl} type="audio/mpeg" />
+                                                                    Your browser does not support the audio element.
+                                                                </audio>
+                                                            </td>
+                                                        </tr>
+                                                    )}
+
+                                                    <tr>
+                                                        <th>Grade</th>
+                                                        <td>{question.defaultGrade}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Created Date</th>
+                                                        <td>{question.createdDate}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
 
                                         <div className="form-group">
@@ -144,7 +167,7 @@ const EditQuestion = () => {
                                                     type="submit"
                                                     className="btn btn-danger"
                                                 >
-                                                    <i className="bi bi-x-lg"></i> Request to delete
+                                                    <i className="bi bi-x-lg"></i> Delete Question
                                                 </button>
                                             </>
 

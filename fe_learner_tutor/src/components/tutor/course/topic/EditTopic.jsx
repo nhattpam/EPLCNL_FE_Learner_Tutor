@@ -132,7 +132,7 @@ const EditTopic = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        Date - <span className='text-success'>{classModule.startDate}</span>
+                        DATE - <span className='text-success'>{classModule.startDate}</span>
                       </h4>
                       <form
                         method="post"

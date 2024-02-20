@@ -29,6 +29,7 @@
     "scripts": "^0.1.0",
     "styletron-engine-monolithic": "^1.0.0",
     "styletron-react": "^6.1.1",
+    "wavesurfer.js": "^7.7.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

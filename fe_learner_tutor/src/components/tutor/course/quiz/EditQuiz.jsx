@@ -75,7 +75,7 @@ const EditQuiz = () => {
             <div className="row">
               <div className="col-12">
                 <div className="card-box">
-                  <h4 className="header-title">Quiz Information</h4>
+                  <h4 className="header-title">QUIZ INFORMATION</h4>
                   <div className="table-responsive">
                     <table className="table table-bordered">
                       <tbody>
@@ -107,10 +107,10 @@ const EditQuiz = () => {
                           {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
                           <button
                             type="button"
-                            className="btn btn-secondary btn-sm"
+                            className="btn btn-link btn-sm text-secondary"
                             onClick={() => handleEditQuestion(question.id)}
                           >
-                            Edit
+                            <i class="fa-regular fa-eye"></i>
                           </button>
                         </li>
                       ))}
