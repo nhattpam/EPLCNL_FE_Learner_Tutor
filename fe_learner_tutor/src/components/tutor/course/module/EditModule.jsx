@@ -100,25 +100,39 @@ const EditModule = () => {
                                         <p>{module.name}</p>
                                     </div>
 
-                                    <div className="mb-3">
-                                        <h5>Assignments ({assignmentList.length || 0})</h5>
-                                        <Link to={`/tutor/courses/list-assignment/${module.id}`} className='text-success'>
-                                            View All
-                                        </Link>
-                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card custom-card">
+                                                <div className="card-body">
+                                                    <h5 className="card-title">Assignments ({assignmentList.length || 0})</h5>
+                                                    <p className="card-text">
+                                                        <Link to={`/tutor/courses/list-assignment/${module.id}`} className='btn btn-success btn-sm'>View All</Link>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                    <div className="mb-3">
-                                        <h5>Lessons ({lessonList.length || 0})</h5>
-                                        <Link to={`/tutor/courses/list-lesson/${module.id}`} className='text-success'>
-                                            View All
-                                        </Link>
-                                    </div>
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card custom-card">
+                                                <div className="card-body">
+                                                    <h5 className="card-title">Lessons ({lessonList.length || 0})</h5>
+                                                    <p className="card-text">
+                                                        <Link to={`/tutor/courses/list-assignment/${module.id}`} className='btn btn-success btn-sm'>View All</Link>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                    <div className="mb-3">
-                                        <h5>Quizzes ({quizList.length || 0})</h5>
-                                        <Link to={`/tutor/courses/list-quiz/${module.id}`} className='text-success'>
-                                            View All
-                                        </Link>
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card custom-card">
+                                                <div className="card-body">
+                                                    <h5 className="card-title">Quizzes ({quizList.length || 0})</h5>
+                                                    <p className="card-text">
+                                                        <Link to={`/tutor/courses/list-quiz/${module.id}`} className='btn btn-success btn-sm'>View All</Link>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div> {/* end card-box*/}
                             </div> {/* end col*/}
