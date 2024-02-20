@@ -113,7 +113,7 @@ const EditLesson = () => {
                         data-parsley-validate
                         onSubmit={submitLesson}>
 
-                        <div className="card">
+                        <div className="card" style={{marginTop: '-20px'}}>
                           <div className='card-body'>
                             <label htmlFor="video">Video Url * :</label>
                             <input type="text" className="form-control" name="videoUrl" id="videoUrl" value={lesson.videoUrl} readOnly />

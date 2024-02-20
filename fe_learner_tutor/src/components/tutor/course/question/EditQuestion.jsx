@@ -121,7 +121,7 @@ const EditQuestion = () => {
 
                                                     <tr>
                                                         <th>Grade</th>
-                                                        <td>{question.defaultGrade}</td>
+                                                        <td><span className="badge label-table badge-danger">{question.defaultGrade}</span></td>
                                                     </tr>
                                                     <tr>
                                                         <th>Created Date</th>

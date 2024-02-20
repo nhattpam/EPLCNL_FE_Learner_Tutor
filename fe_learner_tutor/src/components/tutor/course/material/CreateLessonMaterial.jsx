@@ -117,7 +117,7 @@ const CreateClassMaterial = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className='card-body'>
-                      <h4 className="header-title">ADD MATERIAL FOR LESSON <span className='text-success'>{lesson.name}</span></h4>
+                      <h4 className="header-title">ADD MATERIAL FOR LESSON - <span className='text-success'>{lesson.name}</span></h4>
                       <form
                         method="post"
                         className="dropzone"
@@ -128,7 +128,7 @@ const CreateClassMaterial = () => {
                         data-parsley-validate
                         onSubmit={(e) => submitMaterial(e)}
                       >
-                        <h4 className="header-title mt-4">Information</h4>
+                        <h4 className="header-title">Information</h4>
                         <div className="form-group">
                           <label htmlFor="name">Name * :</label>
                           <input type="text" className="form-control" name="name" id="name" value={material.name} onChange={(e) => handleChange(e)} />
