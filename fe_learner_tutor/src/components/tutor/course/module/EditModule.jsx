@@ -117,7 +117,7 @@ const EditModule = () => {
                                                 <div className="card-body">
                                                     <h5 className="card-title">Lessons ({lessonList.length || 0})</h5>
                                                     <p className="card-text">
-                                                        <Link to={`/tutor/courses/list-assignment/${module.id}`} className='btn btn-success btn-sm'>View All</Link>
+                                                        <Link to={`/tutor/courses/list-lesson/${module.id}`} className='btn btn-success btn-sm'>View All</Link>
                                                     </p>
                                                 </div>
                                             </div>
