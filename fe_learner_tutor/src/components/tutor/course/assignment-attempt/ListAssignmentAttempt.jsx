@@ -90,7 +90,7 @@ const ListAssignmentAttempt = () => {
                                         <div className="mb-2">
                                             <div className="row">
                                                 <div className="col-12 text-sm-center form-inline">
-                                                    <div className="form-group mr-2">
+                                                    <div className="form-group">
                                                     </div>
                                                     <div className="form-group">
                                                         <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />
@@ -113,15 +113,14 @@ const ListAssignmentAttempt = () => {
                                                 <tbody>
                                                     {currentAssignmentAttempts.map((assignmentAttempt) => (
                                                         <tr key={assignmentAttempt.id}>
-                                                            <td>{assignmentAttempt.assignmentId}</td>
-                                                            <td>{assignmentAttempt.learnerId}</td>
+                                                            <td>{assignmentAttempt.assignment.questionText}</td>
+                                                            <td>{assignmentAttempt.learner.account.fullName}</td>
                                                             <td>{assignmentAttempt.answerText}</td>
                                                             <td>{assignmentAttempt.attemptedDate}</td>
-                                                            <td>{assignmentAttempt.totalGrade}</td>
+                                                            <td><span className="badge label-table badge-danger">{assignmentAttempt.totalGrade}</span></td>
                                                             <td>
-                                                                <Link to={`/edit-assignment-attempt/${assignmentAttempt.id}`} className='text-secondary'>
-                                                                    <i class="fa-regular fa-eye"></i>
-                                                                </Link>
+                                                                <Link to={`/edit-assignment-attempt/${assignmentAttempt.id}`} className='text-warning'>
+                                                                    <i class="fas fa-star-half-alt"></i>                                                                </Link>
                                                             </td>
                                                         </tr>
                                                     ))}

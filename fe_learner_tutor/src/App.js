@@ -47,6 +47,7 @@ import Invoice from './components/payment/Invoice';
 import ListForum from './components/tutor/forum/ListForum';
 import EditForum from './components/tutor/forum/EditForum';
 import ListAssignmentAttempt from './components/tutor/course/assignment-attempt/ListAssignmentAttempt';
+import EditAssignmentAttempt from './components/tutor/course/assignment-attempt/EditAssignmentAttempt';
 
 function App() {
   return (
@@ -114,6 +115,7 @@ function App() {
 
         {/* assignment attempt */}
         <Route path="/list-assignment-attempt/:tutorId" element={<ListAssignmentAttempt />} />
+        <Route path="/edit-assignment-attempt/:assignmentAttemptId" element={<EditAssignmentAttempt />} />
 
       </Routes>
     </div>
