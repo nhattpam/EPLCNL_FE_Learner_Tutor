@@ -90,15 +90,8 @@ const Sidebar = () => {
                                 <div className="collapse" id="sidebarEcommerce">
                                     <ul className="nav-second-level">
                                         <li>
-                                            <Link to={"/list-staff"}>Staff</Link>
+                                            <Link to={`/list-assignment-attempt/${tutorId}`}>Assignment</Link>
                                         </li>
-                                        <li>
-                                            <Link to={"/list-tutor"}>Tutor</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={"/list-learner"}>Learner</Link>
-                                        </li>
-
                                     </ul>
                                 </div>
                             </li>

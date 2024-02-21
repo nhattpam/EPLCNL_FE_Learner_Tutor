@@ -61,5 +61,13 @@ class TutorService {
       }
     });
   }
+
+  getAllAssignmentAttemptsByTutor(id) {
+    return axios.get(`${API_URL}/tutors/${id}/assignment-attempts`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new TutorService;

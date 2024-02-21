@@ -46,6 +46,7 @@ import PaymentCallBack from './components/payment/PaymentCallBack';
 import Invoice from './components/payment/Invoice';
 import ListForum from './components/tutor/forum/ListForum';
 import EditForum from './components/tutor/forum/EditForum';
+import ListAssignmentAttempt from './components/tutor/course/assignment-attempt/ListAssignmentAttempt';
 
 function App() {
   return (
@@ -110,6 +111,10 @@ function App() {
         {/* forum */}
         <Route path="/list-forum/:tutorId" element={<ListForum />} />
         <Route path="/edit-forum/:forumId" element={<EditForum />} />
+
+        {/* assignment attempt */}
+        <Route path="/list-assignment-attempt/:tutorId" element={<ListAssignmentAttempt />} />
+
       </Routes>
     </div>
   );
