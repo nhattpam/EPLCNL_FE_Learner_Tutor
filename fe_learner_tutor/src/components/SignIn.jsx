@@ -85,8 +85,12 @@ const SignIn = ({ setIsLoggedIn }) => {
 
                         // Access centerId from localStorage
                         localStorage.setItem('tutorId', matchedTutor.id);
+                        //luu accountId
+                        localStorage.setItem('accountId', decodedToken.Id);
                         const storedTutorId = localStorage.getItem('tutorId');
+                        const storedAccountId = localStorage.getItem('accountId');
                         console.log("This is tutorId from localStorage:", storedTutorId);
+                        console.log("This is accountId from localStorage:", storedAccountId);
                     } else {
                         console.log("No matching center found for the given accountId");
                     }

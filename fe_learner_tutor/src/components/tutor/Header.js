@@ -1,10 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import accountService from '../../services/account.service';
 
 const Header = () => {
 
+    const accountId = localStorage.getItem('accountId');
+
 
     const navigate = useNavigate();
+
+    const [account, setAccount] = useState({
+        email: "",
+        password: "",
+        fullName: "",
+        phoneNumber: "",
+        imageUrl: ""
+      });
+
+      useEffect(() => {
+        if (accountId) {
+            accountService
+                .getAccountById(accountId)
+                .then((res) => {
+                    setAccount(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [accountId]);
+
 
     const handleLogout = () => {
         // Clear user session or perform any necessary logout actions
@@ -64,12 +89,12 @@ const Header = () => {
 
                         <li className="dropdown notification-list topbar-dropdown">
                             <a className="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                <img src={`https://static.thenounproject.com/png/3324336-200.png`} alt="user-image" className="rounded-circle" />
+                                <img src={account.imageUrl} alt="user-image" className="rounded-circle" />
                             </a>
                             <div className="dropdown-menu dropdown-menu-right profile-dropdown ">
                                 {/* item*/}
                                 <div className="dropdown-header noti-title">
-                                    <h6 className="text-overflow m-0">Welcome !</h6>
+                                    <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
                                 </div>
                                 {/* item*/}
                                 <a href="javascript:void(0);" className="dropdown-item notify-item">
