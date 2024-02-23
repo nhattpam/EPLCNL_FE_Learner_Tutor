@@ -73,7 +73,7 @@ const ListForum = () => {
                                             <ol className="breadcrumb m-0">
                                             </ol>
                                         </div>
-                                        <h4 className="page-title">FORUMS</h4>
+                                        <h4 className="page-title">LIST OF FORUMS</h4>
                                     </div>
                                 </div>
                             </div>
@@ -94,15 +94,15 @@ const ListForum = () => {
                                             <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
                                                 <thead>
                                                     <tr>
-                                                        <th data-toggle="true">Forum Id</th>
+                                                        <th data-toggle="true">No.</th>
                                                         <th>Course</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {currentForums.map((forum) => (
+                                                    {currentForums.map((forum, index) => (
                                                         <tr key={forum.id}>
-                                                            <td>{forum.id}</td>
+                                                            <td>{index+1}</td>
                                                             <td>{forum.course.name}</td>
                                                             <td>
                                                                 <Link to={`/edit-forum/${forum.id}`} className='text-secondary'>

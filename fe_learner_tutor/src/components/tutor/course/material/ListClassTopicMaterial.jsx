@@ -124,7 +124,7 @@ const ListClassTopicMaterial = () => {
                         <thead>
                           <tr>
                             <th data-toggle="true">Material Name</th>
-                            <th>Url</th>
+                            {/* <th>Url</th> */}
                             <th data-hide="phone">Created Date</th>
                             <th data-hide="phone, tablet">Updated Date</th>
                             <th>Action</th>
@@ -134,7 +134,7 @@ const ListClassTopicMaterial = () => {
                           {currentLessonMaterials.map((material) => (
                             <tr key={material.id}>
                               <td>{material.name}</td>
-                              <td>{material.materialUrl}</td>
+                              {/* <td>{material.materialUrl}</td> */}
                               <td>{material.createdDate}</td>
                               <td>{material.updatedDate}</td>
                               <td>

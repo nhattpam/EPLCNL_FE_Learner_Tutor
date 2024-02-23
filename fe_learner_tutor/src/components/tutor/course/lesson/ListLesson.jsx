@@ -133,18 +133,20 @@ const ListLesson = () => {
                                             <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
                                                 <thead>
                                                     <tr>
+                                                        <th data-toggle="true">No.</th>
                                                         <th data-toggle="true">Lesson Name</th>
-                                                        <th>Video Url</th>
+                                                        {/* <th>Video Url</th> */}
                                                         <th data-hide="phone">Created Date</th>
                                                         <th data-hide="phone, tablet">Updated Date</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {currentLessons.map((lesson) => (
+                                                    {currentLessons.map((lesson, index) => (
                                                         <tr key={lesson.id}>
+                                                            <td>{index+1}</td>
                                                             <td>{lesson.name}</td>
-                                                            <td>{lesson.videoUrl}</td>
+                                                            {/* <td>{lesson.videoUrl}</td> */}
                                                             <td>{lesson.createdDate}</td>
                                                             <td>{lesson.updatedDate}</td>
                                                             <td>

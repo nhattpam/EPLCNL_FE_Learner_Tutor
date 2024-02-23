@@ -59,6 +59,16 @@ const ListAssignmentAttempt = () => {
     const offset = currentPage * assignmentAttemptPerPage;
     const currentAssignmentAttempts = filteredAssignmentAttempts.slice(offset, offset + assignmentAttemptPerPage);
 
+
+    // Function to truncate text
+    const truncateText = (text) => {
+        const maxLength = 50; // You can adjust this value as needed
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + "..."; // Truncate text if it exceeds maxLength
+        } else {
+            return text;
+        }
+    };
     return (
         <>
             <div id="wrapper">
@@ -102,6 +112,7 @@ const ListAssignmentAttempt = () => {
                                             <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
                                                 <thead>
                                                     <tr>
+                                                        <th>No.</th>
                                                         <th data-toggle="true">Assignment Question</th>
                                                         <th>Learner</th>
                                                         <th>Learner Answer</th>
@@ -111,11 +122,13 @@ const ListAssignmentAttempt = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {currentAssignmentAttempts.map((assignmentAttempt) => (
+                                                    {currentAssignmentAttempts.map((assignmentAttempt, index) => (
                                                         <tr key={assignmentAttempt.id}>
-                                                            <td>{assignmentAttempt.assignment.questionText}</td>
+                                                            <td>{index + 1}</td>
+                                                            <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.assignment.questionText) }}></td>
+
                                                             <td>{assignmentAttempt.learner.account.fullName}</td>
-                                                            <td>{assignmentAttempt.answerText}</td>
+                                                            <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.answerText) }}></td>
                                                             <td>{assignmentAttempt.attemptedDate}</td>
                                                             <td><span className="badge label-table badge-danger">{assignmentAttempt.totalGrade}</span></td>
                                                             <td>

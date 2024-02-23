@@ -112,6 +112,7 @@ const ListVideoCourse = () => {
                                             <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
                                                 <thead>
                                                     <tr>
+                                                        <th>No.</th>
                                                         <th data-hide="phone">Image</th>
                                                         <th>CODE</th>
                                                         <th data-toggle="true">Course Name</th>
@@ -122,8 +123,9 @@ const ListVideoCourse = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {currentCourses.map((course) => (
+                                                    {currentCourses.map((course, index) => (
                                                         <tr key={course.id}>
+                                                            <td>{index+1}</td>
                                                             <td>
                                                                 <img src={course.imageUrl} style={{ height: '50px', width: '70px' }}></img>
                                                             </td>

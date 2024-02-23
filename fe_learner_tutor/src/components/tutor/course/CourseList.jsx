@@ -72,7 +72,7 @@ const CourseList = () => {
                                                             <i className="fas fa-plus-circle"></i> Create
                                                         </button>
                                                     </Link>
-                                                   
+
                                                     <div className="form-group">
                                                         <input type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" value={searchTerm} onChange={handleSearch} />
                                                     </div>
@@ -83,6 +83,7 @@ const CourseList = () => {
                                             <table className="table table-bordered table-centered mb-0">
                                                 <thead>
                                                     <tr>
+                                                        <th>No.</th>
                                                         <th>Image</th>
                                                         <th>CODE</th>
                                                         <th>Course Name</th>
@@ -93,8 +94,9 @@ const CourseList = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {currentCourses.map((course) => (
+                                                    {currentCourses.map((course, index) => (
                                                         <tr key={course.id}>
+                                                            <td>{index + 1}</td>
                                                             <td><img src={course.imageUrl} style={{ height: '50px', width: '70px' }} alt={course.name} /></td>
                                                             <td>{course.code}</td>
                                                             <td>{course.name}</td>
