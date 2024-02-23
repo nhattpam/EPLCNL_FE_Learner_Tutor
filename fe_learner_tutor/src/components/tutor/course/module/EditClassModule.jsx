@@ -15,8 +15,10 @@ const EditClassModule = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const [searchTerm, setSearchTerm] = useState('');
     const [classTopicList, setClassTopicList] = useState([]);
-
+    const [currentPage, setCurrentPage] = useState(0);
+    const [classTopicsPerPage] = useState(2);
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
     const { moduleId } = useParams();
@@ -53,7 +55,20 @@ const EditClassModule = () => {
     const goBack = () => {
         navigate(-1); // Go back one step in history
     };
-    
+
+    const filteredClassTopics = classTopicList
+    .filter((classTopic) => {
+      return (
+        classTopic.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+
+      );
+    });
+    const pageCount = Math.ceil(filteredClassTopics.length / classTopicsPerPage);
+
+
+    const offset = currentPage * classTopicsPerPage;
+    const currentClassTopics = filteredClassTopics.slice(offset, offset + classTopicsPerPage);
+
     return (
         <>
             <div id="wrapper">
@@ -94,12 +109,50 @@ const EditClassModule = () => {
                                         <div className="form-group">
                                             <h5>Topics</h5>
 
-                                            {classTopicList.map((classTopic) => (
+                                            {/* {classTopicList.map((classTopic) => (
                                                 <ul>
                                                     {classTopic.name} &nbsp;
                                                     <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>  <i class="fa-regular fa-eye"></i></Link>
                                                 </ul>
-                                            ))}
+
+                                            ))} */}
+                                            <div className="table-responsive">
+                                                <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
+                                                    <thead>
+                                                        <tr>
+                                                            <th data-toggle="true">No.</th>
+                                                            <th data-toggle="true">Topic Name</th>
+                                                            <th>Description</th>
+                                                            <th data-hide="phone">Created Date</th>
+                                                            <th data-hide="phone, tablet">Updated Date</th>
+                                                            <th>Action</th>
+                                                            {/* <th>Quizzes</th> */}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {currentClassTopics.map((classTopic, index) => (
+                                                            <tr key={classTopic.id}>
+                                                                <td>{index + 1}</td>
+                                                                <td>{classTopic.name}</td>
+                                                                <td>{classTopic.description}</td>
+                                                                <td>{classTopic.createdDate}</td>
+                                                                <td>{classTopic.updatedDate}</td>
+                                                                <td>
+                                                                    <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>
+                                                                        <i class="fa-regular fa-eye"></i>
+                                                                    </Link>
+                                                                </td>
+                                                                {/* <td>
+                                                                    <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>
+                                                                        <i class="fa-regular fa-eye"></i>
+                                                                    </Link>
+                                                                </td> */}
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+
+                                                </table>
+                                            </div> {/* end .table-responsive*/}
 
                                         </div>
 

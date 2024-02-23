@@ -184,7 +184,8 @@ const CreateClassTopicQuestion = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="header-title">Topic - <span className='text-success'>{quiz.classTopic?.name}</span> | QUIZ - <span className='text-success'>{quiz.name}</span></h4>
+                                            <h4 className="header-title">Topic - <span className='text-success'>{quiz.classTopic?.name}</span> | QUIZ -
+                                             <span className='text-success'>{quiz.name}</span> | CREATING QUESTION...</h4>
 
                                             <form
                                                 method="post"

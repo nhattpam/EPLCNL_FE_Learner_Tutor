@@ -4,13 +4,13 @@ import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import quizService from '../../../../services/quiz.service';
+import { Button } from 'bootstrap';
 
 const EditClassTopicQuiz = () => {
 
   const [quiz, setQuiz] = useState({
     moduleId: "",
     classTopicId: "",
-    classPracticeId: "",
     name: "",
     gradeToPass: "",
     deadline: "",
@@ -102,18 +102,49 @@ const EditClassTopicQuiz = () => {
                     <h5>Questions:</h5>
 
                     <ul className="list-group">
-                      {questionList.map((question) => (
-                        <li key={question.id} className="list-group-item d-flex justify-content-between align-items-center">
-                          {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
-                          <button
-                            type="button"
-                            className="btn btn-link btn-sm text-secondary"
-                            onClick={() => handleEditQuestion(question.id)}
-                          >
-                            <i class="fa-regular fa-eye"></i>
-                          </button>
-                        </li>
-                      ))}
+                      {/* <li key={question.id} className="list-group-item d-flex justify-content-between align-items-center">
+                        {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
+                        <button
+                          type="button"
+                          className="btn btn-link btn-sm text-secondary"
+                          onClick={() => handleEditQuestion(question.id)}
+                        >
+                          <i class="fa-regular fa-eye"></i>
+                        </button>
+                      </li> */}
+
+
+                      <div className="table-responsive">
+                        <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
+                          <thead>
+                            <tr>
+                              <th data-toggle="true">No.</th>
+                              <th data-toggle="true">Question</th>
+                              <th>Grade</th>
+                              <th data-hide="phone">Created Date</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {questionList.map((question, index) => (
+                              <tr key={question.id}>
+                                <td>{index + 1}</td>
+                                <td>
+                                  {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
+                                </td>
+                                <td>{question.gradeToPass}</td>
+                                <td>{question.createdDate}</td>
+                                <td>
+                                  <Link to={`/tutor/courses/edit-topic-question/${question.id}`} className='text-secondary'>
+                                    <i class="fa-regular fa-eye"></i>
+                                  </Link>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+
+                        </table>
+                      </div>
 
                     </ul>
                   </div>
@@ -129,6 +160,11 @@ const EditClassTopicQuiz = () => {
                         to={`/tutor/courses/create/create-class-course/create-topic-question/${quiz.id}`}
                       >
                         <i className="bi bi-plus"></i> Create new question
+                      </Link>
+
+                      <Link to={`/tutor/courses/edit-topic/${quiz.classTopicId}`} className="btn btn-black"  >
+                        <i class="fas fa-long-arrow-alt-left"></i> Back to Topic Information
+
                       </Link>
 
 

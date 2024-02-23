@@ -20,7 +20,9 @@ const EditTopic = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage2, setCurrentPage2] = useState(0);
   const [quizsPerPage] = useState(2);
+  const [materialsPerPage] = useState(2);
 
   //create class topic
   const [classTopic, setClassTopic] = useState({
@@ -126,6 +128,33 @@ const EditTopic = () => {
   const offset = currentPage * quizsPerPage;
   const currentQuizs = filteredQuizs.slice(offset, offset + quizsPerPage);
 
+  //list materials by topic
+  const [materialList, setMaterialList] = useState([]);
+
+  const filteredLessonMaterials = materialList
+    .filter((material) => {
+      return (
+        material.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+
+      );
+    });
+
+  useEffect(() => {
+    if (storedClassTopicId) {
+      classTopicService
+        .getAllMaterialsByClassTopic(storedClassTopicId)
+        .then((res) => {
+          setMaterialList(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [storedClassTopicId]);
+
+
+  const offset2 = currentPage2 * materialsPerPage;
+  const currentLessonMaterials = filteredLessonMaterials.slice(offset, offset + materialsPerPage);
 
 
   const submitClassTopic = async (e) => {
@@ -236,17 +265,26 @@ const EditTopic = () => {
                             <i class="fas fa-microchip"></i> List Topics
                           </button>
                           <Link
-                            to={`/tutor/courses/list-material-by-topic/${classTopic.id}`}
-                            className="btn btn-dark"
+                            to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
+                            className="btn btn-black"
                           >
-                            <i class="fas fa-file-alt"></i> View Materials
+                            <i class="fas fa-long-arrow-alt-left"></i> Back to Class Information
                           </Link>
                         </div>
                       </form>
 
                       {/* Display created topics */}
                       <div>
-                        <h4>Created Quizzes:</h4>
+                        <div className="row">
+                          <div className="col-md-2">
+                            <h4>Created Quizzes:</h4>
+                          </div>
+                          <div className="col-md-6">
+                            <Link to={`/tutor/courses/create/create-class-course/create-quiz/${storedClassTopicId}`}>
+                              <h4>  <i className="fas fa-plus-circle text-warning"></i></h4>
+                            </Link>
+                          </div>
+                        </div>
                         {/* {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
                           <ul>
                             {createdTopics.map((topic) => (
@@ -274,8 +312,8 @@ const EditTopic = () => {
                                 <tr key={quiz.id}>
                                   <td>{index + 1}</td>
                                   <td>{quiz.name}</td>
-                                  <td> 
-                                     <span className="badge label-table badge-success">{quiz.gradeToPass} </span>
+                                  <td>
+                                    <span className="badge label-table badge-success">{quiz.gradeToPass} </span>
                                   </td>
                                   <td>{quiz.deadline}</td>
                                   <td>{quiz.createdDate}</td>
@@ -290,6 +328,61 @@ const EditTopic = () => {
                             </tbody>
 
                           </table>
+                        </div> {/* end .table-responsive*/}
+                      </div>
+
+                      <div>
+                        <div className="row">
+                          <div className="col-md-2">
+                            <h4>Created Materials:</h4>
+                          </div>
+                          <div className="col-md-6">
+                            <Link to={`/tutor/courses/create-class-material/${storedClassTopicId}`}>
+                              <h4>  <i className="fas fa-plus-circle text-warning"></i></h4>
+                            </Link>
+                          </div>
+                        </div>
+
+                        {/* {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
+                          <ul>
+                            {createdTopics.map((topic) => (
+                              <li key={topic.id}>{topic.name}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>No topics created yet.</p>
+                        )} */}
+                        <div className="table-responsive">
+                          <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
+                            <thead>
+                              <tr>
+                                <th data-toggle="true">Material Name</th>
+                                {/* <th>Url</th> */}
+                                <th data-hide="phone">Created Date</th>
+                                <th data-hide="phone, tablet">Updated Date</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {currentLessonMaterials.map((material) => (
+                                <tr key={material.id}>
+                                  <td>{material.name}</td>
+                                  {/* <td>{material.materialUrl}</td> */}
+                                  <td>{material.createdDate}</td>
+                                  <td>{material.updatedDate}</td>
+                                  <td>
+                                    <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
+                                      <i class="fas fa-trash-alt"></i>
+                                    </Link>
+                                  </td>
+                                </tr>
+                              ))}
+
+
+                            </tbody>
+
+                          </table>
+
                         </div> {/* end .table-responsive*/}
                       </div>
                       <div className='container-fluid'>
