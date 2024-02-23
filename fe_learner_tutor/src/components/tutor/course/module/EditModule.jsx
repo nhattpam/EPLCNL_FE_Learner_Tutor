@@ -81,6 +81,8 @@ const EditModule = () => {
         navigate(`/edit-module/${moduleId}`);
     };
 
+   
+
     return (
         <>
             <div id="wrapper">
@@ -135,7 +137,15 @@ const EditModule = () => {
                                         </div>
                                     </div>
                                 </div> {/* end card-box*/}
+                                <Link
+                                    type="button"
+                                    className="btn btn-black mr-2"
+                                    to={`/tutor/courses/edit-course/${module.courseId}`}
+                                >
+                                    <i class="fas fa-long-arrow-alt-left"></i> Back to Course Infomation
+                                </Link>
                             </div> {/* end col*/}
+
                         </div>
                         {/* end row*/}
                     </div> {/* container */}

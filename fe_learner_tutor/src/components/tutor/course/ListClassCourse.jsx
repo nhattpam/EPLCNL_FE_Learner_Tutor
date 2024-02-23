@@ -61,7 +61,7 @@ const ListClassCourse = () => {
     const offset = currentPage * coursesPerPage;
     const currentCourses = filteredCourses.slice(offset, offset + coursesPerPage);
 
-
+    
     return (
         <>
             <div id="wrapper">

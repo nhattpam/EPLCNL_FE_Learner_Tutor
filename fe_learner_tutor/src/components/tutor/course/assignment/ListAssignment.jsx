@@ -72,6 +72,9 @@ const ListAssignment = () => {
     const offset = currentPage * assignmentsPerPage;
     const currentAssignments = filteredAssignments.slice(offset, offset + assignmentsPerPage);
 
+
+   
+
     return (
         <>
             <div id="wrapper">

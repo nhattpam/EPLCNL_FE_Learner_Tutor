@@ -85,6 +85,8 @@ const EditCourse = () => {
         // Add logic to navigate to the module edit page with the moduleId
         navigate(`/tutor/courses/edit-class-module/${moduleId}`);
     };
+
+    
     return (
         <>
             <div id="wrapper">

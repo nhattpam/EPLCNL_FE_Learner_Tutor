@@ -21,6 +21,7 @@ const EditClassModule = () => {
     const navigate = useNavigate();
     const { moduleId } = useParams();
 
+
     useEffect(() => {
         if (moduleId) {
             classModuleService
@@ -48,6 +49,11 @@ const EditClassModule = () => {
             });
     }, [module.classLesson.id]);
 
+
+    const goBack = () => {
+        navigate(-1); // Go back one step in history
+    };
+    
     return (
         <>
             <div id="wrapper">
@@ -104,6 +110,14 @@ const EditClassModule = () => {
                                             >
                                                 <i className="bi bi-plus"></i> Create new topic
                                             </Link>
+
+                                            <button
+                                                type="button"
+                                                className="btn btn-black mr-2"
+                                                onClick={goBack}
+                                            >
+                                                <i className="fas fa-long-arrow-alt-left"></i> Back to Course Infomation
+                                            </button>
                                         </div>
                                     </form>
                                 </div> {/* end card-box*/}

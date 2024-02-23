@@ -46,6 +46,20 @@ const CourseList = () => {
     const offset = currentPage * coursesPerPage;
     const currentCourses = filteredCourses.slice(offset, offset + coursesPerPage);
 
+    useEffect(() => {
+        // Prevent going back
+        window.history.pushState(null, null, window.location.pathname);
+        window.addEventListener('popstate', handleBackButtonEvent);
+
+        return () => {
+            window.removeEventListener('popstate', handleBackButtonEvent);
+        };
+    }, []);
+
+    const handleBackButtonEvent = (event) => {
+        window.history.pushState(null, null, window.location.pathname);
+    };
+
     return (
         <>
             <div id="wrapper">

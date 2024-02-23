@@ -71,6 +71,8 @@ const ListLesson = () => {
     const offset = currentPage * lessonsPerPage;
     const currentLessons = filteredLessons.slice(offset, offset + lessonsPerPage);
 
+
+
     return (
         <>
             <div id="wrapper">

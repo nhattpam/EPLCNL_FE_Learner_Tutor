@@ -71,6 +71,21 @@ const ListQuiz = () => {
     const offset = currentPage * quizsPerPage;
     const currentQuizs = filteredQuizs.slice(offset, offset + quizsPerPage);
 
+
+    useEffect(() => {
+        // Prevent going back
+        window.history.pushState(null, null, window.location.pathname);
+        window.addEventListener('popstate', handleBackButtonEvent);
+
+        return () => {
+            window.removeEventListener('popstate', handleBackButtonEvent);
+        };
+    }, []);
+
+    const handleBackButtonEvent = (event) => {
+        window.history.pushState(null, null, window.location.pathname);
+    };
+
     return (
         <>
             <div id="wrapper">
