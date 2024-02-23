@@ -103,12 +103,23 @@ const ListQuiz = () => {
                                             <div className="row">
                                                 <div className="col-12 text-sm-center form-inline">
                                                     <div className="form-group mr-2">
+                                                        <Link to={`/tutor/courses/create/create-video-course/create-module/module-part/${storedModuleId}`} className='text-danger'>
+                                                            <i class="fas fa-layer-group"></i>
+                                                        </Link>
+
+                                                    </div>
+                                                    <div className="form-group mr-2">
+                                                        <Link to={`/tutor/courses/edit-module/${storedModuleId}`} className='text-warning'>
+                                                            <i class="fas fa-info-circle"></i>                                                        </Link>
+
+                                                    </div>
+                                                    <div className="form-group mr-2">
                                                         <Link to={`/tutor/courses/create/create-video-course/create-quiz/${storedModuleId}`}>
                                                             <button className="btn btn-success">
                                                                 <i className="fas fa-plus-circle"></i> Create
                                                             </button>
                                                         </Link>
-                                                        
+
                                                     </div>
                                                     <div className="form-group">
                                                         <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />

@@ -101,8 +101,9 @@ const CreateClassLesson = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        CLASS DATE - <span className='text-success'>{module.startDate}</span> 
+                        CLASS DATE - <span className='text-success'>{module.startDate.substring(0, 10)}</span>
                       </h4>
+
                       <form
                         method="post"
                         className="dropzone"

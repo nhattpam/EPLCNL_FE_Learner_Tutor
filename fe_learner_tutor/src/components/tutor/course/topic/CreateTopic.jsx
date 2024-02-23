@@ -125,7 +125,7 @@ const CreateTopic = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        CLASS - <span className='text-success'>{classModule.startDate}</span>  | LESSON - <span className='text-success'>{classLesson.classHours}</span>
+                        CLASS - <span className='text-success'>{classModule.startDate.substring(0, 10)}</span>  | LESSON - <span className='text-success'>{classLesson.classHours}</span>
                       </h4>
                       <form
                         method="post"

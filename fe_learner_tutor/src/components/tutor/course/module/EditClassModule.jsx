@@ -67,7 +67,7 @@ const EditClassModule = () => {
                                         <div className="form-group">
                                             <h5 htmlFor="name">Start Time :</h5>
                                             <ul>
-                                                {module.startDate}
+                                                {module.startDate.substring(0, 10)}
                                             </ul>
                                         </div>
 
