@@ -48,6 +48,12 @@ import ListForum from './components/tutor/forum/ListForum';
 import EditForum from './components/tutor/forum/EditForum';
 import ListAssignmentAttempt from './components/tutor/course/assignment-attempt/ListAssignmentAttempt';
 import EditAssignmentAttempt from './components/tutor/course/assignment-attempt/EditAssignmentAttempt';
+import CreateClassTopicQuiz from './components/tutor/course/quiz/CreateClassTopicQuiz';
+import CreateClassTopicQuestion from './components/tutor/course/question/CreateClassTopicQuestion';
+import CreateClassTopicAnswer from './components/tutor/course/question-answer/CreateClassTopicAnswer';
+import ListClassTopicQuiz from './components/tutor/course/quiz/ListClassTopicQuiz';
+import EditClassTopicQuiz from './components/tutor/course/quiz/EditClassTopicQuiz';
+import EditClassTopicQuestion from './components/tutor/course/question/EditClassTopicQuestion';
 
 function App() {
   return (
@@ -98,6 +104,13 @@ function App() {
         <Route path="/tutor/courses/create/create-class-course/create-topic/:storedClassLessonId" element={<CreateTopic />} />
         <Route path="/tutor/courses/create/create-class-course/list-topic/:storedClassLessonId" element={<ListTopic />} />
         <Route path="/tutor/courses/edit-topic/:storedClassTopicId" element={<EditTopic />} />
+        <Route path="/tutor/courses/create/create-class-course/create-quiz/:storedClassTopicId" element={<CreateClassTopicQuiz />} />
+        <Route path="/tutor/courses/edit-topic-quiz/:quizId" element={<EditClassTopicQuiz />} />
+        <Route path="/tutor/courses/create/create-class-course/create-topic-question/:storedQuizId" element={<CreateClassTopicQuestion />} />
+        <Route path="/tutor/courses/edit-topic-question/:questionId" element={<EditClassTopicQuestion />} />
+        <Route path="/tutor/courses/create/create-class-course/create-topic-question-answer/:storedQuestionId" element={<CreateClassTopicAnswer />} />
+        <Route path="/tutor/courses/list-topic-quiz/:storedClassTopicId" element={<ListClassTopicQuiz />} />
+
         <Route path="/tutor/courses/edit-class-module/:moduleId" element={<EditClassModule />} />
         <Route path="/tutor/courses/create-class-material/:storedClassTopicId" element={<CreateClassTopicMaterial />} />
         <Route path="/tutor/courses/list-material-by-topic/:storedClassTopicId" element={<ListClassTopicMaterial />} />

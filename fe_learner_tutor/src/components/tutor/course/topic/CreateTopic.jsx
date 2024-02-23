@@ -125,7 +125,7 @@ const CreateTopic = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        CLASS - <span className='text-success'>{classModule.startDate.substring(0, 10)}</span>  | LESSON - <span className='text-success'>{classLesson.classHours}</span>
+                        CLASS - <span className='text-success'>{classModule.startDate?.substring(0, 10)}</span>  | LESSON - <span className='text-success'>{classLesson.classHours}</span>
                       </h4>
                       <form
                         method="post"
@@ -138,7 +138,7 @@ const CreateTopic = () => {
                         onSubmit={(e) => submitClassTopic(e)}
                       >
                         <div className="form-group">
-                        <label htmlFor="classHours">Class Hours * :</label>
+                          <label htmlFor="classHours">Class Hours * :</label>
                           <input
                             type="text"
                             className="form-control"
@@ -200,7 +200,17 @@ const CreateTopic = () => {
                         {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
                           <ul className='text-success'>
                             {createdTopics.map((topic) => (
-                              <li key={topic.id}>Topic: <span style={{ fontWeight: 'bold' }}>{topic.name}</span> &nbsp;&nbsp;&nbsp;&nbsp;<span><Link to={`/tutor/courses/list-material-by-topic/${topic.id}`}><span className='text-dark'><i class="fas fa-file-alt"></i> View materials</span></Link></span></li>
+                              <li key={topic.id}>Topic: <span style={{ fontWeight: 'bold' }}>{topic.name}</span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>
+                                  <Link to={`/tutor/courses/list-material-by-topic/${topic.id}`}>
+                                    <span className='text-dark mr-2'><i class="fas fa-file-alt"></i> View materials</span></Link>
+                                </span>
+                                <Link to={`/tutor/courses/create/create-class-course/create-quiz/${topic.id}`}>
+                                  <span className='text-warning'><i class="fas fa-long-arrow-alt-right"></i> Create Quiz</span>
+                                </Link>
+
+                              </li>
                             ))}
                           </ul>
                         ) : (
@@ -214,8 +224,8 @@ const CreateTopic = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div >
+      </div >
 
       <style>
         {`

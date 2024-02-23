@@ -8,13 +8,19 @@ import 'react-datepicker/dist/react-datepicker.css';
 import classLessonService from '../../../../services/class-lesson.service';
 import classTopicService from '../../../../services/class-topic.service';
 import classModuleService from '../../../../services/class-module.service';
+import ReactPaginate from 'react-paginate';
+import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 
 const EditTopic = () => {
   const navigate = useNavigate();
 
   const { storedClassTopicId } = useParams();
   const [createdTopics, setCreatedTopics] = useState([]);
+  const [quizList, setQuizList] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+  const [quizsPerPage] = useState(2);
 
   //create class topic
   const [classTopic, setClassTopic] = useState({
@@ -88,6 +94,37 @@ const EditTopic = () => {
     }
   };
 
+
+  //list quizzes by topic
+  useEffect(() => {
+    classTopicService
+      .getAllQuizzesByClassTopic(storedClassTopicId)
+      .then((res) => {
+        console.log(res.data);
+        setQuizList(res.data);
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [storedClassTopicId]);
+
+  const filteredQuizs = quizList
+    .filter((quiz) => {
+      return (
+        quiz.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+
+      );
+    });
+
+  const pageCount = Math.ceil(filteredQuizs.length / quizsPerPage);
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
+
+  const offset = currentPage * quizsPerPage;
+  const currentQuizs = filteredQuizs.slice(offset, offset + quizsPerPage);
 
 
 
@@ -209,8 +246,8 @@ const EditTopic = () => {
 
                       {/* Display created topics */}
                       <div>
-                        <h4>Created Topics:</h4>
-                        {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
+                        <h4>Created Quizzes:</h4>
+                        {/* {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
                           <ul>
                             {createdTopics.map((topic) => (
                               <li key={topic.id}>{topic.name}</li>
@@ -218,9 +255,66 @@ const EditTopic = () => {
                           </ul>
                         ) : (
                           <p>No topics created yet.</p>
-                        )}
-                      </div>
+                        )} */}
+                        <div className="table-responsive">
+                          <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
+                            <thead>
+                              <tr>
+                                <th data-toggle="true">No.</th>
+                                <th data-toggle="true">Quiz Name</th>
+                                <th>Grade to pass</th>
+                                <th>Times</th>
+                                <th data-hide="phone">Created Date</th>
+                                <th data-hide="phone, tablet">Updated Date</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {currentQuizs.map((quiz, index) => (
+                                <tr key={quiz.id}>
+                                  <td>{index + 1}</td>
+                                  <td>{quiz.name}</td>
+                                  <td> 
+                                     <span className="badge label-table badge-success">{quiz.gradeToPass} </span>
+                                  </td>
+                                  <td>{quiz.deadline}</td>
+                                  <td>{quiz.createdDate}</td>
+                                  <td>{quiz.updatedDate}</td>
+                                  <td>
+                                    <Link to={`/tutor/courses/edit-topic-quiz/${quiz.id}`} className='text-secondary'>
+                                      <i class="fa-regular fa-eye"></i>
+                                    </Link>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
 
+                          </table>
+                        </div> {/* end .table-responsive*/}
+                      </div>
+                      <div className='container-fluid'>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                          <ReactPaginate
+                            previousLabel={<AiFillCaretLeft style={{ color: "#000", fontSize: "14px" }} />}
+                            nextLabel={<AiFillCaretRight style={{ color: "#000", fontSize: "14px" }} />}
+                            breakLabel={'...'}
+                            breakClassName={'page-item'}
+                            breakLinkClassName={'page-link'}
+                            pageCount={pageCount}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                            previousClassName={'page-item'}
+                            nextClassName={'page-item'}
+                            pageClassName={'page-item'}
+                            previousLinkClassName={'page-link'}
+                            nextLinkClassName={'page-link'}
+                            pageLinkClassName={'page-link'}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -247,6 +341,11 @@ const EditTopic = () => {
             width: 85%;
             text-align: left;
           }
+
+          .page-item.active .page-link{
+            background-color: #20c997;
+            border-color: #20c997;
+        }
         `}
       </style>
     </>

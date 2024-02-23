@@ -118,6 +118,7 @@ const ListTopic = () => {
                             <th data-hide="phone">Created Date</th>
                             <th data-hide="phone, tablet">Updated Date</th>
                             <th>Action</th>
+                            <th>Quizzes</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -128,6 +129,11 @@ const ListTopic = () => {
                               <td>{classTopic.description}</td>
                               <td>{classTopic.createdDate}</td>
                               <td>{classTopic.updatedDate}</td>
+                              <td>
+                                <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>
+                                  <i class="fa-regular fa-eye"></i>
+                                </Link>
+                              </td>
                               <td>
                                 <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>
                                   <i class="fa-regular fa-eye"></i>
