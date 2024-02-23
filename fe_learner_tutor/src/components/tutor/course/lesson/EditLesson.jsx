@@ -27,6 +27,8 @@ const EditLesson = () => {
         .getLessonById(lessonId)
         .then((res) => {
           setLesson(res.data);
+        console.log("THIS IS NAME" + res.data.name)
+
         })
         .catch((error) => {
           console.log(error);
@@ -83,6 +85,7 @@ const EditLesson = () => {
 
         const lessonJsonParse = JSON.parse(lessonJson);
 
+
       } catch (error) {
         console.log(error);
       }
@@ -101,7 +104,7 @@ const EditLesson = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <h4 className="header-title">EDITING LESSON - <span className='text-success'>{lesson.name}</span></h4>
+                      <h4 className="header-title">EDITING LESSON - <span className='text-success'>{lesson?.name}</span></h4>
 
                       <form
                         method="post"
@@ -113,7 +116,7 @@ const EditLesson = () => {
                         data-parsley-validate
                         onSubmit={submitLesson}>
 
-                        <div className="card" style={{marginTop: '-20px'}}>
+                        <div className="card" style={{ marginTop: '-20px' }}>
                           {/* <div className='card-body'>
                             <label htmlFor="video">Video Url * :</label>
                             <input type="text" className="form-control" name="videoUrl" id="videoUrl" value={lesson.videoUrl} readOnly />
@@ -135,22 +138,21 @@ const EditLesson = () => {
                               name="reading"
                               value={lesson.reading}
                               onChange={handleChangeLesson}
-                              style={{ height: '300px' }}
                               modules={{
                                 toolbar: [
-                                    [{ header: [1, 2, false] }],
-                                    ['bold', 'italic', 'underline', 'strike'],
-                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
-                                    [{ 'direction': 'rtl' }],
-                                    [{ 'align': [] }],
-                                    ['link', 'image', 'video'],
-                                    ['code-block'],
-                                    [{ 'color': [] }, { 'background': [] }],
-                                    ['clean']
+                                  [{ header: [1, 2, false] }],
+                                  ['bold', 'italic', 'underline', 'strike'],
+                                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                  [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                  [{ 'direction': 'rtl' }],
+                                  [{ 'align': [] }],
+                                  ['link', 'image', 'video'],
+                                  ['code-block'],
+                                  [{ 'color': [] }, { 'background': [] }],
+                                  ['clean']
                                 ]
-                            }}
-                            theme="snow"
+                              }}
+                              theme="snow"
                             />
                           </div>
                         </div>
@@ -162,6 +164,12 @@ const EditLesson = () => {
                           </button>
                           <Link to={`/tutor/courses/list-material-by-lesson/${lesson.id}`} className="btn btn-dark " style={{ marginLeft: '10px', marginTop: '10px' }} >
                             <i class="fas fa-file-alt"></i> View Materials
+                          </Link>
+                          <Link
+                            to={`/tutor/courses/list-lesson/${lesson.moduleId}`}
+                            className="btn btn-black mr-2"
+                          >
+                            <i className="fas fa-long-arrow-alt-left"></i> Back to List of Lessons
                           </Link>
                         </div>
                       </form>

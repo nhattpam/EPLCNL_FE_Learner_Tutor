@@ -180,9 +180,9 @@ const CreateClassTopicAnswer = () => {
 
                             </button>
                           </div>
-                          <div className="col-md-2">
+                          <div className="col-md-6">
                             <Link to={`/tutor/courses/edit-topic-quiz/${question.quizId}`} className="btn btn-black form-control" style={{ marginTop: '10px' }} >
-                              <i class="fas fa-long-arrow-alt-left"></i> Back
+                              <i class="fas fa-long-arrow-alt-left"></i> Back to Quiz Information
 
                             </Link>
                           </div>

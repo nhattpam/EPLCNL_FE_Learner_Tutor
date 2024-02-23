@@ -72,19 +72,19 @@ const ListQuiz = () => {
     const currentQuizs = filteredQuizs.slice(offset, offset + quizsPerPage);
 
 
-    useEffect(() => {
-        // Prevent going back
-        window.history.pushState(null, null, window.location.pathname);
-        window.addEventListener('popstate', handleBackButtonEvent);
+    // useEffect(() => {
+    //     // Prevent going back
+    //     window.history.pushState(null, null, window.location.pathname);
+    //     window.addEventListener('popstate', handleBackButtonEvent);
 
-        return () => {
-            window.removeEventListener('popstate', handleBackButtonEvent);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener('popstate', handleBackButtonEvent);
+    //     };
+    // }, []);
 
-    const handleBackButtonEvent = (event) => {
-        window.history.pushState(null, null, window.location.pathname);
-    };
+    // const handleBackButtonEvent = (event) => {
+    //     window.history.pushState(null, null, window.location.pathname);
+    // };
 
     return (
         <>
@@ -218,6 +218,7 @@ const ListQuiz = () => {
                     background-color: #20c997;
                     border-color: #20c997;
                 }
+                
             `}
             </style>
         </>

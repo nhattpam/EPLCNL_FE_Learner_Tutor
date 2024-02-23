@@ -129,10 +129,10 @@ const EditClassTopicQuiz = () => {
                             {questionList.map((question, index) => (
                               <tr key={question.id}>
                                 <td>{index + 1}</td>
-                                <td>
+                                <td className='truncate-text'>
                                   {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
                                 </td>
-                                <td>{question.gradeToPass}</td>
+                                <td>{question.defaultGrade}</td>
                                 <td>{question.createdDate}</td>
                                 <td>
                                   <Link to={`/tutor/courses/edit-topic-question/${question.id}`} className='text-secondary'>
@@ -208,6 +208,13 @@ const EditClassTopicQuiz = () => {
                         width: 85%;
                         text-align: left;
                     }
+
+                    .truncate-text {
+                      max-width: 200px; /* Adjust max-width as needed */
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                  }
                 `}
       </style>
     </>

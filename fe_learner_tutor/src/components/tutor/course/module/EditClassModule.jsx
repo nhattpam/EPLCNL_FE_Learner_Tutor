@@ -57,12 +57,12 @@ const EditClassModule = () => {
     };
 
     const filteredClassTopics = classTopicList
-    .filter((classTopic) => {
-      return (
-        classTopic.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        .filter((classTopic) => {
+            return (
+                classTopic.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
 
-      );
-    });
+            );
+        });
     const pageCount = Math.ceil(filteredClassTopics.length / classTopicsPerPage);
 
 
@@ -164,13 +164,12 @@ const EditClassModule = () => {
                                                 <i className="bi bi-plus"></i> Create new topic
                                             </Link>
 
-                                            <button
-                                                type="button"
-                                                className="btn btn-black mr-2"
-                                                onClick={goBack}
+                                            <Link
+                                                to={`/tutor/courses/edit-course/${module.course?.id}`}
+                                                 className="btn btn-black mr-2"
                                             >
                                                 <i className="fas fa-long-arrow-alt-left"></i> Back to Course Infomation
-                                            </button>
+                                            </Link>
                                         </div>
                                     </form>
                                 </div> {/* end card-box*/}
