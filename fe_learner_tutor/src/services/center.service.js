@@ -10,7 +10,7 @@ class CenterService {
   saveCenter(center) {
     return axios.post(API_URL + "/centers/", center);
   }
-
+  
 
   
 }

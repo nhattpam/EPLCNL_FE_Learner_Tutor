@@ -119,11 +119,6 @@ const Header = () => {
                                 </a>
                             </div>
                         </li>
-                        <li className="dropdown notification-list">
-                            <a href="javascript:void(0);" className="nav-link right-bar-toggle waves-effect waves-light">
-                                <i className="fe-settings noti-icon" />
-                            </a>
-                        </li>
                     </ul>
                     {/* LOGO */}
                     <div className="logo-box">

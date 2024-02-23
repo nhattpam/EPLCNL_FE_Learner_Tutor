@@ -82,7 +82,7 @@ const CreateAssignment = () => {
 
         const assignmentJsonParse = JSON.parse(assignmentJson);
 
-        navigate(`/tutor/courses/create/create-video-course/create-module/module-part/${storedModuleId}`);
+        navigate(`/tutor/courses/list-assignment/${storedModuleId}`);
       } catch (error) {
         console.log(error);
       }
@@ -151,6 +151,21 @@ const CreateAssignment = () => {
                               value={assignment.questionText}
                               onChange={handleChangeAssignment}
                               style={{ height: "300px" }}
+                              modules={{
+                                toolbar: [
+                                    [{ header: [1, 2, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'],
+                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                    [{ 'direction': 'rtl' }],
+                                    [{ 'align': [] }],
+                                    ['link', 'image', 'video'],
+                                    ['code-block'],
+                                    [{ 'color': [] }, { 'background': [] }],
+                                    ['clean']
+                                ]
+                            }}
+                            theme="snow"
                             />
                           </div>
                         </div>

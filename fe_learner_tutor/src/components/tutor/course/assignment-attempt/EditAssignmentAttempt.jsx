@@ -7,6 +7,7 @@ import Sidebar from '../../Sidebar';
 import accountService from '../../../../services/account.service';
 import learnerService from '../../../../services/learner.service';
 import assignmentService from '../../../../services/assignment.service';
+import ReactQuill from 'react-quill';
 
 const EditAssignmentAttempt = () => {
 
@@ -35,6 +36,13 @@ const EditAssignmentAttempt = () => {
     const [assignment, setAssignment] = useState({
         questionText: "",
     });
+
+    const handleChangeAnswerText = (value) => {
+        setAssignmentAttempt(prevState => ({
+            ...prevState,
+            answerText: value
+        }));
+    };
 
     useEffect(() => {
         if (assignmentAttemptId) {
@@ -122,34 +130,8 @@ const EditAssignmentAttempt = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="card-box">
-                                    <div className="form-group">
-                                        <h4 className="header-title">ASSIGNMENT ATTEMPT INFORMATION</h4>
-                                        <div className="table-responsive">
-                                            <table className="table table-bordered">
-                                                <tbody>
-                                                    <tr>
-                                                        <th>Learner:</th>
-                                                        <td>{account.fullName}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Assignment Question:</th>
-                                                        <td dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Answer:</th>
-                                                        <td>{assignmentAttempt.answerText}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Attempted Date:</th>
-                                                        <td>{assignmentAttempt.attemptedDate}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
                                     <form
                                         method="post"
-                                        className="dropzone"
                                         id="myAwesomeDropzone"
                                         data-plugin="dropzone"
                                         data-previews-container="#file-previews"
@@ -158,6 +140,55 @@ const EditAssignmentAttempt = () => {
                                         onSubmit={(e) => submitAssignmentAttempt(e)}
                                     >
                                         <div className="form-group">
+                                            <h4 className="header-title">ASSIGNMENT ATTEMPT INFORMATION</h4>
+                                            <div className="table-responsive">
+                                                <table className="table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>Learner:</th>
+                                                            <td>{account.fullName}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Assignment Question:</th>
+                                                            <td dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Answer:</th>
+                                                            <td>
+                                                                <ReactQuill
+                                                                    name="answerText"
+                                                                    value={assignmentAttempt.answerText}
+                                                                    onChange={handleChangeAnswerText}
+                                                                    modules={{
+                                                                        toolbar: [
+                                                                            [{ header: [1, 2, false] }],
+                                                                            ['bold', 'italic', 'underline', 'strike'],
+                                                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                                            [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                                                            [{ 'direction': 'rtl' }],
+                                                                            [{ 'align': [] }],
+                                                                            ['link', 'image', 'video'],
+                                                                            ['code-block'],
+                                                                            [{ 'color': [] }, { 'background': [] }],
+                                                                            ['clean']
+                                                                        ]
+                                                                    }}
+                                                                    theme="snow"
+                                                                />
+
+
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Attempted Date:</th>
+                                                            <td>{assignmentAttempt.attemptedDate}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group dropzone">
                                             <h5>Grade:</h5>
                                             <input
                                                 type="range"

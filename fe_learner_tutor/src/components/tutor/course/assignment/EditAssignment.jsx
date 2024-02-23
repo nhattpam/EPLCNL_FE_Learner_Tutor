@@ -159,6 +159,21 @@ const EditAssignment = () => {
                               value={assignment.questionText}
                               onChange={handleChangeAssignment}
                               style={{ height: '300px' }}
+                              modules={{
+                                toolbar: [
+                                    [{ header: [1, 2, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'],
+                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                    [{ 'direction': 'rtl' }],
+                                    [{ 'align': [] }],
+                                    ['link', 'image', 'video'],
+                                    ['code-block'],
+                                    [{ 'color': [] }, { 'background': [] }],
+                                    ['clean']
+                                ]
+                            }}
+                            theme="snow"
                             />
                           </div>
                         </div>
