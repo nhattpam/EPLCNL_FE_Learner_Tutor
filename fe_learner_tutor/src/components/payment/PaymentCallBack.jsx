@@ -18,12 +18,10 @@ const PaymentCallBack = () => {
     refundStatus: ""
   });
 
-  const [enrollment, setEnrollment] = useState({
-    learnerId: "",
-    courseId: "",
-    status: "",
-    totalGrade: 0
-  });
+
+
+
+
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -49,22 +47,22 @@ const PaymentCallBack = () => {
             ...response.data,
             status: "DONE"
           };
-          setTransaction(updatedTransaction);
+          // setTransaction(updatedTransaction);
           console.log(updatedTransaction);
-          transactionService.updateTransaction(transactionId, updatedTransaction);
+          console.log(updatedTransaction);
+        transactionService.updateTransaction(transactionId, updatedTransaction);
 
-          //go to invoice page
-          
-        // Update enrollment state using setEnrollment
-        setEnrollment(prevEnrollment => ({
-          ...prevEnrollment,
+        const updatedEnrollment = {
+          status: "",
+          totalGrade: 0,
           learnerId: updatedTransaction.learnerId,
-          courseId: updatedTransaction.courseId
-        }));
+          courseId: updatedTransaction.courseId,
+          enrolledDate: updatedTransaction.transactionDate
+        };
+        console.log("This is enrollment: " + JSON.stringify(updatedEnrollment));
+        enrollmentService.saveEnrollment(updatedEnrollment);
 
-        // After setting enrollment state, save enrollment
-        enrollmentService.saveEnrollment(enrollment);
-          
+          // Navigate to invoice page
           navigate(`/invoice/${transactionId}`)
         })
         .catch((error) => {

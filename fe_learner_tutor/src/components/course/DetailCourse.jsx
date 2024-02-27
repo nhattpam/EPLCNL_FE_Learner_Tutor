@@ -21,11 +21,12 @@ const DetailCourse = () => {
     });
 
     //transaction
-    const [transaction, setTransaction] = useState({
-        courseId: courseId,
-        learnerId: learnerId,
-        amount: course.stockPrice
-    });
+    // const [transaction, setTransaction] = useState({
+    //     courseId: courseId,
+    //     learnerId: learnerId,
+    //     amount: course.stockPrice * 24000,
+    //     paymentMethodId: "1dffb0d3-f5a5-4725-98fc-b4dea22f4b0e"
+    // });
 
     const [moduleList, setModuleList] = useState([]);
     const [classModuleList, setClassModuleList] = useState([]);
@@ -122,7 +123,8 @@ const DetailCourse = () => {
         const transactionData = {
             courseId: courseId,
             learnerId: learnerId,
-            amount: course.stockPrice * 24000
+            amount: course.stockPrice * 24000,
+            paymentMethodId: "1dffb0d3-f5a5-4725-98fc-b4dea22f4b0e"
         };
 
         transactionService.saveTransaction(transactionData)
@@ -265,7 +267,7 @@ const DetailCourse = () => {
                                                 id={`tab-${module.id}`}
                                             >
                                                 <div className="lessons">
-                                                    <h4 className="section-title" style={{ color: '#f58d04' }}>Lessons</h4>
+                                                    <h4 style={{ color: '#f58d04' }}>Lessons</h4>
                                                     {lessonList
                                                         .filter(lesson => lesson.moduleId === module.id)
                                                         .map((lesson, lessonIndex) => (
@@ -275,7 +277,7 @@ const DetailCourse = () => {
                                                         ))}
                                                 </div>
                                                 <div className="assignments">
-                                                    <h4 className="section-title" style={{ color: '#f58d04' }}>Assignments</h4>
+                                                    <h4 style={{ color: '#f58d04' }}>Assignments</h4>
                                                     {assignmentList
                                                         .filter(assignment => assignment.moduleId === module.id)
                                                         .map((assignment, assignmentIndex) => (
@@ -285,7 +287,7 @@ const DetailCourse = () => {
                                                         ))}
                                                 </div>
                                                 <div className="quizzes">
-                                                    <h4 className="section-title" style={{ color: '#f58d04' }}>Quizzes</h4>
+                                                    <h4  style={{ color: '#f58d04' }}>Quizzes</h4>
                                                     {quizList
                                                         .filter(quiz => quiz.moduleId === module.id)
                                                         .map((quiz, quizIndex) => (

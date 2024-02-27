@@ -6,9 +6,17 @@ const API_URL = "https://nhatpmse.twentytwo.asia/api";
 class EnrollmentService {
     token = '';
 
-    saveEnrollment(enrollment) {
-        return axios.post(API_URL + "/enrollments/", enrollment);
+    setToken(token) {
+        this.token = token;
     }
 
+    saveEnrollment(enrollment) {
+        return axios.post(API_URL + "/enrollments/", enrollment, {
+            headers: {
+                Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+            }
+        });
+    }
 }
+
 export default new EnrollmentService;

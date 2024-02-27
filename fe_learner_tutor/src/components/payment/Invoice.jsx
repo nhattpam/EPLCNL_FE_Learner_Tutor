@@ -157,7 +157,7 @@ const Invoice = () => {
                                                                             </tr>
                                                                             <tr>
                                                                                 <th scope="row" colspan="4" class="border-0 text-end">Total</th>
-                                                                                <td class="border-0 text-end"><h4 class="m-0 fw-semibold">$ ${transaction.amount}</h4></td>
+                                                                                <td class="border-0 text-end"><h4 class="m-0 fw-semibold"> ${transaction.amount} Viet Nam dong</h4></td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -283,7 +283,7 @@ const Invoice = () => {
 
                                                 <tr>
                                                     <th scope="row" colSpan={4} className="border-0 text-end">Total</th>
-                                                    <td className="border-0 text-end"><h4 className="m-0 fw-semibold">${transaction.amount}</h4></td>
+                                                    <td className="border-0 text-end"><h4 className="m-0 fw-semibold">{transaction.amount}  Viet Nam dong</h4></td>
                                                 </tr>
                                                 {/* end tr */}
                                             </tbody>{/* end tbody */}
