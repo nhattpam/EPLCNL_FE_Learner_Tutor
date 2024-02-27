@@ -48,12 +48,15 @@ class CourseService {
   }
 
   getAllModulesByCourse(id) {
-    return axios.get(`${API_URL}/courses/${id}/modules`, {
-      headers: {
-        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
-      }
+    const url = `${API_URL}/courses/${id}/modules`; // Construct the URL string
+    console.log('Request URL:', url); // Log the URL
+    return axios.get(url, {
+        headers: {
+            Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+        }
     });
-  }
+}
+
 
   getAllClassModulesByCourse(id) {
     return axios.get(`${API_URL}/courses/${id}/class-modules`, {

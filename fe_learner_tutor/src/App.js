@@ -54,14 +54,32 @@ import CreateClassTopicAnswer from './components/tutor/course/question-answer/Cr
 import ListClassTopicQuiz from './components/tutor/course/quiz/ListClassTopicQuiz';
 import EditClassTopicQuiz from './components/tutor/course/quiz/EditClassTopicQuiz';
 import EditClassTopicQuestion from './components/tutor/course/question/EditClassTopicQuestion';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 function App() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Add a state for login status
+
+  useEffect(() => {
+    // Check if the user is already logged in by retrieving the login status from local storage
+    const storedLoginStatus = localStorage.getItem('isLoggedIn');
+    setIsLoggedIn(storedLoginStatus === 'true');
+
+  }, []);
+
+
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
+        <Route
+          path="/login"
+          element={<SignIn setIsLoggedIn={setIsLoggedIn} />} // Pass setIsLoggedIn prop to Login component
+        />
+        {/* <Route path="/" element={<Navigate to="/home" />} /> */}
         <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<SignIn />} />
+        {/* <Route path="/login" element={<SignIn />} /> */}
         <Route path="/register" element={<SignUp />} />
         <Route path="/business-register" element={<BusinessSignUp />} />
         <Route path="/list-course" element={<ListCourse />} />

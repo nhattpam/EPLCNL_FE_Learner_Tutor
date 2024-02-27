@@ -51,8 +51,8 @@ const ListCourse = () => {
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs">
                     <div className="container">
-                        <h2>Courses</h2>
-                        <p>Learn English online as well as offline with Linearthinking method, dedicated teachers, supporting technology platform, guaranteed output. </p>
+                        <h2 style={{color: '#fff'}}>Courses</h2>
+                        <p style={{color: '#000'}}>Learn English online as well as offline with Linearthinking method, dedicated teachers, supporting technology platform, guaranteed output. </p>
                     </div>
                 </div>{/* End Breadcrumbs */}
                 {/* ======= Courses Section ======= */}

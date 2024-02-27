@@ -46,6 +46,7 @@ class TutorService {
     });
   }
 
+
   getAllCoursesByTutor(id) {
     return axios.get(`${API_URL}/tutors/${id}/courses`, {
       headers: {

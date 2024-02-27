@@ -67,6 +67,19 @@ const SignIn = ({ setIsLoggedIn }) => {
                     // Pass the token to the module
                     console.log('this is token: ' + response.data.data);
 
+                    localStorage.setItem('accountId', decodedToken.Id);
+
+                    //get learner by accountId
+                    const learnerId = accountService.getLearnerByAccountId(decodedToken.Id);
+
+                    localStorage.setItem('learnerId', learnerId);
+
+                    sessionStorage.setItem('isLearner', true);
+                    sessionStorage.setItem('isTutor', false);
+
+                    setIsLoggedIn(true);
+
+
                     // Navigate to the home page
                     navigate('/home');
                 }  // Store other necessary information
@@ -82,6 +95,12 @@ const SignIn = ({ setIsLoggedIn }) => {
 
                     if (matchedTutor) {
                         console.log("This is tutorId:", matchedTutor.id);
+
+                        setIsLoggedIn(true);
+
+                        sessionStorage.setItem('isTutor', true);
+                        sessionStorage.setItem('isLearner', false);
+
 
                         // Access centerId from localStorage
                         localStorage.setItem('tutorId', matchedTutor.id);
@@ -108,12 +127,16 @@ const SignIn = ({ setIsLoggedIn }) => {
 
                 }
             } else {
+                setIsLoggedIn(false);
+
                 // setIsLoggedIn(false);
                 setError('Login failed. Please try again.');
                 showErrorMessage('Login failed. Please try again.');
 
             }
         } catch (error) {
+            setIsLoggedIn(false);
+
             console.log('Login failed:', error);
             // setIsLoggedIn(false);
             setError('Login failed. Please try again.');

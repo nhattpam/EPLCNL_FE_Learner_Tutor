@@ -3,6 +3,7 @@ import Header from '../Header'
 import Footer from '../Footer'
 import { useParams } from 'react-router-dom'
 import courseService from '../../services/course.service'
+import moduleService from '../../services/module.service';
 
 const DetailCourse = () => {
 
@@ -10,9 +11,14 @@ const DetailCourse = () => {
     const { courseId } = useParams();
 
     const [course, setCourse] = useState({
-       name: ""
+        name: ""
     });
 
+    const [moduleList, setModuleList] = useState([]);
+    const [classModuleList, setClassModuleList] = useState([]);
+    const [assignmentList, setAssignmentList] = useState([]);
+    const [lessonList, setLessonList] = useState([]);
+    const [quizList, setQuizList] = useState([]);
 
     useEffect(() => {
         if (courseId) {
@@ -26,6 +32,66 @@ const DetailCourse = () => {
                 });
         }
     }, [courseId]);
+
+    useEffect(() => {
+        courseService
+            .getAllModulesByCourse(courseId)
+            .then((res) => {
+                setModuleList(res.data || []); // Ensure moduleList is initialized with an empty array if res.data.data is undefined
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [courseId]);
+
+    useEffect(() => {
+        courseService
+            .getAllClassModulesByCourse(courseId)
+            .then((res) => {
+                setClassModuleList(res.data || []); // Ensure classModuleList is initialized with an empty array if res.data is undefined
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [courseId]);
+
+
+    useEffect(() => {
+        // Fetch lessons, assignments, and quizzes for each module
+        Promise.all(moduleList.map(module => {
+            return Promise.all([
+                moduleService.getAllLessonsByModule(module.id),
+                moduleService.getAllAssignmentsByModule(module.id),
+                moduleService.getAllQuizzesByModule(module.id)
+            ]);
+        })).then(responses => {
+            const allLessons = responses.flatMap(response => response[0].data);
+            const allAssignments = responses.flatMap(response => response[1].data);
+            const allQuizzes = responses.flatMap(response => response[2].data);
+            setLessonList(allLessons);
+            setAssignmentList(allAssignments);
+            setQuizList(allQuizzes);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, [moduleList]);
+
+    // Function to handle tab switching
+    const handleTabClick = (event, moduleId) => {
+        // Prevent the default behavior of the link
+        event.preventDefault();
+        // Remove the "active" class from all tab links
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        // Add the "active" class to the clicked tab link
+        event.target.classList.add('active');
+        // Hide all tab content
+        document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active', 'show'));
+        // Show the tab content corresponding to the clicked tab link
+        document.getElementById(`tab-${moduleId}`).classList.add('active', 'show');
+    };
+
+
     return (
         <>
             <Header />
@@ -33,8 +99,7 @@ const DetailCourse = () => {
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs" data-aos="fade-in">
                     <div className="container">
-                        <h2>Course Details</h2>
-                        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+                        <h2 style={{ color: '#fff' }}>Detail Of Course</h2>
                     </div>
                 </div>{/* End Breadcrumbs */}
                 {/* ======= Cource Details Section ======= */}
@@ -43,123 +108,140 @@ const DetailCourse = () => {
                         <div className="row">
                             <div className="col-lg-8">
                                 <img src={course.imageUrl} className="img-fluid" alt />
-                                <h3>Et enim incidunt fuga tempora</h3>
+                                <h3>{course.name}</h3>
                                 <p>
-                                    Qui et explicabo voluptatem et ab qui vero et voluptas. Sint voluptates temporibus quam autem. Atque nostrum voluptatum laudantium a doloremque enim et ut dicta. Nostrum ducimus est iure minima totam doloribus nisi ullam deserunt. Corporis aut officiis sit nihil est. Labore aut sapiente aperiam.
-                                    Qui voluptas qui vero ipsum ea voluptatem. Omnis et est. Voluptatem officia voluptatem adipisci et iusto provident doloremque consequatur. Quia et porro est. Et qui corrupti laudantium ipsa.
-                                    Eum quasi saepe aperiam qui delectus quaerat in. Vitae mollitia ipsa quam. Ipsa aut qui numquam eum iste est dolorum. Rem voluptas ut sit ut.
+                                    {course.description}
                                 </p>
                             </div>
                             <div className="col-lg-4">
                                 <div className="course-info d-flex justify-content-between align-items-center">
-                                    <h5>Tutor</h5>
-                                    <p><a href="#">Walter White</a></p>
+                                    <h5 style={{ color: '#f58d04' , fontWeight: 'bold'}}>Tutor</h5>
+                                    <p><a href="#">{course.tutor?.account?.fullName}</a></p>
                                 </div>
                                 <div className="course-info d-flex justify-content-between align-items-center">
-                                    <h5>Course Fee</h5>
-                                    <p>$165</p>
+                                    <h5 style={{ color: '#f58d04' , fontWeight: 'bold'}}>Course Fee</h5>
+                                    <p>${course.stockPrice}</p>
                                 </div>
                                 <div className="course-info d-flex justify-content-between align-items-center">
-                                    <h5>Available Seats</h5>
+                                    <h5 style={{ color: '#f58d04' , fontWeight: 'bold'}}>Enrolled Students</h5>
                                     <p>30</p>
                                 </div>
-                                <div className="course-info d-flex justify-content-between align-items-center">
-                                    <h5>Schedule</h5>
-                                    <p>5.00 pm - 7.00 pm</p>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
                 </section>{/* End Cource Details Section */}
                 {/* ======= Cource Details Tabs Section ======= */}
+
                 <section id="cource-details-tabs" className="cource-details-tabs">
-                    <div className="container" data-aos="fade-up">
-                        <div className="row">
-                            <div className="col-lg-3">
-                                <ul className="nav nav-tabs flex-column">
-                                    <li className="nav-item">
-                                        <a className="nav-link active show" data-bs-toggle="tab" href="#tab-1">Modi sit est</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" data-bs-toggle="tab" href="#tab-2">Unde praesentium sed</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" data-bs-toggle="tab" href="#tab-3">Pariatur explicabo vel</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" data-bs-toggle="tab" href="#tab-4">Nostrum qui quasi</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" data-bs-toggle="tab" href="#tab-5">Iusto ut expedita aut</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="col-lg-9 mt-4 mt-lg-0">
-                                <div className="tab-content">
-                                    <div className="tab-pane active show" id="tab-1">
-                                        <div className="row">
-                                            <div className="col-lg-8 details order-2 order-lg-1">
-                                                <h3>Architecto ut aperiam autem id</h3>
-                                                <p className="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a videna mareta paulona marka</p>
-                                                <p>Et nobis maiores eius. Voluptatibus ut enim blanditiis atque harum sint. Laborum eos ipsum ipsa odit magni. Incidunt hic ut molestiae aut qui. Est repellat minima eveniet eius et quis magni nihil. Consequatur dolorem quaerat quos qui similique accusamus nostrum rem vero</p>
-                                            </div>
-                                            <div className="col-lg-4 text-center order-1 order-lg-2">
-                                                <img src="assets/img/course-details-tab-1.png" alt className="img-fluid" />
-                                            </div>
-                                        </div>
+                    {course.isOnlineClass && (
+
+                        <div className="container" data-aos="fade-up">
+                            {classModuleList.map((classModule, index) => (
+                                <div className="row">
+                                    <div className="col-lg-3">
+
+                                        <ul className="nav nav-tabs flex-column">
+                                            <li className="nav-item">
+                                                <a
+                                                    className={`nav-link ${index === 0 ? 'active show' : ''}`}
+                                                    onClick={(event) => handleTabClick(event, classModule.id)}
+                                                    href={`#tab-${classModule.id}`}
+                                                > On Date:
+                                                    <span style={{ color: '#f58d04' }}> {classModule.startDate.substring(0, 10)}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div className="tab-pane" id="tab-2">
-                                        <div className="row">
-                                            <div className="col-lg-8 details order-2 order-lg-1">
-                                                <h3>Et blanditiis nemo veritatis excepturi</h3>
-                                                <p className="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a videna mareta paulona marka</p>
-                                                <p>Ea ipsum voluptatem consequatur quis est. Illum error ullam omnis quia et reiciendis sunt sunt est. Non aliquid repellendus itaque accusamus eius et velit ipsa voluptates. Optio nesciunt eaque beatae accusamus lerode pakto madirna desera vafle de nideran pal</p>
-                                            </div>
-                                            <div className="col-lg-4 text-center order-1 order-lg-2">
-                                                <img src="assets/img/course-details-tab-2.png" alt className="img-fluid" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="tab-pane" id="tab-3">
-                                        <div className="row">
-                                            <div className="col-lg-8 details order-2 order-lg-1">
-                                                <h3>Impedit facilis occaecati odio neque aperiam sit</h3>
-                                                <p className="fst-italic">Eos voluptatibus quo. Odio similique illum id quidem non enim fuga. Qui natus non sunt dicta dolor et. In asperiores velit quaerat perferendis aut</p>
-                                                <p>Iure officiis odit rerum. Harum sequi eum illum corrupti culpa veritatis quisquam. Neque necessitatibus illo rerum eum ut. Commodi ipsam minima molestiae sed laboriosam a iste odio. Earum odit nesciunt fugiat sit ullam. Soluta et harum voluptatem optio quae</p>
-                                            </div>
-                                            <div className="col-lg-4 text-center order-1 order-lg-2">
-                                                <img src="assets/img/course-details-tab-3.png" alt className="img-fluid" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="tab-pane" id="tab-4">
-                                        <div className="row">
-                                            <div className="col-lg-8 details order-2 order-lg-1">
-                                                <h3>Fuga dolores inventore laboriosam ut est accusamus laboriosam dolore</h3>
-                                                <p className="fst-italic">Totam aperiam accusamus. Repellat consequuntur iure voluptas iure porro quis delectus</p>
-                                                <p>Eaque consequuntur consequuntur libero expedita in voluptas. Nostrum ipsam necessitatibus aliquam fugiat debitis quis velit. Eum ex maxime error in consequatur corporis atque. Eligendi asperiores sed qui veritatis aperiam quia a laborum inventore</p>
-                                            </div>
-                                            <div className="col-lg-4 text-center order-1 order-lg-2">
-                                                <img src="assets/img/course-details-tab-4.png" alt className="img-fluid" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="tab-pane" id="tab-5">
-                                        <div className="row">
-                                            <div className="col-lg-8 details order-2 order-lg-1">
-                                                <h3>Est eveniet ipsam sindera pad rone matrelat sando reda</h3>
-                                                <p className="fst-italic">Omnis blanditiis saepe eos autem qui sunt debitis porro quia.</p>
-                                                <p>Exercitationem nostrum omnis. Ut reiciendis repudiandae minus. Omnis recusandae ut non quam ut quod eius qui. Ipsum quia odit vero atque qui quibusdam amet. Occaecati sed est sint aut vitae molestiae voluptate vel</p>
-                                            </div>
-                                            <div className="col-lg-4 text-center order-1 order-lg-2">
-                                                <img src="assets/img/course-details-tab-5.png" alt className="img-fluid" />
+                                    <div className="col-lg-9 mt-4 mt-lg-0">
+                                        <div className="tab-content">
+
+                                            <div
+                                                className={`tab-pane ${index === 0 ? 'active show' : ''}`}
+                                                id={`tab-${classModule.id}`}
+                                            >
+
+                                                <div>
+                                                    <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time</span>
+                                                    <div>
+                                                        {classModule.classLesson.classHours}
+
+                                                    </div>
+                                                </div>
+
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            ))}
+
+
                         </div>
-                    </div>
+                    )}
+                    {!course.isOnlineClass && (
+                        <div className="container" data-aos="fade-up">
+                            {moduleList.map((module, index) => (
+                                <div className="row" key={module.id}>
+                                    <div className="col-lg-3">
+                                        <ul className="nav nav-tabs flex-column">
+                                            <li className="nav-item">
+                                                <a
+                                                    className={`nav-link ${index === 0 ? 'active show' : ''}`}
+                                                    onClick={(event) => handleTabClick(event, module.id)}
+                                                    href={`#tab-${module.id}`}
+                                                >
+                                                    {module.name}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div className="col-lg-9 mt-4 mt-lg-0">
+                                        <div className="tab-content">
+                                            <div
+                                                className={`tab-pane ${index === 0 ? 'active show' : ''}`}
+                                                id={`tab-${module.id}`}
+                                            >
+                                                <div className="lessons">
+                                                    <h4 className="section-title" style={{ color: '#f58d04' }}>Lessons</h4>
+                                                    {lessonList
+                                                        .filter(lesson => lesson.moduleId === module.id)
+                                                        .map((lesson, lessonIndex) => (
+                                                            <div className="lesson" key={lessonIndex}>
+                                                                <p>{lesson.name}</p>
+                                                            </div>
+                                                        ))}
+                                                </div>
+                                                <div className="assignments">
+                                                    <h4 className="section-title" style={{ color: '#f58d04' }}>Assignments</h4>
+                                                    {assignmentList
+                                                        .filter(assignment => assignment.moduleId === module.id)
+                                                        .map((assignment, assignmentIndex) => (
+                                                            <div className="assignment" key={assignmentIndex}>
+                                                                <p>Deadline: {assignment.deadline}  minutes</p>
+                                                            </div>
+                                                        ))}
+                                                </div>
+                                                <div className="quizzes">
+                                                    <h4 className="section-title" style={{ color: '#f58d04' }}>Quizzes</h4>
+                                                    {quizList
+                                                        .filter(quiz => quiz.moduleId === module.id)
+                                                        .map((quiz, quizIndex) => (
+                                                            <div className="quiz" key={quizIndex}>
+                                                                <p>{quiz.name}</p>
+                                                            </div>
+                                                        ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+
+
                 </section>{/* End Cource Details Tabs Section */}
             </main>{/* End #main */}
 
