@@ -53,11 +53,18 @@ const PaymentCallBack = () => {
           console.log(updatedTransaction);
           transactionService.updateTransaction(transactionId, updatedTransaction);
 
-          //create enrollment for successfully transaction
-          enrollment.courseId = transaction.courseId;
-          enrollment.learnerId = transaction.learnerId;
-          enrollmentService.saveEnrollment(enrollment);
           //go to invoice page
+          
+        // Update enrollment state using setEnrollment
+        setEnrollment(prevEnrollment => ({
+          ...prevEnrollment,
+          learnerId: updatedTransaction.learnerId,
+          courseId: updatedTransaction.courseId
+        }));
+
+        // After setting enrollment state, save enrollment
+        enrollmentService.saveEnrollment(enrollment);
+          
           navigate(`/invoice/${transactionId}`)
         })
         .catch((error) => {
