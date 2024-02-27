@@ -15,6 +15,8 @@ const DetailCourse = () => {
 
     const learnerId = localStorage.getItem('learnerId');
     const [showNotification, setShowNotification] = useState(false);
+    const [loading, setLoading] = useState(false); // State to track loading status
+    const [isEnrolled, setIsEnrolled] = useState(false);
 
 
     const [course, setCourse] = useState({
@@ -116,19 +118,18 @@ const DetailCourse = () => {
     };
 
     // Function to handle tab pay
+    // Function to handle tab pay
     const handlePayClick = (event) => {
         event.preventDefault();
-        const learnerId = localStorage.getItem('learnerId'); // Retrieve learnerId when handling the click event
-        console.log("PRO LEARNER: " + learnerId)
+        const learnerId = localStorage.getItem('learnerId');
         if (!learnerId) {
-            // If learnerId is null, display notification and return
-            console.log("not login yet")
             setShowNotification(true);
             setTimeout(() => {
                 setShowNotification(false);
             }, 3000);
             return;
         }
+        setLoading(true);
 
         const transactionData = {
             courseId: courseId,
@@ -137,20 +138,53 @@ const DetailCourse = () => {
             paymentMethodId: "1dffb0d3-f5a5-4725-98fc-b4dea22f4b0e"
         };
 
-        transactionService.saveTransaction(transactionData)
-            .then((res) => {
-                transactionService.payTransaction(res.data.id)
+        transactionService
+            .saveTransaction(transactionData)
+            .then((response) => {
+                transactionService
+                    .payTransaction(response.data.id)
                     .then((res) => {
-                        window.location.href = res.data;
+                        window.open(res.data, '_blank');
+                        const checkTransactionStatus = setInterval(() => {
+                            transactionService.getTransactionById(response.data.id)
+                                .then((transactionRes) => {
+                                    if (transactionRes.data.status === 'DONE') {
+                                        setLoading(false);
+                                        clearInterval(checkTransactionStatus);
+                                        // Check if the user is enrolled
+                                        enrollmentService.getEnrollmentByLearnerIdAndCourseId(learnerId, courseId)
+                                            .then((enrollmentRes) => {
+                                                setEnrollment(enrollmentRes.data);
+                                                // Update isEnrolled state if enrollment is not null
+                                                if (enrollmentRes.data !== null) {
+                                                    setIsEnrolled(true);
+                                                }
+                                            })
+                                            .catch((error) => {
+                                                if (error.response && error.response.status === 404) {
+                                                    setEnrollment(null);
+                                                } else {
+                                                    console.log(error);
+                                                }
+                                            });
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        }, 5000);
                     })
                     .catch((error) => {
                         console.log(error);
+                        setLoading(false);
                     });
             })
             .catch((error) => {
                 console.log(error);
+                setLoading(false);
             });
     };
+
 
 
     //check enrollment by learner and course
@@ -159,19 +193,20 @@ const DetailCourse = () => {
             enrollmentService.getEnrollmentByLearnerIdAndCourseId(learnerId, courseId)
                 .then((res) => {
                     setEnrollment(res.data);
+                    // Update isEnrolled state if enrollment is not null
+                    if (res.data !== null) {
+                        setIsEnrolled(true);
+                    }
                 })
                 .catch((error) => {
-                    // Check if the error is a 404 error
                     if (error.response && error.response.status === 404) {
-                        // Enrollment not found, set enrollment state to null
                         setEnrollment(null);
                     } else {
-                        // Other errors, log the error
                         console.log(error);
                     }
                 });
         }
-    }, [courseId]);
+    }, [courseId, learnerId]);
 
 
 
@@ -217,20 +252,68 @@ const DetailCourse = () => {
                                         <p className="m-0">You need to login first</p>
                                     </div>
                                 )}
-                                {enrollment === null ? (
+                                {!loading ? (
+                                    <>
+                                        {enrollment === null ? (
+                                            <>
+                                                <div className="course-info d-flex justify-content-between align-items-center">
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary btn-lg btn-block"
+                                                        onClick={handlePayClick}
+                                                        style={{ backgroundColor: '#f58d04' }}
+                                                    >
+                                                        Get - ${course.stockPrice}
+                                                    </button>
+                                                </div>
+                                                <p>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
+                                                </p>
+                                            </>
+
+
+                                        ) : (
+                                            <div className="course-info d-flex justify-content-between align-items-center">
+                                                {isEnrolled ? (
+                                                    <Link
+                                                        type="button"
+                                                        className="btn btn-primary btn-lg btn-block"
+                                                        to={`/learner/study-course/${courseId}`}
+                                                        style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                    >
+                                                        Study Now
+                                                    </Link>
+                                                ) : (
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary btn-lg btn-block"
+                                                        onClick={handlePayClick}
+                                                        style={{ backgroundColor: '#f58d04' }}
+                                                    >
+                                                        Get - ${course.stockPrice}
+                                                    </button>
+
+                                                )}
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
                                     <>
                                         <div className="course-info d-flex justify-content-between align-items-center">
-                                            <button type="button" class="btn btn-primary btn-lg btn-block" onClick={handlePayClick}
-                                                style={{ backgroundColor: '#f58d04' }}>Get - ${course.stockPrice}</button>
+                                            <button
+                                                type="button"
+                                                className="btn btn-primary btn-lg btn-block"
+                                                disabled
+                                                style={{ backgroundColor: '#f58d04', cursor: 'not-allowed' }}
+                                            >
+                                                Loading...
+                                            </button>
                                         </div>
                                         <p>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
                                         </p>
                                     </>
-                                ) : (
-                                    <div className="course-info d-flex justify-content-between align-items-center">
-                                        <Link type="button" className="btn btn-primary btn-lg btn-block" to={`/learner/study-course/${courseId}`} style={{ backgroundColor: '#f58d04', color: '#fff' }}>Study Now</Link>
-                                    </div>
+
                                 )}
+
 
 
 
