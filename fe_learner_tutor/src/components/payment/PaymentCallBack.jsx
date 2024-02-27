@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import transactionService from '../../services/transaction.service';
+import enrollmentService from '../../services/enrollment.service';
 
 const PaymentCallBack = () => {
   const location = useLocation();
@@ -15,6 +16,13 @@ const PaymentCallBack = () => {
     learnerId: "",
     courseId: "",
     refundStatus: ""
+  });
+
+  const [enrollment, setEnrollment] = useState({
+    learnerId: "",
+    courseId: "",
+    status: "",
+    totalGrade: 0
   });
 
   useEffect(() => {
@@ -45,6 +53,10 @@ const PaymentCallBack = () => {
           console.log(updatedTransaction);
           transactionService.updateTransaction(transactionId, updatedTransaction);
 
+          //create enrollment for successfully transaction
+          enrollment.courseId = transaction.courseId;
+          enrollment.learnerId = transaction.learnerId;
+          enrollmentService.saveEnrollment(enrollment);
           //go to invoice page
           navigate(`/invoice/${transactionId}`)
         })
