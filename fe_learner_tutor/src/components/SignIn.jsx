@@ -70,9 +70,12 @@ const SignIn = ({ setIsLoggedIn }) => {
                     localStorage.setItem('accountId', decodedToken.Id);
 
                     //get learner by accountId
-                    const learnerId = accountService.getLearnerByAccountId(decodedToken.Id);
+                    const respnse = await accountService.getLearnerByAccountId(decodedToken.Id);
 
-                    localStorage.setItem('learnerId', learnerId);
+                    localStorage.setItem('learnerId', respnse.data.id);
+
+                    const storedLearnerId = localStorage.getItem('learnerId')
+                    console.log("This is learnerId from localStorage:", storedLearnerId);
 
                     sessionStorage.setItem('isLearner', true);
                     sessionStorage.setItem('isTutor', false);

@@ -45,6 +45,13 @@ class TransactionService {
     });
   }
 
+  payTransaction(id){
+    return axios.post(API_URL + `/transactions/${id}/pay`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
  
 
 }

@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../Header'
 import Footer from '../Footer'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import courseService from '../../services/course.service'
 import moduleService from '../../services/module.service';
+import transactionService from '../../services/transaction.service';
+import { Button } from 'bootstrap';
 
 const DetailCourse = () => {
 
 
     const { courseId } = useParams();
 
+    const learnerId = localStorage.getItem('learnerId');
+    const [showNotification, setShowNotification] = useState(false);
+
+
     const [course, setCourse] = useState({
         name: ""
+    });
+
+    //transaction
+    const [transaction, setTransaction] = useState({
+        courseId: courseId,
+        learnerId: learnerId,
+        amount: course.stockPrice
     });
 
     const [moduleList, setModuleList] = useState([]);
@@ -91,6 +104,43 @@ const DetailCourse = () => {
         document.getElementById(`tab-${moduleId}`).classList.add('active', 'show');
     };
 
+    // Function to handle tab pay
+    const handlePayClick = (event) => {
+        event.preventDefault();
+        const learnerId = localStorage.getItem('learnerId'); // Retrieve learnerId when handling the click event
+        console.log("PRO LEARNER: " + learnerId)
+        if (!learnerId) {
+            // If learnerId is null, display notification and return
+            console.log("not login yet")
+            setShowNotification(true);
+            setTimeout(() => {
+                setShowNotification(false);
+            }, 3000);
+            return;
+        }
+
+        const transactionData = {
+            courseId: courseId,
+            learnerId: learnerId,
+            amount: course.stockPrice * 24000
+        };
+
+        transactionService.saveTransaction(transactionData)
+            .then((res) => {
+                transactionService.payTransaction(res.data.id)
+                    .then((res) => {
+                        window.location.href = res.data;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+
 
     return (
         <>
@@ -115,18 +165,30 @@ const DetailCourse = () => {
                             </div>
                             <div className="col-lg-4">
                                 <div className="course-info d-flex justify-content-between align-items-center">
-                                    <h5 style={{ color: '#f58d04' , fontWeight: 'bold'}}>Tutor</h5>
+                                    <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Tutor</h5>
                                     <p><a href="#">{course.tutor?.account?.fullName}</a></p>
                                 </div>
                                 <div className="course-info d-flex justify-content-between align-items-center">
-                                    <h5 style={{ color: '#f58d04' , fontWeight: 'bold'}}>Course Fee</h5>
+                                    <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Course Fee</h5>
                                     <p>${course.stockPrice}</p>
                                 </div>
                                 <div className="course-info d-flex justify-content-between align-items-center">
-                                    <h5 style={{ color: '#f58d04' , fontWeight: 'bold'}}>Enrolled Students</h5>
+                                    <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Enrolled Students</h5>
                                     <p>30</p>
                                 </div>
-                               
+                                {/* Notification */}
+                                {showNotification && (
+                                    <div className="notification fixed-top w-100 bg-warning text-center">
+                                        <p className="m-0">You need to login first</p>
+                                    </div>
+                                )}
+                                <div className="course-info d-flex justify-content-between align-items-center">
+                                    <button type="button" class="btn btn-primary btn-lg btn-block" onClick={handlePayClick}
+                                        style={{ backgroundColor: '#f58d04' }}>Get - ${course.stockPrice}</button>
+                                </div>
+                                <p>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
+                                </p>
+
                             </div>
                         </div>
                     </div>
