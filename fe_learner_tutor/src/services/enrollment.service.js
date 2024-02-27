@@ -17,6 +17,14 @@ class EnrollmentService {
             }
         });
     }
+
+    getEnrollmentByLearnerIdAndCourseId(learnerId, courseId) {
+        return axios.get(API_URL + `/enrollments/learner-course?learnerId=${learnerId}&courseId=${courseId}`, {
+          headers: {
+            Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+          }
+        });
+      }
 }
 
 export default new EnrollmentService;

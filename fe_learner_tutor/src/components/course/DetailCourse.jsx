@@ -6,6 +6,7 @@ import courseService from '../../services/course.service'
 import moduleService from '../../services/module.service';
 import transactionService from '../../services/transaction.service';
 import { Button } from 'bootstrap';
+import enrollmentService from '../../services/enrollment.service';
 
 const DetailCourse = () => {
 
@@ -19,6 +20,15 @@ const DetailCourse = () => {
     const [course, setCourse] = useState({
         name: ""
     });
+
+    const [enrollment, setEnrollment] = useState({
+        learnerId: "",
+        courseId: ""
+    });
+
+    useEffect(() => {
+        console.log("This is enrollment haha:  ", enrollment);
+    }, [enrollment]);
 
     //transaction
     // const [transaction, setTransaction] = useState({
@@ -143,6 +153,29 @@ const DetailCourse = () => {
     };
 
 
+    //check enrollment by learner and course
+    useEffect(() => {
+        if (courseId) {
+            enrollmentService.getEnrollmentByLearnerIdAndCourseId(learnerId, courseId)
+                .then((res) => {
+                    setEnrollment(res.data);
+                })
+                .catch((error) => {
+                    // Check if the error is a 404 error
+                    if (error.response && error.response.status === 404) {
+                        // Enrollment not found, set enrollment state to null
+                        setEnrollment(null);
+                    } else {
+                        // Other errors, log the error
+                        console.log(error);
+                    }
+                });
+        }
+    }, [courseId]);
+
+
+
+
 
     return (
         <>
@@ -184,12 +217,22 @@ const DetailCourse = () => {
                                         <p className="m-0">You need to login first</p>
                                     </div>
                                 )}
-                                <div className="course-info d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn btn-primary btn-lg btn-block" onClick={handlePayClick}
-                                        style={{ backgroundColor: '#f58d04' }}>Get - ${course.stockPrice}</button>
-                                </div>
-                                <p>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
-                                </p>
+                                {enrollment === null ? (
+                                    <>
+                                        <div className="course-info d-flex justify-content-between align-items-center">
+                                            <button type="button" class="btn btn-primary btn-lg btn-block" onClick={handlePayClick}
+                                                style={{ backgroundColor: '#f58d04' }}>Get - ${course.stockPrice}</button>
+                                        </div>
+                                        <p>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
+                                        </p>
+                                    </>
+                                ) : (
+                                    <div className="course-info d-flex justify-content-between align-items-center">
+                                        <Link type="button" className="btn btn-primary btn-lg btn-block" to={`/learner/study-course/${courseId}`} style={{ backgroundColor: '#f58d04', color: '#fff' }}>Study Now</Link>
+                                    </div>
+                                )}
+
+
 
                             </div>
                         </div>
@@ -287,7 +330,7 @@ const DetailCourse = () => {
                                                         ))}
                                                 </div>
                                                 <div className="quizzes">
-                                                    <h4  style={{ color: '#f58d04' }}>Quizzes</h4>
+                                                    <h4 style={{ color: '#f58d04' }}>Quizzes</h4>
                                                     {quizList
                                                         .filter(quiz => quiz.moduleId === module.id)
                                                         .map((quiz, quizIndex) => (

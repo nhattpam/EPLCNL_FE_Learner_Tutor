@@ -56,6 +56,26 @@ import EditClassTopicQuiz from './components/tutor/course/quiz/EditClassTopicQui
 import EditClassTopicQuestion from './components/tutor/course/question/EditClassTopicQuestion';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import classLessonService from './services/class-lesson.service';
+import classModuleService from './services/class-module.service';
+import classTopicService from './services/class-topic.service';
+import courseService from './services/course.service';
+import enrollmentService from './services/enrollment.service';
+import forumService from './services/forum.service';
+import learnerService from './services/learner.service';
+import lessonMaterialService from './services/lesson-material.service';
+import moduleService from './services/module.service';
+import questionAnswerService from './services/question-answer.service';
+import questionService from './services/question.service';
+import quizService from './services/quiz.service';
+import transactionService from './services/transaction.service';
+import tutorService from './services/tutor.service';
+import centerService from './services/center.service';
+import accountForumService from './services/account-forum.service';
+import accountService from './services/account.service';
+import assignmentAttemptService from './services/assignment-attempt.service';
+import assignmentService from './services/assignment.service';
+import categoryService from './services/category.service';
 
 function App() {
 
@@ -65,6 +85,30 @@ function App() {
     // Check if the user is already logged in by retrieving the login status from local storage
     const storedLoginStatus = localStorage.getItem('isLoggedIn');
     setIsLoggedIn(storedLoginStatus === 'true');
+
+    // Retrieve the token from local storage and set it as the authentication token
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      accountForumService.setToken(storedToken);
+      accountService.setToken(storedToken);
+      assignmentAttemptService.setToken(storedToken);
+      assignmentService.setToken(storedToken);
+      categoryService.setToken(storedToken);
+      classLessonService.setToken(storedToken);
+      classModuleService.setToken(storedToken);
+      classTopicService.setToken(storedToken);
+      courseService.setToken(storedToken);
+      enrollmentService.setToken(storedToken);
+      forumService.setToken(storedToken);
+      learnerService.setToken(storedToken);
+      lessonMaterialService.setToken(storedToken);
+      moduleService.setToken(storedToken);
+      questionAnswerService.setToken(storedToken);
+      questionService.setToken(storedToken);
+      quizService.setToken(storedToken);
+      transactionService.setToken(storedToken);
+      tutorService.setToken(storedToken);
+    }
 
   }, []);
 
@@ -77,6 +121,7 @@ function App() {
           path="/login"
           element={<SignIn setIsLoggedIn={setIsLoggedIn} />} // Pass setIsLoggedIn prop to Login component
         />
+         
         {/* <Route path="/" element={<Navigate to="/home" />} /> */}
         <Route path="/home" element={<Home />} />
         {/* <Route path="/login" element={<SignIn />} /> */}
@@ -84,7 +129,7 @@ function App() {
         <Route path="/business-register" element={<BusinessSignUp />} />
         <Route path="/list-course" element={<ListCourse />} />
         <Route path="/detail-course/:courseId" element={<DetailCourse />} />
-        <Route path="/my-courses/learning" element={<Learning />} />
+        <Route path="/learner/my-learning/:learnerId" element={<Learning />} />
         <Route path="/tutor/courses" element={<CourseList />} />
         <Route path="/tutor/courses/create" element={<CreateCourse />} />
         {/* list course by tutorID */}
