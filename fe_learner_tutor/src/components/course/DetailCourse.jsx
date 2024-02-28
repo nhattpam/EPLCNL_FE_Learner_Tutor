@@ -274,14 +274,25 @@ const DetailCourse = () => {
                                         ) : (
                                             <div className="course-info d-flex justify-content-between align-items-center">
                                                 {isEnrolled ? (
-                                                    <Link
-                                                        type="button"
-                                                        className="btn btn-primary btn-lg btn-block"
-                                                        to={`/study-course/${courseId}`}
-                                                        style={{ backgroundColor: '#f58d04', color: '#fff' }}
-                                                    >
-                                                        Study Now
-                                                    </Link>
+                                                    course.isOnlineClass ? (
+                                                        <Link
+                                                            type="button"
+                                                            className="btn btn-primary btn-lg btn-block"
+                                                            to={`/study-class/${courseId}`}
+                                                            style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                        >
+                                                            Study Now
+                                                        </Link>
+                                                    ) : (
+                                                        <Link
+                                                            type="button"
+                                                            className="btn btn-primary btn-lg btn-block"
+                                                            to={`/study-course/${courseId}`}
+                                                            style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                        >
+                                                            Study Now
+                                                        </Link>
+                                                    )
                                                 ) : (
                                                     <button
                                                         type="button"
@@ -291,9 +302,9 @@ const DetailCourse = () => {
                                                     >
                                                         Get - ${course.stockPrice}
                                                     </button>
-
                                                 )}
                                             </div>
+
                                         )}
                                     </>
                                 ) : (

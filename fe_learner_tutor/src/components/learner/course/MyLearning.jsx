@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import learnerService from '../../../services/learner.service';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useRef } from 'react';
 
 const MyLearning = () => {
 
@@ -12,6 +13,9 @@ const MyLearning = () => {
 
 
     const [enrollmentList, setEnrollmentList] = useState([]);
+    
+
+    const contentRef = useRef(null);
 
 
     useEffect(() => {
@@ -26,6 +30,10 @@ const MyLearning = () => {
             });
     }, [learnerId]);
 
+    const scroll = (scrollOffset) => {
+        contentRef.current.scrollLeft += scrollOffset;
+    };
+
     return (
         <>
             <Header />
@@ -33,7 +41,7 @@ const MyLearning = () => {
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs">
                     <div className="container">
-                        <h2>My learning</h2>
+                        <h2 style={{color: '#fff'}}>My learning</h2>
                     </div>
                 </div>
                 {/* End Breadcrumbs */}
@@ -52,16 +60,7 @@ const MyLearning = () => {
                                     Certificates
                                 </a>
                             </li>
-                            {/* <li className="nav-item">
-                                <a className="nav-link" id="tab3" data-bs-toggle="tab" href="#tab-content-3">
-                                    Tab 3
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" id="tab4" data-bs-toggle="tab" href="#tab-content-4">
-                                    Tab 4
-                                </a>
-                            </li> */}
+
                         </ul>
                         {/* Tab Content */}
                         <div className="tab-content mt-4" id="myLearningTabsContent">
@@ -69,7 +68,7 @@ const MyLearning = () => {
                             <div className="tab-pane fade show active" id="tab-content-1">
                                 <section id="courses" className="courses">
                                     <div className="container" data-aos="fade-up">
-                                        <div className="row" data-aos="zoom-in" data-aos-delay={100}>
+                                        <div className="row " data-aos="zoom-in" data-aos-delay={100}>
                                             {enrollmentList.map((enrollment, index) => (
                                                 <div key={enrollment.courseId} className="col-lg-4 col-md-6 d-flex align-items-stretch">
                                                     <div className="course-item">
@@ -83,9 +82,9 @@ const MyLearning = () => {
                                                             <p>{enrollment.course.description}</p>
                                                             <div className="trainer d-flex justify-content-between align-items-center">
                                                                 <div className="trainer-profile d-flex align-items-center">
-                                                                     <img src={enrollment.course.tutor.account.imageUrl} className="img-fluid" alt="" />
-                                                                     <span>{enrollment.course.tutor.account.fullName}</span>
-F                                                                </div>
+                                                                    <img src={enrollment.course.tutor.account.imageUrl} className="img-fluid" alt="" />
+                                                                    <span>{enrollment.course.tutor.account.fullName}</span>
+                                                                                                                                    </div>
 
                                                                 <div className="trainer-rank d-flex align-items-center">
                                                                     <i className="bx bx-user" />&nbsp;30

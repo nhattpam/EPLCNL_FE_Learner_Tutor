@@ -77,6 +77,7 @@ import assignmentAttemptService from './services/assignment-attempt.service';
 import assignmentService from './services/assignment.service';
 import categoryService from './services/category.service';
 import StudyCourse from './components/course/StudyCourse';
+import StudyClass from './components/course/StudyClass';
 
 function App() {
 
@@ -195,6 +196,7 @@ function App() {
 
         {/* learner */}
         <Route path="/study-course/:courseId" element={<StudyCourse />} />
+        <Route path="/study-class/:courseId" element={<StudyClass />} />
         <Route path="/my-learning/:learnerId" element={<MyLearning />} />
 
       </Routes>
