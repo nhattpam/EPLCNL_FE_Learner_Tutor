@@ -10,7 +10,7 @@ const EditQuiz = () => {
   const [quiz, setQuiz] = useState({
     moduleId: "",
     classTopicId: "",
-    classPracticeId: "",
+    // classPracticeId: "",
     name: "",
     gradeToPass: "",
     deadline: "",

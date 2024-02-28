@@ -8,6 +8,8 @@ import lessonService from '../../../services/lesson.service';
 import assignmentService from '../../../services/assignment.service';
 import ReactQuill from 'react-quill';
 import assignmentAttemptService from '../../../services/assignment-attempt.service';
+import quizService from '../../../services/quiz.service';
+import questionService from '../../../services/question.service';
 
 const StudyCourse = () => {
     const { courseId } = useParams();
@@ -102,8 +104,6 @@ const StudyCourse = () => {
 
 
     //chi tiet module (lesson, assignment, quiz)
-
-
     //LESSON
     const [lesson, setLesson] = useState({
         name: "",
@@ -132,6 +132,10 @@ const StudyCourse = () => {
     // Function to handle click on a lesson card to show details
     const handleLessonClick = (lessonId) => {
         setSelectedLessonId(lessonId);
+        setSelectedAssignmentId(null); // Reset selected assignment
+        setSelectedAssignment(null);
+        setSelectedQuizId(null);
+        setSelectedQuiz(null);
     };
 
     //ASSIGNMENT
@@ -161,6 +165,10 @@ const StudyCourse = () => {
     // Function to handle click on a assignment card to show details
     const handleAssignmentClick = (assignmentId) => {
         setSelectedAssignmentId(assignmentId);
+        setSelectedLessonId(null);
+        setSelectedLesson(null);
+        setSelectedQuizId(null);
+        setSelectedQuiz(null);
     };
 
     // State to track whether the form should be displayed or not
@@ -245,6 +253,105 @@ const StudyCourse = () => {
     };
 
     //QUIZ
+    const [quiz, setQuiz] = useState({
+        moduleId: "",
+        classTopicId: "",
+        name: "",
+        gradeToPass: "",
+        deadline: "",
+        createdDate: "",
+        updatedDate: "",
+        module: []
+    });
+
+    // State for lesson
+    const [selectedQuizId, setSelectedQuizId] = useState(null);
+    const [selectedQuiz, setSelectedQuiz] = useState(null);
+    const [questionList, setQuestionList] = useState([]);
+    const [showQuestions, setShowQuestions] = useState(false);
+    // Initialize state to track the current question index
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [quizStarted, setQuizStarted] = useState(false);
+    const [questionAnswerList, setQuestionAnswerList] = useState([]);
+    //display result assignment attempt
+    const [showResult, setShowResult] = useState(false);
+
+
+    useEffect(() => {
+        if (selectedQuizId) {
+            quizService
+                .getQuizById(selectedQuizId)
+                .then((res) => {
+                    setSelectedQuiz(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [selectedQuizId]);
+
+    const handleQuizClick = (quizId) => {
+        setSelectedQuizId(quizId);
+        setSelectedLessonId(null);
+        setSelectedLesson(null);
+        setSelectedAssignmentId(null);
+        setSelectedAssignment(null);
+    };
+
+    useEffect(() => {
+        quizService
+            .getAllQuestionsByQuiz(selectedQuizId)
+            .then((res) => {
+                console.log(res.data);
+                setQuestionList(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [selectedQuizId]);
+
+
+
+    const handleStartQuiz = () => {
+        setShowQuestions(true);
+        // Set the quizStarted state to true when the quiz starts
+        setQuizStarted(true);
+    };
+
+
+
+    // Function to handle click on the "Next" button
+    const handleNextQuestion = () => {
+        // Increment the current question index
+        setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+
+        // Check if the user has reached the last question
+        if (currentQuestionIndex === questionList.length - 1) {
+            // If so, alert the user
+            setShowResult(true);
+            setShowQuestions(false);
+        }
+    };
+
+    // Retrieve the current question based on the current index
+    const currentQuestion = questionList[currentQuestionIndex];
+
+
+    useEffect(() => {
+        if (currentQuestion) { // Ensure currentQuestion is defined before accessing its id
+            questionService
+                .getAllQuestionAnswersByQuestion(currentQuestion.id)
+                .then((res) => {
+                    console.log(res.data);
+                    setQuestionAnswerList(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [currentQuestion?.id]); // Use optional chaining to avoid errors if currentQuestion is undefined
+
 
     return (
         <>
@@ -283,8 +390,10 @@ const StudyCourse = () => {
                                         <div className="tab-pane  show active" id="tab-content-1">
                                             <section id="courses" className="courses">
                                                 <div className="container">
-                                                    <div className="row" style={{ textAlign: 'left' }}>
-                                                        <div dangerouslySetInnerHTML={{ __html: selectedLesson.reading }}></div>
+                                                    <div className="card" style={{ textAlign: 'left' }}>
+                                                        <div key={selectedLesson.id}>
+                                                            <div dangerouslySetInnerHTML={{ __html: selectedLesson.reading }}></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </section>{/* End Courses Section */}
@@ -375,6 +484,95 @@ const StudyCourse = () => {
                                     </div>
                                 </>
                             )}
+                            {selectedQuiz && selectedQuiz.name && (
+                                <>
+
+                                    <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
+
+                                        <div className="tab-pane  show active" id="tab-content-1" style={{ marginLeft: '-170px' }}>
+                                            <section id="courses" className="courses">
+                                                <div className="container">
+                                                    <h1><span style={{ color: '#f58d04' }}>Quiz: </span>{selectedQuiz.name}</h1>
+                                                </div>
+                                            </section>{/* End Courses Section */}
+                                        </div>
+                                        {!quizStarted && (
+                                            <button
+                                                className="btn btn-primary"
+                                                style={{ backgroundColor: '#f58d04', color: '#fff', marginLeft: '-170px' }}
+                                                onClick={handleStartQuiz}
+                                            >
+                                                Start Quiz
+                                            </button>
+                                        )}
+                                        {showQuestions && (
+                                            <div>
+                                                <div className="tab-pane show active" id="tab-content-1" style={{ marginTop: '-80px' }}>
+                                                    <section id="courses" className="courses">
+                                                        <div className="container">
+                                                            {currentQuestion && (
+                                                                <div style={{ marginLeft: '-170px' }}>
+                                                                    <div key={currentQuestion.id}>
+                                                                        {currentQuestion.questionImageUrl && ( // Check if questionImageUrl exists and is not falsy
+                                                                            <img src={currentQuestion.questionImageUrl} style={{ width: '600px', height: '300px' }} />
+                                                                        )}
+                                                                        {currentQuestion.questionAudioUrl && ( // Check if questionAudioUrl exists and is not falsy
+                                                                            <audio src={currentQuestion.questionAudioUrl} controls></audio>
+                                                                        )}
+                                                                        <div dangerouslySetInnerHTML={{ __html: currentQuestion.questionText }}></div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                            )}
+                                                            <div className="game-options-container">
+
+                                                                {questionAnswerList.map((questionAnswer, index) => (
+                                                                    <span>
+                                                                        <input type="radio" id="option-one" name="option" className="radio" value="optionA" />
+                                                                        <label for="option-one" className="option" id="option-one-label">{questionAnswer.answerText}</label>
+                                                                    </span>
+                                                                ))}
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                                <button
+                                                    className="btn btn-primary"
+                                                    style={{ backgroundColor: '#f58d04', color: '#fff', marginLeft: '-170px' }}
+                                                    onClick={handleNextQuestion}
+                                                >
+                                                    Next Question
+                                                </button>
+                                            </div>
+                                        )}
+                                        {showResult && (
+                                            <div>
+                                                <div className="tab-pane show active text-center" id="tab-content-1" style={{ marginTop: '-80px', marginRight: '150px'}}>
+                                                    <section id="courses" className="courses">
+                                                        <div className="container">
+                                                            Result
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                                <button
+                                                    className="btn btn-primary"
+                                                    style={{ backgroundColor: '#f58d04', color: '#fff' , marginLeft: '-170px' }}
+                                                >
+                                                    Re-Attempt Quiz
+                                                </button>
+                                            </div>
+
+                                        )}
+
+                                    </div>
+                                </>
+
+
+                            )}
 
                         </div>
 
@@ -414,7 +612,7 @@ const StudyCourse = () => {
                                                     </div>
                                                 ))}
                                                 {moduleContent.quizzes.map((quiz, index) => (
-                                                    <div key={`quiz_${index}`} className="card" style={{ marginBottom: '5px' }}>
+                                                    <div key={`quiz_${index}`} className="card" style={{ marginBottom: '5px' }} onClick={() => handleQuizClick(quiz.id)}>
                                                         <div className="card-body">{moduleContent.lessons.length + moduleContent.assignments.length + index + 1}. {quiz.name}</div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="far fa-question-circle"></i> {quiz.deadline} mins
@@ -456,6 +654,175 @@ const StudyCourse = () => {
 .card.module-title:hover {
     background-color: #E7E3DC; /* Darker background color on hover */
     color: #fff
+}
+.game-options-container{
+    width: 80%;
+    height: 12rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.game-options-container span{
+    width: 45%;
+    height: 3rem;
+    border: 2px solid darkgray;
+    border-radius: 20px;
+    overflow: hidden;
+}
+span label{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    font-weight: 600;
+    color: rgb(22, 22, 22);
+}
+
+span label:hover{
+    -ms-transform: scale(1.12);
+    -webkit-transform: scale(1.12);
+    transform: scale(1.12);
+    color: #f58d04;
+    background-color: #FFF0D6
+}
+
+input[type="radio"] {
+    position: relative;
+    display: none;
+}
+
+
+
+.next-button-container{
+    width: 50%;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+}
+.next-button-container button{
+    width: 8rem;
+    height: 2rem;
+    border-radius: 10px;
+    background: none;
+    color: rgb(25, 25, 25);
+    font-weight: 600;
+    border: 2px solid gray;
+    cursor: pointer;
+    outline: none;
+}
+.next-button-container button:hover{
+    background-color: rgb(143, 93, 93);
+}
+
+.modal-container{
+    display: none;
+    position: fixed;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    -webkit-animation: fadeIn 1.2s ease-in-out;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+.modal-content-container{
+    height: 20rem;
+    width: 25rem;
+    background-color: rgb(43, 42, 42);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 25px;
+}
+
+.modal-content-container h1{
+    font-size: 1.3rem;
+    height: 3rem;
+    color: lightgray;
+    text-align: center;
+}
+
+.grade-details{
+    width: 15rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.grade-details p{
+    color: white;
+    text-align: center;
+}
+
+.modal-button-container{
+    height: 2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-button-container button{
+    width: 10rem;
+    height: 2rem;
+    background: none;
+    outline: none;
+    border: 1px solid rgb(252, 242, 241);
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 20px;
+}
+.modal-button-container button:hover{
+    background-color: rgb(83, 82, 82);
+}
+
+@media(min-width : 300px) and (max-width : 350px){
+    .game-quiz-container{
+        width: 90%;
+        height: 80vh;
+     }
+     .game-details-container h1{
+        font-size: 0.8rem;
+     }
+
+     .game-question-container{
+        height: 6rem;
+     }
+     .game-question-container h1{
+       font-size: 0.9rem;
+    }
+
+    .game-options-container span{
+        width: 90%;
+        height: 2.5rem;
+    }
+    .game-options-container span label{
+        font-size: 0.8rem;
+    }
+    .modal-content-container{
+        width: 90%;
+        height: 25rem;
+    }
+
+    .modal-content-container h1{
+        font-size: 1.2rem;
+    }
 }
 
             `}

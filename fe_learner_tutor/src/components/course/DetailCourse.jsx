@@ -294,15 +294,22 @@ const DetailCourse = () => {
                                                         </Link>
                                                     )
                                                 ) : (
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-primary btn-lg btn-block"
-                                                        onClick={handlePayClick}
-                                                        style={{ backgroundColor: '#f58d04' }}
-                                                    >
-                                                        Get - ${course.stockPrice}
-                                                    </button>
+                                                    <div>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary btn-lg btn-block"
+                                                            onClick={handlePayClick}
+                                                            style={{ backgroundColor: '#f58d04' }}
+                                                        >
+                                                            Get - ${course.stockPrice}
+                                                        </button>
+                                                        <p className='mt-2'>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
+                                                        </p>
+                                                    </div>
+
+
                                                 )}
+
                                             </div>
 
                                         )}
