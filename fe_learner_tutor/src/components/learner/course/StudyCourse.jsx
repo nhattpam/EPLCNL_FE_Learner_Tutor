@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../Header';
-import Footer from '../Footer';
+import Header from '../../Header';
+import Footer from '../../Footer';
 import { useParams } from 'react-router-dom';
-import courseService from '../../services/course.service';
-import moduleService from '../../services/module.service'; // Import module service
+import courseService from '../../../services/course.service';
+import moduleService from '../../../services/module.service'; // Import module service
+import lessonService from '../../../services/lesson.service';
 
 const StudyCourse = () => {
     const { courseId } = useParams();
@@ -94,6 +95,43 @@ const StudyCourse = () => {
         setSelectedModule(moduleList.find(module => module.id === moduleId));
     };
 
+
+    //chi tiet module (lesson, assignment, quiz)
+
+
+    //LESSON
+    const [lesson, setLesson] = useState({
+        name: "",
+        moduleId: "",
+        videoUrl: "",
+        reading: ""
+    });
+
+    // State for lesson
+    const [selectedLessonId, setSelectedLessonId] = useState(null);
+    const [selectedLesson, setSelectedLesson] = useState(null);
+
+    useEffect(() => {
+        if (selectedLessonId) {
+            lessonService
+                .getLessonById(selectedLessonId)
+                .then((res) => {
+                    setSelectedLesson(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [selectedLessonId]);
+
+    // Function to handle click on a lesson card to show details
+    const handleLessonClick = (lessonId) => {
+        setSelectedLessonId(lessonId);
+    };
+
+    //ASSIGNMENT
+    //QUIZ
+
     return (
         <>
             <Header />
@@ -107,6 +145,49 @@ const StudyCourse = () => {
                     <div className='row'>
                         <div className="col-md-8">
                             {/* Course Content */}
+                            {/* Display video player if lesson has video URL */}
+                            {selectedLesson && selectedLesson.videoUrl && (
+                                <>
+                                    <video controls style={{ width: '100%' }}>
+                                        <source src={selectedLesson.videoUrl} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <ul className="nav nav-tabs" id="myLearningTabs">
+                                        <li className="nav-item">
+                                            <a className="nav-link active" id="tab1" data-bs-toggle="tab" href="#tab-content-1">
+                                                Reading
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" id="tab2" data-bs-toggle="tab" href="#tab-content-2">
+                                                Lesson Materials
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                    <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
+
+                                        <div className="tab-pane  show active" id="tab-content-1">
+                                            <section id="courses" className="courses">
+                                                <div className="container">
+                                                    <div className="row" style={{textAlign: 'left'}}>
+                                                        <div dangerouslySetInnerHTML={{ __html: selectedLesson.reading }}></div>
+                                                    </div>
+                                                </div>
+                                            </section>{/* End Courses Section */}
+                                        </div>
+
+
+                                        <div className="tab-pane fade" id="tab-content-2">
+                                            {/* Course Content for Tab 2 */}
+                                            {/* You can customize this content based on your needs */}
+                                        </div>
+
+                                    </div>
+                                </>
+
+
+                            )}
                         </div>
 
                         <div className="col-md-4" style={{ textAlign: 'left' }}> {/* Adjusted width for sidebar */}
@@ -129,7 +210,7 @@ const StudyCourse = () => {
                                             <div className="card-content">
                                                 {/* Combine all items into a single array */}
                                                 {moduleContent.lessons.map((lesson, index) => (
-                                                    <div key={`lesson_${index}`} className="card" style={{ marginBottom: '5px' }}>
+                                                    <div key={`lesson_${index}`} className="card" style={{ marginBottom: '5px' }} onClick={() => handleLessonClick(lesson.id)}>
                                                         <div className="card-body">{index + 1}. {lesson.name}</div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="fas fa-file-video"></i>

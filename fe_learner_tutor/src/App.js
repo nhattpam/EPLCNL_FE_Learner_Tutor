@@ -76,8 +76,8 @@ import accountService from './services/account.service';
 import assignmentAttemptService from './services/assignment-attempt.service';
 import assignmentService from './services/assignment.service';
 import categoryService from './services/category.service';
-import StudyCourse from './components/course/StudyCourse';
-import StudyClass from './components/course/StudyClass';
+import StudyCourse from './components/learner/course/StudyCourse';
+import StudyClass from './components/learner/course/StudyClass';
 
 function App() {
 
