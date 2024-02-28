@@ -43,5 +43,13 @@ class LearnerService {
       }
     });
   }
+
+  getAllEnrollmentByLearnerIdd(id) {
+    return axios.get(API_URL + `/learners/${id}/enrollments`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new LearnerService;

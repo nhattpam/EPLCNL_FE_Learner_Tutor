@@ -2,8 +2,30 @@ import React from 'react';
 import Header from '../../Header';
 import Footer from '../../Footer';
 import { Link } from 'react-router-dom';
+import learnerService from '../../../services/learner.service';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-const Learning = () => {
+const MyLearning = () => {
+
+    const learnerId = localStorage.getItem('learnerId');
+
+
+    const [enrollmentList, setEnrollmentList] = useState([]);
+
+
+    useEffect(() => {
+        learnerService
+            .getAllEnrollmentByLearnerIdd(learnerId)
+            .then((res) => {
+                setEnrollmentList(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [learnerId]);
+
     return (
         <>
             <Header />
@@ -27,10 +49,10 @@ const Learning = () => {
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" id="tab2" data-bs-toggle="tab" href="#tab-content-2">
-                                    Tab 2
+                                    Certificates
                                 </a>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <a className="nav-link" id="tab3" data-bs-toggle="tab" href="#tab-content-3">
                                     Tab 3
                                 </a>
@@ -39,54 +61,53 @@ const Learning = () => {
                                 <a className="nav-link" id="tab4" data-bs-toggle="tab" href="#tab-content-4">
                                     Tab 4
                                 </a>
-                            </li>
+                            </li> */}
                         </ul>
                         {/* Tab Content */}
                         <div className="tab-content mt-4" id="myLearningTabsContent">
+
                             <div className="tab-pane fade show active" id="tab-content-1">
-                                {/* Course Content for Tab 1 */}
-                                {/* You can customize this content based on your needs */}
-                                <div className="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
-                                    <div className="course-item">
-                                        <img src="assets/img/course-2.jpg" className="img-fluid" alt="..." />
-                                        <div className="course-content">
-                                            <div className="d-flex justify-content-between align-items-center mb-3">
-                                                <h4>Marketing</h4>
-                                                <p className="price">$250</p>
-                                            </div>
-                                            <h3>
-                                                <li>
-                                                    <Link to="/detail-course">Search Engine Optimization</Link>
-                                                </li>
-                                            </h3>
-                                            <p>Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
-                                            <div className="trainer d-flex justify-content-between align-items-center">
-                                                <div className="trainer-profile d-flex align-items-center">
-                                                    <img src="assets/img/trainers/trainer-2.jpg" className="img-fluid" alt />
-                                                    <span>Lana</span>
+                                <section id="courses" className="courses">
+                                    <div className="container" data-aos="fade-up">
+                                        <div className="row" data-aos="zoom-in" data-aos-delay={100}>
+                                            {enrollmentList.map((enrollment, index) => (
+                                                <div key={enrollment.courseId} className="col-lg-4 col-md-6 d-flex align-items-stretch">
+                                                    <div className="course-item">
+                                                        <img src={enrollment.course.imageUrl} className="img-fluid" alt="..." />
+                                                        <div className="course-content">
+                                                            <div className="d-flex justify-content-between align-items-center mb-3">
+                                                                <h4>{enrollment.course.category?.name}</h4>
+                                                                <p className="price">{`$${enrollment.course.stockPrice}`}</p>
+                                                            </div>
+                                                            <h3><Link to={`/study-course/${enrollment.courseId}`}>{enrollment.course.name}</Link></h3>
+                                                            <p>{enrollment.course.description}</p>
+                                                            <div className="trainer d-flex justify-content-between align-items-center">
+                                                                <div className="trainer-profile d-flex align-items-center">
+                                                                     <img src={enrollment.course.tutor.account.imageUrl} className="img-fluid" alt="" />
+                                                                     <span>{enrollment.course.tutor.account.fullName}</span>
+F                                                                </div>
+
+                                                                <div className="trainer-rank d-flex align-items-center">
+                                                                    <i className="bx bx-user" />&nbsp;30
+                                                                    &nbsp;&nbsp;
+                                                                    <i className="bx bx-heart" />&nbsp;52
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="trainer-rank d-flex align-items-center">
-                                                    <i className="bx bx-user" />&nbsp;35
-                                                    &nbsp;&nbsp;
-                                                    <i className="bx bx-heart" />&nbsp;42
-                                                </div>
-                                            </div>
+                                            ))}
                                         </div>
                                     </div>
-                                </div> {/* End Course Item*/}
+                                </section>{/* End Courses Section */}
                             </div>
+
+
                             <div className="tab-pane fade" id="tab-content-2">
                                 {/* Course Content for Tab 2 */}
                                 {/* You can customize this content based on your needs */}
                             </div>
-                            <div className="tab-pane fade" id="tab-content-3">
-                                {/* Course Content for Tab 3 */}
-                                {/* You can customize this content based on your needs */}
-                            </div>
-                            <div className="tab-pane fade" id="tab-content-4">
-                                {/* Course Content for Tab 4 */}
-                                {/* You can customize this content based on your needs */}
-                            </div>
+
                         </div>
                     </div>
                 </section>
@@ -98,4 +119,4 @@ const Learning = () => {
     );
 };
 
-export default Learning;
+export default MyLearning;

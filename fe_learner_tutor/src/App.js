@@ -6,7 +6,7 @@ import ListCourse from './components/course/ListCourse';
 import DetailCourse from './components/course/DetailCourse';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import Learning from './components/learner/course/MyLearning';
+import MyLearning from './components/learner/course/MyLearning';
 import CourseList from './components/tutor/course/CourseList';
 import CreateCourse from './components/tutor/course/CreateCourse';
 import BusinessSignUp from './components/BusinessSignUp';
@@ -76,6 +76,7 @@ import accountService from './services/account.service';
 import assignmentAttemptService from './services/assignment-attempt.service';
 import assignmentService from './services/assignment.service';
 import categoryService from './services/category.service';
+import StudyCourse from './components/course/StudyCourse';
 
 function App() {
 
@@ -129,7 +130,6 @@ function App() {
         <Route path="/business-register" element={<BusinessSignUp />} />
         <Route path="/list-course" element={<ListCourse />} />
         <Route path="/detail-course/:courseId" element={<DetailCourse />} />
-        <Route path="/learner/my-learning/:learnerId" element={<Learning />} />
         <Route path="/tutor/courses" element={<CourseList />} />
         <Route path="/tutor/courses/create" element={<CreateCourse />} />
         {/* list course by tutorID */}
@@ -192,6 +192,10 @@ function App() {
         {/* assignment attempt */}
         <Route path="/list-assignment-attempt/:tutorId" element={<ListAssignmentAttempt />} />
         <Route path="/edit-assignment-attempt/:assignmentAttemptId" element={<EditAssignmentAttempt />} />
+
+        {/* learner */}
+        <Route path="/study-course/:courseId" element={<StudyCourse />} />
+        <Route path="/my-learning/:learnerId" element={<MyLearning />} />
 
       </Routes>
     </div>

@@ -6,6 +6,7 @@ import accountService from '../services/account.service';
 const Header = () => {
 
     const accountId = localStorage.getItem('accountId');
+    const learnerId = localStorage.getItem('learnerId');
     const isTutor = sessionStorage.getItem('isTutor') === 'true';
     const isLearner = sessionStorage.getItem('isLearner') === 'true';
 
@@ -166,10 +167,10 @@ const Header = () => {
                                             <span>My Account</span>
                                         </a>
                                         {/* item*/}
-                                        <a href="javascript:void(0);" className="dropdown-item notify-item">
+                                        <Link href="javascript:void(0);" className="dropdown-item notify-item" to={`/my-learning/${learnerId}`}>
                                             <i class="fas fa-journal-whills"></i>
                                             <span>My Learning</span>
-                                        </a>
+                                        </Link>
                                         {/* item*/}
                                         <a href="javascript:void(0);" className="dropdown-item notify-item">
                                             <i className="fe-lock" />

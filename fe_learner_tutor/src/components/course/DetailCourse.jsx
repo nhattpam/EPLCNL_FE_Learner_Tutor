@@ -277,7 +277,7 @@ const DetailCourse = () => {
                                                     <Link
                                                         type="button"
                                                         className="btn btn-primary btn-lg btn-block"
-                                                        to={`/learner/study-course/${courseId}`}
+                                                        to={`/study-course/${courseId}`}
                                                         style={{ backgroundColor: '#f58d04', color: '#fff' }}
                                                     >
                                                         Study Now
