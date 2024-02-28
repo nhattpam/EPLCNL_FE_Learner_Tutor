@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import courseService from '../../../services/course.service';
 import moduleService from '../../../services/module.service'; // Import module service
 import lessonService from '../../../services/lesson.service';
+import assignmentService from '../../../services/assignment.service';
+import ReactQuill from 'react-quill';
 
 const StudyCourse = () => {
     const { courseId } = useParams();
@@ -130,6 +132,71 @@ const StudyCourse = () => {
     };
 
     //ASSIGNMENT
+    const [assignment, setAssignment] = useState({
+        questionText: "",
+        deadline: "", // set a default value for minutes
+        moduleId: ""
+    });
+
+    // State for lesson
+    const [selectedAssignmentId, setSelectedAssignmentId] = useState(null);
+    const [selectedAssignment, setSelectedAssignment] = useState(null);
+
+    useEffect(() => {
+        if (selectedAssignmentId) {
+            assignmentService
+                .getAssignmentById(selectedAssignmentId)
+                .then((res) => {
+                    setSelectedAssignment(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [selectedAssignmentId]);
+
+    // Function to handle click on a assignment card to show details
+    const handleAssignmentClick = (assignmentId) => {
+        setSelectedAssignmentId(assignmentId);
+    };
+
+    // State to track whether the form should be displayed or not
+    const [showForm, setShowForm] = useState(false);
+    // State to track whether the timer should be displayed or not
+    const [showTimer, setShowTimer] = useState(false);
+
+    // State variable for countdown
+    const [timeRemaining, setTimeRemaining] = useState(0);
+
+    // Function to handle click on the "Start Assignment" button
+    const handleStartAssignment = () => {
+        setShowTimer(true);
+        setShowForm(true);
+
+        // Set the deadline time (in seconds) from now
+        const deadlineInSeconds = Date.now() + selectedAssignment.deadline * 60 * 1000;
+
+        // Update time remaining every second
+        const interval = setInterval(() => {
+            const currentTime = Date.now();
+            const remaining = Math.max(0, deadlineInSeconds - currentTime);
+            setTimeRemaining(remaining);
+
+            // If time runs out, clear the interval
+            if (remaining === 0) {
+                clearInterval(interval);
+            }
+        }, 1000);
+    };
+
+    // Format time remaining into minutes and seconds
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / (60 * 1000));
+        const seconds = Math.floor((time % (60 * 1000)) / 1000);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    };
+
+
     //QUIZ
 
     return (
@@ -145,7 +212,6 @@ const StudyCourse = () => {
                     <div className='row'>
                         <div className="col-md-8">
                             {/* Course Content */}
-                            {/* Display video player if lesson has video URL */}
                             {selectedLesson && selectedLesson.videoUrl && (
                                 <>
                                     <video controls style={{ width: '100%' }}>
@@ -170,7 +236,7 @@ const StudyCourse = () => {
                                         <div className="tab-pane  show active" id="tab-content-1">
                                             <section id="courses" className="courses">
                                                 <div className="container">
-                                                    <div className="row" style={{textAlign: 'left'}}>
+                                                    <div className="row" style={{ textAlign: 'left' }}>
                                                         <div dangerouslySetInnerHTML={{ __html: selectedLesson.reading }}></div>
                                                     </div>
                                                 </div>
@@ -188,6 +254,81 @@ const StudyCourse = () => {
 
 
                             )}
+                            {selectedAssignment && selectedAssignment.questionText && (
+                                <>
+                                    <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
+                                        <div className="tab-pane show active" id="tab-content-1">
+                                            <section id="courses" className="courses">
+                                                <div className="container">
+                                                    <div className="row" style={{ textAlign: 'left' }}>
+                                                        <div dangerouslySetInnerHTML={{ __html: selectedAssignment.questionText }}></div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        {/* Render the timer if showTimer state is true */}
+                                        {showTimer ? (
+                                            // Render the timer component here
+                                            // You can implement the countdown logic inside this component
+                                            // For now, just display a simple timer
+                                            <div className="d-flex align-items-center">
+                                                <i className="fas fa-clock" style={{ marginRight: '5px' }}></i>
+                                                <span>  Time Remaining: {formatTime(timeRemaining)}
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            // Render the "Start Assignment" button if showTimer state is false
+                                            <button
+                                                className="btn btn-primary"
+                                                style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                onClick={handleStartAssignment}
+                                            >
+                                                Start Assignment
+                                            </button>
+                                        )}
+                                        {/* Render the form if showForm state is true */}
+                                        {showForm && (
+                                            <form>
+                                                <div className="tab-pane show active" id="tab-content-1">
+                                                    <section id="courses" className="courses">
+                                                        <div className="container">
+                                                            <div className="row" style={{ textAlign: 'left' }}>
+                                                                <ReactQuill
+                                                                    // value={assignment.questionText}
+                                                                    // onChange={handleChangeAssignment}
+                                                                    style={{ height: "300px" }}
+                                                                    modules={{
+                                                                        toolbar: [
+                                                                            [{ header: [1, 2, false] }],
+                                                                            ['bold', 'italic', 'underline', 'strike'],
+                                                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                                            [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                                                            [{ 'direction': 'rtl' }],
+                                                                            [{ 'align': [] }],
+                                                                            ['link', 'image', 'video'],
+                                                                            ['code-block'],
+                                                                            [{ 'color': [] }, { 'background': [] }],
+                                                                            ['clean']
+                                                                        ]
+                                                                    }}
+                                                                    theme="snow"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                                <button
+                                                    className="btn btn-primary"
+                                                    style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                >
+                                                    Submit
+                                                </button>
+                                            </form>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+
                         </div>
 
                         <div className="col-md-4" style={{ textAlign: 'left' }}> {/* Adjusted width for sidebar */}
@@ -218,7 +359,7 @@ const StudyCourse = () => {
                                                     </div>
                                                 ))}
                                                 {moduleContent.assignments.map((assignment, index) => (
-                                                    <div key={`assignment_${index}`} className="card" style={{ marginBottom: '5px' }}>
+                                                    <div key={`assignment_${index}`} className="card" style={{ marginBottom: '5px' }} onClick={() => handleAssignmentClick(assignment.id)}>
                                                         <div className="card-body">{moduleContent.lessons.length + index + 1}. {assignment.questionText}</div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="fab fa-wpforms"></i> {assignment.deadline} mins
