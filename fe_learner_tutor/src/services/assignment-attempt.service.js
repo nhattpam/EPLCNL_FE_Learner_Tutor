@@ -12,6 +12,14 @@ class AssignmentAttemptService {
   setToken(token) {
     this.token = token;
   }
+
+  saveAssignmentAttempt(assignmentAttempt) {
+    return axios.post(API_URL + "/assignment-attempts/", assignmentAttempt, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
  
   getAllAssignmentAttempt() {
     return axios.get(API_URL + "/assignment-attempts", {
@@ -37,6 +45,7 @@ class AssignmentAttemptService {
       }
     });
   }
+
 
  
 

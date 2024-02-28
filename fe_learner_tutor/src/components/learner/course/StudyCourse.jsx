@@ -7,9 +7,12 @@ import moduleService from '../../../services/module.service'; // Import module s
 import lessonService from '../../../services/lesson.service';
 import assignmentService from '../../../services/assignment.service';
 import ReactQuill from 'react-quill';
+import assignmentAttemptService from '../../../services/assignment-attempt.service';
 
 const StudyCourse = () => {
     const { courseId } = useParams();
+    const learnerId = localStorage.getItem('learnerId');
+
 
     const [course, setCourse] = useState({
         name: "",
@@ -196,6 +199,50 @@ const StudyCourse = () => {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
+    const [assignmentAttempt, setAssignmentAttempt] = useState({
+        assignmentId: selectedAssignmentId,
+        learnerId: learnerId,
+        answerText: "",
+    });
+
+    const handleChangeAnswerText = (value) => {
+        setAssignmentAttempt(prevState => ({
+            ...prevState,
+            answerText: value
+        }));
+    };
+
+    useEffect(() => {
+        setAssignmentAttempt(prevState => ({
+            ...prevState,
+            assignmentId: selectedAssignmentId
+        }));
+    }, [selectedAssignmentId]);
+
+    const submitAssignmentAttempt = async (e) => {
+        e.preventDefault();
+
+        try {
+            // Save assignmentAttempt
+            console.log("This is assignment attempt: " + JSON.stringify(assignmentAttempt))
+            const assignmentAttemptResponse = await assignmentAttemptService.saveAssignmentAttempt(assignmentAttempt);
+
+            // console.log(courseResponse.data);
+            const assignmentAttemptJson = JSON.stringify(assignmentAttemptResponse.data);
+
+            // const assignmentAttemptJsonParse = JSON.parse(assignmentAttemptJson);
+
+            // console.log(assignmentAttemptJsonParse);
+            window.alert('Your assignment is submmited!');
+            setShowForm(false);
+            setShowTimer(false);
+
+
+            // navigate(`/list-assignment-attempt/${tutorId}`);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     //QUIZ
 
@@ -288,14 +335,14 @@ const StudyCourse = () => {
                                         )}
                                         {/* Render the form if showForm state is true */}
                                         {showForm && (
-                                            <form>
+                                            <form onSubmit={(e) => submitAssignmentAttempt(e)}>
                                                 <div className="tab-pane show active" id="tab-content-1">
                                                     <section id="courses" className="courses">
                                                         <div className="container">
                                                             <div className="row" style={{ textAlign: 'left' }}>
                                                                 <ReactQuill
-                                                                    // value={assignment.questionText}
-                                                                    // onChange={handleChangeAssignment}
+                                                                    value={assignmentAttempt.answerText}
+                                                                    onChange={handleChangeAnswerText}
                                                                     style={{ height: "300px" }}
                                                                     modules={{
                                                                         toolbar: [
