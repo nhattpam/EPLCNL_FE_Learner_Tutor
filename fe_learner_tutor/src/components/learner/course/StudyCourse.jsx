@@ -325,6 +325,8 @@ const StudyCourse = () => {
     const handleNextQuestion = () => {
         // Increment the current question index
         setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+        setShowScore(false);
+        setShowAnswerColor(false); // Move inside the block for correct answer
 
         // Check if the user has reached the last question
         if (currentQuestionIndex === questionList.length - 1) {
@@ -336,6 +338,11 @@ const StudyCourse = () => {
 
     // Retrieve the current question based on the current index
     const currentQuestion = questionList[currentQuestionIndex];
+    const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+    const [showAnswerColor, setShowAnswerColor] = useState(false);
+    const [showScore, setShowScore] = useState(false);
+    const [msg, setMsg] = useState("");
+
 
 
     useEffect(() => {
@@ -351,6 +358,36 @@ const StudyCourse = () => {
                 });
         }
     }, [currentQuestion?.id]); // Use optional chaining to avoid errors if currentQuestion is undefined
+
+
+    const handleAnswerClick = (questionAnswer, index) => {
+        setSelectedAnswerIndex(index);
+
+        if (questionAnswer.isAnswer) {
+            // If the selected answer is correct
+            setMsg("+ " + questionAnswer.question.defaultGrade + "pts");
+            setShowScore(true);
+            setShowAnswerColor(true); // Move inside the block for correct answer
+            setTimeout(() => {
+                setShowScore(false);
+            handleNextQuestion();
+
+            }, 5000);
+
+
+        } else {
+            // If the selected answer is incorrect
+            setMsg("+ 0 pts");
+            setShowScore(true);
+            setShowAnswerColor(true); // Move inside the block for incorrect answer
+            setTimeout(() => {
+                setShowScore(false);
+            handleNextQuestion();
+
+            }, 5000);
+        }
+    };
+
 
 
     return (
@@ -510,6 +547,11 @@ const StudyCourse = () => {
                                                 <div className="tab-pane show active" id="tab-content-1" style={{ marginTop: '-80px' }}>
                                                     <section id="courses" className="courses">
                                                         <div className="container">
+                                                            {showScore && (
+                                                                <div className="notification">
+                                                                    <h5 style={{ color: '#f58d04', fontWeight: 'bold', marginLeft: '-170px' }} data-aos="fade-in">{msg}</h5>
+                                                                </div>
+                                                            )}
                                                             {currentQuestion && (
                                                                 <div style={{ marginLeft: '-170px' }}>
                                                                     <div key={currentQuestion.id}>
@@ -527,12 +569,52 @@ const StudyCourse = () => {
                                                             )}
                                                             <div className="game-options-container">
 
-                                                                {questionAnswerList.map((questionAnswer, index) => (
-                                                                    <span>
-                                                                        <input type="radio" id="option-one" name="option" className="radio" value="optionA" />
-                                                                        <label for="option-one" className="option" id="option-one-label">{questionAnswer.answerText}</label>
-                                                                    </span>
-                                                                ))}
+
+                                                                {showAnswerColor ? (
+                                                                    <>
+                                                                        {questionAnswerList.map((questionAnswer, index) => (
+                                                                            <span key={index}>
+                                                                                <input
+                                                                                    type="radio"
+                                                                                    id={`option-${index}`}
+                                                                                    name="option"
+                                                                                    className="radio"
+                                                                                    value="optionA"
+                                                                                    readOnly
+                                                                                />
+                                                                                <label
+                                                                                    htmlFor={`option-${index}`}
+                                                                                    className={`option ${questionAnswer.isAnswer ? 'correct-answer' : 'incorrect-answer'}`}
+                                                                                >
+                                                                                    {questionAnswer.answerText}
+                                                                                </label>
+                                                                            </span>
+                                                                        ))}
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        {questionAnswerList.map((questionAnswer, index) => (
+                                                                            <span key={index} className='span1'>
+                                                                                <input
+                                                                                    type="radio"
+                                                                                    id={`option-${index}`}
+                                                                                    name="option"
+                                                                                    className="radio"
+                                                                                    value="optionA"
+                                                                                    onClick={() => handleAnswerClick(questionAnswer)} // Pass a function reference
+                                                                                />
+                                                                                <label
+                                                                                    htmlFor={`option-${index}`}
+                                                                                    className={`option ${questionAnswer.isAnswer ? 'green' : 'red'}`}
+                                                                                >
+                                                                                    {questionAnswer.answerText}
+                                                                                </label>
+                                                                            </span>
+                                                                        ))}
+                                                                    </>
+                                                                )}
+
+
 
 
                                                             </div>
@@ -540,18 +622,18 @@ const StudyCourse = () => {
                                                         </div>
                                                     </section>
                                                 </div>
-                                                <button
+                                                {/* <button
                                                     className="btn btn-primary"
                                                     style={{ backgroundColor: '#f58d04', color: '#fff', marginLeft: '-170px' }}
                                                     onClick={handleNextQuestion}
                                                 >
                                                     Next Question
-                                                </button>
+                                                </button> */}
                                             </div>
                                         )}
                                         {showResult && (
                                             <div>
-                                                <div className="tab-pane show active text-center" id="tab-content-1" style={{ marginTop: '-80px', marginRight: '150px'}}>
+                                                <div className="tab-pane show active text-center" id="tab-content-1" style={{ marginTop: '-80px', marginRight: '150px' }}>
                                                     <section id="courses" className="courses">
                                                         <div className="container">
                                                             Result
@@ -560,7 +642,7 @@ const StudyCourse = () => {
                                                 </div>
                                                 <button
                                                     className="btn btn-primary"
-                                                    style={{ backgroundColor: '#f58d04', color: '#fff' , marginLeft: '-170px' }}
+                                                    style={{ backgroundColor: '#f58d04', color: '#fff', marginLeft: '-170px' }}
                                                 >
                                                     Re-Attempt Quiz
                                                 </button>
@@ -683,7 +765,8 @@ span label{
     color: rgb(22, 22, 22);
 }
 
-span label:hover{
+
+.span1 label:hover{
     -ms-transform: scale(1.12);
     -webkit-transform: scale(1.12);
     transform: scale(1.12);
@@ -823,6 +906,13 @@ input[type="radio"] {
     .modal-content-container h1{
         font-size: 1.2rem;
     }
+}
+.correct-answer {
+    background-color: green;
+}
+
+.incorrect-answer {
+    background-color: red;
 }
 
             `}
