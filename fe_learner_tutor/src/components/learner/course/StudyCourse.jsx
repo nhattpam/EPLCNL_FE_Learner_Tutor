@@ -317,6 +317,21 @@ const StudyCourse = () => {
         setShowQuestions(true);
         // Set the quizStarted state to true when the quiz starts
         setQuizStarted(true);
+        setShowTimer(true);
+        // Set the deadline time (in seconds) from now
+        const deadlineInSeconds = Date.now() + selectedQuiz.deadline * 60 * 1000;
+
+        // Update time remaining every second
+        const interval = setInterval(() => {
+            const currentTime = Date.now();
+            const remaining = Math.max(0, deadlineInSeconds - currentTime);
+            setTimeRemaining(remaining);
+
+            // If time runs out, clear the interval
+            if (remaining === 0) {
+                clearInterval(interval);
+            }
+        }, 1000);
     };
 
 
@@ -342,6 +357,7 @@ const StudyCourse = () => {
     const [showAnswerColor, setShowAnswerColor] = useState(false);
     const [showScore, setShowScore] = useState(false);
     const [msg, setMsg] = useState("");
+    const [point, setPoint] = useState(0);
 
 
 
@@ -366,13 +382,15 @@ const StudyCourse = () => {
         if (questionAnswer.isAnswer) {
             // If the selected answer is correct
             setMsg("+ " + questionAnswer.question.defaultGrade + "pts");
+            const newPoint = point + questionAnswer.question.defaultGrade;
+            setPoint(newPoint); 
             setShowScore(true);
             setShowAnswerColor(true); // Move inside the block for correct answer
             setTimeout(() => {
                 setShowScore(false);
-            handleNextQuestion();
+                handleNextQuestion();
 
-            }, 5000);
+            }, 2000);
 
 
         } else {
@@ -382,9 +400,9 @@ const StudyCourse = () => {
             setShowAnswerColor(true); // Move inside the block for incorrect answer
             setTimeout(() => {
                 setShowScore(false);
-            handleNextQuestion();
+                handleNextQuestion();
 
-            }, 5000);
+            }, 2000);
         }
     };
 
@@ -452,7 +470,7 @@ const StudyCourse = () => {
                                     <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
                                         <div className="tab-pane show active" id="tab-content-1">
                                             <section id="courses" className="courses">
-                                                <div className="container">
+                                                <div className="card">
                                                     <div className="row" style={{ textAlign: 'left' }}>
                                                         <div dangerouslySetInnerHTML={{ __html: selectedAssignment.questionText }}></div>
                                                     </div>
@@ -461,10 +479,7 @@ const StudyCourse = () => {
                                         </div>
                                         {/* Render the timer if showTimer state is true */}
                                         {showTimer ? (
-                                            // Render the timer component here
-                                            // You can implement the countdown logic inside this component
-                                            // For now, just display a simple timer
-                                            <div className="d-flex align-items-center">
+                                            <div className="d-flex align-items-center" style={{marginTop: '-60px'}}>
                                                 <i className="fas fa-clock" style={{ marginRight: '5px' }}></i>
                                                 <span>  Time Remaining: {formatTime(timeRemaining)}
                                                 </span>
@@ -484,8 +499,8 @@ const StudyCourse = () => {
                                             <form onSubmit={(e) => submitAssignmentAttempt(e)}>
                                                 <div className="tab-pane show active" id="tab-content-1">
                                                     <section id="courses" className="courses">
-                                                        <div className="container">
-                                                            <div className="row" style={{ textAlign: 'left' }}>
+                                                        <div className="card">
+                                                            <div className="card" style={{ textAlign: 'left' }}>
                                                                 <ReactQuill
                                                                     value={assignmentAttempt.answerText}
                                                                     onChange={handleChangeAnswerText}
@@ -533,6 +548,7 @@ const StudyCourse = () => {
                                                 </div>
                                             </section>{/* End Courses Section */}
                                         </div>
+
                                         {!quizStarted && (
                                             <button
                                                 className="btn btn-primary"
@@ -552,6 +568,24 @@ const StudyCourse = () => {
                                                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold', marginLeft: '-170px' }} data-aos="fade-in">{msg}</h5>
                                                                 </div>
                                                             )}
+                                                            {showTimer && (
+                                                                <div className='row'>
+                                                                    <div className="col-md-4">
+                                                                        <i className="fas fa-clock" style={{ marginRight: '5px' }}></i>
+                                                                        <span>  Time Remaining: {formatTime(timeRemaining)}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className="col-md-2">
+
+                                                                    </div>
+                                                                    <div className="col-md-4">
+                                                                        <span> <span style={{ fontWeight: 'bold' }}>Score</span>: {point}/<span style={{ color: 'rgb(245, 141, 4)' }}>10</span>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                            )}
+
                                                             {currentQuestion && (
                                                                 <div style={{ marginLeft: '-170px' }}>
                                                                     <div key={currentQuestion.id}>
@@ -561,7 +595,7 @@ const StudyCourse = () => {
                                                                         {currentQuestion.questionAudioUrl && ( // Check if questionAudioUrl exists and is not falsy
                                                                             <audio src={currentQuestion.questionAudioUrl} controls></audio>
                                                                         )}
-                                                                        <div dangerouslySetInnerHTML={{ __html: currentQuestion.questionText }}></div>
+                                                                        <div style={{ fontWeight: 'bold' }} dangerouslySetInnerHTML={{ __html: currentQuestion.questionText }}></div>
 
                                                                     </div>
                                                                 </div>
@@ -614,9 +648,6 @@ const StudyCourse = () => {
                                                                     </>
                                                                 )}
 
-
-
-
                                                             </div>
 
                                                         </div>
@@ -635,8 +666,9 @@ const StudyCourse = () => {
                                             <div>
                                                 <div className="tab-pane show active text-center" id="tab-content-1" style={{ marginTop: '-80px', marginRight: '150px' }}>
                                                     <section id="courses" className="courses">
-                                                        <div className="container">
-                                                            Result
+                                                        <div className="card">
+                                                            Your Result
+                                                            <span>{point}/<span style={{color: '#f58d04'}}>10</span></span>
                                                         </div>
                                                     </section>
                                                 </div>
