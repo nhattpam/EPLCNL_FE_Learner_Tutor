@@ -13,7 +13,7 @@ const MyLearning = () => {
 
 
     const [enrollmentList, setEnrollmentList] = useState([]);
-    
+
 
     const contentRef = useRef(null);
 
@@ -41,7 +41,7 @@ const MyLearning = () => {
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs">
                     <div className="container">
-                        <h2 style={{color: '#fff'}}>My learning</h2>
+                        <h2 style={{ color: '#fff' }}>My learning</h2>
                     </div>
                 </div>
                 {/* End Breadcrumbs */}
@@ -78,13 +78,20 @@ const MyLearning = () => {
                                                                 <h4>{enrollment.course.category?.name}</h4>
                                                                 <p className="price">{`$${enrollment.course.stockPrice}`}</p>
                                                             </div>
-                                                            <h3><Link to={`/study-course/${enrollment.courseId}`}>{enrollment.course.name}</Link></h3>
+                                                            {enrollment.course.isOnlineClass && (
+                                                                <h3><Link to={`/study-class/${enrollment.courseId}`}>{enrollment.course.name}</Link></h3>
+
+                                                            )}
+                                                            {!enrollment.course.isOnlineClass && (
+                                                                <h3><Link to={`/study-course/${enrollment.courseId}`}>{enrollment.course.name}</Link></h3>
+
+                                                            )}
                                                             <p>{enrollment.course.description}</p>
                                                             <div className="trainer d-flex justify-content-between align-items-center">
                                                                 <div className="trainer-profile d-flex align-items-center">
                                                                     <img src={enrollment.course.tutor.account.imageUrl} className="img-fluid" alt="" />
                                                                     <span>{enrollment.course.tutor.account.fullName}</span>
-                                                                                                                                    </div>
+                                                                </div>
 
                                                                 <div className="trainer-rank d-flex align-items-center">
                                                                     <i className="bx bx-user" />&nbsp;30
