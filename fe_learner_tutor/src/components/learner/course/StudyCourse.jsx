@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../Header';
 import Footer from '../../Footer';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import courseService from '../../../services/course.service';
 import moduleService from '../../../services/module.service'; // Import module service
 import lessonService from '../../../services/lesson.service';
@@ -22,6 +22,9 @@ const StudyCourse = () => {
     });
 
     const [moduleList, setModuleList] = useState([]);
+    //dua course name che lap header
+    const [fixedCourseName, setFixedCourseName] = useState(false);
+
 
     useEffect(() => {
         if (courseId) {
@@ -102,6 +105,8 @@ const StudyCourse = () => {
         setSelectedModule(moduleList.find(module => module.id === moduleId));
     };
 
+
+    //scroll
 
     //chi tiet module (lesson, assignment, quiz)
     //LESSON
@@ -383,7 +388,7 @@ const StudyCourse = () => {
             // If the selected answer is correct
             setMsg("+ " + questionAnswer.question.defaultGrade + "pts");
             const newPoint = point + questionAnswer.question.defaultGrade;
-            setPoint(newPoint); 
+            setPoint(newPoint);
             setShowScore(true);
             setShowAnswerColor(true); // Move inside the block for correct answer
             setTimeout(() => {
@@ -410,14 +415,20 @@ const StudyCourse = () => {
 
     return (
         <>
-            <Header />
-            <main id="main" data-aos="fade-in">
-                <div className="breadcrumbs">
-                    <div style={{ float: 'left' }} className='ml-4'>
-                        <h4 style={{ color: '#fff' }}>{course.name}</h4>
+            {/* <Header /> */}
+            <main >
+
+                <div className="breadcrumbs" style={{ marginTop: '-30px', paddingBottom: '10px', position: 'fixed', top: 0, width: '100%', zIndex: 999, display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft: '20px', paddingRight: '20px' }} id='nav-fixed'>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img src={process.env.PUBLIC_URL + '/meowlish_icon.png'} alt="MeowLish" style={{ width: '30px', marginRight: '5px', paddingTop: '10px' }} /> 
+                        <Link to="/home" style={{ color: '#fff', textDecoration: 'none', fontSize: '18px', fontWeight: 'bold', marginRight: '10px' }}>MeowLish</Link><span style={{color: '#fff'}} className='mr-2'>|</span>
+                        <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{course.name}</h4>
                     </div>
                 </div>
-                <section id="courses" className="courses" style={{ marginTop: '-60px' }}>
+
+
+
+                <section id="courses" className="courses" style={{ marginTop: '-10px' }}>
                     <div className='row'>
                         <div className="col-md-8">
                             {/* Course Content */}
@@ -470,7 +481,7 @@ const StudyCourse = () => {
                                     <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
                                         <div className="tab-pane show active" id="tab-content-1">
                                             <section id="courses" className="courses">
-                                                <div className="card">
+                                                <div className="card ml-1">
                                                     <div className="row" style={{ textAlign: 'left' }}>
                                                         <div dangerouslySetInnerHTML={{ __html: selectedAssignment.questionText }}></div>
                                                     </div>
@@ -479,8 +490,8 @@ const StudyCourse = () => {
                                         </div>
                                         {/* Render the timer if showTimer state is true */}
                                         {showTimer ? (
-                                            <div className="d-flex align-items-center" style={{marginTop: '-60px'}}>
-                                                <i className="fas fa-clock" style={{ marginRight: '5px' }}></i>
+                                            <div className="d-flex align-items-center ml-1" style={{ marginTop: '-60px' }}>
+                                                <i className="fas fa-clock" ></i>
                                                 <span>  Time Remaining: {formatTime(timeRemaining)}
                                                 </span>
                                             </div>
@@ -499,7 +510,7 @@ const StudyCourse = () => {
                                             <form onSubmit={(e) => submitAssignmentAttempt(e)}>
                                                 <div className="tab-pane show active" id="tab-content-1">
                                                     <section id="courses" className="courses">
-                                                        <div className="card">
+                                                        <div className="card ml-1">
                                                             <div className="card" style={{ textAlign: 'left' }}>
                                                                 <ReactQuill
                                                                     value={assignmentAttempt.answerText}
@@ -541,7 +552,7 @@ const StudyCourse = () => {
 
                                     <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
 
-                                        <div className="tab-pane  show active" id="tab-content-1" style={{ marginLeft: '-170px' }}>
+                                        <div className="tab-pane  show active" id="tab-content-1" >
                                             <section id="courses" className="courses">
                                                 <div className="container">
                                                     <h1><span style={{ color: '#f58d04' }}>Quiz: </span>{selectedQuiz.name}</h1>
@@ -552,7 +563,7 @@ const StudyCourse = () => {
                                         {!quizStarted && (
                                             <button
                                                 className="btn btn-primary"
-                                                style={{ backgroundColor: '#f58d04', color: '#fff', marginLeft: '-170px' }}
+                                                style={{ backgroundColor: '#f58d04', color: '#fff' }}
                                                 onClick={handleStartQuiz}
                                             >
                                                 Start Quiz
@@ -565,20 +576,23 @@ const StudyCourse = () => {
                                                         <div className="container">
                                                             {showScore && (
                                                                 <div className="notification">
-                                                                    <h5 style={{ color: '#f58d04', fontWeight: 'bold', marginLeft: '-170px' }} data-aos="fade-in">{msg}</h5>
+                                                                    <h5 style={{ color: '#f58d04', fontWeight: 'bold' }} data-aos="fade-in">{msg}</h5>
                                                                 </div>
                                                             )}
                                                             {showTimer && (
                                                                 <div className='row'>
-                                                                    <div className="col-md-4">
-                                                                        <i className="fas fa-clock" style={{ marginRight: '5px' }}></i>
+                                                                    <div className="col-md-1">
+
+                                                                    </div>
+                                                                    <div className="col-md-3">
+                                                                        <i className="fas fa-clock" ></i>
                                                                         <span>  Time Remaining: {formatTime(timeRemaining)}
                                                                         </span>
                                                                     </div>
-                                                                    <div className="col-md-2">
+                                                                    <div className="col-md-3">
 
                                                                     </div>
-                                                                    <div className="col-md-4">
+                                                                    <div className="col-md-5">
                                                                         <span> <span style={{ fontWeight: 'bold' }}>Score</span>: {point}/<span style={{ color: 'rgb(245, 141, 4)' }}>10</span>
                                                                         </span>
                                                                     </div>
@@ -587,7 +601,7 @@ const StudyCourse = () => {
                                                             )}
 
                                                             {currentQuestion && (
-                                                                <div style={{ marginLeft: '-170px' }}>
+                                                                <div >
                                                                     <div key={currentQuestion.id}>
                                                                         {currentQuestion.questionImageUrl && ( // Check if questionImageUrl exists and is not falsy
                                                                             <img src={currentQuestion.questionImageUrl} style={{ width: '600px', height: '300px' }} />
@@ -664,17 +678,17 @@ const StudyCourse = () => {
                                         )}
                                         {showResult && (
                                             <div>
-                                                <div className="tab-pane show active text-center" id="tab-content-1" style={{ marginTop: '-80px', marginRight: '150px' }}>
-                                                    <section id="courses" className="courses">
-                                                        <div className="card">
+                                                <div className="tab-pane show active text-center" id="tab-content-1" style={{ marginTop: '-80px' }}>
+                                                    <section id="courses" className="courses ml-4 mr-2">
+                                                        <div className="card" >
                                                             Your Result
-                                                            <span>{point}/<span style={{color: '#f58d04'}}>10</span></span>
+                                                            <span>{point}/<span style={{ color: '#f58d04' }}>10</span></span>
                                                         </div>
                                                     </section>
                                                 </div>
                                                 <button
                                                     className="btn btn-primary"
-                                                    style={{ backgroundColor: '#f58d04', color: '#fff', marginLeft: '-170px' }}
+                                                    style={{ backgroundColor: '#f58d04', color: '#fff' }}
                                                 >
                                                     Re-Attempt Quiz
                                                 </button>
@@ -745,9 +759,28 @@ const StudyCourse = () => {
                     </div>
                 </section>
             </main>
-            <Footer />
+            {/* <Footer /> */}
+            <script>
+                {`
+                    document.addEventListener("DOMContentLoaded", function () {
+                        window.addEventListener('scroll', function () {
+                            if (window.scrollY > 50) {
+                                document.getElementById('nav-fixed').classList.add('fixed-top');
+                                // add padding top to show content behind navbar
+                                navbar_height = document.querySelector('.navbar').offsetHeight;
+                                document.body.style.paddingTop = navbar_height + 'px';
+                            } else {
+                                document.getElementById('nav-fixed').classList.remove('fixed-top');
+                                // remove padding top from body
+                                document.body.style.paddingTop = '0';
+                            }
+                        });
+                    });
+                `}
+            </script>
             <style>
                 {`
+                
                 .module-title:hover {
                     background-color: #333;
                     color: #fff;
@@ -770,7 +803,7 @@ const StudyCourse = () => {
     color: #fff
 }
 .game-options-container{
-    width: 80%;
+    width: 100%;
     height: 12rem;
     display: flex;
     flex-wrap: wrap;
@@ -945,6 +978,14 @@ input[type="radio"] {
 
 .incorrect-answer {
     background-color: red;
+}
+.fixed-course-name {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #333;
+    padding: 10px 0;
 }
 
             `}
