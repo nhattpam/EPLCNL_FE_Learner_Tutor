@@ -78,6 +78,7 @@ import assignmentService from './services/assignment.service';
 import categoryService from './services/category.service';
 import StudyCourse from './components/learner/course/StudyCourse';
 import StudyClass from './components/learner/course/StudyClass';
+import MyTransaction from './components/learner/transaction/MyTransaction';
 
 function App() {
 
@@ -198,6 +199,10 @@ function App() {
         <Route path="/study-course/:courseId" element={<StudyCourse />} />
         <Route path="/study-class/:courseId" element={<StudyClass />} />
         <Route path="/my-learning/:learnerId" element={<MyLearning />} />
+
+        {/* transaction */}
+        <Route path="/my-transaction/:learnerId" element={<MyTransaction />} />
+
 
       </Routes>
     </div>

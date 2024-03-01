@@ -172,10 +172,10 @@ const Header = () => {
                                             <span>My Learning</span>
                                         </Link>
                                         {/* item*/}
-                                        <a href="javascript:void(0);" className="dropdown-item notify-item">
-                                            <i className="fe-lock" />
-                                            <span>Lock Screen</span>
-                                        </a>
+                                        <Link href="javascript:void(0);" className="dropdown-item notify-item" to={`/my-transaction/${learnerId}`}>
+                                        <i class="fas fa-money-bill-wave"></i>
+                                            <span>Transaction</span>
+                                        </Link>
                                         <div className="dropdown-divider" />
                                         {/* item*/}
                                         <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={handleLogout}>

@@ -19,7 +19,7 @@ class EnrollmentService {
     }
 
     getEnrollmentByLearnerIdAndCourseId(learnerId, courseId) {
-        return axios.get(API_URL + `/enrollments/learner-course?learnerId=${learnerId}&courseId=${courseId}`, {
+        return axios.get(API_URL + `/enrollments/learners/${learnerId}/courses/${courseId}`, {
           headers: {
             Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
           }

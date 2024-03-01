@@ -120,6 +120,7 @@ const StudyCourse = () => {
     // State for lesson
     const [selectedLessonId, setSelectedLessonId] = useState(null);
     const [selectedLesson, setSelectedLesson] = useState(null);
+    const [materialList, setMaterialList] = useState([]);
 
     useEffect(() => {
         if (selectedLessonId) {
@@ -142,6 +143,26 @@ const StudyCourse = () => {
         setSelectedQuizId(null);
         setSelectedQuiz(null);
     };
+
+    const [lessonMaterial, setLessonMaterial] = useState({
+        name: '',
+        materialUrl: '',
+        createdDate: '',
+        updatedDate: ''
+    });
+
+    useEffect(() => {
+        if (selectedLessonId) {
+            lessonService
+                .getAllMaterialsByLesson(selectedLessonId)
+                .then((res) => {
+                    setMaterialList(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [selectedLessonId]);
 
     //ASSIGNMENT
     const [assignment, setAssignment] = useState({
@@ -420,8 +441,8 @@ const StudyCourse = () => {
 
                 <div className="breadcrumbs" style={{ marginTop: '-30px', paddingBottom: '10px', position: 'fixed', top: 0, width: '100%', zIndex: 999, display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft: '20px', paddingRight: '20px' }} id='nav-fixed'>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={process.env.PUBLIC_URL + '/meowlish_icon.png'} alt="MeowLish" style={{ width: '30px', marginRight: '5px', paddingTop: '10px' }} /> 
-                        <Link to="/home" style={{ color: '#fff', textDecoration: 'none', fontSize: '18px', fontWeight: 'bold', marginRight: '10px' }}>MeowLish</Link><span style={{color: '#fff'}} className='mr-2'>|</span>
+                        <img src={process.env.PUBLIC_URL + '/meowlish_icon.png'} alt="MeowLish" style={{ width: '30px', marginRight: '5px', paddingTop: '10px' }} />
+                        <Link to="/home" style={{ color: '#fff', textDecoration: 'none', fontSize: '18px', fontWeight: 'bold', marginRight: '10px' }}>MeowLish</Link><span style={{ color: '#fff' }} className='mr-2'>|</span>
                         <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{course.name}</h4>
                     </div>
                 </div>
@@ -468,7 +489,27 @@ const StudyCourse = () => {
 
                                         <div className="tab-pane fade" id="tab-content-2">
                                             {/* Course Content for Tab 2 */}
-                                            {/* You can customize this content based on your needs */}
+                                            <div className="tab-pane  show active" id="tab-content-1">
+                                                <section id="courses" className="courses">
+                                                    <div className="container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                                                        <div className="card" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', textAlign: 'left' }}>
+
+                                                            {materialList.map((material, index) => (
+                                                                <div className='card-body' style={{ flex: '0 0 33.33%', width: '100%' }}>
+                                                                    <a href={material.materialUrl} target="_blank" rel="noopener noreferrer">
+                                                                        <figure className="figure">
+                                                                            <i className="far fa-file-pdf fa-6x"></i>
+                                                                            <figcaption className="figure-caption" style={{ color: '#f58d04', fontWeight: 'bold' }}>{material.name}</figcaption>
+                                                                        </figure>
+                                                                    </a>
+                                                                </div>
+                                                            ))}
+
+                                                        </div>
+                                                    </div>
+
+                                                </section>{/* End Courses Section */}
+                                            </div>
                                         </div>
 
                                     </div>

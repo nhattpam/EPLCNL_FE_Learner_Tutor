@@ -20,7 +20,7 @@ const MyLearning = () => {
 
     useEffect(() => {
         learnerService
-            .getAllEnrollmentByLearnerIdd(learnerId)
+            .getAllEnrollmentByLearnerId(learnerId)
             .then((res) => {
                 setEnrollmentList(res.data);
 
