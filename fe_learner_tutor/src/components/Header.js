@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'; // Import useState and useEf
 import { Link, useNavigate } from 'react-router-dom';
 import categoryService from '../services/category.service';
 import accountService from '../services/account.service';
+import courseService from '../services/course.service';
+import tutorService from '../services/tutor.service';
+import SearchResult from './learner/course/SearchResult';
 
 const Header = () => {
 
@@ -100,6 +103,65 @@ const Header = () => {
     }, []);
 
 
+    //start SEARCH
+    const [courseList, setCourseList] = useState([]);
+    const [tutorList, setTutorList] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredCourses, setFilteredCourses] = useState([]);
+    const [filteredTutors, setFilteredTutors] = useState([]);
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const res = await courseService.getAllcourse();
+                const activeCourses = res.data.filter((course) => course.isActive === true);
+                setCourseList(activeCourses);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchCourses();
+    }, []); // Empty dependency array to fetch courses only once when the component mounts
+
+
+    useEffect(() => {
+        const fetchTutors = async () => {
+            try {
+                const res = await tutorService.getAllTutor(); // Add await here
+                const activeTutors = res.data.filter((tutor) => tutor.account.isActive === true);
+                setTutorList(activeTutors);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchTutors();
+    }, []);
+
+    // Function to handle search
+    const handleSearch = (query) => {
+        // Filter courses
+        const filteredCourseResults = courseList && courseList.filter(course =>
+            course.name.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredCourses(filteredCourseResults || []);
+
+        // Filter tutors
+        const filteredTutorResults = tutorList && tutorList.filter(tutor =>
+            tutor.account.fullName.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredTutors(filteredTutorResults || []);
+    };
+
+    // useEffect to update search results whenever searchQuery changes
+    useEffect(() => {
+        handleSearch(searchQuery);
+    }, [searchQuery, courseList, tutorList]);
+
+
+    
+    //end SEARCH
     return (
         <>
             <header id="header" className="fixed-top">
@@ -109,12 +171,30 @@ const Header = () => {
                     </h1>
                     <div className="search-box ms-auto">
                         <div className="input-group">
-                            <input type="text" placeholder="Search for anything" className="form-control" style={{ width: '200px' }} />
+                            <input
+                                type="text"
+                                placeholder="Search for anything"
+                                className="form-control"
+                                style={{ width: '200px' }}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
                             <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }}>
-                                <i class="fas fa-search"></i>
+                                <i className="fas fa-search"></i>
                             </button>
                         </div>
+                        {/* Render filtered courses if there are search results */}
+                        <div className='search-result'>
+                            <SearchResult
+                                searchQuery={searchQuery}
+                                filteredCourses={filteredCourses}
+                                filteredTutors={filteredTutors}
+                            />
+                        </div>
                     </div>
+
+
+
                     <nav id="navbar" className="navbar order-last order-lg-0">
                         <ul>
                             <li>
@@ -173,7 +253,7 @@ const Header = () => {
                                         </Link>
                                         {/* item*/}
                                         <Link href="javascript:void(0);" className="dropdown-item notify-item" to={`/my-transaction/${learnerId}`}>
-                                        <i class="fas fa-money-bill-wave"></i>
+                                            <i class="fas fa-money-bill-wave"></i>
                                             <span>Transaction</span>
                                         </Link>
                                         <div className="dropdown-divider" />
@@ -204,8 +284,12 @@ const Header = () => {
 
                 </div>
             </header>
-             {/* My Account Modal */}
-             {showModal && (
+            <div className='search-result'>
+
+            </div>
+
+            {/* My Account Modal */}
+            {showModal && (
                 <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">

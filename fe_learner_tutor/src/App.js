@@ -79,6 +79,7 @@ import categoryService from './services/category.service';
 import StudyCourse from './components/learner/course/StudyCourse';
 import StudyClass from './components/learner/course/StudyClass';
 import MyTransaction from './components/learner/transaction/MyTransaction';
+import SearchResult from './components/learner/course/SearchResult';
 
 function App() {
 
@@ -203,6 +204,8 @@ function App() {
         {/* transaction */}
         <Route path="/my-transaction/:learnerId" element={<MyTransaction />} />
 
+        {/* search */}
+        <Route path="/search-result?:searchKey" element={<SearchResult />} />
 
       </Routes>
     </div>
