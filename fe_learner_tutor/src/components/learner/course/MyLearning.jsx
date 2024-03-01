@@ -7,8 +7,13 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import ReactQuill from 'react-quill';
-import feedbackService from '../../../services/feedback';
+import feedbackService from '../../../services/feedback.service';
+import reportService from '../../../services/report.service';
 import StarRating from './StarRating';
+import Dropzone from "react-dropzone";
+import courseService from '../../../services/course.service';
+
+
 const MyLearning = () => {
 
     const learnerId = localStorage.getItem('learnerId');
@@ -16,6 +21,7 @@ const MyLearning = () => {
 
     const [enrollmentList, setEnrollmentList] = useState([]);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false); // State variable for modal visibility
+    const [showReportModal, setShowReportModal] = useState(false); // State variable for modal visibility
 
     const contentRef = useRef(null);
 
@@ -49,6 +55,7 @@ const MyLearning = () => {
     };
     const handleFeedbackClick = (courseId, learnerId) => {
         setShowFeedbackModal(true);
+        setShowReportModal(false);
         feedback.courseId = courseId;
         feedback.learnerId = learnerId;
     };
@@ -68,6 +75,69 @@ const MyLearning = () => {
             });
     };
     //FEEBACK
+
+    //REPORT
+    const [report, setReport] = useState({
+        reason: "",
+        learnerId: "",
+        courseId: "",
+        imageUrl: ""
+    });
+
+    const [file, setFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState("");
+
+    const handleFileDrop = (acceptedFiles) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            setFile(acceptedFiles[0]);
+
+            // Set the image preview URL
+            const previewUrl = URL.createObjectURL(acceptedFiles[0]);
+            setImagePreview(previewUrl);
+        }
+    };
+
+    const handleReportClick = (courseId, learnerId) => {
+        setShowReportModal(true);
+        setShowFeedbackModal(false);
+        report.courseId = courseId;
+        report.learnerId = learnerId;
+    };
+
+    const handleReasonChange = (value) => {
+        setReport({ ...report, reason: value });
+    };
+
+    const submitReport = async (e) => {
+        e.preventDefault();
+        let imageUrl = report.imageUrl; // Keep the existing imageUrl if available
+
+        if (file) {
+            // Upload image and get the link
+            const imageData = new FormData();
+            imageData.append("file", file);
+            const imageResponse = await courseService.uploadImage(imageData);
+
+            // Update the imageUrl with the link obtained from the API
+            imageUrl = imageResponse.data;
+
+        }
+
+        // Save course
+        const reportData = { ...report, imageUrl }; // Create a new object with updated imageUrl
+
+        // If the note is not empty, proceed with the form submission
+        reportService
+            .saveReport(reportData)
+            .then((res) => {
+                window.alert("You Report sent! Thank you");
+                setShowReportModal(false)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    //REPORT
 
     return (
         <>
@@ -133,13 +203,13 @@ const MyLearning = () => {
                                                                     &nbsp;&nbsp;
                                                                     <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.courseId, learnerId)}></i>
                                                                     &nbsp;&nbsp;&nbsp;
-                                                                    <i class="fas fa-flag" ></i>
+                                                                    <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.courseId, learnerId)}></i>
                                                                 </div>
                                                             </div>
                                                             {showFeedbackModal && (
                                                                 <form id="demo-form" data-parsley-validate onSubmit={(e) => submitFeedback(e)}>
                                                                     <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                                                                        <div className="modal-dialog">
+                                                                        <div className="modal-dialog  modal-dialog-scrollable">
                                                                             <div className="modal-content">
                                                                                 <div className="modal-header">
                                                                                     <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{enrollment.course.name}</span> </h5>
@@ -164,6 +234,8 @@ const MyLearning = () => {
                                                                                             ]
                                                                                         }}
                                                                                         theme="snow"
+                                                                                        preserveWhitespace={true} // Add this line to preserve whitespace
+
                                                                                     />
                                                                                 </div>
                                                                                 <div className="modal-footer">
@@ -177,6 +249,83 @@ const MyLearning = () => {
 
 
                                                             )}
+                                                            {showReportModal && (
+                                                                <form method="post"
+                                                                    className="dropzone"
+                                                                    id="myAwesomeDropzone"
+                                                                    data-plugin="dropzone"
+                                                                    data-previews-container="#file-previews"
+                                                                    data-upload-preview-template="#uploadPreviewTemplate"
+                                                                    data-parsley-validate onSubmit={(e) => submitReport(e)}>
+                                                                    <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                                                                        <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
+                                                                            <div className="modal-content">
+                                                                                <div className="modal-header">
+                                                                                    <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{enrollment.course.name}</span> </h5>
+                                                                                    <button type="button" className="close" onClick={() => setShowReportModal(false)}>
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Set maxHeight and overflowY */}
+                                                                                    <ReactQuill
+                                                                                        value={report.reason}
+                                                                                        onChange={handleReasonChange}
+                                                                                        modules={{
+                                                                                            toolbar: [
+                                                                                                [{ header: [1, 2, false] }],
+                                                                                                [{ 'direction': 'rtl' }],
+                                                                                                [{ 'align': [] }],
+                                                                                                ['code-block'],
+                                                                                                [{ 'color': [] }, { 'background': [] }],
+                                                                                                ['clean']
+                                                                                            ]
+                                                                                        }}
+                                                                                        theme="snow"
+                                                                                        preserveWhitespace={true}
+                                                                                    />
+                                                                                    <Dropzone
+                                                                                        onDrop={handleFileDrop}
+                                                                                        accept="image/*"
+                                                                                        multiple={false}
+                                                                                        maxSize={5000000}
+                                                                                    >
+                                                                                        {({ getRootProps, getInputProps }) => (
+                                                                                            <div {...getRootProps()} className="fallback">
+                                                                                                <input {...getInputProps()} />
+                                                                                                <div className="dz-message needsclick">
+                                                                                                    <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                                                    <h3>Drop files here or click to upload.</h3>
+                                                                                                </div>
+                                                                                                {imagePreview && (
+                                                                                                    <img
+                                                                                                        src={imagePreview}
+                                                                                                        alt="Preview"
+                                                                                                        style={{
+                                                                                                            maxWidth: "100%",
+                                                                                                            maxHeight: "200px",
+                                                                                                            marginTop: "10px",
+                                                                                                        }}
+                                                                                                    />
+                                                                                                )}
+                                                                                            </div>
+                                                                                        )}
+                                                                                    </Dropzone>
+
+                                                                                    <div
+                                                                                        className="dropzone-previews mt-3"
+                                                                                        id="file-previews"
+                                                                                    />
+                                                                                </div>
+                                                                                <div className="modal-footer">
+                                                                                    <button type="button" className="btn btn-secondary" onClick={() => setShowReportModal(false)}>Close</button>
+                                                                                    <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }} onClick={(e) => submitReport(e)}>Send</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            )}
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -199,6 +348,33 @@ const MyLearning = () => {
             </main>
             {/* End #main */}
             <Footer />
+            <style>
+                {`
+                    /* Add this CSS to ensure scrolling within modal body */
+                    /* Add this CSS to ensure scrolling within modal body */
+.modal-body {
+  max-height: calc(100vh - 200px); /* Adjust the value (200px) as needed to accommodate the modal header and footer */
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds max height */
+}
+
+/* Add this CSS to create a sticky footer */
+.modal-footer {
+  position: sticky;
+  bottom: 0;
+  background-color: #fff; /* Optional: Set background color for footer */
+  padding: 15px; /* Optional: Add padding to footer */
+}
+
+                    
+                    /* Add this CSS to set a high z-index for modals */
+                    .modal {
+                      z-index: 9999; /* Set a high z-index value */
+                    }
+                    
+
+                    
+                `}
+            </style>
         </>
     );
 };
