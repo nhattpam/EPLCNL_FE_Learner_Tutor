@@ -81,6 +81,7 @@ import StudyClass from './components/learner/course/StudyClass';
 import MyTransaction from './components/learner/transaction/MyTransaction';
 import SearchResult from './components/learner/course/SearchResult';
 import ListCourseByCategory from './components/course/ListCourseByCategory';
+import MyForum from './components/learner/forum/MyForum';
 
 function App() {
 
@@ -193,6 +194,7 @@ function App() {
         {/* forum */}
         <Route path="/list-forum/:tutorId" element={<ListForum />} />
         <Route path="/edit-forum/:forumId" element={<EditForum />} />
+        <Route path="/my-forum/:forumId" element={<MyForum />} />
 
         {/* assignment attempt */}
         <Route path="/list-assignment-attempt/:tutorId" element={<ListAssignmentAttempt />} />

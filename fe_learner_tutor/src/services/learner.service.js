@@ -59,5 +59,13 @@ class LearnerService {
       }
     });
   }
+
+  getAllForumByLearnerId(id) {
+    return axios.get(API_URL + `/learners/${id}/forums`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new LearnerService;

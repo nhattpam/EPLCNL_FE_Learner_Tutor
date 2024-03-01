@@ -4,6 +4,7 @@ import categoryService from '../services/category.service';
 import accountService from '../services/account.service';
 import courseService from '../services/course.service';
 import tutorService from '../services/tutor.service';
+import learnerService from '../services/learner.service';
 import SearchResult from './learner/course/SearchResult';
 
 const Header = () => {
@@ -102,6 +103,20 @@ const Header = () => {
         fetchCategories();
     }, []);
 
+    const [forumList, setForumList] = useState([]);
+    useEffect(() => {
+        const fetchForums = async () => {
+            try {
+                const res = await learnerService.getAllForumByLearnerId(learnerId);
+                setForumList(res.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchForums();
+    }, [learnerId]);
+
 
     //start SEARCH
     const [courseList, setCourseList] = useState([]);
@@ -160,7 +175,7 @@ const Header = () => {
     }, [searchQuery, courseList, tutorList]);
 
 
-    
+
     //end SEARCH
     return (
         <>
@@ -224,7 +239,20 @@ const Header = () => {
                                 </li>
                             )}
 
-
+                            {isLearner && (
+                                <li className="dropdown">
+                                    <a href="#">
+                                        <span>Forums</span> <i className="bi bi-chevron-down" />
+                                    </a>
+                                    <ul>
+                                        {forumList.map((forum) => (
+                                            <li key={forum.id}> {/* Add a key to the mapped elements */}
+                                                <Link to={`/my-forum/${forum.id}`}>{forum.course.name}</Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            )}
                             {isLearner && (
                                 <li className="dropdown notification-list topbar-dropdown">
                                     <a className="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
