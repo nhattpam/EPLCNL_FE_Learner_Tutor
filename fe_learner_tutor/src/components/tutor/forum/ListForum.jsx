@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Footer from '../Footer';
 import Header from '../Header';
-import Sidebar from '../Sidebar'; 
+import Sidebar from '../Sidebar';
 import { Link } from 'react-router-dom'
 import tutorService from '../../../services/tutor.service';
 
@@ -21,7 +21,7 @@ const ListForum = () => {
         setSearchTerm(event.target.value);
     };
 
- 
+
 
     useEffect(() => {
         tutorService
@@ -95,6 +95,7 @@ const ListForum = () => {
                                                 <thead>
                                                     <tr>
                                                         <th data-toggle="true">No.</th>
+                                                        <th data-toggle="true">Image</th>
                                                         <th>Course</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -102,14 +103,16 @@ const ListForum = () => {
                                                 <tbody>
                                                     {currentForums.map((forum, index) => (
                                                         <tr key={forum.id}>
-                                                            <td>{index+1}</td>
+                                                            <td>{index + 1}</td>
+                                                            <td><img src={forum.course.imageUrl} style={{ height: '50px', width: '70px' }} alt={forum.course.name} /></td>
+
                                                             <td>{forum.course.name}</td>
                                                             <td>
                                                                 <Link to={`/edit-forum/${forum.id}`} className='text-secondary'>
-                                                                    <i class="fa-regular fa-eye"></i>
+                                                                    <i class="fas fa-comment-dots"></i>
                                                                 </Link>
                                                             </td>
-                                                            
+
                                                         </tr>
                                                     ))}
                                                 </tbody>

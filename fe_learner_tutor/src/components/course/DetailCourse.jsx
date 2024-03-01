@@ -208,7 +208,18 @@ const DetailCourse = () => {
         }
     }, [courseId, learnerId]);
 
+    const [combinedList, setCombinedList] = useState([]);
+    useEffect(() => {
+        // Combine lessons, assignments, and quizzes into a single array
+        const combined = [
+            ...lessonList.map(lesson => ({ ...lesson, type: 'lesson' })),
+            ...assignmentList.map(assignment => ({ ...assignment, type: 'assignment' })),
+            ...quizList.map(quiz => ({ ...quiz, type: 'quiz' }))
+        ];
+        // Sort the combined array based on your preferred logic
 
+        setCombinedList(combined);
+    }, [lessonList, assignmentList, quizList]);
 
 
 
@@ -350,7 +361,7 @@ const DetailCourse = () => {
                                     <div className="col-lg-3">
 
                                         <ul className="nav nav-tabs flex-column">
-                                            <li className="nav-item">
+                                            <li className="nav-item get-button">
                                                 <a
                                                     className={`nav-link ${index === 0 ? 'active show' : ''}`}
                                                     onClick={(event) => handleTabClick(event, classModule.id)}
@@ -362,7 +373,7 @@ const DetailCourse = () => {
                                         </ul>
                                     </div>
                                     <div className="col-lg-9 mt-4 mt-lg-0">
-                                        <div className="tab-content">
+                                        <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
 
                                             <div
                                                 className={`tab-pane ${index === 0 ? 'active show' : ''}`}
@@ -370,9 +381,9 @@ const DetailCourse = () => {
                                             >
 
                                                 <div>
-                                                    <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time</span>
+
                                                     <div>
-                                                        {classModule.classLesson.classHours}
+                                                        <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
 
                                                     </div>
                                                 </div>
@@ -393,7 +404,7 @@ const DetailCourse = () => {
                                 <div className="row" key={module.id}>
                                     <div className="col-lg-3">
                                         <ul className="nav nav-tabs flex-column">
-                                            <li className="nav-item">
+                                            <li className="nav-item get-button">
                                                 <a
                                                     className={`nav-link ${index === 0 ? 'active show' : ''}`}
                                                     onClick={(event) => handleTabClick(event, module.id)}
@@ -404,45 +415,36 @@ const DetailCourse = () => {
                                             </li>
                                         </ul>
                                     </div>
-                                    <div className="col-lg-9 mt-4 mt-lg-0">
-                                        <div className="tab-content">
+                                    <div className="col-lg-9 mt-4 mt-lg-0 ">
+                                        <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
                                             <div
                                                 className={`tab-pane ${index === 0 ? 'active show' : ''}`}
                                                 id={`tab-${module.id}`}
                                             >
-                                                <div className="lessons">
-                                                    <h4 style={{ color: '#f58d04' }}>Lessons</h4>
-                                                    {lessonList
-                                                        .filter(lesson => lesson.moduleId === module.id)
-                                                        .map((lesson, lessonIndex) => (
-                                                            <div className="lesson" key={lessonIndex}>
-                                                                <p>{lesson.name}</p>
+                                                {combinedList.map((item, combinedIndex) => (
+                                                    <div className="combined-item" key={combinedIndex}>
+                                                        {item.type === 'lesson' && (
+                                                            <div className="lesson">
+                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
                                                             </div>
-                                                        ))}
-                                                </div>
-                                                <div className="assignments">
-                                                    <h4 style={{ color: '#f58d04' }}>Assignments</h4>
-                                                    {assignmentList
-                                                        .filter(assignment => assignment.moduleId === module.id)
-                                                        .map((assignment, assignmentIndex) => (
-                                                            <div className="assignment" key={assignmentIndex}>
-                                                                <p>Deadline: {assignment.deadline}  minutes</p>
+                                                        )}
+                                                        {item.type === 'assignment' && (
+                                                            <div className="assignment">
+                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#' }}>{combinedIndex + 1}.</span> Assignment - Deadline: {item.deadline} minutes</p>
                                                             </div>
-                                                        ))}
-                                                </div>
-                                                <div className="quizzes">
-                                                    <h4 style={{ color: '#f58d04' }}>Quizzes</h4>
-                                                    {quizList
-                                                        .filter(quiz => quiz.moduleId === module.id)
-                                                        .map((quiz, quizIndex) => (
-                                                            <div className="quiz" key={quizIndex}>
-                                                                <p>{quiz.name}</p>
+                                                        )}
+                                                        {item.type === 'quiz' && (
+                                                            <div className="quiz">
+                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#' }}>{combinedIndex + 1}.</span> Quiz - {item.name}</p>
                                                             </div>
-                                                        ))}
-                                                </div>
+                                                        )}
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
+
                                     </div>
+
                                 </div>
                             ))}
                         </div>

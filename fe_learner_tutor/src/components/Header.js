@@ -335,8 +335,8 @@ const Header = () => {
                                         <form>
                                             <img src={account.imageUrl} alt="avatar" className="rounded-circle" style={{ width: '30%' }} />
 
-                                            <div className="table-responsive mt-3">
-                                                <table className="table table-bordered">
+                                            <div >
+                                                <table className="table table-responsive table-hover mt-3">
                                                     <tbody>
 
                                                         <tr>
@@ -374,8 +374,8 @@ const Header = () => {
                                     <div>
                                         <img src={account.imageUrl} alt="avatar" className="rounded-circle" style={{ width: '30%' }} />
 
-                                        <div className="table-responsive mt-3">
-                                            <table className="table table-bordered">
+                                        <div>
+                                            <table className="table table-responsive table-hover mt-3">
                                                 <tbody>
                                                     <tr>
                                                         <th style={{ width: '30%' }}>Full Name:</th>

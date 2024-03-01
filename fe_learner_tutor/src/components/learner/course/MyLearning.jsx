@@ -144,9 +144,9 @@ const MyLearning = () => {
             <Header />
             <main id="main" data-aos="fade-in">
                 {/* ======= Breadcrumbs ======= */}
-                <div className="breadcrumbs">
-                    <div className="container">
-                        <h2 style={{ color: '#fff' }}>My learning</h2>
+                <div className="breadcrumbs" >
+                    <div className="container" >
+                        <h2  style={{ color: '#fff' }}>My learning</h2>
                     </div>
                 </div>
                 {/* End Breadcrumbs */}
