@@ -55,7 +55,7 @@ const MyTransaction = () => {
                                             <tbody>
                                                 {transactionList.map((transaction, index) => (
                                                     <>
-                                                        <tr>
+                                                        <tr key={transaction.id}>
                                                             <th scope="row">{index + 1}</th>
                                                             <td> <img src={transaction.course.imageUrl} className="img-fluid" alt="..." style={{ width: '250px', height: '100px' }} />
                                                             </td>
