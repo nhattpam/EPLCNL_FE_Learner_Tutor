@@ -80,7 +80,7 @@ const MyForum = () => {
     <>
       <div id="wrapper">
         <Header />
-        <div className="content-page">
+        <div className="content-page" style={{ marginLeft: '-2px' }}>
           <div className="content">
             <div className="container-fluid">
               <div className="row">
@@ -90,11 +90,11 @@ const MyForum = () => {
                       <ol className="breadcrumb m-0">
                       </ol>
                     </div>
-                    <h4 className="page-title">FORUM OF COURSE - <span style={{color: '#f58d04'}}>{forum.course?.name}</span></h4>
+                    <h4 className="page-title">FORUM OF COURSE - <span style={{ color: '#f58d04' }}>{forum.course?.name}</span></h4>
                   </div>
                 </div>
               </div>
-              
+
               <div className="row">
                 <div className="col-12">
                   <div className="card-box">
@@ -124,20 +124,21 @@ const MyForum = () => {
                             <div className="message-date">{accountForum.messagedDate}</div>
                           </div>
                         ))}
-                      <form class="msger-inputarea" onSubmit={submitAccountForum}>
+                      <form className="msger-inputarea" onSubmit={submitAccountForum} style={{ width: '100%', }}>
                         <input
                           type="text"
-                          class="msger-input"
+                          className="msger-input"
                           placeholder="Enter your message..."
                           name="message"
                           id="message"
                           value={accountForum.message}
                           onChange={(e) => handleChange(e)}
                         />
-                        <button type="submit" class="msger-send-btn">
+                        <button type="submit" className="msger-send-btn">
                           Send
                         </button>
                       </form>
+
                     </div>
 
                   </div>
@@ -145,97 +146,94 @@ const MyForum = () => {
               </div>
             </div>
           </div>
-          <div className='col-md-2'>
-                list of forum
-              </div>
+
         </div>
         <Footer />
       </div>
       <style>
-        {`
-                    /* Add these styles to your existing CSS file or create a new one */
+  {`
+    /* Add these styles to your existing CSS file or create a new one */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 60px); /* Adjusted height to accommodate fixed input area */
+    }
+    
+    .chat-message {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    
+    .msger-inputarea {
+      display: flex;
+      padding: 10px;
+      background: #eee;
+      bottom: 0;
+      width: 100%;
+      z-index: 1;
+      position: fixed; /* Make the input area absolute */
+      left: 0;
+      right: 0;
+      bottom: 0; /* Position it at the bottom of the parent */
+    }
+    
+    .msger-inputarea * {
+      padding: 10px;
+      border: none;
+      border-radius: 3px;
+      font-size: 1em;
+    }
+    
+    .msger-input {
+      flex: 1;
+      background: #ddd;
+    }
+    
+    .msger-send-btn {
+      margin-left: 10px;
+      background: #f58d04;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.23s;
+    }
+    
+    .msger-send-btn:hover {
+      background: rgb(0, 180, 50);
+    }
+    
+    .left {
+      align-self: flex-start;
+      background-color: #e0e0e0;
+      color: #333;
+    }
+    
+    .right {
+      align-self: flex-end;
+      background-color: #f58d04;
+      color: #fff;
+    }
+    
+    .message-sender {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .message-content {
+      font-size: 16px;
+      word-break: break-all;
+    }
+    
+    .message-date {
+      font-size: 12px;
+      color: #777;
+      bottom: 5px;
+      right: 5px;
+    }
+  `}
+</style>
 
-                    .chat-container {
-                      display: flex;
-                      flex-direction: column;
-                      height: 100%; /* Ensure the chat container takes the full height of its parent */
-
-                    }
-                    
-                    .chat-message {
-                      margin-bottom: 10px;
-                      padding: 10px;
-                      border-radius: 8px;
-                    }
-
-                    .msger-inputarea {
-                        display: flex;
-                        padding: 10px;
-                        border-top: var(--border);
-                        background: #eee;
-                        position: fixed;
-                        bottom: 0;
-                        width: 70%;
-                        z-index: 1;
-                      }
-                      
-                      .msger-inputarea * {
-                        padding: 10px;
-                        border: none;
-                        border-radius: 3px;
-                        font-size: 1em;
-                      }
-                      
-                      .msger-input {
-                        flex: 1;
-                        background: #ddd;
-                      }
-                    
-                    .left {
-                        align-self: flex-start;
-                        background-color: #e0e0e0;
-                        color: #333;
-                      }
-                      .right {
-                        align-self: flex-end;
-                        background-color: #f58d04;
-                        color: #fff;
-                      }
-
-                      .message-sender {
-                        font-weight: bold;
-                        margin-bottom: 5px;
-                      }
-                      
-                      .message-content {
-                        font-size: 16px;
-                        word-break: break-all;
-                      }
-                      
-                      .message-date {
-                        font-size: 12px;
-                        color: #777;
-                        bottom: 5px;
-                        right: 5px;
-                      }
-
-                      
-                      .msger-send-btn {
-                        margin-left: 10px;
-                        background: #f58d04;
-                        color: #fff;
-                        font-weight: bold;
-                        cursor: pointer;
-                        transition: background 0.23s;
-                      }
-                      .msger-send-btn:hover {
-                        background: rgb(0, 180, 50);
-                      }
-                    
-                    /* Adjust the styling according to your design preferences */
-                    
-                `}
-      </style>
     </>
   );
 };

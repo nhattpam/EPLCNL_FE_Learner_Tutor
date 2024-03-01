@@ -13,7 +13,7 @@ const SearchResult = ({ searchQuery, filteredCourses, filteredTutors }) => {
                         {/* Render filtered courses */}
                         <div>
                             {filteredCourses.map(course => (
-                                <div key={course.id}>
+                                <div key={course.id} className='iitem'>
                                     <img src={course.imageUrl} alt={course.name} style={{ width: '100px', height: '70px' }} />
                                     <Link to={`/detail-course/${course.id}`}>
                                         <p style={{ fontWeight: 'bold', color: '#f58d04' }}>{course.name}</p>
@@ -26,7 +26,7 @@ const SearchResult = ({ searchQuery, filteredCourses, filteredTutors }) => {
                         {/* Render filtered tutors */}
                         <div>
                             {filteredTutors.map(tutor => (
-                                <div key={tutor.id}>
+                                <div key={tutor.id} className='iitem'>
                                     <img src={tutor.account.imageUrl} alt={tutor.account.fullName} style={{ width: '100px', height: '70px' }} />
                                     <Link to={`/detail-tutor/${tutor.id}`}>
                                         <p style={{ fontWeight: 'bold', color: '#f58d04' }}>{tutor.account.fullName}</p>
@@ -72,6 +72,14 @@ const SearchResult = ({ searchQuery, filteredCourses, filteredTutors }) => {
                     z-index: 1000; /* Ensure modal content is on top */
                 }
                 
+                .iitem {
+                    transition: transform 0.3s ease;
+                }
+                
+                .iitem:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                }
                 
                 `}
             </style>

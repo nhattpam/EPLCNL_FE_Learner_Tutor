@@ -39,7 +39,7 @@ const MyTransaction = () => {
                             <div className="tab-pane fade show active" id="tab-content-1" style={{ marginTop: '-80px' }}>
                                 <div className="container" data-aos="fade-up">
                                     <div className="list-container" data-aos="zoom-in" data-aos-delay={100}>
-                                        <table class="table ">
+                                        <table className="table table-hover">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
@@ -54,30 +54,28 @@ const MyTransaction = () => {
                                             </thead>
                                             <tbody>
                                                 {transactionList.map((transaction, index) => (
-                                                    <>
-                                                        <tr key={transaction.id}>
-                                                            <th scope="row">{index + 1}</th>
-                                                            <td> <img src={transaction.course.imageUrl} className="img-fluid" alt="..." style={{ width: '250px', height: '100px' }} />
-                                                            </td>
-                                                            <td>
-                                                                {transaction.course.isOnlineClass && (
-                                                                    <h3><Link to={`/study-class/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
-                                                                )}
-                                                                {!transaction.course.isOnlineClass && (
-                                                                    <h3><Link to={`/study-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
-                                                                )}
-                                                            </td>
-                                                            <td>${transaction.course.stockPrice}</td>
-                                                            <td>{transaction.paymentMethod.name}</td>
-                                                            <td>{transaction.amount} dong</td>
-                                                            <td>{transaction.transactionDate}</td>
-                                                            <td>{transaction.status}</td>
-                                                        </tr>
-                                                    </>
-
+                                                    <tr key={transaction.id}>
+                                                        <th scope="row">{index + 1}</th>
+                                                        <td>
+                                                            <img src={transaction.course.imageUrl} alt={transaction.course.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
+                                                        </td>
+                                                        <td>
+                                                            {transaction.course.isOnlineClass ? (
+                                                                <h3><Link to={`/study-class/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
+                                                            ) : (
+                                                                <h3><Link to={`/study-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
+                                                            )}
+                                                        </td>
+                                                        <td>${transaction.course.stockPrice}</td>
+                                                        <td>{transaction.paymentMethod.name}</td>
+                                                        <td>{transaction.amount} dong</td>
+                                                        <td>{transaction.transactionDate}</td>
+                                                        <td>{transaction.status}</td>
+                                                    </tr>
                                                 ))}
                                             </tbody>
                                         </table>
+
                                     </div>
                                 </div>
                             </div>

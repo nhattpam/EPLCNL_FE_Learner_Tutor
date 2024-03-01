@@ -813,6 +813,16 @@ input[type="radio"] {
     padding: 10px 0;
 }
 
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
             `}
       </style>
     </>

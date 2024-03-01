@@ -277,7 +277,7 @@ const DetailCourse = () => {
                                                     course.isOnlineClass ? (
                                                         <Link
                                                             type="button"
-                                                            className="btn btn-primary btn-lg btn-block"
+                                                            className="btn btn-primary btn-lg btn-block get-button"
                                                             to={`/study-class/${courseId}`}
                                                             style={{ backgroundColor: '#f58d04', color: '#fff' }}
                                                         >
@@ -286,7 +286,7 @@ const DetailCourse = () => {
                                                     ) : (
                                                         <Link
                                                             type="button"
-                                                            className="btn btn-primary btn-lg btn-block"
+                                                            className="btn btn-primary btn-lg btn-block get-button"
                                                             to={`/study-course/${courseId}`}
                                                             style={{ backgroundColor: '#f58d04', color: '#fff' }}
                                                         >
@@ -297,7 +297,7 @@ const DetailCourse = () => {
                                                     <div>
                                                         <button
                                                             type="button"
-                                                            className="btn btn-primary btn-lg btn-block"
+                                                            className="btn btn-primary btn-lg btn-block get-button"
                                                             onClick={handlePayClick}
                                                             style={{ backgroundColor: '#f58d04' }}
                                                         >
@@ -454,6 +454,20 @@ const DetailCourse = () => {
             </main>{/* End #main */}
 
             <Footer />
+
+            <style>
+                {`
+                .get-button {
+                    transition: transform 0.3s ease;
+                }
+                
+                .get-button:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                }
+                
+                `}
+            </style>
         </>
     )
 }

@@ -176,7 +176,7 @@ const MyLearning = () => {
                                         <div className="row " data-aos="zoom-in" data-aos-delay={100}>
                                             {enrollmentList.map((enrollment, index) => (
                                                 <div key={enrollment.courseId} className="col-lg-4 col-md-6 d-flex align-items-stretch">
-                                                    <div className="course-item">
+                                                    <div className="course-item "  id='iitem'>
                                                         <img src={enrollment.course.imageUrl} className="img-fluid" alt="..." />
                                                         <div className="course-content">
                                                             <div className="d-flex justify-content-between align-items-center mb-3">
@@ -371,7 +371,13 @@ const MyLearning = () => {
                       z-index: 9999; /* Set a high z-index value */
                     }
                     
-
+                    #iitemiitem {
+                        transition: transform 0.3s ease;
+                    }
+                    
+                    #iitem:hover {
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    }
                     
                 `}
             </style>

@@ -118,21 +118,21 @@ const Home = () => {
               <div className="col-lg-8 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay={100}>
                 <div className="icon-boxes d-flex flex-column justify-content-center">
                   <div className="row">
-                    <div className="col-xl-4 d-flex align-items-stretch">
+                    <div className="col-xl-4 d-flex align-items-stretch info-item">
                       <div className="icon-box mt-4 mt-xl-0">
                         <i className="bx bx-receipt" />
                         <h4>A team of dedicated and experienced teachers</h4>
                         <p>With a team of teachers with many years of experience in teaching and good communication. They are teachers who are always dedicated to their students with the sole goal of improving foreign language proficiency for the younger generation.</p>
                       </div>
                     </div>
-                    <div className="col-xl-4 d-flex align-items-stretch">
+                    <div className="col-xl-4 d-flex align-items-stretch info-item">
                       <div className="icon-box mt-4 mt-xl-0">
                         <i className="bx bx-cube-alt" />
                         <h4>Pre Foundation + Foundation</h4>
                         <p>Start advanced learning with a focus on practicing how to do the 4 skills correctly and ensure the scoring criteria of the test.</p>
                       </div>
                     </div>
-                    <div className="col-xl-4 d-flex align-items-stretch">
+                    <div className="col-xl-4 d-flex align-items-stretch info-item">
                       <div className="icon-box mt-4 mt-xl-0">
                         <i className="bx bx-images" />
                         <h4>MeowLish's exclusive technology platform</h4>
@@ -274,12 +274,12 @@ const Home = () => {
             <div className="row" data-aos="zoom-in" data-aos-delay={100}>
               {tutorList.map((tutor, index) => (
                 <div className="col-lg-4 col-md-6 d-flex align-items-stretch">
-                  <div className="member">
+                  <div className="member  info-item">
                     <img src={tutor.account.imageUrl} className="img-fluid" alt />
                     <div className="member-content">
                       <h4>{tutor.account.fullName}</h4>
                       <span>{tutor.account.email}</span>
-                      
+
                       <div className="social">
                         <a href><i className="bi bi-twitter" /></a>
                         <a href><i className="bi bi-facebook" /></a>
@@ -297,6 +297,28 @@ const Home = () => {
         </section>{/* End Trainers Section */}
       </main>{/* End #main */}
       <Footer />
+
+      <style>
+        {`
+                .info-item {
+                    transition: transform 0.3s ease;
+                }
+                
+                .info-item:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                }
+                .course-item {
+                  transition: transform 0.3s ease;
+              }
+              
+              .course-item:hover {
+                  transform: translateY(-5px);
+                  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+              }
+              
+                `}
+      </style>
     </>
   )
 }
