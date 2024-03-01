@@ -210,7 +210,7 @@ const Header = () => {
                                 <ul>
                                     {categoryList.map((category) => (
                                         <li key={category.id}> {/* Add a key to the mapped elements */}
-                                            <a href="#">{category.name}</a>
+                                            <Link to={`/list-course-by-category/${category.id}`}>{category.name}</Link>
                                         </li>
                                     ))}
                                     <li>

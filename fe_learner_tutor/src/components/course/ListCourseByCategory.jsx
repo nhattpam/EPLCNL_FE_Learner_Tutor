@@ -1,0 +1,114 @@
+import React, { useEffect, useState } from 'react';
+import Header from '../Header'
+import Footer from '../Footer'
+import { Link, useParams } from 'react-router-dom'
+import courseService from '../../services/course.service'
+import accountService from '../../services/account.service';
+import categoryService from '../../services/category.service';
+
+const ListCourseByCategory = () => {
+
+    const { categoryId } = useParams();
+
+    const [courseList, setCourseList] = useState([]);
+    const [accounts, setAccounts] = useState([]);
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const res = await categoryService.getAllCourseByCategoryId(categoryId);
+                const activeCourses = res.data.filter((course) => course.isActive === true);
+                setCourseList(activeCourses);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchCourses();
+    }, [categoryId]); // Empty dependency array to fetch courses only once when the component mounts
+
+    useEffect(() => {
+        const fetchAccountInfo = async () => {
+            try {
+                const accountPromises = courseList.map((course) =>
+                    accountService.getAccountById(course.tutor.accountId)
+                );
+
+                const accountResponses = await Promise.all(accountPromises);
+                const accountData = accountResponses.map((response) => response.data);
+                setAccounts(accountData);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if (courseList.length > 0) {
+            fetchAccountInfo();
+        }
+    }, [courseList]);
+
+    return (
+        <>
+            <Header />
+            <main id="main" data-aos="fade-in">
+                {/* ======= Breadcrumbs ======= */}
+                <div className="breadcrumbs">
+                    <div className="container">
+                        <h2 style={{ color: '#fff' }}>Courses</h2>
+                        <p style={{ color: '#000' }}>Learn English online as well as offline with Linearthinking method, dedicated teachers, supporting technology platform, guaranteed output. </p>
+                    </div>
+                </div>{/* End Breadcrumbs */}
+                {/* ======= Courses Section ======= */}
+                <section id="courses" className="courses">
+                    <div className="container" data-aos="fade-up">
+                        <div className="row" data-aos="zoom-in" data-aos-delay={100}>
+                            {courseList.length > 0 && (
+
+                                courseList.map((course, index) => (
+                                    <div key={course.id} className="col-lg-4 col-md-6 d-flex align-items-stretch">
+                                        <div className="course-item">
+                                            <img src={course.imageUrl} className="img-fluid" alt="..." />
+                                            <div className="course-content">
+                                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                                    <h4>{course.category?.name}</h4>
+                                                    <p className="price">{`$${course.stockPrice}`}</p>
+                                                </div>
+                                                <h3><Link to={`/detail-course/${course.id}`}>{course.name}</Link></h3>
+                                                <p>{course.description}</p>
+                                                <div className="trainer d-flex justify-content-between align-items-center">
+                                                    <div className="trainer-profile d-flex align-items-center">
+                                                        {accounts[index] && (
+                                                            <div key={accounts[index].id}>
+                                                                <img src={accounts[index].imageUrl} className="img-fluid" alt="" />
+                                                                <span>{accounts[index].fullName}</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="trainer-rank d-flex align-items-center">
+                                                        <i className="bx bx-user" />&nbsp;{course.numUsers}
+                                                        &nbsp;&nbsp;
+                                                        <i className="bx bx-heart" />&nbsp;{course.numHearts}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+
+                            )}
+                            {courseList.length <= 0 && (
+                                <p>No Courses Found.</p>
+                            )}
+
+                        </div>
+                    </div>
+                </section>{/* End Courses Section */}
+            </main>{/* End #main */}
+
+            <Footer />
+        </>
+    )
+}
+
+export default ListCourseByCategory

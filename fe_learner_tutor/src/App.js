@@ -80,6 +80,7 @@ import StudyCourse from './components/learner/course/StudyCourse';
 import StudyClass from './components/learner/course/StudyClass';
 import MyTransaction from './components/learner/transaction/MyTransaction';
 import SearchResult from './components/learner/course/SearchResult';
+import ListCourseByCategory from './components/course/ListCourseByCategory';
 
 function App() {
 
@@ -132,6 +133,7 @@ function App() {
         <Route path="/register" element={<SignUp />} />
         <Route path="/business-register" element={<BusinessSignUp />} />
         <Route path="/list-course" element={<ListCourse />} />
+        <Route path="/list-course-by-category/:categoryId" element={<ListCourseByCategory />} />
         <Route path="/detail-course/:courseId" element={<DetailCourse />} />
         <Route path="/tutor/courses" element={<CourseList />} />
         <Route path="/tutor/courses/create" element={<CreateCourse />} />
