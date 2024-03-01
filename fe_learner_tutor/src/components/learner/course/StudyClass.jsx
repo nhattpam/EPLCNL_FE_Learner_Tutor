@@ -120,8 +120,10 @@ const StudyClass = () => {
   //TAB TOPICS
   const [classTopicList, setClassTopicList] = useState([]);
   const [showQuizzes, setShowQuizzes] = useState(false);
+  const [showMaterials, setShowMaterials] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [quizList, setQuizList] = useState([]);
+  const [materialList, setMaterialList] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
@@ -161,6 +163,7 @@ const StudyClass = () => {
               ...classTopic,
               quizList: res.data, // Add quizList to the class topic
               showQuizzes: true, // Set showQuizzes to true for the class topic
+              showMaterials: false
             };
           }
           return classTopic;
@@ -173,6 +176,29 @@ const StudyClass = () => {
       });
   };
 
+
+  const handleShowMaterials = (classTopicId) => {
+    classTopicService
+      .getAllMaterialsByClassTopic(classTopicId)
+      .then((res) => {
+        const updatedClassTopicList = classTopicList.map((classTopic) => {
+          if (classTopic.id === classTopicId) {
+            return {
+              ...classTopic,
+              materialList: res.data, // Add quizList to the class topic
+              showMaterials: true, // Set showQuizzes to true for the class topic
+              showQuizzes: false,
+            };
+          }
+          return classTopic;
+        });
+        setClassTopicList(updatedClassTopicList); // Update classTopicList state
+        setMaterialList(res.data); // Update quizList state
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   // Format time remaining into minutes and seconds
   const formatTime = (time) => {
     const minutes = Math.floor(time / (60 * 1000));
@@ -201,10 +227,15 @@ const StudyClass = () => {
         console.log(error);
       });
 
+    setPoint(0);
     setShowQuestions(true);
     // Set the quizStarted state to true when the quiz starts
     setQuizStarted(true);
     setShowTimer(true);
+    setShowAnswerColor(false);
+    setShowResult(false);
+    setCurrentQuestionIndex(0); // Reset currentQuestionIndex to 0
+
     // Set the deadline time (in seconds) from now
 
   };
@@ -269,6 +300,7 @@ const StudyClass = () => {
       // If so, alert the user
       setShowResult(true);
       setShowQuestions(false);
+      
     }
   };
 
@@ -469,7 +501,7 @@ const StudyClass = () => {
                                 </section>
                               </div>
                               <button
-                                className="btn btn-primary"
+                                className="btn btn-primary" onClick={() => handleStartQuiz(selectedQuiz.id)}
                                 style={{ backgroundColor: '#f58d04', color: '#fff' }}
                               >
                                 Re-Attempt Quiz
@@ -484,12 +516,27 @@ const StudyClass = () => {
                                   <h3 className="mb-1">Topic {index + 1}: {classTopic.name}</h3>
                                   <p className="mb-0">{classTopic.description}</p>
                                   <span className="badge label-table badge-primary" onClick={() => handleShowQuizzes(classTopic.id)}>  <i class="fas fa-play"></i> Start quiz</span>
+                                  <span className="badge label-table badge-warning ml-1" onClick={() => handleShowMaterials(classTopic.id)}>  <i class="far fa-file-alt"></i> Materials</span>
                                   {classTopic.showQuizzes && ( // Check if showQuizzes is true for the current class topic
                                     <div className="quizzes">
                                       {classTopic.quizList.map((quiz, index) => (
                                         <div key={index}>
                                           <p className="mb-0" style={{ color: '#f58d04', fontWeight: 'bold' }} onClick={() => handleStartQuiz(quiz.id)}>Quiz {index + 1} - {quiz.name}
                                             &nbsp; <i class="far fa-play-circle"></i></p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+                                  {classTopic.showMaterials && (
+                                    <div className="materials">
+                                      {classTopic.materialList.map((material, index) => (
+                                        <div className='card-body' style={{ flex: '0 0 33.33%', width: '100%' }}>
+                                          <a href={material.materialUrl} target="_blank" rel="noopener noreferrer">
+                                            <figure className="figure">
+                                              <i className="far fa-file-pdf fa-6x"></i>
+                                              <figcaption className="figure-caption" style={{ color: '#f58d04', fontWeight: 'bold' }}>{material.name}</figcaption>
+                                            </figure>
+                                          </a>
                                         </div>
                                       ))}
                                     </div>

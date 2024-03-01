@@ -46,7 +46,7 @@ const MyLearning = () => {
                 </div>
                 {/* End Breadcrumbs */}
                 {/* ======= Courses Section ======= */}
-                <section id="courses" className="courses">
+                <section id="courses" className="courses" style={{marginTop: '-30px'}}>
                     <div className="container" data-aos="fade-up">
                         {/* Nav Tabs */}
                         <ul className="nav nav-tabs" id="myLearningTabs">
@@ -63,7 +63,7 @@ const MyLearning = () => {
 
                         </ul>
                         {/* Tab Content */}
-                        <div className="tab-content mt-4" id="myLearningTabsContent">
+                        <div className="tab-content" id="myLearningTabsContent" style={{marginTop: '-70px'}}>
 
                             <div className="tab-pane fade show active" id="tab-content-1">
                                 <section id="courses" className="courses">
