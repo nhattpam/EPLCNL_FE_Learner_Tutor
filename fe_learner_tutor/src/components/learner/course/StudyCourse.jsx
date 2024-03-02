@@ -61,7 +61,7 @@ const StudyCourse = () => {
 
     // State to track expanded/collapsed state of modules
     const [expandedModules, setExpandedModules] = useState([]);
-    
+
 
     // Function to toggle expansion state of a module
     const toggleModuleExpansion = (moduleId) => {
@@ -71,7 +71,7 @@ const StudyCourse = () => {
             setExpandedModules([...expandedModules, moduleId]);
         }
     };
-    
+
 
     useEffect(() => {
         if (selectedModule) {
@@ -293,7 +293,7 @@ const StudyCourse = () => {
         module: []
     });
 
-    
+
     const [quizAttempt, setQuizAttempt] = useState({
         learnerId: "",
         quizId: "",
@@ -350,6 +350,8 @@ const StudyCourse = () => {
 
 
     const handleStartQuiz = () => {
+        setPoint(0);
+
         setShowQuestions(true);
         // Set the quizStarted state to true when the quiz starts
         setQuizStarted(true);
@@ -368,6 +370,10 @@ const StudyCourse = () => {
                 clearInterval(interval);
             }
         }, 1000);
+
+        setShowAnswerColor(false);
+        setShowResult(false);
+        setCurrentQuestionIndex(0); // Reset currentQuestionIndex to 0
     };
 
 
@@ -390,13 +396,13 @@ const StudyCourse = () => {
             quizAttempt.totalGrade = point;
 
             quizAttemptService.saveQuizAttempt(quizAttempt)
-            .then((res) => {
-                console.log(res.data);
+                .then((res) => {
+                    console.log(res.data);
 
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     };
 
@@ -753,7 +759,7 @@ const StudyCourse = () => {
                                                     </section>
                                                 </div>
                                                 <button
-                                                    className="btn btn-primary"
+                                                    className="btn btn-primary" onClick={() => handleStartQuiz(selectedQuiz.id)}
                                                     style={{ backgroundColor: '#f58d04', color: '#fff' }}
                                                 >
                                                     Re-Attempt Quiz
@@ -790,7 +796,7 @@ const StudyCourse = () => {
                                             <div className="card-content ">
                                                 {/* Combine all items into a single array */}
                                                 {moduleContent.lessons.map((lesson, index) => (
-                                                    <div key={`lesson_${index}`} className="card" style={{ marginBottom: '5px' }} onClick={() => handleLessonClick(lesson.id)}>
+                                                    <div key={`lesson_${index}`} className="card iitem" style={{ marginBottom: '5px' }} onClick={() => handleLessonClick(lesson.id)}>
                                                         <div className="card-body">{index + 1}. {lesson.name}</div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="fas fa-file-video"></i>
@@ -798,7 +804,7 @@ const StudyCourse = () => {
                                                     </div>
                                                 ))}
                                                 {moduleContent.assignments.map((assignment, index) => (
-                                                    <div key={`assignment_${index}`} className="card" style={{ marginBottom: '5px' }} onClick={() => handleAssignmentClick(assignment.id)}>
+                                                    <div key={`assignment_${index}`} className="card iitem" style={{ marginBottom: '5px' }} onClick={() => handleAssignmentClick(assignment.id)}>
                                                         <div className="card-body">{moduleContent.lessons.length + index + 1}. {assignment.questionText}</div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="fab fa-wpforms"></i> {assignment.deadline} mins
@@ -806,7 +812,7 @@ const StudyCourse = () => {
                                                     </div>
                                                 ))}
                                                 {moduleContent.quizzes.map((quiz, index) => (
-                                                    <div key={`quiz_${index}`} className="card" style={{ marginBottom: '5px' }} onClick={() => handleQuizClick(quiz.id)}>
+                                                    <div key={`quiz_${index}`} className="card iitem" style={{ marginBottom: '5px' }} onClick={() => handleQuizClick(quiz.id)}>
                                                         <div className="card-body">{moduleContent.lessons.length + moduleContent.assignments.length + index + 1}. {quiz.name}</div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="far fa-question-circle"></i> {quiz.deadline} mins
@@ -1054,11 +1060,11 @@ input[type="radio"] {
     padding: 10px 0;
 }
 
-.car-item {
+.iitem {
     transition: transform 0.3s ease;
 }
 
-.course-item:hover {
+.iitem:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }

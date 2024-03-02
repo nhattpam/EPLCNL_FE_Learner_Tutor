@@ -10,7 +10,9 @@ const BusinessSignUp = () => {
         name: "",
         address: "",
         email: "",
-        address: ""
+        address: "",
+        phoneNumber: "",
+        taxIdentificationNumber: ""
     });
 
     const [errors, setErrors] = useState({});
@@ -40,6 +42,14 @@ const BusinessSignUp = () => {
 
         if (center.address.trim() === '') {
             errors.address = 'Address is required';
+            isValid = false;
+        }
+        if (center.phoneNumber.trim() === '') {
+            errors.phoneNumber = 'Phone Number is required';
+            isValid = false;
+        }
+        if (center.taxIdentificationNumber.trim() === '') {
+            errors.taxIdentificationNumber = 'Tax Identification Number is required';
             isValid = false;
         }
         setErrors(errors);
@@ -93,18 +103,37 @@ const BusinessSignUp = () => {
                                         }`} />
                                 </div>
                             </div>
-                            <div className="form-row">
-                                <label htmlFor="email">Email</label>
-                                <input type="text" name="email" value={center.email} onChange={(e) => handleChange(e)} className="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" />
+                            <div className="form-row mt-1">
+                                <div className="form-row form-row-1">
+                                    <label htmlFor="email">Email</label>
+                                    <input type="text" name="email" value={center.email} onChange={(e) => handleChange(e)} className="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" />
+                                </div>
                             </div>
                             <div className="form-row">
+                                <div className="form-row form-row-1">
+                                    <div className='col-md-6 form-row mr-2'>
+                                        <label htmlFor="phoneNumber">Phone Number</label>
+                                        <input type="number" name="phoneNumber" value={center.phoneNumber} onChange={(e) => handleChange(e)} className={`form-control ${errors.name ? 'is-invalid' : ''
+                                            }`} />
+                                    </div>
+                                    <div className='col-md-6 form-row'>
+                                        <label htmlFor="taxIdentificationNumber">Tax Number</label>
+                                        <input type="number" name="taxIdentificationNumber" value={center.taxIdentificationNumber} onChange={(e) => handleChange(e)} className={`form-control ${errors.name ? 'is-invalid' : ''
+                                            }`} />
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div className="form-row mt-1">
                                 <div className="form-row form-row-1 ">
                                     <label htmlFor="address">Address</label>
                                     <input type="text" name="address" value={center.address} onChange={(e) => handleChange(e)} className={`form-control ${errors.address ? 'is-invalid' : ''
                                         }`} required />
                                 </div>
                             </div>
-                            <div className="form-row">
+                            <div className="form-row mt-1">
                                 <label htmlFor="description">Description</label>
 
                                 <div className="form-row form-row-1 ">
@@ -120,7 +149,7 @@ const BusinessSignUp = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="form-checkbox">
+                            <div className="form-checkbox mt-1">
                                 <label className="container">
                                     <p>
                                         I agree to the <a href="#" className="text">Terms and Conditions</a>
@@ -140,8 +169,8 @@ const BusinessSignUp = () => {
                             </div>
                         )}
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
 
             <Footer />
             <style>

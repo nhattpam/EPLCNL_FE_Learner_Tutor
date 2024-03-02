@@ -11,6 +11,7 @@ import assignmentAttemptService from '../../../services/assignment-attempt.servi
 import quizService from '../../../services/quiz.service';
 import questionService from '../../../services/question.service';
 import classTopicService from '../../../services/class-topic.service';
+import quizAttemptService from '../../../services/quiz-attempt.service';
 
 const StudyClass = () => {
   const { courseId } = useParams();
@@ -206,6 +207,12 @@ const StudyClass = () => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
+  const [quizAttempt, setQuizAttempt] = useState({
+    learnerId: "",
+    quizId: "",
+    totalGrade: ""
+  });
+
   const handleStartQuiz = (quizId) => {
     quizService
       .getQuizById(quizId)
@@ -300,7 +307,20 @@ const StudyClass = () => {
       // If so, alert the user
       setShowResult(true);
       setShowQuestions(false);
-      
+
+      quizAttempt.learnerId = learnerId;
+      quizAttempt.quizId = selectedQuiz.id;
+      quizAttempt.totalGrade = point;
+
+      quizAttemptService.saveQuizAttempt(quizAttempt)
+        .then((res) => {
+          console.log(res.data);
+
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
     }
   };
 
