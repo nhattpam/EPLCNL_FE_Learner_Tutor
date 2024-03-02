@@ -67,5 +67,21 @@ class LearnerService {
       }
     });
   }
+
+  getAllAssignmentAttemptByLearnerId(id) {
+    return axios.get(API_URL + `/learners/${id}/assignment-attempts`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
+  getAllQuizAttemptByLearnerId(id) {
+    return axios.get(API_URL + `/learners/${id}/quiz-attempts`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new LearnerService;

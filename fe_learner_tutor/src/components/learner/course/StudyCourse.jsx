@@ -11,6 +11,7 @@ import assignmentAttemptService from '../../../services/assignment-attempt.servi
 import quizAttemptService from '../../../services/quiz-attempt.service';
 import quizService from '../../../services/quiz.service';
 import questionService from '../../../services/question.service';
+import learnerService from '../../../services/learner.service';
 
 const StudyCourse = () => {
     const { courseId } = useParams();
@@ -44,7 +45,6 @@ const StudyCourse = () => {
         courseService
             .getAllModulesByCourse(courseId)
             .then((res) => {
-                console.log(res.data);
                 setModuleList(res.data);
             })
             .catch((error) => {
@@ -101,6 +101,43 @@ const StudyCourse = () => {
                 });
         }
     }, [selectedModule]);
+
+    useEffect(() => {
+        try {
+            // Check if moduleContent and moduleContent.assignments are defined
+            if (moduleContent && moduleContent.assignments) {
+                // Iterate over assignments array using forEach
+                moduleContent.assignments.forEach(assignment => {
+                    learnerService
+                        .getAllAssignmentAttemptByLearnerId(learnerId)
+                        .then((res) => {
+                            console.log("Response data:", res.data); // Log the entire response data to inspect its structure
+                            console.log("List assignment attempts:", res.data.length); // Log the length of the assignment attempts
+                            setAssignmentAttemptList(res.data);
+
+
+                            if (res.data.length > 0) {
+                                res.data.forEach(assignmentAttempt => {
+                                    if (assignmentAttempt.assignmentId === assignment.id) {
+                                        if (assignmentAttempt.totalGrade >= assignment.gradeToPass) {
+                                            setIsDone(true);
+                                        }
+                                    } else {
+                                        console.log("NOT FOUND")
+                                    }
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            console.log("Error fetching assignment attempts:", error); // Log any errors that occur during the request
+                        });
+                });
+            }
+        } catch (error) {
+            console.log("Error fetching data:", error);
+        }
+    }, [moduleContent]); // Include moduleContent in the dependency array if it might change
+
 
     // Function to handle click on a module card to toggle expansion
     const handleModuleCardClick = (moduleId) => {
@@ -177,6 +214,8 @@ const StudyCourse = () => {
     // State for lesson
     const [selectedAssignmentId, setSelectedAssignmentId] = useState(null);
     const [selectedAssignment, setSelectedAssignment] = useState(null);
+    const [isDone, setIsDone] = useState(false);
+    const [assignmentAttemptList, setAssignmentAttemptList] = useState([]);
 
     useEffect(() => {
         if (selectedAssignmentId) {
@@ -184,12 +223,16 @@ const StudyCourse = () => {
                 .getAssignmentById(selectedAssignmentId)
                 .then((res) => {
                     setSelectedAssignment(res.data);
+
+
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
     }, [selectedAssignmentId]);
+
+
 
     // Function to handle click on a assignment card to show details
     const handleAssignmentClick = (assignmentId) => {
@@ -808,6 +851,9 @@ const StudyCourse = () => {
                                                         <div className="card-body">{moduleContent.lessons.length + index + 1}. {assignment.questionText}</div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="fab fa-wpforms"></i> {assignment.deadline} mins
+                                                            {isDone && (
+                                                                <i class="fas fa-check-circle text-success ml-1"></i>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 ))}
