@@ -66,6 +66,14 @@ const MyTransaction = () => {
             });
     };
 
+    // Function to check if the transaction date exceeds 2 days
+    const isTransactionDateValid = (transactionDate) => {
+        const currentDate = new Date();
+        const diffInMilliseconds = currentDate - new Date(transactionDate);
+        const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
+        return diffInDays <= 2;
+    };
+
     return (
         <>
             <Header />
@@ -115,11 +123,12 @@ const MyTransaction = () => {
                                                         <td>{transaction.transactionDate}</td>
                                                         <td>{transaction.status}</td>
                                                         <td>
-                                                            <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(transaction.id)}>
-                                                                Request a refund
-                                                            </a>
+                                                            {isTransactionDateValid(transaction.transactionDate) && (
+                                                                <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(transaction.id)}>
+                                                                    Request a refund
+                                                                </a>
+                                                            )}
                                                         </td>
-
                                                     </tr>
 
                                                 ))}
