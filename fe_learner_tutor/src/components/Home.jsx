@@ -255,6 +255,7 @@ const Home = () => {
                     <div className="course-content">
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <h4>{course.category?.name}</h4>
+                        <p className="price">{parseFloat(course.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
                         <p className="price">{`$${course.stockPrice}`}</p>
                       </div>
                       <h3><Link to={`/detail-course/${course.id}`}>{course.name}</Link></h3>
@@ -271,8 +272,7 @@ const Home = () => {
 
                         <div className="trainer-rank d-flex align-items-center">
                           <i className="bx bx-user" />&nbsp;{learnersCount[course.id]}
-                          &nbsp;&nbsp;
-                          <i className="bx bx-heart" />&nbsp;{course.numHearts}
+                          &nbsp;
                         </div>
                       </div>
                     </div>

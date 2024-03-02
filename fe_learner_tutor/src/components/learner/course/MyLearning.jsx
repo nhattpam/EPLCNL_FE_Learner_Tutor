@@ -193,6 +193,7 @@ const MyLearning = () => {
                                                         <div className="course-content">
                                                             <div className="d-flex justify-content-between align-items-center mb-3">
                                                                 <h4>{enrollment.course.category?.name}</h4>
+                                                                <p className="price">{parseFloat(enrollment.course.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
                                                                 <p className="price">{`$${enrollment.course.stockPrice}`}</p>
                                                             </div>
                                                             {enrollment.course.isOnlineClass && (
