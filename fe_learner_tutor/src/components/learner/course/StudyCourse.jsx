@@ -8,6 +8,7 @@ import lessonService from '../../../services/lesson.service';
 import assignmentService from '../../../services/assignment.service';
 import ReactQuill from 'react-quill';
 import assignmentAttemptService from '../../../services/assignment-attempt.service';
+import quizAttemptService from '../../../services/quiz-attempt.service';
 import quizService from '../../../services/quiz.service';
 import questionService from '../../../services/question.service';
 
@@ -292,6 +293,13 @@ const StudyCourse = () => {
         module: []
     });
 
+    
+    const [quizAttempt, setQuizAttempt] = useState({
+        learnerId: "",
+        quizId: "",
+        totalGrade: ""
+    });
+
     // State for lesson
     const [selectedQuizId, setSelectedQuizId] = useState(null);
     const [selectedQuiz, setSelectedQuiz] = useState(null);
@@ -376,6 +384,19 @@ const StudyCourse = () => {
             // If so, alert the user
             setShowResult(true);
             setShowQuestions(false);
+
+            quizAttempt.learnerId = learnerId;
+            quizAttempt.quizId = selectedQuizId;
+            quizAttempt.totalGrade = point;
+
+            quizAttemptService.saveQuizAttempt(quizAttempt)
+            .then((res) => {
+                console.log(res.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         }
     };
 
@@ -433,6 +454,8 @@ const StudyCourse = () => {
             }, 2000);
         }
     };
+
+
 
 
 
