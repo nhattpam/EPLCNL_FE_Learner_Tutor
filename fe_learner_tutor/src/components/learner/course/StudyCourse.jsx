@@ -120,7 +120,7 @@ const StudyCourse = () => {
                                 res.data.forEach(assignmentAttempt => {
                                     if (assignmentAttempt.assignmentId === assignment.id) {
                                         if (assignmentAttempt.totalGrade >= assignment.gradeToPass) {
-                                            setIsDone(true);
+                                            setIsDoneAssignment(true);
                                         }
                                     } else {
                                         console.log("NOT FOUND")
@@ -130,6 +130,42 @@ const StudyCourse = () => {
                         })
                         .catch((error) => {
                             console.log("Error fetching assignment attempts:", error); // Log any errors that occur during the request
+                        });
+                });
+            }
+        } catch (error) {
+            console.log("Error fetching data:", error);
+        }
+    }, [moduleContent]); // Include moduleContent in the dependency array if it might change
+
+    useEffect(() => {
+        try {
+            // Check if moduleContent and moduleContent.assignments are defined
+            if (moduleContent && moduleContent.quizzes) {
+                // Iterate over assignments array using forEach
+                moduleContent.quizzes.forEach(quiz => {
+                    learnerService
+                        .getAllQuizAttemptByLearnerId(learnerId)
+                        .then((res) => {
+                            console.log("Response data:", res.data); // Log the entire response data to inspect its structure
+                            console.log("List quiz attempts:", res.data.length); // Log the length of the assignment attempts
+                            setQuizAttemptList(res.data);
+
+
+                            if (res.data.length > 0) {
+                                res.data.forEach(quizAttempt => {
+                                    if (quizAttempt.quizId === quiz.id) {
+                                        if (quizAttempt.totalGrade >= quiz.gradeToPass) {
+                                            setIsDoneQuiz(true);
+                                        }
+                                    } else {
+                                        console.log("NOT FOUND")
+                                    }
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            console.log("Error fetching quiz attempts:", error); // Log any errors that occur during the request
                         });
                 });
             }
@@ -214,8 +250,10 @@ const StudyCourse = () => {
     // State for lesson
     const [selectedAssignmentId, setSelectedAssignmentId] = useState(null);
     const [selectedAssignment, setSelectedAssignment] = useState(null);
-    const [isDone, setIsDone] = useState(false);
+    const [isDoneAssignment, setIsDoneAssignment] = useState(false);
+    const [isDoneQuiz, setIsDoneQuiz] = useState(false);
     const [assignmentAttemptList, setAssignmentAttemptList] = useState([]);
+    const [quizAttemptList, setQuizAttemptList] = useState([]);
 
     useEffect(() => {
         if (selectedAssignmentId) {
@@ -446,6 +484,41 @@ const StudyCourse = () => {
                 .catch((error) => {
                     console.log(error);
                 });
+
+            //load lai trang 
+            try {
+                // Check if moduleContent and moduleContent.assignments are defined
+                if (moduleContent && moduleContent.quizzes) {
+                    // Iterate over assignments array using forEach
+                    moduleContent.quizzes.forEach(quiz => {
+                        learnerService
+                            .getAllQuizAttemptByLearnerId(learnerId)
+                            .then((res) => {
+                                console.log("Response data:", res.data); // Log the entire response data to inspect its structure
+                                console.log("List quiz attempts:", res.data.length); // Log the length of the assignment attempts
+                                setQuizAttemptList(res.data);
+
+
+                                if (res.data.length > 0) {
+                                    res.data.forEach(quizAttempt => {
+                                        if (quizAttempt.quizId === quiz.id) {
+                                            if (quizAttempt.totalGrade >= quiz.gradeToPass) {
+                                                setIsDoneQuiz(true);
+                                            }
+                                        } else {
+                                            console.log("NOT FOUND")
+                                        }
+                                    });
+                                }
+                            })
+                            .catch((error) => {
+                                console.log("Error fetching quiz attempts:", error); // Log any errors that occur during the request
+                            });
+                    });
+                }
+            } catch (error) {
+                console.log("Error fetching data:", error);
+            }
         }
     };
 
@@ -851,7 +924,7 @@ const StudyCourse = () => {
                                                         <div className="card-body">{moduleContent.lessons.length + index + 1}. {assignment.questionText}</div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="fab fa-wpforms"></i> {assignment.deadline} mins
-                                                            {isDone && (
+                                                            {isDoneAssignment && (
                                                                 <i class="fas fa-check-circle text-success ml-1"></i>
                                                             )}
                                                         </div>
@@ -862,6 +935,9 @@ const StudyCourse = () => {
                                                         <div className="card-body">{moduleContent.lessons.length + moduleContent.assignments.length + index + 1}. {quiz.name}</div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="far fa-question-circle"></i> {quiz.deadline} mins
+                                                            {isDoneQuiz && (
+                                                                <i class="fas fa-check-circle text-success ml-1"></i>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 ))}
