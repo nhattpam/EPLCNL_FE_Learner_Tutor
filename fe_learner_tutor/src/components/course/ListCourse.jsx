@@ -9,6 +9,7 @@ const ListCourse = () => {
 
     const [courseList, setCourseList] = useState([]);
     const [accounts, setAccounts] = useState([]);
+    const [learnersCount, setLearnersCount] = useState({});
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -16,6 +17,19 @@ const ListCourse = () => {
                 const res = await courseService.getAllcourse();
                 const activeCourses = res.data.filter((course) => course.isActive === true);
                 setCourseList(activeCourses);
+
+                const learnersCounts = {}; // Object to store number of learners for each course
+                for (const course of activeCourses) {
+                  try {
+                    const learnersResponse = await courseService.getAllEnrollmentsByCourse(course.id);
+                    const learnersOfCourse = learnersResponse.data;
+                    learnersCounts[course.id] = learnersOfCourse.length; // Store learner count for the course
+                    console.log(`Number of learners for course ${course.name}: ` + learnersOfCourse.length);
+                  } catch (error) {
+                    console.error(`Error fetching learners for course ${course.name}:`, error);
+                  }
+                }
+                setLearnersCount(learnersCounts); // Update state with learners count
             } catch (error) {
                 console.log(error);
             }
@@ -81,7 +95,7 @@ const ListCourse = () => {
                                                 </div>
 
                                                 <div className="trainer-rank d-flex align-items-center">
-                                                    <i className="bx bx-user" />&nbsp;{course.numUsers}
+                                                    <i className="bx bx-user" />&nbsp;{learnersCount[course.id]}
                                                     &nbsp;&nbsp;
                                                     <i className="bx bx-heart" />&nbsp;{course.numHearts}
                                                 </div>

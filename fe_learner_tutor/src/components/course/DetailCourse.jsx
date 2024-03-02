@@ -29,35 +29,51 @@ const DetailCourse = () => {
     });
 
     useEffect(() => {
-        console.log("This is enrollment haha:  ", enrollment);
+        // console.log("This is enrollment haha:  ", enrollment);
     }, [enrollment]);
 
-    //transaction
-    // const [transaction, setTransaction] = useState({
-    //     courseId: courseId,
-    //     learnerId: learnerId,
-    //     amount: course.stockPrice * 24000,
-    //     paymentMethodId: "1dffb0d3-f5a5-4725-98fc-b4dea22f4b0e"
-    // });
 
     const [moduleList, setModuleList] = useState([]);
     const [classModuleList, setClassModuleList] = useState([]);
     const [assignmentList, setAssignmentList] = useState([]);
     const [lessonList, setLessonList] = useState([]);
     const [quizList, setQuizList] = useState([]);
+    //get num of learners
+    const [learnersCount, setLearnersCount] = useState({});
 
+    //get num of learners
     useEffect(() => {
         if (courseId) {
             courseService
                 .getCourseById(courseId)
                 .then((res) => {
                     setCourse(res.data);
+
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
     }, [courseId]);
+
+    useEffect(() => {
+        const fetchLearnersCount = async () => {
+            try {
+                const learnersResponse = await courseService.getAllEnrollmentsByCourse(courseId);
+                const learnersOfCourse = learnersResponse.data;
+                console.log(learnersResponse.data)
+                const count = learnersOfCourse.length;
+                setLearnersCount(prevState => ({ ...prevState, [courseId]: count }));
+            } catch (error) {
+                console.error(`Error fetching learners for course ${course.name}:`, error);
+            }
+        };
+    
+        if (courseId) {
+            fetchLearnersCount();
+        }
+    }, [courseId]);
+    
 
     useEffect(() => {
         courseService
@@ -255,7 +271,7 @@ const DetailCourse = () => {
                                 </div>
                                 <div className="course-info d-flex justify-content-between align-items-center">
                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Enrolled Students</h5>
-                                    <p>30</p>
+                                    <p>{learnersCount[course.id]}</p>
                                 </div>
                                 {/* Notification */}
                                 {showNotification && (

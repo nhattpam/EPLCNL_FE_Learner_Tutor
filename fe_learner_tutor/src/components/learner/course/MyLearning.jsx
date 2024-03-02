@@ -22,6 +22,7 @@ const MyLearning = () => {
     const [enrollmentList, setEnrollmentList] = useState([]);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false); // State variable for modal visibility
     const [showReportModal, setShowReportModal] = useState(false); // State variable for modal visibility
+    const [learnersCount, setLearnersCount] = useState({});
 
     const contentRef = useRef(null);
 
@@ -29,14 +30,25 @@ const MyLearning = () => {
     useEffect(() => {
         learnerService
             .getAllEnrollmentByLearnerId(learnerId)
-            .then((res) => {
+            .then(async (res) => {
                 setEnrollmentList(res.data);
-
+                const learnersCounts = {}; // Object to store number of learners for each course
+                for (const enrollment of res.data) {
+                    try {
+                        const learnersResponse = await courseService.getAllEnrollmentsByCourse(enrollment.courseId);
+                        const learnersOfCourse = learnersResponse.data;
+                        learnersCounts[enrollment.courseId] = learnersOfCourse.length; // Store learner count for the course
+                    } catch (error) {
+                        console.error(`Error fetching learners for course ${enrollment.course.name}:`, error);
+                    }
+                }
+                setLearnersCount(prevState => ({ ...prevState, ...learnersCounts })); // Update state with learners count
             })
             .catch((error) => {
                 console.log(error);
             });
     }, [learnerId]);
+    
 
     //FEEBACK
     const [feedback, setFeedback] = useState({
@@ -199,7 +211,7 @@ const MyLearning = () => {
                                                                 </div>
 
                                                                 <div className="trainer-rank d-flex align-items-center">
-                                                                    <i className="bx bx-user" />&nbsp;30
+                                                                    <i className="bx bx-user" />&nbsp;{learnersCount[enrollment.course.id]}
                                                                     &nbsp;&nbsp;
                                                                     <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.courseId, learnerId)}></i>
                                                                     &nbsp;&nbsp;&nbsp;

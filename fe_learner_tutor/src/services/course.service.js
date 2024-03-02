@@ -27,7 +27,7 @@ class CourseService {
       }
     });
   }
-  
+
 
 
   updateCourse(id, course) {
@@ -49,13 +49,12 @@ class CourseService {
 
   getAllModulesByCourse(id) {
     const url = `${API_URL}/courses/${id}/modules`; // Construct the URL string
-    console.log('Request URL:', url); // Log the URL
     return axios.get(url, {
-        headers: {
-            Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
-        }
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
     });
-}
+  }
 
 
   getAllClassModulesByCourse(id) {
@@ -76,7 +75,16 @@ class CourseService {
     });
   }
 
-  
+  getAllEnrollmentsByCourse(id) {
+    const url = `${API_URL}/courses/${id}/enrollments`; // Construct the URL string
+    return axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
+
 
 }
 export default new CourseService;

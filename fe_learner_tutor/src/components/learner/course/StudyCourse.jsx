@@ -60,6 +60,7 @@ const StudyCourse = () => {
 
     // State to track expanded/collapsed state of modules
     const [expandedModules, setExpandedModules] = useState([]);
+    
 
     // Function to toggle expansion state of a module
     const toggleModuleExpansion = (moduleId) => {
@@ -69,6 +70,7 @@ const StudyCourse = () => {
             setExpandedModules([...expandedModules, moduleId]);
         }
     };
+    
 
     useEffect(() => {
         if (selectedModule) {
@@ -756,13 +758,13 @@ const StudyCourse = () => {
                                             className={`card module-title ${expandedModules.includes(module.id) ? 'expanded' : ''}`}
                                             onClick={() => handleModuleCardClick(module.id)} style={{ marginBottom: '5px' }}
                                         >
-                                            <div className="card-body" style={{ padding: '10px' }}>
+                                            <div className="card-body " style={{ padding: '10px' }}>
                                                 <h4 className="card-title" >Section {index + 1}: {module.name}</h4>
                                                 <span>{expandedModules.includes(module.id) ? '-' : '+'}</span>
                                             </div>
                                         </div>
                                         {selectedModule && selectedModule.id === module.id && expandedModules.includes(module.id) && (
-                                            <div className="card-content">
+                                            <div className="card-content ">
                                                 {/* Combine all items into a single array */}
                                                 {moduleContent.lessons.map((lesson, index) => (
                                                     <div key={`lesson_${index}`} className="card" style={{ marginBottom: '5px' }} onClick={() => handleLessonClick(lesson.id)}>
