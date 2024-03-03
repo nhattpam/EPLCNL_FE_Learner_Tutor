@@ -22,7 +22,6 @@ const EditLesson = () => {
   });
 
   useEffect(() => {
-    if (lessonId) {
       lessonService
         .getLessonById(lessonId)
         .then((res) => {
@@ -33,7 +32,6 @@ const EditLesson = () => {
         .catch((error) => {
           console.log(error);
         });
-    }
   }, [lessonId]);
 
   useEffect(() => {
@@ -53,7 +51,7 @@ const EditLesson = () => {
     name: "",
   });
 
-  const handleChangeLesson = (value) => {
+  const handleReadingChange = (value) => {
     setLesson({ ...lesson, reading: value });
   };
 
@@ -137,7 +135,6 @@ const EditLesson = () => {
                             <ReactQuill
                               name="reading"
                               value={lesson.reading}
-                              onChange={handleChangeLesson}
                               modules={{
                                 toolbar: [
                                   [{ header: [1, 2, false] }],
