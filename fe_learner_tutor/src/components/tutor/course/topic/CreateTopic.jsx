@@ -129,11 +129,6 @@ const CreateTopic = () => {
                       </h4>
                       <form
                         method="post"
-                        className="dropzone"
-                        id="myAwesomeDropzone"
-                        data-plugin="dropzone"
-                        data-previews-container="#file-previews"
-                        data-upload-preview-template="#uploadPreviewTemplate"
                         data-parsley-validate
                         onSubmit={(e) => submitClassTopic(e)}
                       >
