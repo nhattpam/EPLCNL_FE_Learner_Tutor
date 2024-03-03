@@ -5,6 +5,9 @@ import Footer from '../Footer';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import courseService from '../../../services/course.service';
 import moduleService from '../../../services/module.service';
+import ReactQuill from 'react-quill';
+import certificateService from '../../../services/certificate.service';
+import certificateCourseService from '../../../services/certificate-course.service';
 
 const EditCourse = () => {
 
@@ -21,6 +24,16 @@ const EditCourse = () => {
         updatedDate: "",
         modules: [],
         classModules: []
+    });
+
+    const [certificate, setCertificate] = useState({
+        name: "",
+    });
+
+    const [certificateCourse, setCertificateCourse] = useState({
+        certificateId: "",
+        courseId: "",
+        description: ""
     });
 
 
@@ -51,7 +64,7 @@ const EditCourse = () => {
         courseService
             .getAllModulesByCourse(courseId)
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 setModuleList(res.data);
 
             })
@@ -64,7 +77,7 @@ const EditCourse = () => {
         courseService
             .getAllClassModulesByCourse(courseId)
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 setClassModuleList(res.data);
 
             })
@@ -86,7 +99,38 @@ const EditCourse = () => {
         navigate(`/tutor/courses/edit-class-module/${moduleId}`);
     };
 
-    
+
+    //certificate
+    const handleCertificateChange = (e) => {
+        const value = e.target.value;
+        setCertificate({ ...certificate, [e.target.name]: value });
+    };
+
+    const handleDescriptionChange = (value) => {
+        setCertificateCourse({ ...certificateCourse, description: value });
+    };
+
+
+    const submitBothCertificateAndCertificateCourse = async (e) => {
+        e.preventDefault();
+
+        try {
+            certificate.name = `Thanks for your time, this is certificate for course ${course.name}`;
+            const responseCertificate = await certificateService.saveCertificate(certificate);
+            if (responseCertificate.status == 201) {
+                certificateCourse.certificateId = responseCertificate.data.id;
+                certificateCourse.courseId = courseId;
+                const responseCertificateCourse = await certificateCourseService.saveCertificateCourse(certificateCourse);
+                if (responseCertificateCourse.status = 201) {
+                    window.alert("Sent ok")
+                }
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <>
             <div id="wrapper">
@@ -146,7 +190,7 @@ const EditCourse = () => {
 
                                             {classModuleList.map((module) => (
                                                 <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center">
-                                                    {module.startDate !== null ? module.startDate.substring(0, 10) : "No start date"}
+                                                    Class Date: {module.startDate !== null ? module.startDate.substring(0, 10) : "No start date"}
                                                     <button
                                                         type="button"
                                                         // className="btn btn-secondary btn-sm"
@@ -215,6 +259,56 @@ const EditCourse = () => {
                                         </div>
 
                                     )}
+
+                                    <div className="form-group">
+                                        <h5>Certificate:</h5>
+
+                                        <form
+                                            method="post"
+                                            data-parsley-validate
+                                            onSubmit={(e) => submitBothCertificateAndCertificateCourse(e)}
+                                        >
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <div className="form-group">
+                                                        <ReactQuill
+                                                            value={certificateCourse.description}
+                                                            onChange={handleDescriptionChange}
+                                                            style={{ height: "300px" }}
+                                                            modules={{
+                                                                toolbar: [
+                                                                    [{ header: [1, 2, false] }],
+                                                                    ['bold', 'italic', 'underline', 'strike'],
+                                                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                                                    [{ 'direction': 'rtl' }],
+                                                                    [{ 'align': [] }],
+                                                                    ['link', 'image', 'video'],
+                                                                    ['code-block'],
+                                                                    [{ 'color': [] }, { 'background': [] }],
+                                                                    ['clean']
+                                                                ]
+                                                            }}
+                                                            theme="snow"
+                                                        />
+                                                    </div>
+
+                                                    <div className="form-group mb-0">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-success"
+                                                            style={{
+                                                                marginLeft: "-2px",
+                                                                marginTop: "50px",
+                                                            }}
+                                                        >
+                                                            <i class="fas fa-check-double"></i> Create
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
 
 
 

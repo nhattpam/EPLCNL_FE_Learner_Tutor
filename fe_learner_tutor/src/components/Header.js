@@ -40,14 +40,7 @@ const Header = () => {
         }
     }, [accountId]);
 
-    const openModal = () => {
-        setShowModal(true);
-    };
-
-    const closeModal = () => {
-        setShowModal(false);
-    };
-
+  
     const [editMode, setEditMode] = useState(false); // State to manage edit mode
     const [editedAccount, setEditedAccount] = useState({
         email: "",
@@ -55,6 +48,16 @@ const Header = () => {
         phoneNumber: "",
         gender: ""
     });
+
+    const openModal = () => {
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+        setEditMode(false)
+    };
+
 
     const handleLogout = () => {
         // Clear user session or perform any necessary logout actions
