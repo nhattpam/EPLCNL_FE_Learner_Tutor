@@ -271,7 +271,7 @@ const Header = () => {
                                             {isLearner && (
                                                 <>
                                                     <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
-                                                    <p>Balance: {account.wallet.balance}</p>
+                                                    <p>Balance: {account.wallet?.balance}</p>
                                                 </>
 
                                             )}
