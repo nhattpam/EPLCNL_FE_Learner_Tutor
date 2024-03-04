@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import transactionService from '../../services/transaction.service';
 import enrollmentService from '../../services/enrollment.service';
+import walletService from '../../services/wallet.service';
 
 const PaymentCallBack = () => {
   const location = useLocation();
@@ -49,19 +50,30 @@ const PaymentCallBack = () => {
           };
           // setTransaction(updatedTransaction);
           console.log(updatedTransaction);
-          console.log(updatedTransaction);
-        transactionService.updateTransaction(transactionId, updatedTransaction);
+          transactionService.updateTransaction(transactionId, updatedTransaction);
 
-        const updatedEnrollment = {
-          status: "",
-          totalGrade: 0,
-          learnerId: updatedTransaction.learnerId,
-          courseId: updatedTransaction.courseId,
-          enrolledDate: updatedTransaction.transactionDate
-        };
-        console.log("This is enrollment: " + JSON.stringify(updatedEnrollment));
-        enrollmentService.saveEnrollment(updatedEnrollment);
+          const updatedEnrollment = {
+            status: "",
+            totalGrade: 0,
+            learnerId: updatedTransaction.learnerId,
+            courseId: updatedTransaction.courseId,
+            enrolledDate: updatedTransaction.transactionDate
+          };
 
+          
+          console.log("This is enrollment: " + JSON.stringify(updatedEnrollment));
+          enrollmentService.saveEnrollment(updatedEnrollment);
+
+          walletService.getWalletById("188e9df9-be4b-4531-858e-098ff8c3735c") //admin's wallet
+            .then((response) => {
+              const updatedWallet = {
+                balance: response.data.balance + updatedTransaction.amount,
+                accountId: "9b868733-8ab1-4191-92ab-65d1b82863c3"
+              }
+
+              //update admin wallet balance
+              walletService.updateWallet(response.data.id, updatedWallet);
+            })
           // Navigate to invoice page
           navigate(`/invoice/${transactionId}`)
         })

@@ -24,7 +24,8 @@ const Header = () => {
         fullName: "",
         phoneNumber: "",
         imageUrl: "",
-        gender: ""
+        gender: "",
+        wallet: []
     });
 
     useEffect(() => {
@@ -40,7 +41,7 @@ const Header = () => {
         }
     }, [accountId]);
 
-  
+
     const [editMode, setEditMode] = useState(false); // State to manage edit mode
     const [editedAccount, setEditedAccount] = useState({
         email: "",
@@ -268,7 +269,11 @@ const Header = () => {
                                         {/* item*/}
                                         <div className="dropdown-header noti-title">
                                             {isLearner && (
-                                                <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
+                                                <>
+                                                    <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
+                                                    <p>Balance: {account.wallet.balance}</p>
+                                                </>
+
                                             )}
 
                                         </div>
