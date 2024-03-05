@@ -181,7 +181,7 @@ const Header = () => {
             tutorService.getAllPaperWorksByTutor(storedTutorId)
                 .then((res) => {
                     setPaperWorkList(res.data);
-                    window.alert("Upload successfully");
+                    // window.alert("Upload successfully");
                 })
                 .catch((error) => {
                     console.log(error);
@@ -197,6 +197,19 @@ const Header = () => {
         }
     };
 
+    //delete paperWork
+    const deletePaperWork = async (id) => {
+        await paperWorkService.deletePaperWorkById(id);
+
+         // Fetch the updated list of paperwork
+         tutorService.getAllPaperWorksByTutor(storedTutorId)
+         .then((res) => {
+             setPaperWorkList(res.data);
+         })
+         .catch((error) => {
+             console.log(error);
+         });
+    }
 
     return (
         <>
@@ -412,6 +425,7 @@ const Header = () => {
                                                         <th scope="col">#</th>
                                                         <th scope="col">Type</th>
                                                         <th scope="col">Url</th>
+                                                        <th scope="col"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -421,6 +435,7 @@ const Header = () => {
                                                             <th scope="row">{index + 1}</th>
                                                             <td>{paperWork.paperWorkType.name}</td>
                                                             <td className='text-truncate' style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link to={paperWork.paperWorkUrl}>{paperWork.paperWorkUrl}</Link></td>
+                                                            <th scope="row"  onClick={() => deletePaperWork(paperWork.id)} ><i class="fas fa-trash text-danger"></i></th>
                                                         </tr>
                                                     ))}
 

@@ -43,6 +43,14 @@ class PaperWorkService {
     });
   }
 
+  deletePaperWorkById(id) {
+    return axios.delete(API_URL + "/paper-works/" + id, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
   uploadMaterial(lessonMaterial) {
     return axios.post(API_URL + "/lesson-materials/material/", lessonMaterial, {
       headers: {
