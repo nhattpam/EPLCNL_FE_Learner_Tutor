@@ -97,12 +97,12 @@ const DetailCourse = () => {
             .then((res) => {
                 // Ensure classModuleList is initialized with an empty array if res.data is undefined
                 setClassModuleList(res.data || []);
-    
+
                 // Fetch class topics for each class lesson
                 const promises = res.data.map(classModule =>
                     classLessonService.getAllClassTopicsByClassLesson(classModule.classLesson.id)
                 );
-    
+
                 // Wait for all promises to resolve
                 Promise.all(promises)
                     .then(topicResponses => {
@@ -119,7 +119,7 @@ const DetailCourse = () => {
                 console.log(error);
             });
     }, [courseId]);
-    
+
 
 
     useEffect(() => {
@@ -260,6 +260,20 @@ const DetailCourse = () => {
         setCombinedList(combined);
     }, [lessonList, assignmentList, quizList]);
 
+
+    //list feedbacks
+    const [feedbackList, setFeedbackList] = useState([]);
+    useEffect(() => {
+        if (courseId) {
+            courseService.getAllFeedbacksByCourse(courseId)
+                .then((res) => {
+                    setFeedbackList(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [courseId]);
 
 
     return (
@@ -497,7 +511,51 @@ const DetailCourse = () => {
 
 
                 </section>{/* End Cource Details Tabs Section */}
+
+
             </main>{/* End #main */}
+            {/* ======= Cource Details Section ======= */}
+            <section id="course-details" className="course-details">
+                <div className="container-fluid" data-aos="fade-up">
+                    <div className="row">
+                        <>
+                            <div className="container ">
+                                <div className="row height d-flex justify-content-center align-items-center">
+                                    <div className="row">
+                                        <div className="card">
+                                            <div className="p-3">
+                                                <h2>Feedbacks</h2>
+                                            </div>
+                                            {feedbackList.map((feedback, index) => (
+                                                <>
+                                                    {/* <div className="mt-3 d-flex flex-row align-items-center p-3 form-color"> <img src="https://i.imgur.com/zQZSWrt.jpg" width={50} className="rounded-circle mr-2" /> <input type="text" className="form-control" placeholder="Enter your comment..." /> </div> */}
+                                                    < div className="mt-2" >
+                                                        <div className="d-flex flex-row p-3"> <img src={feedback.learner.account.imageUrl} width={40} height={40} className="rounded-circle mr-3" />
+                                                            <div className="w-100">
+                                                                <div className="d-flex justify-content-between align-items-center">
+                                                                    <div className="d-flex flex-row align-items-center"> <span className="mr-2">{feedback.learner.account.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{feedback.createdDate}</small>
+                                                                </div>
+                                                                <p className="text-justify comment-text mb-0">{feedback.feedbackContent}</p>
+                                                                <div className="d-flex flex-row user-feed"> <span className="wish"><i className="fa fa-heartbeat mr-2" />24</span> <span className="ml-3"><i className="fa fa-comments-o mr-2" />Reply</span> </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </>
+
+                                            ))}
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </>
+                    </div>
+                </div>
+            </section >
+
 
             <Footer />
 
@@ -511,7 +569,98 @@ const DetailCourse = () => {
                     transform: translateY(-5px);
                     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
                 }
+                @media (min-width: 0) {
+                    .g-mr-15 {
+                        margin-right: 1.07143rem !important;
+                    }
+                }
+                @media (min-width: 0){
+                    .g-mt-3 {
+                        margin-top: 0.21429rem !important;
+                    }
+                }
                 
+                .g-height-50 {
+                    height: 50px;
+                }
+                
+                .g-width-50 {
+                    width: 50px !important;
+                }
+                
+                @media (min-width: 0){
+                    .g-pa-30 {
+                        padding: 2.14286rem !important;
+                    }
+                }
+                
+                .g-bg-secondary {
+                    background-color: #fafafa !important;
+                }
+                
+                .u-shadow-v18 {
+                    box-shadow: 0 5px 10px -6px rgba(0, 0, 0, 0.15);
+                }
+                
+                .g-color-gray-dark-v4 {
+                    color: #777 !important;
+                }
+                
+                .g-font-size-12 {
+                    font-size: 0.85714rem !important;
+                }
+                
+                .media-comment {
+                    margin-top:20px
+                }
+                .card {
+                    background-color: #fff;
+                    border: none
+                }
+                
+                .form-color {
+                    background-color: #fafafa
+                }
+                
+                .form-control {
+                    height: 48px;
+                    border-radius: 25px
+                }
+                
+                .form-control:focus {
+                    color: #495057;
+                    background-color: #fff;
+                    border-color: #f58d04;
+                    outline: 0;
+                    box-shadow: none;
+                    text-indent: 10px
+                }
+                
+                .c-badge {
+                    background-color: #f58d04;
+                    color: white;
+                    height: 20px;
+                    font-size: 11px;
+                    width: 92px;
+                    border-radius: 5px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 2px
+                }
+                
+                .comment-text {
+                    font-size: 13px
+                }
+                
+                .wish {
+                    color: #f58d04
+                }
+                
+                .user-feed {
+                    font-size: 14px;
+                    margin-top: 12px
+                }
                 `}
             </style>
         </>
