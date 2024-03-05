@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import accountService from '../../services/account.service';
+import tutorService from '../../services/tutor.service';
+import paperWorkTypeService from '../../services/paper-work-type.service';
+import Dropzone from 'react-dropzone';
+import paperWorkService from '../../services/paper-work.service';
 
 const Header = () => {
 
     const accountId = localStorage.getItem('accountId');
     const [showModal, setShowModal] = useState(false);
+    const [showQualificationModal, setShowQualificationModal] = useState(false);
     const navigate = useNavigate();
+    const storedTutorId = localStorage.getItem('tutorId');
+
 
     const [account, setAccount] = useState({
         email: "",
@@ -72,11 +79,11 @@ const Header = () => {
     };
 
     const openModal = () => {
-        setShowModal(true);
+        setShowQualificationModal(true);
     };
 
     const closeModal = () => {
-        setShowModal(false);
+        setShowQualificationModal(false);
     };
 
     const [editMode, setEditMode] = useState(false); // State to manage edit mode
@@ -86,6 +93,110 @@ const Header = () => {
         phoneNumber: "",
         gender: ""
     });
+
+    //qualification
+    const openQualificationModal = () => {
+        setShowQualificationModal(true);
+
+    };
+
+    const closeQualificationModal = () => {
+        setShowQualificationModal(false);
+    };
+
+    const [paperWork, setPaperWork] = useState({
+        paperWorkUrl: "",
+        paperWorkTypeId: "",
+        tutorId: storedTutorId,
+    });
+
+    const [paperWorkList, setPaperWorkList] = useState([]);
+    const [paperWorkTypeList, setPaperWorkTypeList] = useState([]);
+
+    useEffect(() => {
+        paperWorkTypeService
+            .getAllPaperWorkType()
+            .then((res) => {
+                setPaperWorkTypeList(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+
+    useEffect(() => {
+        tutorService
+            .getAllPaperWorksByTutor(storedTutorId)
+            .then((res) => {
+                setPaperWorkList(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [storedTutorId]);
+
+    const [file, setFile] = useState(null);
+    const [pdfPreview, setPdfPreview] = useState("");
+
+
+    const handleFileDrop = (acceptedFiles) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            setFile(acceptedFiles[0]);
+
+            // Set the PDF preview URL
+            const previewUrl = URL.createObjectURL(acceptedFiles[0]);
+            setPdfPreview(previewUrl);
+        }
+    };
+
+    const submitPaperWork = async (e) => {
+        e.preventDefault();
+
+        try {
+            // Save account
+            let paperWorkUrl = paperWork.paperWorkUrl; // Keep the existing imageUrl if available
+
+            if (file) {
+                // Upload image and get the link
+                const paperWorkData = new FormData();
+                paperWorkData.append('file', file);
+                const paperWorkResponse = await paperWorkService.uploadMaterial(paperWorkData);
+
+                // Update the imageUrl with the link obtained from the API
+                paperWorkUrl = paperWorkResponse.data;
+
+                // Log the imageUrl after updating
+                // console.log("this is url: " + materialUrl);
+            }
+
+            const paperWorkData = { ...paperWork, paperWorkUrl }; // Create a new object with updated imageUrl
+            console.log(JSON.stringify(paperWorkData))
+
+
+            // Save account
+            const paperWorklResponse = await paperWorkService.savePaperWork(paperWorkData);
+
+            // Fetch the updated list of paperwork
+            tutorService.getAllPaperWorksByTutor(storedTutorId)
+                .then((res) => {
+                    setPaperWorkList(res.data);
+                    window.alert("Upload successfully");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            // console.log(courseResponse.data);
+            const paperWorkJson = JSON.stringify(paperWorklResponse.data);
+
+            const paperWorkJsonParse = JSON.parse(paperWorkJson);
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     return (
         <>
@@ -131,20 +242,17 @@ const Header = () => {
                                     <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
                                 </div>
                                 {/* item*/}
-                                <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={openModal}> 
+                                <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={openModal}>
                                     <i className="fe-user" />
                                     <span>My Account</span>
                                 </a>
                                 {/* item*/}
-                                <a href="javascript:void(0);" className="dropdown-item notify-item">
-                                    <i className="fe-settings" />
-                                    <span>Settings</span>
+                                <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={openQualificationModal}>
+                                    <i class="fas fa-scroll"></i>
+                                    <span>Qualification</span>
                                 </a>
                                 {/* item*/}
-                                <a href="javascript:void(0);" className="dropdown-item notify-item">
-                                    <i className="fe-lock" />
-                                    <span>Lock Screen</span>
-                                </a>
+
                                 <div className="dropdown-divider" />
                                 {/* item*/}
                                 <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={handleLogout}>
@@ -271,6 +379,110 @@ const Header = () => {
                     </div>
                 </div>
             )}
+
+            {/* Tutor Qualification Modal */}
+            {showQualificationModal && (
+                <>
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                        <div className="modal-dialog modal-lg modal-dialog-centered" role="document"> {/* Added modal-dialog-centered class */}
+
+                            <div className="modal-content">
+                                <form
+                                    method="post"
+                                    className="dropzone"
+                                    id="myAwesomeDropzone"
+                                    data-plugin="dropzone"
+                                    data-previews-container="#file-previews"
+                                    data-upload-preview-template="#uploadPreviewTemplate"
+                                    data-parsley-validate
+                                    onSubmit={(e) => submitPaperWork(e)}
+                                >
+
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">My Qualification</h5>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeQualificationModal}>
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Added style for scrolling */}
+                                        <div>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Type</th>
+                                                        <th scope="col">Url</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {paperWorkList.map((paperWork, index) => (
+
+                                                        <tr>
+                                                            <th scope="row">{index + 1}</th>
+                                                            <td>{paperWork.paperWorkType.name}</td>
+                                                            <td className='text-truncate' style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link to={paperWork.paperWorkUrl}>{paperWork.paperWorkUrl}</Link></td>
+                                                        </tr>
+                                                    ))}
+
+                                                </tbody>
+                                            </table>
+                                            {/* Input fields for editing */}
+                                            <div className="form-group">
+                                                <select
+                                                    className="form-control"
+                                                    id="paperWorkType"
+                                                    name="paperWorkType"
+                                                    value={paperWork.paperWorkTypeId}
+                                                    onChange={(e) => setPaperWork({ ...paperWork, paperWorkTypeId: e.target.value })} // Update paperWorkTypeId when the type is selected
+                                                >
+                                                    <option value="">Select a type</option>
+                                                    {paperWorkTypeList.map((paperWorkType, index) => (
+                                                        <option key={index} value={paperWorkType.id}>{paperWorkType.name}</option>
+                                                    ))}
+                                                </select>
+
+                                            </div>
+
+                                            <Dropzone
+                                                onDrop={handleFileDrop}
+                                                accept="application/pdf" multiple={false}
+                                                maxSize={5000000} // Maximum file size (5MB)
+                                            >
+                                                {({ getRootProps, getInputProps }) => (
+                                                    <div {...getRootProps()} className="fallback">
+                                                        <input {...getInputProps()} />
+                                                        <div className="dz-message needsclick">
+                                                            <i className="h1 text-muted dripicons-cloud-upload" />
+                                                            <h3>Drop files here or click to upload.</h3>
+                                                        </div>
+                                                        {pdfPreview && (
+                                                            <div>
+                                                                {/* PDF Preview */}
+                                                                <embed src={pdfPreview} type="application/pdf" width="100%" height="500px" />
+                                                            </div>
+                                                        )}
+
+                                                    </div>
+                                                )}
+                                            </Dropzone>
+                                            <div className="dropzone-previews mt-3" id="file-previews" />
+
+                                        </div>
+                                    </div>
+                                    <div className="modal-footer">
+                                        {/* Conditional rendering of buttons based on edit mode */}
+                                        <button type="submit" className="btn btn-warning" >Upload</button>
+                                        <button type="button" className="btn btn-secondary" onClick={closeQualificationModal}>Close</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </>
+            )
+            }
         </>
     )
 }
