@@ -7,6 +7,7 @@ import moduleService from '../../services/module.service';
 import transactionService from '../../services/transaction.service';
 import { Button } from 'bootstrap';
 import enrollmentService from '../../services/enrollment.service';
+import classLessonService from '../../services/class-lesson.service';
 
 const DetailCourse = () => {
 
@@ -40,6 +41,9 @@ const DetailCourse = () => {
     const [quizList, setQuizList] = useState([]);
     //get num of learners
     const [learnersCount, setLearnersCount] = useState({});
+    //class topics by classLessonId
+    const [classTopicList, setClassTopicList] = useState([]);
+
 
     //get num of learners
     useEffect(() => {
@@ -68,12 +72,12 @@ const DetailCourse = () => {
                 console.error(`Error fetching learners for course ${course.name}:`, error);
             }
         };
-    
+
         if (courseId) {
             fetchLearnersCount();
         }
     }, [courseId]);
-    
+
 
     useEffect(() => {
         courseService
@@ -91,12 +95,31 @@ const DetailCourse = () => {
         courseService
             .getAllClassModulesByCourse(courseId)
             .then((res) => {
-                setClassModuleList(res.data || []); // Ensure classModuleList is initialized with an empty array if res.data is undefined
+                // Ensure classModuleList is initialized with an empty array if res.data is undefined
+                setClassModuleList(res.data || []);
+    
+                // Fetch class topics for each class lesson
+                const promises = res.data.map(classModule =>
+                    classLessonService.getAllClassTopicsByClassLesson(classModule.classLesson.id)
+                );
+    
+                // Wait for all promises to resolve
+                Promise.all(promises)
+                    .then(topicResponses => {
+                        // Extract data from each response and update classTopicList
+                        const topics = topicResponses.map(response => response.data || []);
+                        setClassTopicList(topics);
+                        console.log("LENGTH: " + topics.length);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             })
             .catch((error) => {
                 console.log(error);
             });
     }, [courseId]);
+    
 
 
     useEffect(() => {
@@ -401,6 +424,11 @@ const DetailCourse = () => {
                                                     <div>
                                                         <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
 
+                                                        <ul>
+                                                            {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
+                                                                <li key={topicIndex}>{classTopic.name}</li>
+                                                            ))}
+                                                        </ul>
                                                     </div>
                                                 </div>
 

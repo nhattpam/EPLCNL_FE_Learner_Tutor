@@ -79,11 +79,11 @@ const Header = () => {
     };
 
     const openModal = () => {
-        setShowQualificationModal(true);
+        setShowModal(true);
     };
 
     const closeModal = () => {
-        setShowQualificationModal(false);
+        setShowModal(false);
     };
 
     const [editMode, setEditMode] = useState(false); // State to manage edit mode
