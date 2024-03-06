@@ -483,17 +483,17 @@ const DetailCourse = () => {
                                                     <div className="combined-item" key={combinedIndex}>
                                                         {item.type === 'lesson' && (
                                                             <div className="lesson">
-                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
+                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
                                                             </div>
                                                         )}
                                                         {item.type === 'assignment' && (
                                                             <div className="assignment">
-                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#' }}>{combinedIndex + 1}.</span> Assignment - Deadline: {item.deadline} minutes</p>
+                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Assignment - Deadline: {item.deadline} minutes</p>
                                                             </div>
                                                         )}
                                                         {item.type === 'quiz' && (
                                                             <div className="quiz">
-                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#' }}>{combinedIndex + 1}.</span> Quiz - {item.name}</p>
+                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Quiz - {item.name}</p>
                                                             </div>
                                                         )}
                                                     </div>
@@ -533,7 +533,7 @@ const DetailCourse = () => {
                                                         <div className="d-flex flex-row p-3"> <img src={feedback.learner.account.imageUrl} width={40} height={40} className="rounded-circle mr-3" />
                                                             <div className="w-100">
                                                                 <div className="d-flex justify-content-between align-items-center">
-                                                                    <div className="d-flex flex-row align-items-center"> <span className="mr-2">{feedback.learner.account.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{feedback.createdDate}</small>
+                                                                    <div className="d-flex flex-row align-items-center"> <span className="mr-2" style={{fontWeight: 'bold'}}>{feedback.learner.account.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{feedback.createdDate}</small>
                                                                 </div>
                                                                 <p className="text-justify comment-text mb-0">{feedback.feedbackContent}</p>
                                                                 <div className="d-flex flex-row user-feed"> <span className="wish"><i className="fa fa-heartbeat mr-2" />24</span> <span className="ml-3"><i className="fa fa-comments-o mr-2" />Reply</span> </div>

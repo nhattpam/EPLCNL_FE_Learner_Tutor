@@ -94,8 +94,8 @@ const CourseList = () => {
                                             </div>
                                         </div>
                                         <div className="table-responsive">
-                                            <table className="table table-bordered table-centered mb-0">
-                                                <thead>
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                <thead className="thead-light">
                                                     <tr>
                                                         <th>No.</th>
                                                         <th>Image</th>

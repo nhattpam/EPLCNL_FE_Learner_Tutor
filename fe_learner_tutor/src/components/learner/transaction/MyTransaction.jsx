@@ -44,10 +44,10 @@ const MyTransaction = () => {
         setShowRefundModal(true);
         refund.transactionId = transactionId;
         transactionService.getTransactionById(transactionId)
-        .then((res) => {
-            setSelectedCourseName(res.data.course.name); // Update the selected course name
+            .then((res) => {
+                setSelectedCourseName(res.data.course.name); // Update the selected course name
 
-        })
+            })
 
     };
 
@@ -89,8 +89,8 @@ const MyTransaction = () => {
                             <div className="tab-pane fade show active" id="tab-content-1" style={{ marginTop: '-80px' }}>
                                 <div className="container" data-aos="fade-up">
                                     <div className="list-container" data-aos="zoom-in" data-aos-delay={100}>
-                                        <table className="table table-hover">
-                                            <thead>
+                                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                            <thead className="thead-light">
                                                 <tr>
                                                     <th scope="col">#</th>
                                                     <th scope="col">Image</th>
@@ -112,9 +112,9 @@ const MyTransaction = () => {
                                                         </td>
                                                         <td>
                                                             {transaction.course.isOnlineClass ? (
-                                                                <h3><Link to={`/study-class/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
+                                                                <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
                                                             ) : (
-                                                                <h3><Link to={`/study-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
+                                                                <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
                                                             )}
                                                         </td>
                                                         <td>${transaction.course.stockPrice}</td>
@@ -146,7 +146,7 @@ const MyTransaction = () => {
                                                     <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
                                                         <div className="modal-content">
                                                             <div className="modal-header">
-                                                            <h5 className="modal-title">Refund course - <span style={{ color: '#f58d04' }}>{selectedCourseName}</span> </h5>
+                                                                <h5 className="modal-title">Refund course - <span style={{ color: '#f58d04' }}>{selectedCourseName}</span> </h5>
                                                                 <button type="button" className="close" onClick={() => setShowRefundModal(false)}>
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>

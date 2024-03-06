@@ -44,13 +44,16 @@ const StudyClass = () => {
     courseService
       .getAllClassModulesByCourse(courseId)
       .then((res) => {
-        console.log(res.data);
-        setClassModuleList(res.data);
+        // Sort the class modules by startDate
+        const sortedModules = res.data.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+        console.log(sortedModules);
+        setClassModuleList(sortedModules);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [courseId]);
+  
 
   const [selectedModule, setSelectedModule] = useState(null);
   const [moduleContent, setModuleContent] = useState({

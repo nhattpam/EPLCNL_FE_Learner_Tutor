@@ -142,7 +142,7 @@ const EditAssignmentAttempt = () => {
                                         <div className="form-group">
                                             <h4 className="header-title">ASSIGNMENT ATTEMPT INFORMATION</h4>
                                             <div className="table-responsive">
-                                                <table className="table table-bordered">
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                                                     <tbody>
                                                         <tr>
                                                             <th>Learner:</th>

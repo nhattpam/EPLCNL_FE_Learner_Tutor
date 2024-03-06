@@ -106,8 +106,8 @@ const ListLessonMaterial = () => {
                       </div>
                     </div>
                     <div className="table-responsive">
-                      <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
-                        <thead>
+                      <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                        <thead className="thead-light">
                           <tr>
                             <th data-toggle="true">Material Name</th>
                             {/* <th>Url</th> */}
@@ -179,13 +179,13 @@ const ListLessonMaterial = () => {
 
       </div >
       <style>
-                {`
+        {`
                 .page-item.active .page-link{
                     background-color: #20c997;
                     border-color: #20c997;
                 }
             `}
-            </style>
+      </style>
     </>
   )
 }

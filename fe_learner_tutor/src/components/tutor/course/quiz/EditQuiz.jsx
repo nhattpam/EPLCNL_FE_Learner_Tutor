@@ -77,7 +77,7 @@ const EditQuiz = () => {
                 <div className="card-box">
                   <h4 className="header-title">QUIZ INFORMATION</h4>
                   <div className="table-responsive">
-                    <table className="table table-bordered">
+                    <table className="table table-borderless table-hover table-nowrap table-centered mb-0">
                       <tbody>
                         <tr>
                           <th>Quiz Name:</th>
@@ -103,7 +103,7 @@ const EditQuiz = () => {
 
                     <ul className="list-group">
                       {questionList.map((question) => (
-                        <li key={question.id} className="list-group-item d-flex justify-content-between align-items-center">
+                        <li key={question.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
                           {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
                           <button
                             type="button"
@@ -172,6 +172,13 @@ const EditQuiz = () => {
                         width: 85%;
                         text-align: left;
                     }
+
+                    .truncate-text {
+                      max-width: 500px; /* Adjust max-width as needed */
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                  }
                 `}
       </style>
     </>

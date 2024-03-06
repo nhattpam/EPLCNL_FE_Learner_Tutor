@@ -182,8 +182,8 @@ const EditModule = () => {
                                                 </Link>
                                             </h5>
                                             <div className="table-responsive">
-                                                <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
-                                                    <thead>
+                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                    <thead className="thead-light">
                                                         <tr>
                                                             <th data-toggle="true">No.</th>
                                                             <th data-toggle="true">Lesson Name</th>
@@ -242,9 +242,10 @@ const EditModule = () => {
                                                 <Link to={`/tutor/courses/create/create-video-course/create-assignment/${moduleId}`} >
                                                     <i className="fas fa-plus-circle text-success"></i>
                                                 </Link>
-                                            </h5>                                            <div className="table-responsive">
-                                                <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
-                                                    <thead>
+                                            </h5>
+                                            <div className="table-responsive">
+                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                    <thead className="thead-light">
                                                         <tr>
                                                             <th>No.</th>
                                                             <th>Time</th>
@@ -302,9 +303,10 @@ const EditModule = () => {
                                                 <Link to={`/tutor/courses/create/create-video-course/create-quiz/${moduleId}`}>
                                                     <i className="fas fa-plus-circle text-success"></i>
                                                 </Link>
-                                            </h5>                                            <div className="table-responsive">
-                                                <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
-                                                    <thead>
+                                            </h5>
+                                            <div className="table-responsive">
+                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                    <thead className="thead-light">
                                                         <tr>
                                                             <th data-toggle="true">No.</th>
                                                             <th data-toggle="true">Quiz Name</th>
@@ -398,6 +400,13 @@ const EditModule = () => {
                     .page-item.active .page-link{
                         background-color: #20c997;
                         border-color: #20c997;
+                    }
+
+                    .truncate-text {
+                        max-width: 200px; /* Adjust max-width as needed */
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
                 `}
             </style>

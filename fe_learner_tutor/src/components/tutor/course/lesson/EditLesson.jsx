@@ -106,7 +106,7 @@ const EditLesson = () => {
 
                       <form
                         method="post"
-                        className="dropzone"
+                        className="mt-4"
                         id="myAwesomeDropzone"
                         data-plugin="dropzone"
                         data-previews-container="#file-previews"

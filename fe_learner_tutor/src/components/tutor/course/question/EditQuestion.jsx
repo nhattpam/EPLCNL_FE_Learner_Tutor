@@ -91,7 +91,7 @@ const EditQuestion = () => {
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="table-responsive">
-                                            <table className="table table-bordered">
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
                                                 <tbody>
                                                     {question.questionText !== "" && (
                                                         <tr>
@@ -135,7 +135,7 @@ const EditQuestion = () => {
 
                                             <ul className="list-group">
                                                 {questionAnswerList.map((questionAnswer) => (
-                                                    <li key={questionAnswer.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                                    <li key={questionAnswer.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
                                                         {questionAnswer.answerText}
                                                         <Link
                                                             onClick={() => handleDeleteQuestionAnswer(questionAnswer.id)}

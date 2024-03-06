@@ -117,8 +117,8 @@ const EditClassModule = () => {
 
                                             ))} */}
                                             <div className="table-responsive">
-                                                <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
-                                                    <thead>
+                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                    <thead className="thead-light">
                                                         <tr>
                                                             <th data-toggle="true">No.</th>
                                                             <th data-toggle="true">Topic Name</th>
@@ -166,7 +166,7 @@ const EditClassModule = () => {
 
                                             <Link
                                                 to={`/tutor/courses/edit-course/${module.course?.id}`}
-                                                 className="btn btn-black mr-2"
+                                                className="btn btn-black mr-2"
                                             >
                                                 <i className="fas fa-long-arrow-alt-left"></i> Back to Course Infomation
                                             </Link>

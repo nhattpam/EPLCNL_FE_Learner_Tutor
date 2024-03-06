@@ -61,7 +61,7 @@ const ListClassCourse = () => {
     const offset = currentPage * coursesPerPage;
     const currentCourses = filteredCourses.slice(offset, offset + coursesPerPage);
 
-    
+
     return (
         <>
             <div id="wrapper">
@@ -109,8 +109,8 @@ const ListClassCourse = () => {
                                             </div>
                                         </div>
                                         <div className="table-responsive">
-                                            <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
-                                                <thead>
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                <thead className="thead-light">
                                                     <tr>
                                                         <th>No.</th>
                                                         <th data-hide="phone">Image</th>
@@ -125,7 +125,7 @@ const ListClassCourse = () => {
                                                 <tbody>
                                                     {currentCourses.map((course, index) => (
                                                         <tr key={course.id}>
-                                                            <td>{index+1}</td>
+                                                            <td>{index + 1}</td>
                                                             <td>
                                                                 <img src={course.imageUrl} style={{ height: '50px', width: '70px' }}></img>
                                                             </td>

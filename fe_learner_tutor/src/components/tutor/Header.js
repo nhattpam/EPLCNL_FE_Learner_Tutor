@@ -201,14 +201,14 @@ const Header = () => {
     const deletePaperWork = async (id) => {
         await paperWorkService.deletePaperWorkById(id);
 
-         // Fetch the updated list of paperwork
-         tutorService.getAllPaperWorksByTutor(storedTutorId)
-         .then((res) => {
-             setPaperWorkList(res.data);
-         })
-         .catch((error) => {
-             console.log(error);
-         });
+        // Fetch the updated list of paperwork
+        tutorService.getAllPaperWorksByTutor(storedTutorId)
+            .then((res) => {
+                setPaperWorkList(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     return (
@@ -419,8 +419,8 @@ const Header = () => {
                                     </div>
                                     <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Added style for scrolling */}
                                         <div>
-                                            <table class="table table-hover">
-                                                <thead>
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                <thead className="thead-light">
                                                     <tr>
                                                         <th scope="col">#</th>
                                                         <th scope="col">Type</th>
@@ -435,7 +435,7 @@ const Header = () => {
                                                             <th scope="row">{index + 1}</th>
                                                             <td>{paperWork.paperWorkType.name}</td>
                                                             <td className='text-truncate' style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link to={paperWork.paperWorkUrl}>{paperWork.paperWorkUrl}</Link></td>
-                                                            <th scope="row"  onClick={() => deletePaperWork(paperWork.id)} ><i class="fas fa-trash text-danger"></i></th>
+                                                            <th scope="row" onClick={() => deletePaperWork(paperWork.id)} ><i class="fas fa-trash text-danger"></i></th>
                                                         </tr>
                                                     ))}
 

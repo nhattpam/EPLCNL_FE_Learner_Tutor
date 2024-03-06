@@ -145,7 +145,7 @@ const EditCourse = () => {
                                     <div className="form-group">
                                         <h4 className="header-title">COURSE INFORMATION</h4>
                                         <div className="table-responsive">
-                                            <table className="table table-bordered">
+                                            <table className="table table-borderless table-hover table-wrap table-centered m-0">
                                                 <tbody>
                                                     <tr>
                                                         <th>Course Name:</th>
@@ -176,7 +176,8 @@ const EditCourse = () => {
 
                                         <ul className="list-group">
                                             {moduleList.map((module) => (
-                                                <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                                <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
+
                                                     {module.name}
                                                     <button
                                                         type="button"
@@ -189,7 +190,7 @@ const EditCourse = () => {
                                             ))}
 
                                             {classModuleList.map((module) => (
-                                                <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                                <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
                                                     Class Date: {module.startDate !== null ? module.startDate.substring(0, 10) : "No start date"}
                                                     <button
                                                         type="button"
