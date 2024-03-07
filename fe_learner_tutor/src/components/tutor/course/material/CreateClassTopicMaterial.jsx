@@ -120,7 +120,7 @@ const CreateClassTopicMaterial = () => {
                       <h4 className="header-title">ADD MATERIAL FOR TOPIC - <span className='text-success'>{classTopic.name}</span> </h4>
                       <form
                         method="post"
-                        className="dropzone"
+                        className="mt-3"
                         id="myAwesomeDropzone"
                         data-plugin="dropzone"
                         data-previews-container="#file-previews"

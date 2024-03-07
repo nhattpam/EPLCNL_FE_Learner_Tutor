@@ -77,7 +77,7 @@ const EditClassTopicQuiz = () => {
                 <div className="card-box">
                   <h4 className="header-title">QUIZ INFORMATION</h4>
                   <div className="table-responsive">
-                    <table className="table table-bordered">
+                    <table className="table table-borderless table-hover table-nowrap table-centered mb-0">
                       <tbody>
                         <tr>
                           <th>Quiz Name:</th>
@@ -115,8 +115,8 @@ const EditClassTopicQuiz = () => {
 
 
                       <div className="table-responsive">
-                        <table id="demo-foo-filtering" className="table table-bordered toggle-circle mb-0" data-page-size={7}>
-                          <thead>
+                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                          <thead className="thead-light">
                             <tr>
                               <th data-toggle="true">No.</th>
                               <th data-toggle="true">Question</th>
@@ -126,21 +126,26 @@ const EditClassTopicQuiz = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {questionList.map((question, index) => (
-                              <tr key={question.id}>
-                                <td>{index + 1}</td>
-                                <td className='truncate-text'>
-                                  {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
-                                </td>
-                                <td>{question.defaultGrade}</td>
-                                <td>{question.createdDate}</td>
-                                <td>
-                                  <Link to={`/tutor/courses/edit-topic-question/${question.id}`} className='text-secondary'>
-                                    <i class="fa-regular fa-eye"></i>
-                                  </Link>
-                                </td>
-                              </tr>
-                            ))}
+                            {
+                              questionList.length > 0 && (
+                                questionList.map((question, index) => (
+                                  <tr key={question.id}>
+                                    <td>{index + 1}</td>
+                                    <td className='truncate-text'>
+                                      {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
+                                    </td>
+                                    <td>{question.defaultGrade}</td>
+                                    <td>{question.createdDate}</td>
+                                    <td>
+                                      <Link to={`/tutor/courses/edit-topic-question/${question.id}`} className='text-secondary'>
+                                        <i class="fa-regular fa-eye"></i>
+                                      </Link>
+                                    </td>
+                                  </tr>
+                                ))
+                              )
+                            }
+
                           </tbody>
 
                         </table>

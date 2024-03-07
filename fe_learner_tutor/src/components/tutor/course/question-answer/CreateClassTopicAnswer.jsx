@@ -52,12 +52,6 @@ const CreateClassTopicAnswer = () => {
     isAnswer: false
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const inputValue = type === 'checkbox' ? checked : value;
-
-    setQuestionAnswer({ ...questionAnswer, [name]: inputValue });
-  }
 
 
 
@@ -68,35 +62,6 @@ const CreateClassTopicAnswer = () => {
       // console.log('this is list:', listQuestionAnswersByQuestion.data);
 
       setCreatedQuestionAnswers(listQuestionAnswersByQuestion.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-  const submitQuestionAnswer = async (e) => {
-    e.preventDefault();
-
-    try {
-      // Convert position to integer
-      const positionAsInt = parseInt(questionAnswer.position, 10);
-
-      // Update questionAnswer.position with the converted integer value
-      questionAnswer.position = positionAsInt;
-
-      console.log(JSON.stringify(questionAnswer));
-
-      const questionAnswerResponse = await questionAnswerService.saveQuestionAnswer(questionAnswer);
-      // console.log(questionAnswerResponse.data);
-
-      setMsg('Answer Added Successfully');
-
-      const questionAnswerJson = JSON.stringify(questionAnswerResponse.data);
-      const questionAnswerJsonParse = JSON.parse(questionAnswerJson);
-
-      await listQuestionAnswersByQuestion(storedQuestionId);
-
-      // navigate(`/tutor/courses/create/create-video-course/create-question-answer/${questionJsonParse.id}`);
     } catch (error) {
       console.log(error);
     }
@@ -119,6 +84,49 @@ const CreateClassTopicAnswer = () => {
 
 
 
+  const [questionAnswers, setQuestionAnswers] = useState([
+    { answerText: "", isAnswer: false },
+    { answerText: "", isAnswer: false },
+    { answerText: "", isAnswer: false },
+    { answerText: "", isAnswer: false }
+  ]);
+
+  const handleAnswerChange = (index, e) => {
+    const { name, value, type, checked } = e.target;
+    const inputValue = type === 'checkbox' ? checked : value;
+
+    const updatedQuestionAnswers = [...questionAnswers];
+    updatedQuestionAnswers[index] = { ...updatedQuestionAnswers[index], [name]: inputValue };
+
+    setQuestionAnswers(updatedQuestionAnswers);
+  };
+
+  const submitQuestionAnswer = async (e) => {
+    e.preventDefault();
+
+    try {
+      const questionAnswersData = questionAnswers.map(answer => ({
+        ...answer,
+        questionId: storedQuestionId // Assuming storedQuestionId is the same for all answers
+      }));
+
+      const questionAnswersResponse = await Promise.all(questionAnswersData.map(answer =>
+        questionAnswerService.saveQuestionAnswer(answer)
+      ));
+
+      console.log("Question Answers Added Successfully", questionAnswersResponse);
+
+      navigate(`/tutor/courses/edit-topic-question/${storedQuestionId}`);
+
+      setMsg('Question Answers Added Successfully');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+
 
   return (
     <>
@@ -138,73 +146,56 @@ const CreateClassTopicAnswer = () => {
 
                       <form
                         method="post"
-                        className="dropzone"
+                        className="mt-3"
                         id="myAwesomeDropzone"
                         data-plugin="dropzone"
                         data-previews-container="#file-previews"
                         data-upload-preview-template="#uploadPreviewTemplate"
                         data-parsley-validate
                         onSubmit={submitQuestionAnswer} >
+                        <div className="card" style={{ marginTop: '-20px' }}>
+                          <div className='card-body'>
 
-                        <label htmlFor="answerText">Question Answer * :</label>
-                        <textarea className="form-control" name="answerText" id="answerText" required value={questionAnswer.answerText} onChange={(e) => handleChange(e)} />
-                        <label htmlFor="position">Position * :</label>
-                        <select
-                          className="form-control text-center"
-                          name="position"
-                          id="position"
-                          required
-                          value={questionAnswer.position}
-                          onChange={(e) => handleChange(e)}
-                          style={{ width: '20%' }}
-                        >
-                          <option value={1}>1</option>
-                          <option value={2}>2</option>
-                          <option value={3}>3</option>
-                          <option value={4}>4</option>
-                        </select>
+                            {questionAnswers.map((answer, index) => (
+                              <div key={index} className="form-group col-12">
+                                <label htmlFor={`answerText${index}`}>Answer {index + 1} * :</label>
+                                <div className="input-group">
+                                  <textarea
+                                    className="form-control"
+                                    name="answerText"
+                                    id={`answerText${index}`}
+                                    required
+                                    value={answer.answerText}
+                                    onChange={(e) => handleAnswerChange(index, e)}
+                                  />
 
-                        <label htmlFor="isAnswer">Is Answer:</label> &nbsp;
-                        <input
-                          type="checkbox"
-                          name="isAnswer"
-                          id="isAnswer"
-                          value={questionAnswer.isAnswer}
-                          onChange={(e) => handleChange(e)}
-                        />
+                                  <div className="input-group-append ml-2">
+                                    <input
+                                      type="checkbox"
+                                      name="isAnswer"
+                                      id={`isAnswer${index}`}
+                                      value={answer.isAnswer}
+                                      onChange={(e) => handleAnswerChange(index, e)}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
 
-                        <div className="row">
-                          <div className="col-md-6">
-                            <button type="submit" className="btn btn-success form-control" style={{ marginTop: '10px' }} >
-                              <i class="fas fa-check-double"></i> Create
 
-                            </button>
+
                           </div>
-                          <div className="col-md-6">
-                            <Link to={`/tutor/courses/edit-topic-quiz/${question.quizId}`} className="btn btn-black form-control" style={{ marginTop: '10px' }} >
-                              <i class="fas fa-long-arrow-alt-left"></i> Back to Quiz Information
 
-                            </Link>
-                          </div>
+                        </div>
+                        <div className="form-group ml-2 mb-0  ">
+                          <button type="submit" className="btn btn-dark " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                            Finish
+
+                          </button>
                         </div>
                       </form>
 
-                      {/* Display created answers */}
-                      <div>
-                        <h4>Created Answers:</h4>
-                        {Array.isArray(createdQuestionAnswers) && createdQuestionAnswers.length > 0 ? (
-                          <ul>
-                            {createdQuestionAnswers.map((answer) => (
-                              <li key={answer.id}>
-                                Answer: <span className='text-success'>{answer.answerText}</span> - Position: {answer.position} - <span className='text-success'>{answer.isAnswer ? "Is Answer" : "Not an Answer"}</span>
-                                <Link onClick={() => handleDeleteQuestionAnswer(answer.id)} className='text-danger'> <i className="far fa-trash-alt"></i></Link>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p>No answers created yet.</p>
-                        )}
-                      </div>
+
                     </div>
                   </div>
 
