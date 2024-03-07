@@ -17,7 +17,6 @@ const Invoice = () => {
         transactionDate: "",
         learnerId: "",
         courseId: "",
-        refundStatus: ""
     });
 
     const [course, setCourse] = useState({

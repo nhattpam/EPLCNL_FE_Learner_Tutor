@@ -55,8 +55,7 @@ const PaymentCallBack = () => {
           const updatedEnrollment = {
             status: "",
             totalGrade: 0,
-            learnerId: updatedTransaction.learnerId,
-            courseId: updatedTransaction.courseId,
+            transactionId: updatedTransaction.id,
             enrolledDate: updatedTransaction.transactionDate
           };
 

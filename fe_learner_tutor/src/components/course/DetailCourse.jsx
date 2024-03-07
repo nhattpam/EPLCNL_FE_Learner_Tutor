@@ -535,7 +535,7 @@ const DetailCourse = () => {
                                                                 <div className="d-flex justify-content-between align-items-center">
                                                                     <div className="d-flex flex-row align-items-center"> <span className="mr-2" style={{fontWeight: 'bold'}}>{feedback.learner.account.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{feedback.createdDate}</small>
                                                                 </div>
-                                                                <p className="text-justify comment-text mb-0">{feedback.feedbackContent}</p>
+                                                                <p className="text-justify comment-text mb-0" dangerouslySetInnerHTML={{ __html: feedback.feedbackContent }}></p>
                                                                 <div className="d-flex flex-row user-feed"> <span className="wish"><i className="fa fa-heartbeat mr-2" />24</span> <span className="ml-3"><i className="fa fa-comments-o mr-2" />Reply</span> </div>
                                                             </div>
                                                         </div>
