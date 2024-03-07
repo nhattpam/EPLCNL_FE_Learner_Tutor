@@ -120,7 +120,7 @@ const CreateAssignment = () => {
 
                       <form
                         method="post"
-                        className="dropzone"
+                        className="mt-3"
                         id="myAwesomeDropzone"
                         data-plugin="dropzone"
                         data-previews-container="#file-previews"

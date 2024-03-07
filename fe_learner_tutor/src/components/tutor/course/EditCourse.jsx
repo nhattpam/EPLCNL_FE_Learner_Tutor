@@ -81,6 +81,19 @@ const EditCourse = () => {
             });
     }, [courseId]);
 
+    useEffect(() => {
+        if (courseId) {
+            courseService
+                .getCertificateByCourse(courseId)
+                .then((res) => {
+                    setCertificate(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [courseId]);
+
 
 
     const handleEditModule = (moduleId) => {
@@ -199,7 +212,7 @@ const EditCourse = () => {
                                     </div>
 
                                     {(!course.isOnlineClass) && (
-                                        <div className="form-group mb-2">
+                                        <div className="form-group mb-4">
                                             <>
                                                 {moduleList.length === 0 && (
                                                     <p>No modules available.</p>
@@ -253,7 +266,7 @@ const EditCourse = () => {
 
                                     )}
 
-                                    <div className="form-group">
+                                    <div className="form-group mt-2">
                                         <h5>Certificate:</h5>
 
                                         <form

@@ -119,10 +119,9 @@ const CreateLesson = () => {
                       </h4>
                       <form
                         method="post"
-                        className="dropzone"
+                        className="mt-3"
                         id="myAwesomeDropzone"
                         data-plugin="dropzone"
-                        data-previews-container="#file-previews"
                         data-upload-preview-template="#uploadPreviewTemplate"
                         data-parsley-validate
                         onSubmit={(e) => submitLesson(e)}
@@ -135,7 +134,7 @@ const CreateLesson = () => {
                           maxSize={5000000} // Maximum file size (5MB)
                         >
                           {({ getRootProps, getInputProps }) => (
-                            <div {...getRootProps()} className="fallback">
+                            <div {...getRootProps()} className="fallback ml-3">
                               <input {...getInputProps()} />
                               <div className="dz-message needsclick">
                                 <i className="h1 text-muted dripicons-cloud-upload" />
