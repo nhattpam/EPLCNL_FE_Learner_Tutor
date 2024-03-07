@@ -18,6 +18,7 @@ const CreateQuiz = () => {
     const [msg, setMsg] = useState('');
     const { storedModuleId } = useParams();
     const [createQuizButtonClicked, setCreateQuizButtonClicked] = useState(false); // State variable to track button click
+    const [createQuestionButtonClicked, setCreateQuestionButtonClicked] = useState(false); // State variable to track button click
     const [storedQuizId, setStoredQuizId] = useState("");
     const [storedQuestionId, setStoredQuestionId] = useState("");
 
@@ -241,7 +242,7 @@ const CreateQuiz = () => {
                 setStoredQuestionId(questionJsonParse.id); // Update storedModuleId using setStoredModuleId
 
                 //show modal answer
-                setShowAnswerModal(true);
+                setCreateQuestionButtonClicked(true);
 
                 // navigate(`/tutor/courses/create/create-video-course/create-question-answer/${questionJsonParse.id}`);
             }
@@ -255,34 +256,9 @@ const CreateQuiz = () => {
 
 
     //create answer
-    const [createdQuestionAnswers, setCreatedQuestionAnswers] = useState([]);
-    const [questionAnswer, setQuestionAnswer] = useState({
-        questionId: storedQuestionId,
-        answerText: "",
-        position: 1,
-        isAnswer: false
-    });
-
-    const handleAnswerChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        const inputValue = type === 'checkbox' ? checked : value;
-
-        setQuestionAnswer({ ...questionAnswer, [name]: inputValue });
-    }
-
-
-
-    const listQuestionAnswersByQuestion = async (storedQuestionId) => {
-        try {
-            const listQuestionAnswersByQuestion = await questionService.getAllQuestionAnswersByQuestion(storedQuestionId);
-
-            // console.log('this is list:', listQuestionAnswersByQuestion.data);
-
-            setCreatedQuestionAnswers(listQuestionAnswersByQuestion.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    useEffect(() => {
+        console.log("createButtonClicked:", createQuestionButtonClicked);
+    }, [createQuestionButtonClicked]);
 
 
     useEffect(() => {
@@ -293,58 +269,54 @@ const CreateQuiz = () => {
         }));
     }, [storedQuestionId]);
 
+
+    const [questionAnswer, setQuestionAnswer] = useState({
+        questionId: storedQuestionId,
+        answerText: "",
+        position: 1,
+        isAnswer: false
+    });
+
+    const [questionAnswers, setQuestionAnswers] = useState([
+        { answerText: "", isAnswer: false },
+        { answerText: "", isAnswer: false },
+        { answerText: "", isAnswer: false },
+        { answerText: "", isAnswer: false }
+    ]);
+
+    const handleAnswerChange = (index, e) => {
+        const { name, value, type, checked } = e.target;
+        const inputValue = type === 'checkbox' ? checked : value;
+
+        const updatedQuestionAnswers = [...questionAnswers];
+        updatedQuestionAnswers[index] = { ...updatedQuestionAnswers[index], [name]: inputValue };
+
+        setQuestionAnswers(updatedQuestionAnswers);
+    };
+
     const submitQuestionAnswer = async (e) => {
         e.preventDefault();
 
         try {
-            // Convert position to integer
-            const positionAsInt = parseInt(questionAnswer.position, 10);
+            const questionAnswersData = questionAnswers.map(answer => ({
+                ...answer,
+                questionId: storedQuestionId // Assuming storedQuestionId is the same for all answers
+            }));
 
-            // Update questionAnswer.position with the converted integer value
-            questionAnswer.position = positionAsInt;
+            const questionAnswersResponse = await Promise.all(questionAnswersData.map(answer =>
+                questionAnswerService.saveQuestionAnswer(answer)
+            ));
 
-            console.log(JSON.stringify(questionAnswer));
+            console.log("Question Answers Added Successfully", questionAnswersResponse);
 
-            const questionAnswerResponse = await questionAnswerService.saveQuestionAnswer(questionAnswer);
-            // console.log(questionAnswerResponse.data);
+            navigate(`/tutor/courses/edit-module/${quiz.moduleId}`);
 
-            setMsg('Answer Added Successfully');
-
-            const questionAnswerJson = JSON.stringify(questionAnswerResponse.data);
-            const questionAnswerJsonParse = JSON.parse(questionAnswerJson);
-
-            await listQuestionAnswersByQuestion(storedQuestionId);
-
-            // navigate(`/tutor/courses/create/create-video-course/create-question-answer/${questionJsonParse.id}`);
+            setMsg('Question Answers Added Successfully');
         } catch (error) {
             console.log(error);
         }
     };
 
-
-    const handleDeleteQuestionAnswer = async (questionAnswerId) => {
-        try {
-            // Delete the question answer
-            const response = await questionAnswerService.deleteQuestionAnswer(questionAnswerId);
-            console.log(response);
-            // Reload the question answer list
-            await listQuestionAnswersByQuestion(storedQuestionId);
-            // Optionally, display a success message
-            setMsg('Question answer deleted successfully');
-        } catch (error) {
-            console.error('Error deleting question answer:', error);
-        }
-    };
-
-    const handleClearQuestion = () => {
-        setQuestion({
-            questionText: "",
-            questionImageUrl: "",
-            questionAudioUrl: "",
-            defaultGrade: 0,
-        });
-        setShowAnswerModal(false);
-    };
 
 
     return (
@@ -499,9 +471,75 @@ const CreateQuiz = () => {
                                                     </div>
 
                                                 </div>
-                                                <div className="form-group mb-0  ">
-                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                                                        <i class="fas fa-check-double"></i> Create
+                                                {!createQuestionButtonClicked && (
+                                                    <div className="form-group mb-0  ">
+                                                        <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                                                            <i class="fas fa-check-double"></i> Create
+
+                                                        </button>
+                                                    </div>
+                                                )}
+
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {/* CREATE ANSWER */}
+                            <div className="row" style={{ opacity: createQuestionButtonClicked ? 1 : 0.5, pointerEvents: createQuestionButtonClicked ? 'auto' : 'none' }}>
+                                <div className="col-12">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h4 className="header-title">Create Answer</h4>
+
+                                            <form
+                                                method="post"
+                                                className="mt-3"
+                                                id="myAwesomeDropzone"
+                                                data-plugin="dropzone"
+                                                data-previews-container="#file-previews"
+                                                data-upload-preview-template="#uploadPreviewTemplate"
+                                                data-parsley-validate
+                                                onSubmit={submitQuestionAnswer} >
+                                                <div className="card" style={{ marginTop: '-20px' }}>
+                                                    <div className='card-body'>
+                                                        {questionAnswers.map((answer, index) => (
+                                                            <div key={index} className="form-group col-12">
+                                                                <label htmlFor={`answerText${index}`}>Answer {index + 1} * :</label>
+                                                                <div className="input-group">
+                                                                    <textarea
+                                                                        className="form-control"
+                                                                        name="answerText"
+                                                                        id={`answerText${index}`}
+                                                                        required
+                                                                        value={answer.answerText}
+                                                                        onChange={(e) => handleAnswerChange(index, e)}
+                                                                    />
+
+                                                                    <div className="input-group-append ml-2">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            name="isAnswer"
+                                                                            id={`isAnswer${index}`}
+                                                                            value={answer.isAnswer}
+                                                                            onChange={(e) => handleAnswerChange(index, e)}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+
+
+
+                                                    </div>
+
+                                                </div>
+                                                <div className="form-group ml-2 mb-0  ">
+                                                    <button type="submit" className="btn btn-dark " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                                                        Finish
 
                                                     </button>
                                                 </div>
@@ -512,92 +550,6 @@ const CreateQuiz = () => {
                                 </div>
 
                             </div>
-
-                            {showAnswerModal && (
-                                <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
-                                    <div className="modal-dialog" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title">Create Answer...</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeAnswerModal}>
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div className="modal-body">
-                                                {/* Conditional rendering based on edit mode */}
-                                                <div>
-                                                    {/* Input fields for editing */}
-                                                    <form
-                                                        method="post"
-                                                        className="dropzone"
-                                                        id="myAwesomeDropzone"
-                                                        data-plugin="dropzone"
-                                                        data-previews-container="#file-previews"
-                                                        data-upload-preview-template="#uploadPreviewTemplate"
-                                                        data-parsley-validate
-                                                        onSubmit={submitQuestionAnswer} >
-
-                                                        <label htmlFor="answerText">Question Answer * :</label>
-                                                        <textarea className="form-control" name="answerText" id="answerText" required value={questionAnswer.answerText} onChange={(e) => handleAnswerChange(e)} />
-                                                        <label htmlFor="position">Position * :</label>
-                                                        <select
-                                                            className="form-control text-center"
-                                                            name="position"
-                                                            id="position"
-                                                            required
-                                                            value={questionAnswer.position}
-                                                            onChange={(e) => handleAnswerChange(e)}
-                                                            style={{ width: '20%' }}
-                                                        >
-                                                            <option value={1}>1</option>
-                                                            <option value={2}>2</option>
-                                                            <option value={3}>3</option>
-                                                            <option value={4}>4</option>
-                                                        </select>
-
-                                                        <label htmlFor="isAnswer">Is Answer:</label> &nbsp;
-                                                        <input
-                                                            type="checkbox"
-                                                            name="isAnswer"
-                                                            id="isAnswer"
-                                                            value={questionAnswer.isAnswer}
-                                                            onChange={(e) => handleAnswerChange(e)}
-                                                        />
-
-                                                        <button type="submit" className="btn btn-success form-control" style={{ marginTop: '10px' }} >
-                                                            <i class="fas fa-check-double"></i> Create
-
-                                                        </button>
-                                                    </form>
-
-                                                    {/* Display created answers */}
-                                                    <div>
-                                                        <h4>Created Answers:</h4>
-                                                        {Array.isArray(createdQuestionAnswers) && createdQuestionAnswers.length > 0 ? (
-                                                            <ul>
-                                                                {createdQuestionAnswers.map((answer) => (
-                                                                    <li key={answer.id}>
-                                                                        Answer: <span className='text-success'>{answer.answerText}</span> - Position: {answer.position} - <span className='text-success'>{answer.isAnswer ? "Is Answer" : "Not an Answer"}</span>
-                                                                        <Link onClick={() => handleDeleteQuestionAnswer(answer.id)} className='text-danger'> <i className="far fa-trash-alt"></i></Link>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        ) : (
-                                                            <p>No answers created yet.</p>
-                                                        )}
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div className="modal-footer">
-                                                {/* Conditional rendering of buttons based on edit mode */}
-                                                <button type="button" className="btn btn-dark" onClick={{ handleClearQuestion }}>Finish</button>
-                                                <button type="button" className="btn btn-danger" onClick={closeAnswerModal}>Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
 
                         </div>
                     </div>
