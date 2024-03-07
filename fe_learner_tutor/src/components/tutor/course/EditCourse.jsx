@@ -28,14 +28,9 @@ const EditCourse = () => {
 
     const [certificate, setCertificate] = useState({
         name: "",
-    });
-
-    const [certificateCourse, setCertificateCourse] = useState({
-        certificateId: "",
         courseId: "",
         description: ""
     });
-
 
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
@@ -107,23 +102,20 @@ const EditCourse = () => {
     };
 
     const handleDescriptionChange = (value) => {
-        setCertificateCourse({ ...certificateCourse, description: value });
+        setCertificate({ ...certificate, description: value });
     };
 
 
-    const submitBothCertificateAndCertificateCourse = async (e) => {
+    const submitCertificate = async (e) => {
         e.preventDefault();
 
         try {
             certificate.name = `Thanks for your time, this is certificate for course ${course.name}`;
+            certificate.courseId = courseId;
+            console.log(JSON.stringify(certificate))
             const responseCertificate = await certificateService.saveCertificate(certificate);
             if (responseCertificate.status == 201) {
-                certificateCourse.certificateId = responseCertificate.data.id;
-                certificateCourse.courseId = courseId;
-                const responseCertificateCourse = await certificateCourseService.saveCertificateCourse(certificateCourse);
-                if (responseCertificateCourse.status = 201) {
                     window.alert("Sent ok")
-                }
             }
 
         } catch (error) {
@@ -267,13 +259,13 @@ const EditCourse = () => {
                                         <form
                                             method="post"
                                             data-parsley-validate
-                                            onSubmit={(e) => submitBothCertificateAndCertificateCourse(e)}
+                                            onSubmit={(e) => submitCertificate(e)}
                                         >
                                             <div className="card">
                                                 <div className="card-body">
                                                     <div className="form-group">
                                                         <ReactQuill
-                                                            value={certificateCourse.description}
+                                                            value={certificate.description}
                                                             onChange={handleDescriptionChange}
                                                             style={{ height: "300px" }}
                                                             modules={{
