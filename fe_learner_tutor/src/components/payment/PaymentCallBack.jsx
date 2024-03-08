@@ -69,7 +69,8 @@ const PaymentCallBack = () => {
               const updatedWallet = {
                 balance: response.data.balance + updatedTransaction.amount,
                 accountId: "9b868733-8ab1-4191-92ab-65d1b82863c3",
-                note: `+${updatedTransaction.amount} from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId}`
+                note: `+${updatedTransaction.amount} from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId}`,
+                transactionDate: updatedTransaction.transactionDate
               }
 
               //update admin wallet balance
