@@ -122,13 +122,13 @@ const MyTransaction = () => {
                                                         <td>{transaction.amount} dong</td>
                                                         <td>{transaction.transactionDate}</td>
                                                         <td>{transaction.status}</td>
-                                                        <td>
+                                                        {/* <td>
                                                             {isTransactionDateValid(transaction.transactionDate) && (
                                                                 <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(transaction.id)}>
                                                                     Request a refund
                                                                 </a>
                                                             )}
-                                                        </td>
+                                                        </td> */}
                                                     </tr>
 
                                                 ))}

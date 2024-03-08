@@ -12,6 +12,8 @@ import reportService from '../../../services/report.service';
 import StarRating from './StarRating';
 import Dropzone from "react-dropzone";
 import courseService from '../../../services/course.service';
+import enrollmentService from '../../../services/enrollment.service';
+import refundRequestService from '../../../services/refund-request.service';
 
 
 const MyLearning = () => {
@@ -23,6 +25,8 @@ const MyLearning = () => {
     const [showFeedbackModal, setShowFeedbackModal] = useState(false); // State variable for modal visibility
     const [showReportModal, setShowReportModal] = useState(false); // State variable for modal visibility
     const [learnersCount, setLearnersCount] = useState({});
+    const [showRefundModal, setShowRefundModal] = useState(false); // State variable for modal visibility
+    const [selectedCourseName, setSelectedCourseName] = useState(''); // State variable to store the name of the selected course
 
     const contentRef = useRef(null);
 
@@ -150,6 +154,50 @@ const MyLearning = () => {
     };
     //REPORT
 
+    //REFUND
+    const [refund, setRefund] = useState({
+        reason: "",
+        enrollmentId: "",
+    });
+
+    const handleReasonRefundChange = (value) => {
+        setRefund({ ...refund, reason: value });
+    };
+
+    const handleRefundClick = (enrollmentId) => {
+        setShowRefundModal(true);
+        refund.enrollmentId = enrollmentId;
+        enrollmentService.getEnrollmentById(enrollmentId)
+            .then((res) => {
+                setSelectedCourseName(res.data.transaction.course.name); // Update the selected course name
+
+            })
+
+    };
+
+    const submitRefund = (e) => {
+        e.preventDefault();
+        console.log(JSON.stringify(refund))
+        // If the note is not empty, proceed with the form submission
+        refundRequestService
+            .saveRefundRequest(refund)
+            .then((res) => {
+                window.alert("You refund sent! Wait for us");
+                setShowRefundModal(false)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    // Function to check if the transaction date exceeds 2 days
+    const isTransactionDateValid = (transactionDate) => {
+        const currentDate = new Date();
+        const diffInMilliseconds = currentDate - new Date(transactionDate);
+        const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
+        return diffInDays <= 2;
+    };
+
     return (
         <>
             <Header />
@@ -220,6 +268,12 @@ const MyLearning = () => {
                                                                             <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction.courseId, learnerId)}></i>
                                                                         </div>
                                                                     </div>
+                                                                    {isTransactionDateValid(enrollment.enrolledDate) && (
+                                                                        <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(enrollment.id)}>
+                                                                            Request a refund
+                                                                        </a>
+                                                                    )}
+
                                                                     {showFeedbackModal && (
                                                                         <form id="demo-form" data-parsley-validate onSubmit={(e) => submitFeedback(e)}>
                                                                             <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
@@ -333,6 +387,51 @@ const MyLearning = () => {
                                                                                         <div className="modal-footer">
                                                                                             <button type="button" className="btn btn-secondary" onClick={() => setShowReportModal(false)}>Close</button>
                                                                                             <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }} onClick={(e) => submitReport(e)}>Send</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    )}
+                                                                    {showRefundModal && (
+                                                                        <form method="post"
+                                                                            className="dropzone"
+                                                                            id="myAwesomeDropzone"
+                                                                            data-plugin="dropzone"
+                                                                            data-previews-container="#file-previews"
+                                                                            data-upload-preview-template="#uploadPreviewTemplate"
+                                                                            data-parsley-validate onSubmit={(e) => submitRefund(e)}>
+                                                                            <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                                                                                <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
+                                                                                    <div className="modal-content">
+                                                                                        <div className="modal-header">
+                                                                                            <h5 className="modal-title">Refund course - <span style={{ color: '#f58d04' }}>{selectedCourseName}</span> </h5>
+                                                                                            <button type="button" className="close" onClick={() => setShowRefundModal(false)}>
+                                                                                                <span aria-hidden="true">&times;</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Set maxHeight and overflowY */}
+                                                                                            <ReactQuill
+                                                                                                value={refund.reason}
+                                                                                                onChange={handleReasonRefundChange}
+                                                                                                modules={{
+                                                                                                    toolbar: [
+                                                                                                        [{ header: [1, 2, false] }],
+                                                                                                        [{ 'direction': 'rtl' }],
+                                                                                                        [{ 'align': [] }],
+                                                                                                        ['code-block'],
+                                                                                                        [{ 'color': [] }, { 'background': [] }],
+                                                                                                        ['clean']
+                                                                                                    ]
+                                                                                                }}
+                                                                                                theme="snow"
+                                                                                                preserveWhitespace={true}
+                                                                                            />
+
+                                                                                        </div>
+                                                                                        <div className="modal-footer">
+                                                                                            <button type="button" className="btn btn-secondary" onClick={() => setShowRefundModal(false)}>Close</button>
+                                                                                            <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }} onClick={(e) => submitRefund(e)}>Send</button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
