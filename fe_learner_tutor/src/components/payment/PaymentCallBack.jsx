@@ -53,7 +53,7 @@ const PaymentCallBack = () => {
           transactionService.updateTransaction(transactionId, updatedTransaction);
 
           const updatedEnrollment = {
-            status: "",
+            status: "ONGOING",
             totalGrade: 0,
             transactionId: updatedTransaction.id,
             enrolledDate: updatedTransaction.transactionDate,
