@@ -16,7 +16,7 @@ const PaymentCallBack = () => {
     transactionDate: "",
     learnerId: "",
     courseId: "",
-    refundStatus: ""
+    learner: []
   });
 
 
@@ -56,10 +56,11 @@ const PaymentCallBack = () => {
             status: "",
             totalGrade: 0,
             transactionId: updatedTransaction.id,
-            enrolledDate: updatedTransaction.transactionDate
+            enrolledDate: updatedTransaction.transactionDate,
+            refundStatus: false
           };
 
-          
+
           console.log("This is enrollment: " + JSON.stringify(updatedEnrollment));
           enrollmentService.saveEnrollment(updatedEnrollment);
 
@@ -67,7 +68,8 @@ const PaymentCallBack = () => {
             .then((response) => {
               const updatedWallet = {
                 balance: response.data.balance + updatedTransaction.amount,
-                accountId: "9b868733-8ab1-4191-92ab-65d1b82863c3"
+                accountId: "9b868733-8ab1-4191-92ab-65d1b82863c3",
+                note: `+${transaction.amount} from ${transaction.learner.account.fullName} by transaction ${transactionId}`
               }
 
               //update admin wallet balance
