@@ -10,6 +10,7 @@ import ReactQuill from 'react-quill';
 const MyTransaction = () => {
     const learnerId = localStorage.getItem('learnerId');
     const [transactionList, setTransactionList] = useState([]);
+    const [refundRequestList, setRefundRequestList] = useState([]);
     const contentRef = useRef(null);
     const [showRefundModal, setShowRefundModal] = useState(false); // State variable for modal visibility
     const [selectedCourseName, setSelectedCourseName] = useState(''); // State variable to store the name of the selected course
@@ -20,6 +21,17 @@ const MyTransaction = () => {
             .getAllTransactionByLearnerId(learnerId)
             .then((res) => {
                 setTransactionList(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [learnerId]);
+
+    useEffect(() => {
+        learnerService
+            .getAllRefundRequestByLearnerId(learnerId)
+            .then((res) => {
+                setRefundRequestList(res.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -179,13 +191,78 @@ const MyTransaction = () => {
                                                 </div>
                                             </form>
                                         )}
+                                        <h4>Your refund requests:</h4>
+                {
+                    refundRequestList.length > 0 && (
+                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                            <thead className="thead-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Payment Method</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Request Date</th>
+                                    <th scope="col">Reason</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {refundRequestList.map((refund, index) => (
+                                    <tr key={refund.id}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>
+                                            <img src={refund.enrollment.transaction.course.imageUrl} alt={refund.enrollment.transaction.course.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
+                                        </td>
+                                        <td>
+                                            {refund.enrollment.transaction.course.isOnlineClass ? (
+                                                <h3><Link to={`/detail-course/${refund.enrollment.transaction.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
+                                            ) : (
+                                                <h3><Link to={`/detail-course/${refund.enrollment.transaction.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
+                                            )}
+                                        </td>
+                                        <td>
+                                            {refund.enrollment.transaction.paymentMethod.name}
+                                        </td>
+                                        <td>
+                                            {refund.enrollment.transaction.amount}
+                                        </td>
+                                        <td>
+                                            {refund.requestedDate}
+                                        </td>
+                                        <td dangerouslySetInnerHTML={{ __html: refund.reason }} />
+                                        <td>
+                                            {refund.status}
+                                        </td>
+
+                                    </tr>
+
+                                ))}
+                            </tbody>
+                        </table>
+                    )
+
+                }
+                {
+                    refundRequestList.length < 0 && (
+                        <h6>You have no refund requests yet.</h6>
+                    )
+
+                }
                                     </div>
                                 </div>
+                                
                             </div>
+                            
                         </div>
+                        
                     </div>
+
                 </section>
+                
             </main>
+
             <Footer />
         </>
     );

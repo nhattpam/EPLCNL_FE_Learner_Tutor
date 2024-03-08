@@ -60,6 +60,15 @@ class LearnerService {
     });
   }
 
+  
+  getAllRefundRequestByLearnerId(id) {
+    return axios.get(API_URL + `/learners/${id}/refund-requests`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
   getAllForumByLearnerId(id) {
     return axios.get(API_URL + `/learners/${id}/forums`, {
       headers: {
