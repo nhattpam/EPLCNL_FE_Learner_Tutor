@@ -99,30 +99,40 @@ const EditForum = () => {
                                 <div className="col-12">
                                     <div className="card-box">
                                         <div className="chat-container">
-                                            {accountForumList
-                                                .slice()
-                                                .sort((a, b) => new Date(a.messagedDate) - new Date(b.messagedDate))
-                                                .map((accountForum) => (
-                                                    <div
-                                                        className={`chat-message ${accountForum.tutor ? 'right' : 'left'}`}
-                                                        key={accountForum.id}
-                                                    >
-                                                        <div className="message-sender">
-                                                            <img src={accountForum.tutor?.account?.imageUrl ?? accountForum.learner?.account?.imageUrl}
-                                                                style={{
-                                                                    width: '30px',
-                                                                    height: '30px',
-                                                                    borderRadius: '50%', // Make the image circular
-                                                                    objectFit: 'cover' // Ensure the image covers the entire space
-                                                                }}
-                                                                alt="User Avatar"
-                                                            />&nbsp;
-                                                            {accountForum.tutor?.account?.fullName ?? accountForum.learner?.account?.fullName}
+                                            {
+                                                accountForumList.length > 0 && (
+                                                    accountForumList
+                                                    .slice()
+                                                    .sort((a, b) => new Date(a.messagedDate) - new Date(b.messagedDate))
+                                                    .map((accountForum) => (
+                                                        <div
+                                                            className={`chat-message ${accountForum.tutor ? 'right' : 'left'}`}
+                                                            key={accountForum.id}
+                                                        >
+                                                            <div className="message-sender">
+                                                                <img src={accountForum.tutor?.account?.imageUrl ?? accountForum.learner?.account?.imageUrl}
+                                                                    style={{
+                                                                        width: '30px',
+                                                                        height: '30px',
+                                                                        borderRadius: '50%', // Make the image circular
+                                                                        objectFit: 'cover' // Ensure the image covers the entire space
+                                                                    }}
+                                                                    alt="User Avatar"
+                                                                />&nbsp;
+                                                                {accountForum.tutor?.account?.fullName ?? accountForum.learner?.account?.fullName}
+                                                            </div>
+                                                            <div className="message-content">{accountForum.message}</div>
+                                                            <div className="message-date">{accountForum.messagedDate}</div>
                                                         </div>
-                                                        <div className="message-content">{accountForum.message}</div>
-                                                        <div className="message-date">{accountForum.messagedDate}</div>
-                                                    </div>
-                                                ))}
+                                                    ))
+                                                )
+                                            }
+                                            {
+                                                accountForumList.length === 0 && (
+                                                    <p>No messages yet.</p>
+                                                )
+                                            }
+                                           
                                             <form class="msger-inputarea" onSubmit={submitAccountForum}>
                                                 <input
                                                     type="text"

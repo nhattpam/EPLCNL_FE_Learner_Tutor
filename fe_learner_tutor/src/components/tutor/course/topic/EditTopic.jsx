@@ -308,28 +308,38 @@ const EditTopic = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {currentQuizs.map((quiz, index) => (
-                                <tr key={quiz.id}>
-                                  <td>{index + 1}</td>
-                                  <td>{quiz.name}</td>
-                                  <td>
-                                    <span className="badge label-table badge-success">{quiz.gradeToPass} </span>
-                                  </td>
-                                  <td>{quiz.deadline}</td>
-                                  <td>{quiz.createdDate}</td>
-                                  <td>{quiz.updatedDate}</td>
-                                  <td>
-                                    <Link to={`/tutor/courses/edit-topic-quiz/${quiz.id}`} className='text-secondary'>
-                                      <i class="fa-regular fa-eye"></i>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              ))}
+                              {
+                                currentQuizs.length > 0 && (
+                                  currentQuizs.map((quiz, index) => (
+                                    <tr key={quiz.id}>
+                                      <td>{index + 1}</td>
+                                      <td>{quiz.name}</td>
+                                      <td>
+                                        <span className="badge label-table badge-success">{quiz.gradeToPass} </span>
+                                      </td>
+                                      <td>{quiz.deadline}</td>
+                                      <td>{quiz.createdDate}</td>
+                                      <td>{quiz.updatedDate}</td>
+                                      <td>
+                                        <Link to={`/tutor/courses/edit-topic-quiz/${quiz.id}`} className='text-secondary'>
+                                          <i class="fa-regular fa-eye"></i>
+                                        </Link>
+                                      </td>
+                                    </tr>
+                                  ))
+                                )
+                              }
+
                             </tbody>
 
                           </table>
                         </div> {/* end .table-responsive*/}
                       </div>
+                      {
+                        currentQuizs.length === 0 && (
+                          <p>No quizzes found.</p>
+                        )
+                      }
 
                       <div>
                         <div className="row">
@@ -364,19 +374,28 @@ const EditTopic = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {currentLessonMaterials.map((material) => (
-                                <tr key={material.id}>
-                                  <td>{material.name}</td>
-                                  {/* <td>{material.materialUrl}</td> */}
-                                  <td>{material.createdDate}</td>
-                                  <td>{material.updatedDate}</td>
-                                  <td>
-                                    <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
-                                      <i class="fas fa-trash-alt"></i>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              ))}
+                              {
+                                currentLessonMaterials.length > 0 && (
+                                  currentLessonMaterials.map((material) => (
+                                    <tr key={material.id}>
+                                      <td>{material.name}</td>
+                                      {/* <td>{material.materialUrl}</td> */}
+                                      <td>{material.createdDate}</td>
+                                      <td>{material.updatedDate}</td>
+                                      <td>
+                                        <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
+                                          <i class="fas fa-trash-alt"></i>
+                                        </Link>
+                                      </td>
+                                    </tr>
+                                  ))
+                                )
+                              }
+                              {
+                                currentLessonMaterials.length === 0 && (
+                                  <p>No materials yet.</p>
+                                )
+                              }
 
 
                             </tbody>

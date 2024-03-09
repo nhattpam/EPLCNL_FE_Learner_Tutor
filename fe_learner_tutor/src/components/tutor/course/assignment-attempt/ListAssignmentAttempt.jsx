@@ -125,26 +125,36 @@ const ListAssignmentAttempt = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {currentAssignmentAttempts.map((assignmentAttempt, index) => (
-                                                        <tr key={assignmentAttempt.id}>
-                                                            <td>{index + 1}</td>
-                                                            <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.assignment.questionText) }}></td>
+                                                    {
+                                                        currentAssignmentAttempts.length > 0 && (
+                                                            currentAssignmentAttempts.map((assignmentAttempt, index) => (
+                                                                <tr key={assignmentAttempt.id}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.assignment.questionText) }}></td>
 
-                                                            <td>{assignmentAttempt.learner.account.fullName}</td>
-                                                            <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.answerText) }}></td>
-                                                            <td>{assignmentAttempt.attemptedDate}</td>
-                                                            <td><span className="badge label-table badge-danger">{assignmentAttempt.totalGrade}</span></td>
-                                                            <td>
-                                                                <Link to={`/edit-assignment-attempt/${assignmentAttempt.id}`} className='text-warning'>
-                                                                    <i class="fas fa-star-half-alt"></i>                                                                </Link>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
+                                                                    <td>{assignmentAttempt.learner.account.fullName}</td>
+                                                                    <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.answerText) }}></td>
+                                                                    <td>{assignmentAttempt.attemptedDate}</td>
+                                                                    <td><span className="badge label-table badge-danger">{assignmentAttempt.totalGrade}</span></td>
+                                                                    <td>
+                                                                        <Link to={`/edit-assignment-attempt/${assignmentAttempt.id}`} className='text-warning'>
+                                                                            <i class="fas fa-star-half-alt"></i>                                                                </Link>
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        )
+                                                    }
+
                                                 </tbody>
 
                                             </table>
                                         </div> {/* end .table-responsive*/}
                                     </div> {/* end card-box */}
+                                    {
+                                        currentAssignmentAttempts.length === 0 && (
+                                            <p>No assignments found.</p>
+                                        )
+                                    }
                                 </div> {/* end col */}
                             </div>
                             {/* end row */}

@@ -117,21 +117,24 @@ const ListLessonMaterial = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {currentLessonMaterials.map((material) => (
-                            <tr key={material.id}>
-                              <td>{material.name}</td>
-                              {/* <td>{material.materialUrl}</td> */}
-                              <td>{material.createdDate}</td>
-                              <td>{material.updatedDate}</td>
-                              <td>
-                                <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
-                                  <i class="fas fa-trash-alt"></i>
-                                </Link>
-                              </td>
-                            </tr>
-                          ))}
-
-
+                          {
+                            currentLessonMaterials.length > 0 && (
+                              currentLessonMaterials.map((material) => (
+                                <tr key={material.id}>
+                                  <td>{material.name}</td>
+                                  {/* <td>{material.materialUrl}</td> */}
+                                  <td>{material.createdDate}</td>
+                                  <td>{material.updatedDate}</td>
+                                  <td>
+                                    <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
+                                      <i class="fas fa-trash-alt"></i>
+                                    </Link>
+                                  </td>
+                                </tr>
+                              ))
+                            )
+                          }
+                         
                         </tbody>
 
                       </table>

@@ -53,7 +53,7 @@ const StudyClass = () => {
         console.log(error);
       });
   }, [courseId]);
-  
+
 
   const [selectedModule, setSelectedModule] = useState(null);
   const [moduleContent, setModuleContent] = useState({
@@ -463,45 +463,65 @@ const StudyClass = () => {
 
                                       {showAnswerColor ? (
                                         <>
-                                          {questionAnswerList.map((questionAnswer, index) => (
-                                            <span key={index}>
-                                              <input
-                                                type="radio"
-                                                id={`option-${index}`}
-                                                name="option"
-                                                className="radio"
-                                                value="optionA"
-                                                readOnly
-                                              />
-                                              <label
-                                                htmlFor={`option-${index}`}
-                                                className={`option ${questionAnswer.isAnswer ? 'correct-answer' : 'incorrect-answer'}`}
-                                              >
-                                                {questionAnswer.answerText}
-                                              </label>
-                                            </span>
-                                          ))}
+                                          {
+                                            questionAnswerList.length > 0 && (
+                                              questionAnswerList.map((questionAnswer, index) => (
+                                                <span key={index}>
+                                                  <input
+                                                    type="radio"
+                                                    id={`option-${index}`}
+                                                    name="option"
+                                                    className="radio"
+                                                    value="optionA"
+                                                    readOnly
+                                                  />
+                                                  <label
+                                                    htmlFor={`option-${index}`}
+                                                    className={`option ${questionAnswer.isAnswer ? 'correct-answer' : 'incorrect-answer'}`}
+                                                  >
+                                                    {questionAnswer.answerText}
+                                                  </label>
+                                                </span>
+                                              ))
+                                            )
+                                          }
+                                          {
+                                            questionAnswerList.length === 0 && (
+                                              <p>No answers found.</p>
+                                            )
+                                          }
+
                                         </>
                                       ) : (
                                         <>
-                                          {questionAnswerList.map((questionAnswer, index) => (
-                                            <span key={index} className='span1'>
-                                              <input
-                                                type="radio"
-                                                id={`option-${index}`}
-                                                name="option"
-                                                className="radio"
-                                                value="optionA"
-                                                onClick={() => handleAnswerClick(questionAnswer)} // Pass a function reference
-                                              />
-                                              <label
-                                                htmlFor={`option-${index}`}
-                                                className={`option ${questionAnswer.isAnswer ? 'green' : 'red'}`}
-                                              >
-                                                {questionAnswer.answerText}
-                                              </label>
-                                            </span>
-                                          ))}
+                                          {
+                                            questionAnswerList.length > 0 && (
+                                              questionAnswerList.map((questionAnswer, index) => (
+                                                <span key={index} className='span1'>
+                                                  <input
+                                                    type="radio"
+                                                    id={`option-${index}`}
+                                                    name="option"
+                                                    className="radio"
+                                                    value="optionA"
+                                                    onClick={() => handleAnswerClick(questionAnswer)} // Pass a function reference
+                                                  />
+                                                  <label
+                                                    htmlFor={`option-${index}`}
+                                                    className={`option ${questionAnswer.isAnswer ? 'green' : 'red'}`}
+                                                  >
+                                                    {questionAnswer.answerText}
+                                                  </label>
+                                                </span>
+                                              ))
+                                            )
+                                          }
+                                          {
+                                            questionAnswerList.length === 0 && (
+                                              <p>No answers found.</p>
+                                            )
+                                          }
+
                                         </>
                                       )}
 
@@ -534,38 +554,48 @@ const StudyClass = () => {
                           )}
                           {!showQuestions && (
                             <>
-                              {classTopicList.map((classTopic, index) => (
-                                <div key={index} className="d-block mb-3 text-left card">
-                                  <h3 className="mb-1">Topic {index + 1}: {classTopic.name}</h3>
-                                  <p className="mb-0">{classTopic.description}</p>
-                                  <span className="badge label-table badge-primary" onClick={() => handleShowQuizzes(classTopic.id)}>  <i class="fas fa-play"></i> Start quiz</span>
-                                  <span className="badge label-table badge-warning ml-1" onClick={() => handleShowMaterials(classTopic.id)}>  <i class="far fa-file-alt"></i> Materials</span>
-                                  {classTopic.showQuizzes && ( // Check if showQuizzes is true for the current class topic
-                                    <div className="quizzes">
-                                      {classTopic.quizList.map((quiz, index) => (
-                                        <div key={index}>
-                                          <p className="mb-0" style={{ color: '#f58d04', fontWeight: 'bold' }} onClick={() => handleStartQuiz(quiz.id)}>Quiz {index + 1} - {quiz.name}
-                                            &nbsp; <i class="far fa-play-circle"></i></p>
+                              {
+                                classTopicList.length > 0 && (
+                                  classTopicList.map((classTopic, index) => (
+                                    <div key={index} className="d-block mb-3 text-left card">
+                                      <h3 className="mb-1">Topic {index + 1}: {classTopic.name}</h3>
+                                      <p className="mb-0">{classTopic.description}</p>
+                                      <span className="badge label-table badge-primary" onClick={() => handleShowQuizzes(classTopic.id)}>  <i class="fas fa-play"></i> Start quiz</span>
+                                      <span className="badge label-table badge-warning ml-1" onClick={() => handleShowMaterials(classTopic.id)}>  <i class="far fa-file-alt"></i> Materials</span>
+                                      {classTopic.showQuizzes && ( // Check if showQuizzes is true for the current class topic
+                                        <div className="quizzes">
+                                          {classTopic.quizList.map((quiz, index) => (
+                                            <div key={index}>
+                                              <p className="mb-0" style={{ color: '#f58d04', fontWeight: 'bold' }} onClick={() => handleStartQuiz(quiz.id)}>Quiz {index + 1} - {quiz.name}
+                                                &nbsp; <i class="far fa-play-circle"></i></p>
+                                            </div>
+                                          ))}
                                         </div>
-                                      ))}
-                                    </div>
-                                  )}
-                                  {classTopic.showMaterials && (
-                                    <div className="materials">
-                                      {classTopic.materialList.map((material, index) => (
-                                        <div className='card-body' style={{ flex: '0 0 33.33%', width: '100%' }}>
-                                          <a href={material.materialUrl} target="_blank" rel="noopener noreferrer">
-                                            <figure className="figure">
-                                              <i className="far fa-file-pdf fa-6x"></i>
-                                              <figcaption className="figure-caption" style={{ color: '#f58d04', fontWeight: 'bold' }}>{material.name}</figcaption>
-                                            </figure>
-                                          </a>
+                                      )}
+                                      {classTopic.showMaterials && (
+                                        <div className="materials">
+                                          {classTopic.materialList.map((material, index) => (
+                                            <div className='card-body' style={{ flex: '0 0 33.33%', width: '100%' }}>
+                                              <a href={material.materialUrl} target="_blank" rel="noopener noreferrer">
+                                                <figure className="figure">
+                                                  <i className="far fa-file-pdf fa-6x"></i>
+                                                  <figcaption className="figure-caption" style={{ color: '#f58d04', fontWeight: 'bold' }}>{material.name}</figcaption>
+                                                </figure>
+                                              </a>
+                                            </div>
+                                          ))}
                                         </div>
-                                      ))}
+                                      )}
                                     </div>
-                                  )}
-                                </div>
-                              ))}
+                                  ))
+                                )
+                              }
+                              {
+                                classTopicList.length === 0 && (
+                                  <p>No topics found.</p>
+                                )
+                              }
+
                             </>
                           )}
                         </div>
@@ -589,6 +619,7 @@ const StudyClass = () => {
               <div style={{ background: '#f8f9fa', padding: '20px', border: '1px solid #ddd', textAlign: 'left' }}>
                 {/* Add your sidebar content here */}
                 <h4 style={{ fontWeight: 'bold' }}>Course content</h4>
+               
                 {classModuleList && classModuleList.length > 0 && classModuleList.map((module, index) => (
                   <div key={module.id} className="card-container" style={{ marginBottom: '5px' }}>
                     <div
@@ -618,6 +649,11 @@ const StudyClass = () => {
 
                   </div>
                 ))}
+                {
+                  classModuleList.length === 0 && (
+                    <p>No modules found.</p>
+                  )
+                }
               </div>
             </div>
 

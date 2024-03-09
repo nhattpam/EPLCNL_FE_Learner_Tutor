@@ -123,41 +123,51 @@ const ListClassCourse = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {currentCourses.map((course, index) => (
-                                                        <tr key={course.id}>
-                                                            <td>{index + 1}</td>
-                                                            <td>
-                                                                <img src={course.imageUrl} style={{ height: '50px', width: '70px' }}></img>
-                                                            </td>
-                                                            <td>{course.code}</td>
-                                                            <td>{course.name}</td>
-                                                            <td>{course.category.name}</td>
-                                                            <td>
-                                                                {course.isOnlineClass ? (
-                                                                    <span className="badge label-table badge-success">Class</span>
-                                                                ) : (
-                                                                    <span className="badge label-table badge-danger">Video</span>
-                                                                )}
-                                                            </td>
-                                                            <td>
-                                                                {course.isActive ? (
-                                                                    <span className="badge label-table badge-success">Active</span>
-                                                                ) : (
-                                                                    <span className="badge label-table badge-danger">Inactive</span>
-                                                                )}
-                                                            </td>
-                                                            <td>
-                                                                <Link to={`/tutor/courses/edit-course/${course.id}`} className='text-secondary'>
-                                                                    <i className="fa-regular fa-eye"></i>
-                                                                </Link>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
+                                                    {
+                                                        currentCourses.length > 0 && (
+                                                            currentCourses.map((course, index) => (
+                                                                <tr key={course.id}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td>
+                                                                        <img src={course.imageUrl} style={{ height: '50px', width: '70px' }}></img>
+                                                                    </td>
+                                                                    <td>{course.code}</td>
+                                                                    <td>{course.name}</td>
+                                                                    <td>{course.category.name}</td>
+                                                                    <td>
+                                                                        {course.isOnlineClass ? (
+                                                                            <span className="badge label-table badge-success">Class</span>
+                                                                        ) : (
+                                                                            <span className="badge label-table badge-danger">Video</span>
+                                                                        )}
+                                                                    </td>
+                                                                    <td>
+                                                                        {course.isActive ? (
+                                                                            <span className="badge label-table badge-success">Active</span>
+                                                                        ) : (
+                                                                            <span className="badge label-table badge-danger">Inactive</span>
+                                                                        )}
+                                                                    </td>
+                                                                    <td>
+                                                                        <Link to={`/tutor/courses/edit-course/${course.id}`} className='text-secondary'>
+                                                                            <i className="fa-regular fa-eye"></i>
+                                                                        </Link>
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        )
+                                                    }
+                                                   
                                                 </tbody>
 
                                             </table>
                                         </div> {/* end .table-responsive*/}
                                     </div> {/* end card-box */}
+                                    {
+                                        currentCourses.length === 0 && (
+                                            <p>No courses found.</p>
+                                        )
+                                    }
                                 </div> {/* end col */}
                             </div>
                             {/* end row */}

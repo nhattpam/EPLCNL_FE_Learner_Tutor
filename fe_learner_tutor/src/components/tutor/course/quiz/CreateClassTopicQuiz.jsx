@@ -260,7 +260,6 @@ const CreateClassTopicQuiz = () => {
     const [questionAnswer, setQuestionAnswer] = useState({
         questionId: storedQuestionId,
         answerText: "",
-        position: 1,
         isAnswer: false
     });
 
@@ -374,8 +373,8 @@ const CreateClassTopicQuiz = () => {
 
                             </div>
 
-                             {/* CREATE QUESTION */}
-                             <div className="row" style={{ opacity: createQuizButtonClicked ? 1 : 0.5, pointerEvents: createQuizButtonClicked ? 'auto' : 'none' }}>
+                            {/* CREATE QUESTION */}
+                            <div className="row" style={{ opacity: createQuizButtonClicked ? 1 : 0.5, pointerEvents: createQuizButtonClicked ? 'auto' : 'none' }}>
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
@@ -492,34 +491,40 @@ const CreateClassTopicQuiz = () => {
                                                 onSubmit={submitQuestionAnswer} >
                                                 <div className="card" style={{ marginTop: '-20px' }}>
                                                     <div className='card-body'>
-                                                        {questionAnswers.map((answer, index) => (
-                                                            <div key={index} className="form-group col-12">
-                                                                <label htmlFor={`answerText${index}`}>Answer {index + 1} * :</label>
-                                                                <div className="input-group">
-                                                                    <textarea
-                                                                        className="form-control"
-                                                                        name="answerText"
-                                                                        id={`answerText${index}`}
-                                                                        required
-                                                                        value={answer.answerText}
-                                                                        onChange={(e) => handleAnswerChange(index, e)}
-                                                                    />
+                                                        {
+                                                            questionAnswers.length > 0 && (
+                                                                questionAnswers.map((answer, index) => (
+                                                                    <div key={index} className="form-group col-12">
+                                                                        <label htmlFor={`answerText${index}`}>Answer {index + 1} * :</label>
+                                                                        <div className="input-group">
+                                                                            <textarea
+                                                                                className="form-control"
+                                                                                name="answerText"
+                                                                                id={`answerText${index}`}
+                                                                                required
+                                                                                value={answer.answerText}
+                                                                                onChange={(e) => handleAnswerChange(index, e)}
+                                                                            />
 
-                                                                    <div className="input-group-append ml-2">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            name="isAnswer"
-                                                                            id={`isAnswer${index}`}
-                                                                            value={answer.isAnswer}
-                                                                            onChange={(e) => handleAnswerChange(index, e)}
-                                                                        />
+                                                                            <div className="input-group-append ml-2">
+                                                                                <input
+                                                                                    type="checkbox"
+                                                                                    name="isAnswer"
+                                                                                    id={`isAnswer${index}`}
+                                                                                    value={answer.isAnswer}
+                                                                                    onChange={(e) => handleAnswerChange(index, e)}
+                                                                                />
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
-                                                        ))}
-
-
-
+                                                                ))
+                                                            )
+                                                        }
+                                                        {
+                                                            questionAnswers.length === 0 && (
+                                                                <p>No answers yet.</p>
+                                                            )
+                                                        }
                                                     </div>
 
                                                 </div>

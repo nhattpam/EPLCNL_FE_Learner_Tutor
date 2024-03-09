@@ -144,25 +144,35 @@ const ListAssignment = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {currentAssignments.map((assignment, index) => (
-                                                        <tr key={assignment.id}>
-                                                            <td>{index + 1}</td>
-                                                            <td>{assignment.deadline}</td>
-                                                            <td className="truncate-text">{assignment.questionText}</td>
-                                                            <td>{assignment.createdDate}</td>
-                                                            <td>{assignment.updatedDate}</td>
-                                                            <td>
-                                                                <Link to={`/tutor/courses/edit-assignment/${assignment.id}`} className='text-secondary'>
-                                                                    <i class="fa-regular fa-eye"></i>
-                                                                </Link>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
+                                                    {
+                                                        currentAssignments.length > 0 && (
+                                                            currentAssignments.map((assignment, index) => (
+                                                                <tr key={assignment.id}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td>{assignment.deadline}</td>
+                                                                    <td className="truncate-text">{assignment.questionText}</td>
+                                                                    <td>{assignment.createdDate}</td>
+                                                                    <td>{assignment.updatedDate}</td>
+                                                                    <td>
+                                                                        <Link to={`/tutor/courses/edit-assignment/${assignment.id}`} className='text-secondary'>
+                                                                            <i class="fa-regular fa-eye"></i>
+                                                                        </Link>
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        )
+                                                    }
+
                                                 </tbody>
 
                                             </table>
                                         </div> {/* end .table-responsive*/}
                                     </div> {/* end card-box */}
+                                    {
+                                        currentAssignments.length === 0 && (
+                                            <p>No assignments found.</p>
+                                        )
+                                    }
                                 </div> {/* end col */}
                             </div>
                             {/* end row */}

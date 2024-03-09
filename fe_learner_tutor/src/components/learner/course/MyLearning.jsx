@@ -445,6 +445,11 @@ const MyLearning = () => {
                                                     ))
                                                 )
                                             }
+                                            {
+                                                enrollmentList.length === 0 && (
+                                                    <p>You haven't joined any course yet.</p>
+                                                )
+                                            }
 
                                         </div>
                                     </div>

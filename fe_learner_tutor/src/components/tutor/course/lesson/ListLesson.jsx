@@ -144,26 +144,36 @@ const ListLesson = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {currentLessons.map((lesson, index) => (
-                                                        <tr key={lesson.id}>
-                                                            <td>{index + 1}</td>
-                                                            <td>{lesson.name}</td>
-                                                            {/* <td>{lesson.videoUrl}</td> */}
-                                                            <td>{lesson.createdDate}</td>
-                                                            <td>{lesson.updatedDate}</td>
-                                                            <td>
-                                                                <Link to={`/tutor/courses/edit-lesson/${lesson.id}`} className='text-dark'>
-                                                                    <i class="fa-regular fa-eye"></i>
-                                                                </Link>
-                                                            </td>
-
-                                                        </tr>
-                                                    ))}
+                                                    {
+                                                        currentLessons.length > 0 && (
+                                                            currentLessons.map((lesson, index) => (
+                                                                <tr key={lesson.id}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td>{lesson.name}</td>
+                                                                    {/* <td>{lesson.videoUrl}</td> */}
+                                                                    <td>{lesson.createdDate}</td>
+                                                                    <td>{lesson.updatedDate}</td>
+                                                                    <td>
+                                                                        <Link to={`/tutor/courses/edit-lesson/${lesson.id}`} className='text-dark'>
+                                                                            <i class="fa-regular fa-eye"></i>
+                                                                        </Link>
+                                                                    </td>
+        
+                                                                </tr>
+                                                            ))
+                                                        )
+                                                    }
+                                                   
                                                 </tbody>
 
                                             </table>
                                         </div> {/* end .table-responsive*/}
                                     </div> {/* end card-box */}
+                                    {
+                                        currentLessons.length === 0 && (
+                                            <p>No lessons found.</p>
+                                        )
+                                    }
                                 </div> {/* end col */}
                             </div>
                             {/* end row */}

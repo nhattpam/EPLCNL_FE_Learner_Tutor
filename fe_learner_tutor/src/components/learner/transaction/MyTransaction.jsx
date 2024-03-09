@@ -116,34 +116,44 @@ const MyTransaction = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {transactionList.map((transaction, index) => (
-                                                    <tr key={transaction.id}>
-                                                        <th scope="row">{index + 1}</th>
-                                                        <td>
-                                                            <img src={transaction.course.imageUrl} alt={transaction.course.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
-                                                        </td>
-                                                        <td>
-                                                            {transaction.course.isOnlineClass ? (
-                                                                <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
-                                                            ) : (
-                                                                <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
-                                                            )}
-                                                        </td>
-                                                        <td>${transaction.course.stockPrice}</td>
-                                                        <td>{transaction.paymentMethod.name}</td>
-                                                        <td>{transaction.amount} dong</td>
-                                                        <td>{transaction.transactionDate}</td>
-                                                        <td>{transaction.status}</td>
-                                                        {/* <td>
-                                                            {isTransactionDateValid(transaction.transactionDate) && (
-                                                                <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(transaction.id)}>
-                                                                    Request a refund
-                                                                </a>
-                                                            )}
-                                                        </td> */}
-                                                    </tr>
+                                                {
+                                                    transactionList.length > 0 && (
+                                                        transactionList.map((transaction, index) => (
+                                                            <tr key={transaction.id}>
+                                                                <th scope="row">{index + 1}</th>
+                                                                <td>
+                                                                    <img src={transaction.course.imageUrl} alt={transaction.course.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
+                                                                </td>
+                                                                <td>
+                                                                    {transaction.course.isOnlineClass ? (
+                                                                        <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
+                                                                    ) : (
+                                                                        <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
+                                                                    )}
+                                                                </td>
+                                                                <td>${transaction.course.stockPrice}</td>
+                                                                <td>{transaction.paymentMethod.name}</td>
+                                                                <td>{transaction.amount} dong</td>
+                                                                <td>{transaction.transactionDate}</td>
+                                                                <td>{transaction.status}</td>
+                                                                {/* <td>
+                                                                    {isTransactionDateValid(transaction.transactionDate) && (
+                                                                        <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(transaction.id)}>
+                                                                            Request a refund
+                                                                        </a>
+                                                                    )}
+                                                                </td> */}
+                                                            </tr>
 
-                                                ))}
+                                                        ))
+                                                    )
+                                                }
+                                                {
+                                                    transactionList.length === 0 && (
+                                                        <p>No transactions found.</p>
+                                                    )
+                                                }
+
                                             </tbody>
                                         </table>
                                         {showRefundModal && (
@@ -192,75 +202,75 @@ const MyTransaction = () => {
                                             </form>
                                         )}
                                         <h4>Your refund requests:</h4>
-                {
-                    refundRequestList.length > 0 && (
-                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
-                            <thead className="thead-light">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Payment Method</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Request Date</th>
-                                    <th scope="col">Reason</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {refundRequestList.map((refund, index) => (
-                                    <tr key={refund.id}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>
-                                            <img src={refund.enrollment.transaction.course.imageUrl} alt={refund.enrollment.transaction.course.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
-                                        </td>
-                                        <td>
-                                            {refund.enrollment.transaction.course.isOnlineClass ? (
-                                                <h3><Link to={`/detail-course/${refund.enrollment.transaction.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
-                                            ) : (
-                                                <h3><Link to={`/detail-course/${refund.enrollment.transaction.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
-                                            )}
-                                        </td>
-                                        <td>
-                                            {refund.enrollment.transaction.paymentMethod.name}
-                                        </td>
-                                        <td>
-                                            {refund.enrollment.transaction.amount}
-                                        </td>
-                                        <td>
-                                            {refund.requestedDate}
-                                        </td>
-                                        <td dangerouslySetInnerHTML={{ __html: refund.reason }} />
-                                        <td>
-                                            {refund.status}
-                                        </td>
+                                        {
+                                            refundRequestList.length > 0 && (
+                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                    <thead className="thead-light">
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Image</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Payment Method</th>
+                                                            <th scope="col">Amount</th>
+                                                            <th scope="col">Request Date</th>
+                                                            <th scope="col">Reason</th>
+                                                            <th scope="col">Status</th>
+                                                            <th scope="col"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {refundRequestList.map((refund, index) => (
+                                                            <tr key={refund.id}>
+                                                                <th scope="row">{index + 1}</th>
+                                                                <td>
+                                                                    <img src={refund.enrollment.transaction.course.imageUrl} alt={refund.enrollment.transaction.course.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
+                                                                </td>
+                                                                <td>
+                                                                    {refund.enrollment.transaction.course.isOnlineClass ? (
+                                                                        <h3><Link to={`/detail-course/${refund.enrollment.transaction.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
+                                                                    ) : (
+                                                                        <h3><Link to={`/detail-course/${refund.enrollment.transaction.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
+                                                                    )}
+                                                                </td>
+                                                                <td>
+                                                                    {refund.enrollment.transaction.paymentMethod.name}
+                                                                </td>
+                                                                <td>
+                                                                    {refund.enrollment.transaction.amount}
+                                                                </td>
+                                                                <td>
+                                                                    {refund.requestedDate}
+                                                                </td>
+                                                                <td dangerouslySetInnerHTML={{ __html: refund.reason }} />
+                                                                <td>
+                                                                    {refund.status}
+                                                                </td>
 
-                                    </tr>
+                                                            </tr>
 
-                                ))}
-                            </tbody>
-                        </table>
-                    )
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            )
 
-                }
-                {
-                    refundRequestList.length < 0 && (
-                        <h6>You have no refund requests yet.</h6>
-                    )
+                                        }
+                                        {
+                                            refundRequestList.length < 0 && (
+                                                <h6>You have no refund requests yet.</h6>
+                                            )
 
-                }
+                                        }
                                     </div>
                                 </div>
-                                
+
                             </div>
-                            
+
                         </div>
-                        
+
                     </div>
 
                 </section>
-                
+
             </main>
 
             <Footer />

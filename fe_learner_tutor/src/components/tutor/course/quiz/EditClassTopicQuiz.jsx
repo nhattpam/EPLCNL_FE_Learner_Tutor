@@ -145,6 +145,11 @@ const EditClassTopicQuiz = () => {
                                 ))
                               )
                             }
+                            {
+                              questionList.length === 0  && (
+                                <p>No questions found.</p>
+                              )
+                            }
 
                           </tbody>
 

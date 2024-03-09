@@ -409,49 +409,58 @@ const DetailCourse = () => {
                     {course.isOnlineClass && (
 
                         <div className="container" data-aos="fade-up">
-                            {classModuleList.map((classModule, index) => (
-                                <div className="row">
-                                    <div className="col-lg-3">
+                            {
+                                classModuleList.length > 0 && (
+                                    classModuleList.map((classModule, index) => (
+                                        <div className="row">
+                                            <div className="col-lg-3">
 
-                                        <ul className="nav nav-tabs flex-column">
-                                            <li className="nav-item get-button">
-                                                <a
-                                                    className={`nav-link ${index === 0 ? 'active show' : ''}`}
-                                                    onClick={(event) => handleTabClick(event, classModule.id)}
-                                                    href={`#tab-${classModule.id}`}
-                                                > On Date:
-                                                    <span style={{ color: '#f58d04' }}> {classModule.startDate.substring(0, 10)}</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div className="col-lg-9 mt-4 mt-lg-0">
-                                        <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
+                                                <ul className="nav nav-tabs flex-column">
+                                                    <li className="nav-item get-button">
+                                                        <a
+                                                            className={`nav-link ${index === 0 ? 'active show' : ''}`}
+                                                            onClick={(event) => handleTabClick(event, classModule.id)}
+                                                            href={`#tab-${classModule.id}`}
+                                                        > On Date:
+                                                            <span style={{ color: '#f58d04' }}> {classModule.startDate.substring(0, 10)}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div className="col-lg-9 mt-4 mt-lg-0">
+                                                <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
 
-                                            <div
-                                                className={`tab-pane ${index === 0 ? 'active show' : ''}`}
-                                                id={`tab-${classModule.id}`}
-                                            >
+                                                    <div
+                                                        className={`tab-pane ${index === 0 ? 'active show' : ''}`}
+                                                        id={`tab-${classModule.id}`}
+                                                    >
 
-                                                <div>
+                                                        <div>
 
-                                                    <div>
-                                                        <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
+                                                            <div>
+                                                                <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
 
-                                                        <ul>
-                                                            {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
-                                                                <li key={topicIndex}>{classTopic.name}</li>
-                                                            ))}
-                                                        </ul>
+                                                                <ul>
+                                                                    {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
+                                                                        <li key={topicIndex}>{classTopic.name}</li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+
                                                     </div>
                                                 </div>
-
-
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            ))}
+                                    ))
+                                )
+                            }
+                            {
+                                classModuleList.length === 0 && (
+                                    <p>No modules for this course.</p>
+                                )
+                            }
 
 
                         </div>
@@ -479,25 +488,35 @@ const DetailCourse = () => {
                                                 className={`tab-pane ${index === 0 ? 'active show' : ''}`}
                                                 id={`tab-${module.id}`}
                                             >
-                                                {combinedList.map((item, combinedIndex) => (
-                                                    <div className="combined-item" key={combinedIndex}>
-                                                        {item.type === 'lesson' && (
-                                                            <div className="lesson">
-                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
+                                                {
+                                                    combinedList.length > 0 && (
+                                                        combinedList.map((item, combinedIndex) => (
+                                                            <div className="combined-item" key={combinedIndex}>
+                                                                {item.type === 'lesson' && (
+                                                                    <div className="lesson">
+                                                                        <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
+                                                                    </div>
+                                                                )}
+                                                                {item.type === 'assignment' && (
+                                                                    <div className="assignment">
+                                                                        <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Assignment - Deadline: {item.deadline} minutes</p>
+                                                                    </div>
+                                                                )}
+                                                                {item.type === 'quiz' && (
+                                                                    <div className="quiz">
+                                                                        <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Quiz - {item.name}</p>
+                                                                    </div>
+                                                                )}
                                                             </div>
-                                                        )}
-                                                        {item.type === 'assignment' && (
-                                                            <div className="assignment">
-                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Assignment - Deadline: {item.deadline} minutes</p>
-                                                            </div>
-                                                        )}
-                                                        {item.type === 'quiz' && (
-                                                            <div className="quiz">
-                                                                <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Quiz - {item.name}</p>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                ))}
+                                                        ))
+                                                    )
+                                                }
+                                                {
+                                                    combinedList.length === 0 && (
+                                                        <p>Empty.</p>
+                                                    )
+                                                }
+                                                
                                             </div>
                                         </div>
 
@@ -526,24 +545,34 @@ const DetailCourse = () => {
                                             <div className="p-3">
                                                 <h2>Feedbacks</h2>
                                             </div>
-                                            {feedbackList.map((feedback, index) => (
-                                                <>
-                                                    {/* <div className="mt-3 d-flex flex-row align-items-center p-3 form-color"> <img src="https://i.imgur.com/zQZSWrt.jpg" width={50} className="rounded-circle mr-2" /> <input type="text" className="form-control" placeholder="Enter your comment..." /> </div> */}
-                                                    < div className="mt-2" >
-                                                        <div className="d-flex flex-row p-3"> <img src={feedback.learner.account.imageUrl} width={40} height={40} className="rounded-circle mr-3" />
-                                                            <div className="w-100">
-                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                    <div className="d-flex flex-row align-items-center"> <span className="mr-2" style={{fontWeight: 'bold'}}>{feedback.learner.account.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{feedback.createdDate}</small>
+                                            {
+                                                feedbackList.length > 0 && (
+                                                    feedbackList.map((feedback, index) => (
+                                                        <>
+                                                            {/* <div className="mt-3 d-flex flex-row align-items-center p-3 form-color"> <img src="https://i.imgur.com/zQZSWrt.jpg" width={50} className="rounded-circle mr-2" /> <input type="text" className="form-control" placeholder="Enter your comment..." /> </div> */}
+                                                            < div className="mt-2" >
+                                                                <div className="d-flex flex-row p-3"> <img src={feedback.learner.account.imageUrl} width={40} height={40} className="rounded-circle mr-3" />
+                                                                    <div className="w-100">
+                                                                        <div className="d-flex justify-content-between align-items-center">
+                                                                            <div className="d-flex flex-row align-items-center"> <span className="mr-2" style={{ fontWeight: 'bold' }}>{feedback.learner.account.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{feedback.createdDate}</small>
+                                                                        </div>
+                                                                        <p className="text-justify comment-text mb-0" dangerouslySetInnerHTML={{ __html: feedback.feedbackContent }}></p>
+                                                                        <div className="d-flex flex-row user-feed"> <span className="wish"><i className="fa fa-heartbeat mr-2" />24</span> <span className="ml-3"><i className="fa fa-comments-o mr-2" />Reply</span> </div>
+                                                                    </div>
                                                                 </div>
-                                                                <p className="text-justify comment-text mb-0" dangerouslySetInnerHTML={{ __html: feedback.feedbackContent }}></p>
-                                                                <div className="d-flex flex-row user-feed"> <span className="wish"><i className="fa fa-heartbeat mr-2" />24</span> <span className="ml-3"><i className="fa fa-comments-o mr-2" />Reply</span> </div>
+        
                                                             </div>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </>
-
-                                            ))}
+                                                        </>
+        
+                                                    ))
+                                                )
+                                            }
+                                            {
+                                                feedbackList.length === 0 && (
+                                                    <p>No feedbacks yet.</p>
+                                                )
+                                            }
+                                            
 
 
                                         </div>
