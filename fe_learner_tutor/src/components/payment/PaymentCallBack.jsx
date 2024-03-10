@@ -70,7 +70,7 @@ const PaymentCallBack = () => {
               const updatedWallet = {
                 balance: response.data.balance + (updatedTransaction.amount / 24000),
                 accountId: "9b868733-8ab1-4191-92ab-65d1b82863c3",
-                note: `+${updatedTransaction.amount / 24000} from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId} at ${updatedTransaction.transactionDate}`,
+                note: `+${updatedTransaction.amount / 24000}$ from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId} at ${updatedTransaction.transactionDate}`,
                 transactionDate: updatedTransaction.transactionDate
               }
 
@@ -78,7 +78,7 @@ const PaymentCallBack = () => {
               walletService.updateWallet(response.data.id, updatedWallet);
               const walletHistory = {
                 walletId: response.data.id,
-                note: `+${updatedTransaction.amount / 24000} from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId} at ${updatedTransaction.transactionDate}`,
+                note: `+${updatedTransaction.amount / 24000}$ from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId} at ${updatedTransaction.transactionDate}`,
                 transactionDate: updatedTransaction.transactionDate
               }
 

@@ -15,7 +15,7 @@ const Footer = () => {
                                     New York, NY 535022<br />
                                     United States <br /><br />
                                     <strong>Phone:</strong> +1 5589 55488 55<br />
-                                    <strong>Email:</strong> info@example.com<br />
+                                    <strong>Email:</strong> meowlish@system.com<br />
                                 </p>
                             </div>
                             <div className="col-lg-2 col-md-6 footer-links">

@@ -135,6 +135,13 @@ const handleSubmit = async (e) => {
                 showErrorMessage('Login failed. Please try again.');
 
             }
+            else{
+                setIsLoggedIn(false);
+
+                // setIsLoggedIn(false);
+                setError('You are not authorized to access this page.');
+                showErrorMessage('You are not authorized to access this page.');
+            }
         } else {
             setIsLoggedIn(false);
 

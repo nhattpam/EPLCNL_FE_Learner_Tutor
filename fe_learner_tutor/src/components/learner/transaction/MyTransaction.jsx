@@ -133,7 +133,7 @@ const MyTransaction = () => {
                                                                 </td>
                                                                 <td>${transaction.course.stockPrice}</td>
                                                                 <td>{transaction.paymentMethod.name}</td>
-                                                                <td>{transaction.amount} dong</td>
+                                                                <td>${transaction.amount / 24000}</td>
                                                                 <td>{transaction.transactionDate}</td>
                                                                 <td>{transaction.status}</td>
                                                                 {/* <td>
@@ -237,7 +237,7 @@ const MyTransaction = () => {
                                                                     {refund.enrollment.transaction.paymentMethod.name}
                                                                 </td>
                                                                 <td>
-                                                                    {refund.enrollment.transaction.amount}
+                                                                    ${refund.enrollment.transaction.amount /24000}
                                                                 </td>
                                                                 <td>
                                                                     {refund.requestedDate}

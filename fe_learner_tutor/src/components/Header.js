@@ -6,6 +6,7 @@ import courseService from '../services/course.service';
 import tutorService from '../services/tutor.service';
 import learnerService from '../services/learner.service';
 import SearchResult from './learner/course/SearchResult';
+import walletService from '../services/wallet.service';
 
 const Header = () => {
 
@@ -15,6 +16,7 @@ const Header = () => {
     const isLearner = sessionStorage.getItem('isLearner') === 'true';
 
     const [showModal, setShowModal] = useState(false);
+    const [showWalletHistoryModal, setShowWalletHistoryModal] = useState(false);
     const navigate = useNavigate();
 
 
@@ -56,8 +58,16 @@ const Header = () => {
 
     const closeModal = () => {
         setShowModal(false);
-        setEditMode(false)
     };
+
+    const openWalletHistoryModal = () => {
+        setShowWalletHistoryModal(true);
+    };
+
+    const closeWalletHistoryModal = () => {
+        setShowWalletHistoryModal(false);
+    };
+
 
 
     const handleLogout = () => {
@@ -181,6 +191,22 @@ const Header = () => {
 
 
     //end SEARCH
+
+
+    //WALLET HISTORY
+    const [walletHistoryList, setWalletHistoryList] = useState([]);
+
+    useEffect(() => {
+        walletService
+            .getAllWalletHistoryByWallet(account.wallet.id)
+            .then((res) => {
+                setWalletHistoryList(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [account.wallet.id]);
+
     return (
         <>
             <header id="header" className="fixed-top">
@@ -249,15 +275,19 @@ const Header = () => {
                                         <span>Forums</span> <i className="bi bi-chevron-down" />
                                     </a>
                                     <ul>
-                                        {forumList.length > 0 && (
-
-                                            forumList.map((forum) => (
+                                        {
+                                            forumList.length > 0 && forumList.map((forum) => (
                                                 <li key={forum.id}> {/* Add a key to the mapped elements */}
                                                     <Link to={`/my-forum/${forum?.id}`}>{forum.course.name}</Link>
                                                 </li>
                                             ))
 
-                                        )}
+                                        }
+                                        {
+                                            forumList.length === 0 && (
+                                                <p>You haven't joined any course.</p>
+                                            )
+                                        }
 
                                     </ul>
                                 </li>
@@ -276,7 +306,7 @@ const Header = () => {
                                             {isLearner && (
                                                 <>
                                                     <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
-                                                    <p>Balance: {account.wallet?.balance}</p>
+                                                    <p>Balance: {account.wallet?.balance} <i class="far fa-eye" onClick={openWalletHistoryModal}></i></p>
                                                 </>
 
                                             )}
@@ -428,6 +458,59 @@ const Header = () => {
                                         <button type="button" className="btn btn-warning" onClick={toggleEditMode}>Edit</button>
                                     )}
                                     <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+
+            {/* wallet history */}
+            {
+                showWalletHistoryModal && (
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Wallet History</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeWalletHistoryModal}>
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    {/* Conditional rendering based on edit mode */}
+
+                                    <div>
+                                        {/* Input fields for editing */}
+                                        <div className="table-responsive">
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
+                                                <thead className="thead-light">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Transaction Date</th>
+                                                        <th>Note</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        walletHistoryList.length > 0 && walletHistoryList.map((walletHistory, index) => (
+                                                            <tr key={walletHistory.id}>
+                                                                <td>{index + 1}</td>
+                                                                <td>{walletHistory.transactionDate}</td>
+                                                                <td>{walletHistory.note}</td>
+                                                            </tr>
+                                                        ))
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    {/* Conditional rendering of buttons based on edit mode */}
+                                    <button type="button" className="btn btn-secondary" onClick={closeWalletHistoryModal}>Close</button>
                                 </div>
                             </div>
                         </div>
