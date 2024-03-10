@@ -156,7 +156,7 @@ const Invoice = () => {
                                                                             </tr>
                                                                             <tr>
                                                                                 <th scope="row" colspan="4" class="border-0 text-end">Total</th>
-                                                                                <td class="border-0 text-end"><h4 class="m-0 fw-semibold"> ${transaction.amount} Viet Nam dong</h4></td>
+                                                                                <td class="border-0 text-end"><h4 class="m-0 fw-semibold"> ${transaction.amount} Dollars</h4></td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -221,7 +221,7 @@ const Invoice = () => {
                                     <div className="col-sm-6">
                                         <div className="text-muted">
                                             <h5 className="font-size-16 mb-3">Billed To:</h5>
-                                            <h5 className="font-size-15 mb-2">{account.name}</h5>
+                                            <h5 className="font-size-15 mb-2">{account.fullName}</h5>
                                             <p className="mb-1">{account.address}</p>
                                             <p className="mb-1">{account.email}</p>
                                             <p>{account.phoneNumber}</p>
@@ -282,7 +282,7 @@ const Invoice = () => {
 
                                                 <tr>
                                                     <th scope="row" colSpan={4} className="border-0 text-end">Total</th>
-                                                    <td className="border-0 text-end"><h4 className="m-0 fw-semibold">{transaction.amount}  Viet Nam dong</h4></td>
+                                                    <td className="border-0 text-end"><h4 className="m-0 fw-semibold">{transaction.amount /24000} dollars</h4></td>
                                                 </tr>
                                                 {/* end tr */}
                                             </tbody>{/* end tbody */}
