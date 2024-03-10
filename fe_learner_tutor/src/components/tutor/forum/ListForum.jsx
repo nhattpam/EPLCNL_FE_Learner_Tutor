@@ -102,24 +102,22 @@ const ListForum = () => {
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        currentForums.length > 0 && (
-                                                            currentForums.map((forum, index) => (
-                                                                <tr key={forum.id}>
-                                                                    <td>{index + 1}</td>
-                                                                    <td><img src={forum.course.imageUrl} style={{ height: '50px', width: '70px' }} alt={forum.course.name} /></td>
-        
-                                                                    <td>{forum.course.name}</td>
-                                                                    <td>
-                                                                        <Link to={`/edit-forum/${forum.id}`} className='text-secondary'>
-                                                                            <i class="fas fa-comment-dots"></i>
-                                                                        </Link>
-                                                                    </td>
-        
-                                                                </tr>
-                                                            ))
-                                                        )
+                                                        currentForums.length > 0 && currentForums.map((forum, index) => (
+                                                            <tr key={forum.id}>
+                                                                <td>{index + 1}</td>
+                                                                <td><img src={forum.course.imageUrl} style={{ height: '50px', width: '70px' }} alt={forum.course.name} /></td>
+
+                                                                <td>{forum.course.name}</td>
+                                                                <td>
+                                                                    <Link to={`/edit-forum/${forum.id}`} className='text-secondary'>
+                                                                        <i class="fas fa-comment-dots"></i>
+                                                                    </Link>
+                                                                </td>
+
+                                                            </tr>
+                                                        ))
                                                     }
-                                                   
+
                                                 </tbody>
 
                                             </table>

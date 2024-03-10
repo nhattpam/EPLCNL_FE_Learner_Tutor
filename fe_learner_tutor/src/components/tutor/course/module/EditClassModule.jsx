@@ -130,7 +130,8 @@ const EditClassModule = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {currentClassTopics.map((classTopic, index) => (
+                                                        {
+                                                        currentClassTopics.length > 0 && currentClassTopics.map((classTopic, index) => (
                                                             <tr key={classTopic.id}>
                                                                 <td>{index + 1}</td>
                                                                 <td>{classTopic.name}</td>

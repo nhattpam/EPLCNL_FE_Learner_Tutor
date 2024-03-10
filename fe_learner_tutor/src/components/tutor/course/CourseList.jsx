@@ -109,30 +109,28 @@ const CourseList = () => {
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        currentCourses.length > 0 && (
-                                                            currentCourses.map((course, index) => (
-                                                                <tr key={course.id}>
-                                                                    <td>{index + 1}</td>
-                                                                    <td><img src={course.imageUrl} style={{ height: '50px', width: '70px' }} alt={course.name} /></td>
-                                                                    <td>{course.code}</td>
-                                                                    <td>{course.name}</td>
-                                                                    <td>{course.category.name}</td>
-                                                                    <td>
-                                                                        <span className={`badge ${course.isOnlineClass ? 'badge-success' : 'badge-danger'}`}>{course.isOnlineClass ? 'Class' : 'Video'}</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span className={`badge ${course.isActive ? 'badge-success' : 'badge-danger'}`}>{course.isActive ? 'Active' : 'Inactive'}</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <Link to={`/tutor/courses/edit-course/${course.id}`} className='text-secondary'>
-                                                                            <i className="fa-regular fa-eye"></i>
-                                                                        </Link>
-                                                                    </td>
-                                                                </tr>
-                                                            ))
-                                                        )
+                                                        currentCourses.length > 0 && currentCourses.map((course, index) => (
+                                                            <tr key={course.id}>
+                                                                <td>{index + 1}</td>
+                                                                <td><img src={course.imageUrl} style={{ height: '50px', width: '70px' }} alt={course.name} /></td>
+                                                                <td>{course.code}</td>
+                                                                <td>{course.name}</td>
+                                                                <td>{course.category.name}</td>
+                                                                <td>
+                                                                    <span className={`badge ${course.isOnlineClass ? 'badge-success' : 'badge-danger'}`}>{course.isOnlineClass ? 'Class' : 'Video'}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <span className={`badge ${course.isActive ? 'badge-success' : 'badge-danger'}`}>{course.isActive ? 'Active' : 'Inactive'}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <Link to={`/tutor/courses/edit-course/${course.id}`} className='text-secondary'>
+                                                                        <i className="fa-regular fa-eye"></i>
+                                                                    </Link>
+                                                                </td>
+                                                            </tr>
+                                                        ))
                                                     }
-                                                  
+
                                                 </tbody>
                                             </table>
                                         </div>

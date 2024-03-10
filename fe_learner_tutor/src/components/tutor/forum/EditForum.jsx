@@ -100,8 +100,7 @@ const EditForum = () => {
                                     <div className="card-box">
                                         <div className="chat-container">
                                             {
-                                                accountForumList.length > 0 && (
-                                                    accountForumList
+                                                accountForumList.length > 0 && accountForumList
                                                     .slice()
                                                     .sort((a, b) => new Date(a.messagedDate) - new Date(b.messagedDate))
                                                     .map((accountForum) => (
@@ -125,14 +124,13 @@ const EditForum = () => {
                                                             <div className="message-date">{accountForum.messagedDate}</div>
                                                         </div>
                                                     ))
-                                                )
                                             }
                                             {
                                                 accountForumList.length === 0 && (
                                                     <p>No messages yet.</p>
                                                 )
                                             }
-                                           
+
                                             <form class="msger-inputarea" onSubmit={submitAccountForum}>
                                                 <input
                                                     type="text"

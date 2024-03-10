@@ -181,39 +181,35 @@ const EditCourse = () => {
 
                                         <ul className="list-group">
                                             {
-                                                moduleList.length > 0 && (
-                                                    moduleList.map((module) => (
-                                                        <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
+                                                moduleList.length > 0 && moduleList.map((module) => (
+                                                    <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
 
-                                                            {module.name}
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleEditModule(module.id)}
-                                                                className="btn btn-link text-dark"
-                                                            >
-                                                                <i className="far fa-edit"></i>
-                                                            </button>
-                                                        </li>
-                                                    ))
-                                                )
+                                                        {module.name}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleEditModule(module.id)}
+                                                            className="btn btn-link text-dark"
+                                                        >
+                                                            <i className="far fa-edit"></i>
+                                                        </button>
+                                                    </li>
+                                                ))
                                             }
                                             {
-                                                classModuleList.length > 0 && (
-                                                    classModuleList.map((module) => (
-                                                        <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
-                                                            Class Date: {module.startDate !== null ? module.startDate.substring(0, 10) : "No start date"}
-                                                            <button
-                                                                type="button"
-                                                                // className="btn btn-secondary btn-sm"
-                                                                className="btn btn-link text-dark"
-                                                                onClick={() => handleEditClassModule(module.id)}
-                                                            >
-                                                                <i className="far fa-edit"></i>
+                                                classModuleList.length > 0 && classModuleList.map((module) => (
+                                                    <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
+                                                        Class Date: {module.startDate !== null ? module.startDate.substring(0, 10) : "No start date"}
+                                                        <button
+                                                            type="button"
+                                                            // className="btn btn-secondary btn-sm"
+                                                            className="btn btn-link text-dark"
+                                                            onClick={() => handleEditClassModule(module.id)}
+                                                        >
+                                                            <i className="far fa-edit"></i>
 
-                                                            </button>
-                                                        </li>
-                                                    ))
-                                                )
+                                                        </button>
+                                                    </li>
+                                                ))
                                             }
 
                                         </ul>

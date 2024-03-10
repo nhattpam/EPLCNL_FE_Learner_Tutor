@@ -23,14 +23,14 @@ const ListCourseByCategory = () => {
 
                 const learnersCounts = {}; // Object to store number of learners for each course
                 for (const course of activeCourses) {
-                  try {
-                    const learnersResponse = await courseService.getAllEnrollmentsByCourse(course.id);
-                    const learnersOfCourse = learnersResponse.data;
-                    learnersCounts[course.id] = learnersOfCourse.length; // Store learner count for the course
-                    console.log(`Number of learners for course ${course.name}: ` + learnersOfCourse.length);
-                  } catch (error) {
-                    console.error(`Error fetching learners for course ${course.name}:`, error);
-                  }
+                    try {
+                        const learnersResponse = await courseService.getAllEnrollmentsByCourse(course.id);
+                        const learnersOfCourse = learnersResponse.data;
+                        learnersCounts[course.id] = learnersOfCourse.length; // Store learner count for the course
+                        console.log(`Number of learners for course ${course.name}: ` + learnersOfCourse.length);
+                    } catch (error) {
+                        console.error(`Error fetching learners for course ${course.name}:`, error);
+                    }
                 }
                 setLearnersCount(learnersCounts); // Update state with learners count
             } catch (error) {
@@ -76,9 +76,8 @@ const ListCourseByCategory = () => {
                 <section id="courses" className="courses">
                     <div className="container" data-aos="fade-up">
                         <div className="row" data-aos="zoom-in" data-aos-delay={100}>
-                            {courseList.length > 0 && (
-
-                                courseList.map((course, index) => (
+                            {
+                                courseList.length > 0 && courseList.map((course, index) => (
                                     <div key={course.id} className="col-lg-4 col-md-6 d-flex align-items-stretch">
                                         <div className="course-item">
                                             <img src={course.imageUrl} className="img-fluid" alt="..." />
@@ -110,7 +109,7 @@ const ListCourseByCategory = () => {
                                     </div>
                                 ))
 
-                            )}
+                            }
                             {courseList.length <= 0 && (
                                 <p>No Courses Found.</p>
                             )}

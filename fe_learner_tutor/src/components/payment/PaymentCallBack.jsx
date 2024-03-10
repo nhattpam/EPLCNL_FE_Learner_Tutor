@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import transactionService from '../../services/transaction.service';
 import enrollmentService from '../../services/enrollment.service';
 import walletService from '../../services/wallet.service';
+import walletHistoryService from '../../services/wallet-history.service';
 
 const PaymentCallBack = () => {
   const location = useLocation();
@@ -74,7 +75,14 @@ const PaymentCallBack = () => {
               }
 
               //update admin wallet balance
-              walletService.updateWallet(response.data.id, updatedWallet);
+              const walletResponse = walletService.updateWallet(response.data.id, updatedWallet);
+              const walletHistory = {
+                walletId: walletResponse.data.id,
+                note: `+${updatedTransaction.amount} from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId} at ${updatedTransaction.transactionDate}`,
+                transactionDate: updatedTransaction.transactionDate
+              }
+
+              walletHistoryService.saveWalletHistory(walletHistory);
             })
           // Navigate to invoice page
           navigate(`/invoice/${transactionId}`)

@@ -507,40 +507,38 @@ const CreateQuiz = () => {
                                                 <div className="card" style={{ marginTop: '-20px' }}>
                                                     <div className='card-body'>
                                                         {
-                                                            questionAnswers.length > 0 && (
-                                                                questionAnswers.map((answer, index) => (
-                                                                    <div key={index} className="form-group col-12">
-                                                                        <label htmlFor={`answerText${index}`}>Answer {index + 1} * :</label>
-                                                                        <div className="input-group">
-                                                                            <textarea
-                                                                                className="form-control"
-                                                                                name="answerText"
-                                                                                id={`answerText${index}`}
-                                                                                required
-                                                                                value={answer.answerText}
+                                                            questionAnswers.length > 0 && questionAnswers.map((answer, index) => (
+                                                                <div key={index} className="form-group col-12">
+                                                                    <label htmlFor={`answerText${index}`}>Answer {index + 1} * :</label>
+                                                                    <div className="input-group">
+                                                                        <textarea
+                                                                            className="form-control"
+                                                                            name="answerText"
+                                                                            id={`answerText${index}`}
+                                                                            required
+                                                                            value={answer.answerText}
+                                                                            onChange={(e) => handleAnswerChange(index, e)}
+                                                                        />
+
+                                                                        <div className="input-group-append ml-2">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                name="isAnswer"
+                                                                                id={`isAnswer${index}`}
+                                                                                value={answer.isAnswer}
                                                                                 onChange={(e) => handleAnswerChange(index, e)}
                                                                             />
-        
-                                                                            <div className="input-group-append ml-2">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    name="isAnswer"
-                                                                                    id={`isAnswer${index}`}
-                                                                                    value={answer.isAnswer}
-                                                                                    onChange={(e) => handleAnswerChange(index, e)}
-                                                                                />
-                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                ))
-                                                            )
+                                                                </div>
+                                                            ))
                                                         }
                                                         {
                                                             questionAnswers.length === 0 && (
                                                                 <p>No answers yet.</p>
                                                             )
                                                         }
-                                                       
+
                                                     </div>
 
                                                 </div>

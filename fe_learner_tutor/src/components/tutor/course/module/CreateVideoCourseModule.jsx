@@ -276,23 +276,21 @@ const CreateVideoCourseModule = () => {
                                 </thead>
                                 <tbody>
                                   {
-                                    currentLessons.length > 0 && (
-                                      currentLessons.map((lesson, index) => (
-                                        <tr key={lesson.id}>
-                                          <td>{index + 1}</td>
-                                          <td>{lesson.name}</td>
-                                          {/* <td>{lesson.videoUrl}</td> */}
-                                          <td>{lesson.createdDate}</td>
-                                          <td>{lesson.updatedDate}</td>
-                                          <td>
-                                            <Link to={`/tutor/courses/edit-lesson/${lesson.id}`} className='text-dark'>
-                                              <i class="fa-regular fa-eye"></i>
-                                            </Link>
-                                          </td>
+                                    currentLessons.length > 0 && currentLessons.map((lesson, index) => (
+                                      <tr key={lesson.id}>
+                                        <td>{index + 1}</td>
+                                        <td>{lesson.name}</td>
+                                        {/* <td>{lesson.videoUrl}</td> */}
+                                        <td>{lesson.createdDate}</td>
+                                        <td>{lesson.updatedDate}</td>
+                                        <td>
+                                          <Link to={`/tutor/courses/edit-lesson/${lesson.id}`} className='text-dark'>
+                                            <i class="fa-regular fa-eye"></i>
+                                          </Link>
+                                        </td>
 
-                                        </tr>
-                                      ))
-                                    )
+                                      </tr>
+                                    ))
                                   }
 
                                 </tbody>
@@ -347,22 +345,20 @@ const CreateVideoCourseModule = () => {
                                 </thead>
                                 <tbody>
                                   {
-                                    currentAssignments.length > 0 && (
-                                      currentAssignments.map((assignment, index) => (
-                                        <tr key={assignment.id}>
-                                          <td>{index + 1}</td>
-                                          <td>{assignment.deadline}</td>
-                                          <td className="truncate-text">{assignment.questionText}</td>
-                                          <td>{assignment.createdDate}</td>
-                                          <td>{assignment.updatedDate}</td>
-                                          <td>
-                                            <Link to={`/tutor/courses/edit-assignment/${assignment.id}`} className='text-secondary'>
-                                              <i class="fa-regular fa-eye"></i>
-                                            </Link>
-                                          </td>
-                                        </tr>
-                                      ))
-                                    )
+                                    currentAssignments.length > 0 && currentAssignments.map((assignment, index) => (
+                                      <tr key={assignment.id}>
+                                        <td>{index + 1}</td>
+                                        <td>{assignment.deadline}</td>
+                                        <td className="truncate-text">{assignment.questionText}</td>
+                                        <td>{assignment.createdDate}</td>
+                                        <td>{assignment.updatedDate}</td>
+                                        <td>
+                                          <Link to={`/tutor/courses/edit-assignment/${assignment.id}`} className='text-secondary'>
+                                            <i class="fa-regular fa-eye"></i>
+                                          </Link>
+                                        </td>
+                                      </tr>
+                                    ))
                                   }
 
                                 </tbody>
@@ -418,23 +414,21 @@ const CreateVideoCourseModule = () => {
                                 </thead>
                                 <tbody>
                                   {
-                                    currentQuizs.length > 0 && (
-                                      currentQuizs.map((quiz, index) => (
-                                        <tr key={quiz.id}>
-                                          <td>{index + 1}</td>
-                                          <td>{quiz.name}</td>
-                                          <td>{quiz.gradeToPass}</td>
-                                          <td>{quiz.deadline}</td>
-                                          <td>{quiz.createdDate}</td>
-                                          <td>{quiz.updatedDate}</td>
-                                          <td>
-                                            <Link to={`/tutor/courses/edit-quiz/${quiz.id}`} className='text-secondary'>
-                                              <i class="fa-regular fa-eye"></i>
-                                            </Link>
-                                          </td>
-                                        </tr>
-                                      ))
-                                    )
+                                    currentQuizs.length > 0 && currentQuizs.map((quiz, index) => (
+                                      <tr key={quiz.id}>
+                                        <td>{index + 1}</td>
+                                        <td>{quiz.name}</td>
+                                        <td>{quiz.gradeToPass}</td>
+                                        <td>{quiz.deadline}</td>
+                                        <td>{quiz.createdDate}</td>
+                                        <td>{quiz.updatedDate}</td>
+                                        <td>
+                                          <Link to={`/tutor/courses/edit-quiz/${quiz.id}`} className='text-secondary'>
+                                            <i class="fa-regular fa-eye"></i>
+                                          </Link>
+                                        </td>
+                                      </tr>
+                                    ))
                                   }
 
                                 </tbody>

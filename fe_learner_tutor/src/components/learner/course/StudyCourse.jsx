@@ -641,18 +641,16 @@ const StudyCourse = () => {
                                                     <div className="container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                                                         <div className="card" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', textAlign: 'left' }}>
                                                             {
-                                                                materialList.length > 0 && (
-                                                                    materialList.map((material, index) => (
-                                                                        <div className='card-body' style={{ flex: '0 0 33.33%', width: '100%' }}>
-                                                                            <a href={material.materialUrl} target="_blank" rel="noopener noreferrer">
-                                                                                <figure className="figure">
-                                                                                    <i className="far fa-file-pdf fa-6x"></i>
-                                                                                    <figcaption className="figure-caption" style={{ color: '#f58d04', fontWeight: 'bold' }}>{material.name}</figcaption>
-                                                                                </figure>
-                                                                            </a>
-                                                                        </div>
-                                                                    ))
-                                                                )
+                                                                materialList.length > 0 && materialList.map((material, index) => (
+                                                                    <div className='card-body' style={{ flex: '0 0 33.33%', width: '100%' }}>
+                                                                        <a href={material.materialUrl} target="_blank" rel="noopener noreferrer">
+                                                                            <figure className="figure">
+                                                                                <i className="far fa-file-pdf fa-6x"></i>
+                                                                                <figcaption className="figure-caption" style={{ color: '#f58d04', fontWeight: 'bold' }}>{material.name}</figcaption>
+                                                                            </figure>
+                                                                        </a>
+                                                                    </div>
+                                                                ))
                                                             }
                                                             {
                                                                 materialList.length === 0 && (
@@ -818,26 +816,24 @@ const StudyCourse = () => {
                                                                 {showAnswerColor ? (
                                                                     <>
                                                                         {
-                                                                            questionAnswerList.length > 0 && (
-                                                                                questionAnswerList.map((questionAnswer, index) => (
-                                                                                    <span key={index}>
-                                                                                        <input
-                                                                                            type="radio"
-                                                                                            id={`option-${index}`}
-                                                                                            name="option"
-                                                                                            className="radio"
-                                                                                            value="optionA"
-                                                                                            readOnly
-                                                                                        />
-                                                                                        <label
-                                                                                            htmlFor={`option-${index}`}
-                                                                                            className={`option ${questionAnswer.isAnswer ? 'correct-answer' : 'incorrect-answer'}`}
-                                                                                        >
-                                                                                            {questionAnswer.answerText}
-                                                                                        </label>
-                                                                                    </span>
-                                                                                ))
-                                                                            )
+                                                                            questionAnswerList.length > 0 && questionAnswerList.map((questionAnswer, index) => (
+                                                                                <span key={index}>
+                                                                                    <input
+                                                                                        type="radio"
+                                                                                        id={`option-${index}`}
+                                                                                        name="option"
+                                                                                        className="radio"
+                                                                                        value="optionA"
+                                                                                        readOnly
+                                                                                    />
+                                                                                    <label
+                                                                                        htmlFor={`option-${index}`}
+                                                                                        className={`option ${questionAnswer.isAnswer ? 'correct-answer' : 'incorrect-answer'}`}
+                                                                                    >
+                                                                                        {questionAnswer.answerText}
+                                                                                    </label>
+                                                                                </span>
+                                                                            ))
                                                                         }
                                                                         {
                                                                             questionAnswerList.length === 0 && (
@@ -849,26 +845,24 @@ const StudyCourse = () => {
                                                                 ) : (
                                                                     <>
                                                                         {
-                                                                            questionAnswerList.length > 0 && (
-                                                                                questionAnswerList.map((questionAnswer, index) => (
-                                                                                    <span key={index} className='span1'>
-                                                                                        <input
-                                                                                            type="radio"
-                                                                                            id={`option-${index}`}
-                                                                                            name="option"
-                                                                                            className="radio"
-                                                                                            value="optionA"
-                                                                                            onClick={() => handleAnswerClick(questionAnswer)} // Pass a function reference
-                                                                                        />
-                                                                                        <label
-                                                                                            htmlFor={`option-${index}`}
-                                                                                            className={`option ${questionAnswer.isAnswer ? 'green' : 'red'}`}
-                                                                                        >
-                                                                                            {questionAnswer.answerText}
-                                                                                        </label>
-                                                                                    </span>
-                                                                                ))
-                                                                            )
+                                                                            questionAnswerList.length > 0 && questionAnswerList.map((questionAnswer, index) => (
+                                                                                <span key={index} className='span1'>
+                                                                                    <input
+                                                                                        type="radio"
+                                                                                        id={`option-${index}`}
+                                                                                        name="option"
+                                                                                        className="radio"
+                                                                                        value="optionA"
+                                                                                        onClick={() => handleAnswerClick(questionAnswer)} // Pass a function reference
+                                                                                    />
+                                                                                    <label
+                                                                                        htmlFor={`option-${index}`}
+                                                                                        className={`option ${questionAnswer.isAnswer ? 'green' : 'red'}`}
+                                                                                    >
+                                                                                        {questionAnswer.answerText}
+                                                                                    </label>
+                                                                                </span>
+                                                                            ))
                                                                         }
                                                                         {
                                                                             questionAnswerList.length === 0 && (

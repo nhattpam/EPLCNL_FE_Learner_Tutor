@@ -203,23 +203,24 @@ const MyTransaction = () => {
                                         )}
                                         <h4>Your refund requests:</h4>
                                         {
-                                            refundRequestList.length > 0 && (
-                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
-                                                    <thead className="thead-light">
-                                                        <tr>
-                                                            <th scope="col">#</th>
-                                                            <th scope="col">Image</th>
-                                                            <th scope="col">Name</th>
-                                                            <th scope="col">Payment Method</th>
-                                                            <th scope="col">Amount</th>
-                                                            <th scope="col">Request Date</th>
-                                                            <th scope="col">Reason</th>
-                                                            <th scope="col">Status</th>
-                                                            <th scope="col"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {refundRequestList.map((refund, index) => (
+
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                <thead className="thead-light">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Image</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Payment Method</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Request Date</th>
+                                                        <th scope="col">Reason</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        refundRequestList.length > 0 && refundRequestList.map((refund, index) => (
                                                             <tr key={refund.id}>
                                                                 <th scope="row">{index + 1}</th>
                                                                 <td>
@@ -249,9 +250,8 @@ const MyTransaction = () => {
                                                             </tr>
 
                                                         ))}
-                                                    </tbody>
-                                                </table>
-                                            )
+                                                </tbody>
+                                            </table>
 
                                         }
                                         {

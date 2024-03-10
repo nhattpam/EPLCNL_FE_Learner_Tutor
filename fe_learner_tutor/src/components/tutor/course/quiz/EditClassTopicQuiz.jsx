@@ -127,26 +127,24 @@ const EditClassTopicQuiz = () => {
                           </thead>
                           <tbody>
                             {
-                              questionList.length > 0 && (
-                                questionList.map((question, index) => (
-                                  <tr key={question.id}>
-                                    <td>{index + 1}</td>
-                                    <td className='truncate-text'>
-                                      {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
-                                    </td>
-                                    <td>{question.defaultGrade}</td>
-                                    <td>{question.createdDate}</td>
-                                    <td>
-                                      <Link to={`/tutor/courses/edit-topic-question/${question.id}`} className='text-secondary'>
-                                        <i class="fa-regular fa-eye"></i>
-                                      </Link>
-                                    </td>
-                                  </tr>
-                                ))
-                              )
+                              questionList.length > 0 && questionList.map((question, index) => (
+                                <tr key={question.id}>
+                                  <td>{index + 1}</td>
+                                  <td className='truncate-text'>
+                                    {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
+                                  </td>
+                                  <td>{question.defaultGrade}</td>
+                                  <td>{question.createdDate}</td>
+                                  <td>
+                                    <Link to={`/tutor/courses/edit-topic-question/${question.id}`} className='text-secondary'>
+                                      <i class="fa-regular fa-eye"></i>
+                                    </Link>
+                                  </td>
+                                </tr>
+                              ))
                             }
                             {
-                              questionList.length === 0  && (
+                              questionList.length === 0 && (
                                 <p>No questions found.</p>
                               )
                             }

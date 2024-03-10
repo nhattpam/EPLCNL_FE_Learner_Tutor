@@ -82,6 +82,7 @@ import MyTransaction from './components/learner/transaction/MyTransaction';
 import SearchResult from './components/learner/course/SearchResult';
 import ListCourseByCategory from './components/course/ListCourseByCategory';
 import MyForum from './components/learner/forum/MyForum';
+import MyTimeable from './components/tutor/timeable/MyTimeable';
 
 function App() {
 
@@ -127,7 +128,7 @@ function App() {
           path="/login"
           element={<SignIn setIsLoggedIn={setIsLoggedIn} />} // Pass setIsLoggedIn prop to Login component
         />
-         
+
         {/* <Route path="/" element={<Navigate to="/home" />} /> */}
         <Route path="/home" element={<Home />} />
         {/* <Route path="/login" element={<SignIn />} /> */}
@@ -209,8 +210,10 @@ function App() {
         <Route path="/my-transaction/:learnerId" element={<MyTransaction />} />
 
         {/* search */}
-        <Route path="/search-result?:searchKey" element={<SearchResult />} />
 
+        <Route path="/search-result?:searchKey" element={<SearchResult />} />
+        {/* timeable for tutor*/}
+        <Route path="/my-timeable/:tutorId" element={<MyTimeable />} />
       </Routes>
     </div>
   );
