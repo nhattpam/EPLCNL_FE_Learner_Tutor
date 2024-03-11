@@ -37,7 +37,7 @@ const CreateClassTopicMaterial = () => {
   const [material, setMaterial] = useState({
     name: '',
     materialUrl: '',
-    classTopicId: storedClassTopicId
+    topicId: storedClassTopicId
   });
 
   const [file, setFile] = useState(null);

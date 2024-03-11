@@ -92,6 +92,21 @@ const MyTimeTable = () => {
         return color;
     };
 
+    // Function to generate time slots within the range
+    const generateTimeSlots = () => {
+        const slots = [];
+        const startTime = new Date(`01/01/2024 00:00 AM`);
+        const endTime = new Date(`01/02/2024 00:00 AM`);
+        let currentTime = new Date(startTime);
+
+        while (currentTime < endTime) {
+            slots.push(currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }));
+            currentTime.setHours(currentTime.getHours() + 1);
+        }
+
+        return slots;
+    };
+
 
     return (
         <>
@@ -123,6 +138,7 @@ const MyTimeTable = () => {
                                                 <table className="table table-bordered table-striped mb-0">
                                                     <thead>
                                                         <tr>
+                                                            <th></th>
                                                             {/* Generate columns for each day of the week */}
                                                             {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => (
                                                                 <th key={index}>
@@ -141,37 +157,53 @@ const MyTimeTable = () => {
                                                     </thead>
 
                                                     <tbody>
-                                                        <tr>
-                                                            {/* Generate columns for each day of the week */}
-                                                            {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => {
-                                                                const modulesForDay = classModuleList.filter(classModule => getDayOfWeek(classModule.startDate) === day);
-                                                                return (
-                                                                    <td key={index} style={{ backgroundColor: modulesForDay.length > 0 ? getRandomColor() : 'transparent' }}>
-                                                                        <div>
-                                                                            {modulesForDay.map((classModule, index) => (
-                                                                                <div key={index}>
-                                                                                    <div>{classModule.classLesson.classHours}</div>
-                                                                                    <div>
-                                                                                        <a href={classModule.classLesson.classUrl} target="_blank" rel="noopener noreferrer">Join Class</a>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <span className='text-danger' style={{ fontWeight: 'bold' }}>Topics:</span>
-                                                                                        {classTopicList
-                                                                                            .filter(topic => topic.classLessonId === classModule.classLesson.id)
-                                                                                            .map((topic, index) => (
-                                                                                                <div key={index}>- {topic.name}</div>
-                                                                                            ))}
-                                                                                    </div>
-                                                                                </div>
-                                                                            ))}
-                                                                        </div>
-                                                                    </td>
-                                                                );
-                                                            })}
-                                                        </tr>
+                                                        {/* Display classes */}
+                                                        {generateTimeSlots().map((time, timeIndex) => (
+                                                            <tr key={timeIndex}>
+                                                                <td>{time}</td>
+                                                                {/* Generate columns for each day of the week */}
+                                                                {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, dayIndex) => {
+                                                                    const modulesForDay = classModuleList.filter(classModule => getDayOfWeek(classModule.startDate) === day);
+                                                                    return (
+                                                                        <td key={dayIndex} style={{
+                                                                            backgroundColor: modulesForDay.some(classModule => {
+                                                                                const startTime = new Date(`01/01/2024 ${classModule.classLesson.classHours.split(' - ')[0]}`);
+                                                                                const endTime = new Date(`01/01/2024 ${classModule.classLesson.classHours.split(' - ')[1]}`);
+                                                                                return startTime <= new Date(`01/01/2024 ${time}`) && endTime >= new Date(`01/01/2024 ${time}`);
+                                                                            }) ? getRandomColor() : 'transparent'
+                                                                        }}>
+                                                                            <div>
+                                                                                {
+                                                                                    modulesForDay.length > 0 && modulesForDay.map((classModule, classIndex) => (
+                                                                                        <div key={classIndex}>
+                                                                                            {/* Check if class falls within the time range */}
+                                                                                            {(new Date(`01/01/2024 ${classModule.classLesson.classHours.split(' - ')[0]}`) <= new Date(`01/01/2024 ${time}`) &&
+                                                                                                new Date(`01/01/2024 ${classModule.classLesson.classHours.split(' - ')[1]}`) >= new Date(`01/01/2024 ${time}`)) && (
+                                                                                                    <div>
+                                                                                                        <div>{classModule.classLesson?.classHours}</div>
+                                                                                                        <div>
+                                                                                                            <a href={classModule.classLesson?.classUrl} target="_blank" rel="noopener noreferrer">Join Class</a>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <span className='text-danger' style={{ fontWeight: 'bold' }}>Topics:</span>
+                                                                                                            {classTopicList
+                                                                                                                .filter(topic => topic.classLessonId === classModule.classLesson.id)
+                                                                                                                .map((topic, topicIndex) => (
+                                                                                                                    <div key={topicIndex}>- {topic.name}</div>
+                                                                                                                ))}
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                )}
+                                                                                        </div>
+                                                                                    ))
+                                                                                }
+                                                                            </div>
+                                                                        </td>
+                                                                    );
+                                                                })}
+                                                            </tr>
+                                                        ))}
                                                     </tbody>
-
-
                                                 </table>
                                             </div>
                                         </div> {/* end card body*/}
