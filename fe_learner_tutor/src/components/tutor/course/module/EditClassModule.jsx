@@ -88,21 +88,21 @@ const EditClassModule = () => {
                                         <div className="form-group">
                                             <h5 htmlFor="name">Start Time :</h5>
                                             <ul>
-                                                {module.startDate.substring(0, 10)}
+                                                {module.startDate ? new Date(module.startDate).toLocaleDateString('en-US') : "No start date"}
                                             </ul>
                                         </div>
 
                                         <div className="form-group">
                                             <h5>Class Hours: </h5>
                                             <ul>
-                                                {module.classLesson.classHours}
+                                                {module.classLesson?.classHours}
                                             </ul>
                                         </div>
 
                                         <div className="form-group">
                                             <h5>Class Url:</h5>
                                             <ul>
-                                                {module.classLesson.classUrl}
+                                                {module.classLesson?.classUrl}
                                             </ul>
                                         </div>
 
@@ -131,25 +131,25 @@ const EditClassModule = () => {
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                        currentClassTopics.length > 0 && currentClassTopics.map((classTopic, index) => (
-                                                            <tr key={classTopic.id}>
-                                                                <td>{index + 1}</td>
-                                                                <td>{classTopic.name}</td>
-                                                                <td>{classTopic.description}</td>
-                                                                <td>{classTopic.createdDate}</td>
-                                                                <td>{classTopic.updatedDate}</td>
-                                                                <td>
-                                                                    <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>
-                                                                        <i class="fa-regular fa-eye"></i>
-                                                                    </Link>
-                                                                </td>
-                                                                {/* <td>
+                                                            currentClassTopics.length > 0 && currentClassTopics.map((classTopic, index) => (
+                                                                <tr key={classTopic.id}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td>{classTopic.name}</td>
+                                                                    <td>{classTopic.description}</td>
+                                                                    <td>{classTopic.createdDate}</td>
+                                                                    <td>{classTopic.updatedDate}</td>
+                                                                    <td>
+                                                                        <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>
+                                                                            <i class="fa-regular fa-eye"></i>
+                                                                        </Link>
+                                                                    </td>
+                                                                    {/* <td>
                                                                     <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>
                                                                         <i class="fa-regular fa-eye"></i>
                                                                     </Link>
                                                                 </td> */}
-                                                            </tr>
-                                                        ))}
+                                                                </tr>
+                                                            ))}
                                                     </tbody>
 
                                                 </table>
@@ -162,7 +162,7 @@ const EditClassModule = () => {
                                                 to={`/tutor/courses/create/create-class-course/create-topic/${module.classLesson.id}`}
                                                 className="btn btn-success"
                                             >
-                                               Create new topic
+                                                Create new topic
                                             </Link>
 
                                             <Link

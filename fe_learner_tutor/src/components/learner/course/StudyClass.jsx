@@ -621,7 +621,7 @@ const StudyClass = () => {
                       onClick={() => handleModuleCardClick(module.id)} style={{ marginBottom: '5px' }}
                     >
                       <div className="card-body" style={{ padding: '10px' }}>
-                        <h4 className="card-title" >Day {index + 1}: {module.startDate.substring(0, 10)}</h4>
+                        <h4 className="card-title" >Day {index + 1}: {new Date(module.startDate).toLocaleDateString('en-US')}</h4>
                         <span>{expandedModules.includes(module.id) ? '-' : '+'}</span>
                       </div>
                     </div>

@@ -421,7 +421,7 @@ const DetailCourse = () => {
                                                         onClick={(event) => handleTabClick(event, classModule.id)}
                                                         href={`#tab-${classModule.id}`}
                                                     > On Date:
-                                                        <span style={{ color: '#f58d04' }}> {classModule.startDate.substring(0, 10)}</span>
+                                                        <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
                                                     </a>
                                                 </li>
                                             </ul>

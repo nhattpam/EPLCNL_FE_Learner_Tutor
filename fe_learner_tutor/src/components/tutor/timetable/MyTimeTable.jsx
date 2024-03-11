@@ -131,7 +131,7 @@ const MyTimeTable = () => {
                                         <div className="card-body">
                                             <div className="d-flex justify-content-between mb-3">
                                                 <button className="btn btn-success" onClick={handlePreviousWeek}>Previous Week</button>
-                                                <span style={{fontWeight: 'bold', fontSize: 'larger'}}>{new Date(startDate).toLocaleDateString('en-US')}</span> {/* Display date without time */}
+                                                <span style={{ fontWeight: 'bold', fontSize: 'larger' }}>{new Date(startDate).toLocaleDateString('en-US')}</span> {/* Display date without time */}
                                                 <button className="btn btn-success" onClick={handleNextWeek}>Next Week</button>
                                             </div>
 
@@ -150,7 +150,7 @@ const MyTimeTable = () => {
                                                                         {classModuleList
                                                                             .filter(classModule => getDayOfWeek(classModule.startDate) === day)
                                                                             .map((classModule, index) => (
-                                                                                <div key={index}>{classModule.startDate.substring(0, 10)}</div>
+                                                                                <div key={index}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</div>
                                                                             ))}
                                                                     </div>
                                                                 </th>

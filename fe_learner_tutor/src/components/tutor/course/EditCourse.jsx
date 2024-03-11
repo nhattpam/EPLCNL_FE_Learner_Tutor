@@ -198,7 +198,7 @@ const EditCourse = () => {
                                             {
                                                 classModuleList.length > 0 && classModuleList.map((module) => (
                                                     <li key={module.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
-                                                        Class Date: {module.startDate !== null ? module.startDate.substring(0, 10) : "No start date"}
+                                                        Class Date: {module.startDate ? new Date(module.startDate).toLocaleDateString('en-US') : "No start date"}
                                                         <button
                                                             type="button"
                                                             // className="btn btn-secondary btn-sm"
@@ -261,7 +261,7 @@ const EditCourse = () => {
                                                     type="submit"
                                                     className="btn btn-danger"
                                                 >
-                                                   Request to delete
+                                                    Request to delete
                                                 </button>
                                             </>
 
@@ -312,7 +312,7 @@ const EditCourse = () => {
                                                                 marginTop: "50px",
                                                             }}
                                                         >
-                                                             Create
+                                                            Create
                                                         </button>
                                                     </div>
                                                 </div>

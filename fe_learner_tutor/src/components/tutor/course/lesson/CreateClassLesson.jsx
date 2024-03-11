@@ -101,7 +101,7 @@ const CreateClassLesson = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        <td>CLASS DATE - <span className='text-success'>{module.startDate?.substring(0, 10)}</span></td>
+                        <td>CLASS DATE - <span className='text-success'>{module.startDate ? new Date(module.startDate).toLocaleDateString('en-US') : "No start date"}</span></td>
                       </h4>
 
                       <form
