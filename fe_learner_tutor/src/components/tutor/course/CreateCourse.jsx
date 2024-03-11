@@ -53,7 +53,7 @@ const CreateCourse = () => {
                                                 ))}
                                             </div>
                                             <div className="mt-3">
-                                                <button type="submit" className="btn btn-success"><i class="fas fa-forward"></i></button>
+                                                <button type="submit" className="btn btn-success">Continue</button>
                                             </div>
                                         </form>
                                     </div>

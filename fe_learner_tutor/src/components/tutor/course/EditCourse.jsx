@@ -226,7 +226,7 @@ const EditCourse = () => {
                                                     className="btn btn-success mr-2"
                                                     to={`/tutor/courses/create/create-video-course/create-module/${course.id}`}
                                                 >
-                                                    <i className="bi bi-plus"></i> Create new module
+                                                    Create new module
                                                 </Link>
 
 
@@ -234,7 +234,7 @@ const EditCourse = () => {
                                                     type="submit"
                                                     className="btn btn-danger"
                                                 >
-                                                    <i className="bi bi-x-lg"></i> Request to delete
+                                                    Request to delete
                                                 </button>
                                             </>
 
@@ -253,7 +253,7 @@ const EditCourse = () => {
                                                     className="btn btn-success mr-2"
                                                     to={`/tutor/courses/create/create-class-course/create-class-module/${course.id}`}
                                                 >
-                                                    <i className="bi bi-plus"></i> Create new module
+                                                    Create new module
                                                 </Link>
 
 
@@ -261,7 +261,7 @@ const EditCourse = () => {
                                                     type="submit"
                                                     className="btn btn-danger"
                                                 >
-                                                    <i className="bi bi-x-lg"></i> Request to delete
+                                                   Request to delete
                                                 </button>
                                             </>
 
@@ -312,7 +312,7 @@ const EditCourse = () => {
                                                                 marginTop: "50px",
                                                             }}
                                                         >
-                                                            <i class="fas fa-check-double"></i> Create
+                                                             Create
                                                         </button>
                                                     </div>
                                                 </div>

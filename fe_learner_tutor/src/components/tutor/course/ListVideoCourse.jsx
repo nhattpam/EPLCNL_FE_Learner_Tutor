@@ -97,7 +97,7 @@ const ListVideoCourse = () => {
                                                     {/* Create Tutor Button */}
                                                     <Link to="/tutor/courses/create" >
                                                         <button className="btn btn-success mr-2">
-                                                            <i className="fas fa-plus-circle"></i> Create
+                                                             Create
                                                         </button>
                                                     </Link>
 

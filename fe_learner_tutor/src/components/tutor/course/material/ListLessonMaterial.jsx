@@ -96,7 +96,7 @@ const ListLessonMaterial = () => {
                           {/* Create Tutor Button */}
                           <Link to={`/tutor/courses/create-lesson-material/${storedLessonId}`} >
                             <button className="btn btn-success mr-2">
-                              <i className="fas fa-plus-circle"></i> Add
+                              Create
                             </button>
                           </Link>
                           <div className="form-group">

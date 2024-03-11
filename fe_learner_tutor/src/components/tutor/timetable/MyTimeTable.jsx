@@ -82,6 +82,17 @@ const MyTimeTable = () => {
         setStartDate(getStartOfWeek(newStartDate));
     };
 
+    // Function to generate a random color code
+    const getRandomColor = () => {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
+
+
     return (
         <>
             <div id="wrapper">
@@ -130,37 +141,37 @@ const MyTimeTable = () => {
                                                     </thead>
 
                                                     <tbody>
-
                                                         <tr>
                                                             {/* Generate columns for each day of the week */}
-                                                            {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => (
-                                                                <td key={index}>
-                                                                    <div>
-                                                                        {
-                                                                            classModuleList.length > 0 && classModuleList
-                                                                                .filter(classModule => getDayOfWeek(classModule.startDate) === day)
-                                                                                .map((classModule, index) => (
-                                                                                    <>
-                                                                                        <div key={index}>{classModule.classLesson.classHours}</div>
-                                                                                        <div>
-                                                                                            <a href={classModule.classLesson.classUrl} target="_blank" rel="noopener noreferrer">Join Class</a>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <span className='text-danger' style={{ fontWeight: 'bold' }}>Topics:</span>
-                                                                                            {classTopicList
-                                                                                                .filter(topic => topic.classLessonId === classModule.classLesson.id)
-                                                                                                .map((topic, index) => (
-                                                                                                    <div key={index}>- {topic.name}</div>
-                                                                                                ))}
-                                                                                        </div>
-                                                                                    </>
-                                                                                ))
-                                                                        }
-                                                                    </div>
-                                                                </td>
-                                                            ))}
+                                                            {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => {
+                                                                const modulesForDay = classModuleList.filter(classModule => getDayOfWeek(classModule.startDate) === day);
+                                                                return (
+                                                                    <td key={index} style={{ backgroundColor: modulesForDay.length > 0 ? getRandomColor() : 'transparent' }}>
+                                                                        <div>
+                                                                            {modulesForDay.map((classModule, index) => (
+                                                                                <div key={index}>
+                                                                                    <div>{classModule.classLesson.classHours}</div>
+                                                                                    <div>
+                                                                                        <a href={classModule.classLesson.classUrl} target="_blank" rel="noopener noreferrer">Join Class</a>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <span className='text-danger' style={{ fontWeight: 'bold' }}>Topics:</span>
+                                                                                        {classTopicList
+                                                                                            .filter(topic => topic.classLessonId === classModule.classLesson.id)
+                                                                                            .map((topic, index) => (
+                                                                                                <div key={index}>- {topic.name}</div>
+                                                                                            ))}
+                                                                                    </div>
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                    </td>
+                                                                );
+                                                            })}
                                                         </tr>
                                                     </tbody>
+
+
                                                 </table>
                                             </div>
                                         </div> {/* end card body*/}

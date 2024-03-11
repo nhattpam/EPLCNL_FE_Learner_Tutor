@@ -247,7 +247,7 @@ const CreateVideoCourseModule = () => {
                                   className="btn btn-success"
                                 // onClick={handleSubmit}
                                 >
-                                  <i class="fas fa-check-double"></i> Create
+                                  Create
                                 </button>
                               </div>
                             )}
@@ -300,7 +300,7 @@ const CreateVideoCourseModule = () => {
                           </div>
                           {
                             currentLessons.length === 0 && (
-                              <p>No lessons yet.</p>
+                              <p className="text-center">No lessons yet.</p>
                             )
                           }
                           <div className='container-fluid'>
@@ -368,7 +368,7 @@ const CreateVideoCourseModule = () => {
                           </div>
                           {
                             currentAssignments.length === 0 && (
-                              <p>No assignments yet.</p>
+                              <p className="text-center">No assignments yet.</p>
                             )
                           }
                           <div className='container-fluid'>
@@ -438,7 +438,7 @@ const CreateVideoCourseModule = () => {
                           </div>
                           {
                             currentQuizs.length === 0 && (
-                              <p>No quizzes yet.</p>
+                              <p className="text-center">No quizzes yet.</p>
                             )
                           }
                           <div className='container-fluid'>

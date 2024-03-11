@@ -156,11 +156,11 @@ const EditLesson = () => {
 
                         <div className="form-group mb-0  ">
                           <button type="submit" className="btn btn-warning " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                            <i class="fas fa-check-double"></i> Update
+                            Update
 
                           </button>
                           <Link to={`/tutor/courses/list-material-by-lesson/${lesson.id}`} className="btn btn-dark " style={{ marginLeft: '10px', marginTop: '10px' }} >
-                            <i class="fas fa-file-alt"></i> View Materials
+                            View Materials
                           </Link>
                           <Link
                             to={`/tutor/courses/list-lesson/${lesson.moduleId}`}

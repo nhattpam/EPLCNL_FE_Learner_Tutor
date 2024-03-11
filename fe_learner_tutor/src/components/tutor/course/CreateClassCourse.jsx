@@ -308,7 +308,7 @@ const CreateClassCourse = () => {
                                                 </div>
                                                 <div className="form-group mb-0">
                                                     <button type="submit" className="btn btn-success">
-                                                        <i class="fas fa-forward"></i> Continue
+                                                        Continue
                                                     </button>
                                                 </div>
                                             </form>

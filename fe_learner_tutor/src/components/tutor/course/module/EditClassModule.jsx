@@ -162,7 +162,7 @@ const EditClassModule = () => {
                                                 to={`/tutor/courses/create/create-class-course/create-topic/${module.classLesson.id}`}
                                                 className="btn btn-success"
                                             >
-                                                <i className="bi bi-plus"></i> Create new topic
+                                               Create new topic
                                             </Link>
 
                                             <Link

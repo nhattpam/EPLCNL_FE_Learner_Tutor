@@ -72,7 +72,7 @@ const ModulePart = () => {
                             )
                           }
                         >
-                          <i className="bi bi-plus"></i> Add Lesson
+                           Add Lesson
                         </button>
                       </div>
                       <hr
@@ -98,7 +98,7 @@ const ModulePart = () => {
                             )
                           }
                         >
-                          <i className="bi bi-plus"></i> Add Quiz
+                          Add Quiz
                         </button>
                       </div>
                       <hr
@@ -122,7 +122,7 @@ const ModulePart = () => {
                             )
                           }
                         >
-                          <i className="bi bi-plus"></i> Add Assignment
+                          Add Assignment
                         </button>
                       </div>
                       <hr

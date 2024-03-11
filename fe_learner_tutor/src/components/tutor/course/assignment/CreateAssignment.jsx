@@ -175,7 +175,7 @@ const CreateAssignment = () => {
                             className="btn btn-success "
                             style={{ marginLeft: "23px", marginTop: "10px" }}
                           >
-                            <i class="fas fa-check-double"></i> Create
+                             Create
                           </button>
                         </div>
                       </form>

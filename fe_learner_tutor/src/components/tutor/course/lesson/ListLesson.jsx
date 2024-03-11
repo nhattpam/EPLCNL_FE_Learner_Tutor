@@ -104,12 +104,12 @@ const ListLesson = () => {
                                         <div className="mb-2">
                                             <div className="row">
                                                 <div className="col-12 text-sm-center form-inline">
-                                                    <div className="form-group mr-2">
+                                                    {/* <div className="form-group mr-2">
                                                         <Link to={`/tutor/courses/create/create-video-course/create-module/module-part/${storedModuleId}`} className='text-danger'>
                                                             <i class="fas fa-layer-group"></i>
                                                         </Link>
 
-                                                    </div>
+                                                    </div> */}
 
                                                     <div className="form-group mr-2">
                                                         <Link to={`/tutor/courses/edit-module/${storedModuleId}`} className='text-warning'>
@@ -119,7 +119,7 @@ const ListLesson = () => {
                                                     <div className="form-group mr-2">
                                                         <Link to={`/tutor/courses/create/create-video-course/create-lesson/${storedModuleId}`} >
                                                             <button className="btn btn-success">
-                                                                <i className="fas fa-plus-circle"></i> Create
+                                                                 Create
                                                             </button>
                                                         </Link>
 

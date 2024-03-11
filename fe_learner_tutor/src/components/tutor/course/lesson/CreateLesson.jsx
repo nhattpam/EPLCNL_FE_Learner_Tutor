@@ -217,7 +217,7 @@ const CreateLesson = () => {
                                   marginTop: "50px",
                                 }}
                               >
-                                <i class="fas fa-check-double"></i> Create
+                                Create
                               </button>
                             </div>
                           </div>

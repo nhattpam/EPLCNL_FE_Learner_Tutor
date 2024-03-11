@@ -177,14 +177,14 @@ const CreateTopic = () => {
                             type="submit"
                             className="btn btn-success mr-2"
                           >
-                            <i className="fas fa-plus-circle"></i> Create
+                             Create
                           </button>
                           <button
                             type="button"
                             className="btn btn-dark"
                             onClick={handleListTopics}
                           >
-                            <i class="fas fa-microchip"></i> List Topics
+                            List Topics
                           </button>
                         </div>
                       </form>

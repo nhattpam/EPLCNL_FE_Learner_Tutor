@@ -372,7 +372,7 @@ const CreateQuiz = () => {
                                                     {!createQuizButtonClicked && (
                                                         <div className="col">
                                                             <button type="submit" className="btn btn-success " style={{ marginTop: '10px' }} >
-                                                                <i class="fas fa-check-double"></i> Create
+                                                               Create
 
                                                             </button>
                                                         </div>
@@ -474,7 +474,7 @@ const CreateQuiz = () => {
                                                 {!createQuestionButtonClicked && (
                                                     <div className="form-group mb-0  ">
                                                         <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                                                            <i class="fas fa-check-double"></i> Create
+                                                            Create
 
                                                         </button>
                                                     </div>

@@ -255,14 +255,14 @@ const EditTopic = () => {
                             type="submit"
                             className="btn btn-warning mr-2"
                           >
-                            <i class="fas fa-check-double"></i> Update
+                            Update
                           </button>
                           <button
                             type="button"
                             className="btn btn-secondary mr-2"
                             onClick={handleListTopics}
                           >
-                            <i class="fas fa-microchip"></i> List Topics
+                             List Topics
                           </button>
                           <Link
                             to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
@@ -281,7 +281,7 @@ const EditTopic = () => {
                           </div>
                           <div className="col-md-6">
                             <Link to={`/tutor/courses/create/create-class-course/create-quiz/${storedClassTopicId}`}>
-                              <h4>  <i className="fas fa-plus-circle text-warning"></i></h4>
+                              <h4>  <i className="fas fa-plus-circle text-success"></i></h4>
                             </Link>
                           </div>
                         </div>
@@ -346,7 +346,7 @@ const EditTopic = () => {
                           </div>
                           <div className="col-md-6">
                             <Link to={`/tutor/courses/create-class-material/${storedClassTopicId}`}>
-                              <h4>  <i className="fas fa-plus-circle text-warning"></i></h4>
+                              <h4>  <i className="fas fa-plus-circle text-success"></i></h4>
                             </Link>
                           </div>
                         </div>
@@ -389,7 +389,7 @@ const EditTopic = () => {
                               }
                               {
                                 currentLessonMaterials.length === 0 && (
-                                  <p>No materials yet.</p>
+                                  <p>No materials found.</p>
                                 )
                               }
 

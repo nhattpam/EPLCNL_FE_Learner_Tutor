@@ -260,7 +260,7 @@ const CreateClassCourseModule = () => {
                             className="btn btn-success"
                             onClick={handleClassLessonSubmit}
                           >
-                            <i class="fas fa-forward"></i> Continue
+                           Continue
 
                           </button>
                         </div>
