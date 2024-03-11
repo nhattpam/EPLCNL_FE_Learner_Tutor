@@ -82,7 +82,7 @@ import MyTransaction from './components/learner/transaction/MyTransaction';
 import SearchResult from './components/learner/course/SearchResult';
 import ListCourseByCategory from './components/course/ListCourseByCategory';
 import MyForum from './components/learner/forum/MyForum';
-import MyTimeable from './components/tutor/timeable/MyTimeable';
+import MyTimeTable from './components/tutor/timetable/MyTimeTable';
 
 function App() {
 
@@ -213,7 +213,7 @@ function App() {
 
         <Route path="/search-result?:searchKey" element={<SearchResult />} />
         {/* timeable for tutor*/}
-        <Route path="/my-timeable/:tutorId" element={<MyTimeable />} />
+        <Route path="/my-timetable/:tutorId" element={<MyTimeTable />} />
       </Routes>
     </div>
   );
