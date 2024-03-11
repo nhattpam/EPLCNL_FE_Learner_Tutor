@@ -6,7 +6,7 @@ import Footer from '../../Footer';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import classLessonService from '../../../../services/class-lesson.service';
-import classTopicService from '../../../../services/class-topic.service';
+import topicService from '../../../../services/topic.service';
 import classModuleService from '../../../../services/class-module.service';
 import ReactPaginate from 'react-paginate';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
@@ -49,7 +49,7 @@ const EditTopic = () => {
 
   useEffect(() => {
     if (storedClassTopicId) {
-      classTopicService
+      topicService
         .getClassTopicById(storedClassTopicId)
         .then((res) => {
           setClassTopic(res.data);
@@ -99,7 +99,7 @@ const EditTopic = () => {
 
   //list quizzes by topic
   useEffect(() => {
-    classTopicService
+    topicService
       .getAllQuizzesByClassTopic(storedClassTopicId)
       .then((res) => {
         console.log(res.data);
@@ -141,7 +141,7 @@ const EditTopic = () => {
 
   useEffect(() => {
     if (storedClassTopicId) {
-      classTopicService
+      topicService
         .getAllMaterialsByClassTopic(storedClassTopicId)
         .then((res) => {
           setMaterialList(res.data);
@@ -162,7 +162,7 @@ const EditTopic = () => {
 
     try {
       // Save account
-      const classTopicResponse = await classTopicService.saveClassTopic(classTopic);
+      const classTopicResponse = await topicService.saveClassTopic(classTopic);
 
       // console.log(JSON.stringify(courseResponse));
       // console.log(courseResponse.data);

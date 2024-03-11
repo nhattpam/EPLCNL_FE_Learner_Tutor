@@ -160,7 +160,7 @@ const EditClassTopicQuestion = () => {
                                                     className="btn btn-success mr-2"
                                                     to={`/tutor/courses/create/create-class-course/create-topic-question-answer/${question.id}`}
                                                 >
-                                                    <i className="bi bi-plus"></i> Create new answer
+                                                    Create new answer
                                                 </Link>
 
 
@@ -168,7 +168,7 @@ const EditClassTopicQuestion = () => {
                                                     type="submit"
                                                     className="btn btn-danger"
                                                 >
-                                                    <i className="bi bi-x-lg"></i> Delete Question
+                                                    Delete Question
                                                 </button>
                                             </>
 

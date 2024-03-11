@@ -58,7 +58,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import classLessonService from './services/class-lesson.service';
 import classModuleService from './services/class-module.service';
-import classTopicService from './services/class-topic.service';
+import topicService from './services/topic.service';
 import courseService from './services/course.service';
 import enrollmentService from './services/enrollment.service';
 import forumService from './services/forum.service';
@@ -103,7 +103,7 @@ function App() {
       categoryService.setToken(storedToken);
       classLessonService.setToken(storedToken);
       classModuleService.setToken(storedToken);
-      classTopicService.setToken(storedToken);
+      topicService.setToken(storedToken);
       courseService.setToken(storedToken);
       enrollmentService.setToken(storedToken);
       forumService.setToken(storedToken);

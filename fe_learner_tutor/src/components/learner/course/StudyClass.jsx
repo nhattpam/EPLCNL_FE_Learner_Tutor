@@ -10,7 +10,7 @@ import ReactQuill from 'react-quill';
 import assignmentAttemptService from '../../../services/assignment-attempt.service';
 import quizService from '../../../services/quiz.service';
 import questionService from '../../../services/question.service';
-import classTopicService from '../../../services/class-topic.service';
+import topicService from '../../../services/topic.service';
 import quizAttemptService from '../../../services/quiz-attempt.service';
 
 const StudyClass = () => {
@@ -158,7 +158,7 @@ const StudyClass = () => {
   }, [selectedLessonId]);
 
   const handleShowQuizzes = (classTopicId) => {
-    classTopicService
+    topicService
       .getAllQuizzesByClassTopic(classTopicId)
       .then((res) => {
         const updatedClassTopicList = classTopicList.map((classTopic) => {
@@ -182,7 +182,7 @@ const StudyClass = () => {
 
 
   const handleShowMaterials = (classTopicId) => {
-    classTopicService
+    topicService
       .getAllMaterialsByClassTopic(classTopicId)
       .then((res) => {
         const updatedClassTopicList = classTopicList.map((classTopic) => {

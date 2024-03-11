@@ -5,7 +5,7 @@ import Header from '../../Header'
 import Sidebar from '../../Sidebar'
 import { Link } from 'react-router-dom'
 import classLessonService from '../../../../services/class-lesson.service';
-import classTopicService from '../../../../services/class-topic.service';
+import topicService from '../../../../services/topic.service';
 
 const ListClassTopicMaterial = () => {
 
@@ -29,7 +29,7 @@ const ListClassTopicMaterial = () => {
 
   useEffect(() => {
     if (storedClassTopicId) {
-      classTopicService
+      topicService
         .getClassTopicById(storedClassTopicId)
         .then((res) => {
           setClassTopic(res.data);
@@ -42,7 +42,7 @@ const ListClassTopicMaterial = () => {
 
   useEffect(() => {
     if (storedClassTopicId) {
-      classTopicService
+      topicService
         .getAllMaterialsByClassTopic(storedClassTopicId)
         .then((res) => {
           setMaterialList(res.data);

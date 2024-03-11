@@ -8,7 +8,7 @@ import lessonService from '../../../../services/lesson.service';
 import ReactQuill from 'react-quill';
 import Dropzone from 'react-dropzone';
 import lessonMaterialService from '../../../../services/material.service';
-import classTopicService from '../../../../services/class-topic.service';
+import topicService from '../../../../services/topic.service';
 
 const CreateClassTopicMaterial = () => {
 
@@ -23,7 +23,7 @@ const CreateClassTopicMaterial = () => {
 
   useEffect(() => {
     if (storedClassTopicId) {
-      classTopicService
+      topicService
         .getClassTopicById(storedClassTopicId)
         .then((res) => {
           setClassTopic(res.data);

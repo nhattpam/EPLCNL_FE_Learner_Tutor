@@ -365,7 +365,7 @@ const StudyCourse = () => {
     //QUIZ
     const [quiz, setQuiz] = useState({
         moduleId: "",
-        classTopicId: "",
+        topicId: "",
         name: "",
         gradeToPass: "",
         deadline: "",

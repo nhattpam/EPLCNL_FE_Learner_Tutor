@@ -8,7 +8,7 @@ import Footer from '../../Footer';
 import moduleService from '../../../../services/module.service';
 import quizService from '../../../../services/quiz.service';
 import DateTimePicker from 'react-datetime-picker';
-import classTopicService from '../../../../services/class-topic.service';
+import topicService from '../../../../services/topic.service';
 import questionService from '../../../../services/question.service';
 import questionAnswerService from '../../../../services/question-answer.service';
 import Dropzone from 'react-dropzone';
@@ -26,7 +26,7 @@ const CreateClassTopicQuiz = () => {
 
     useEffect(() => {
         if (storedClassTopicId) {
-            classTopicService
+            topicService
                 .getClassTopicById(storedClassTopicId)
                 .then((res) => {
                     setClassTopic(res.data);
@@ -45,7 +45,7 @@ const CreateClassTopicQuiz = () => {
     const [quiz, setQuiz] = useState({
         name: "",
         deadline: 5, // set a default value for minutes
-        classTopicId: storedClassTopicId,
+        topicId: storedClassTopicId,
         gradeToPass: ""
     });
 

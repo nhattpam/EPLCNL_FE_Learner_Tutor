@@ -10,7 +10,7 @@ const EditClassTopicQuiz = () => {
 
   const [quiz, setQuiz] = useState({
     moduleId: "",
-    classTopicId: "",
+    topicId: "",
     name: "",
     gradeToPass: "",
     deadline: "",
@@ -170,7 +170,7 @@ const EditClassTopicQuiz = () => {
                         <i className="bi bi-plus"></i> Create new question
                       </Link>
 
-                      <Link to={`/tutor/courses/edit-topic/${quiz.classTopicId}`} className="btn btn-black"  >
+                      <Link to={`/tutor/courses/edit-topic/${quiz.topicId}`} className="btn btn-black"  >
                         <i class="fas fa-long-arrow-alt-left"></i> Back to Topic Information
 
                       </Link>

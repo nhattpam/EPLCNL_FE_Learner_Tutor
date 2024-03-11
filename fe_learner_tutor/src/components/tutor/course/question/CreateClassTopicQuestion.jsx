@@ -10,7 +10,7 @@ import quizService from '../../../../services/quiz.service';
 import questionService from '../../../../services/question.service';
 import DateTimePicker from 'react-datetime-picker';
 import Dropzone from 'react-dropzone';
-import classTopicService from '../../../../services/class-topic.service';
+import topicService from '../../../../services/topic.service';
 
 const CreateClassTopicQuestion = () => {
     const navigate = useNavigate();
@@ -38,7 +38,7 @@ const CreateClassTopicQuestion = () => {
     //display course name
     useEffect(() => {
         if (quiz.classTopic?.id) {
-            classTopicService
+            topicService
                 .getClassTopicById(quiz.classTopic?.id)
                 .then((res) => {
                     setClassTopic(res.data);

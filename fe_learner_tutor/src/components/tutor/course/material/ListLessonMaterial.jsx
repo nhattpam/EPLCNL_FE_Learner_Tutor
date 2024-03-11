@@ -5,7 +5,6 @@ import Header from '../../Header'
 import Sidebar from '../../Sidebar'
 import { Link } from 'react-router-dom'
 import classLessonService from '../../../../services/class-lesson.service';
-import classTopicService from '../../../../services/class-topic.service';
 import lessonService from '../../../../services/lesson.service';
 import ReactPaginate from 'react-paginate';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';

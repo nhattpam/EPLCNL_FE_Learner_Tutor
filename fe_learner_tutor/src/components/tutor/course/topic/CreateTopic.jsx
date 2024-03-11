@@ -6,7 +6,7 @@ import Footer from '../../Footer';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import classLessonService from '../../../../services/class-lesson.service';
-import classTopicService from '../../../../services/class-topic.service';
+import topicService from '../../../../services/topic.service';
 import classModuleService from '../../../../services/class-module.service';
 
 const CreateTopic = () => {
@@ -89,7 +89,7 @@ const CreateTopic = () => {
 
     try {
       // Save account
-      const classTopicResponse = await classTopicService.saveClassTopic(classTopic);
+      const classTopicResponse = await topicService.saveClassTopic(classTopic);
 
       // console.log(JSON.stringify(courseResponse));
       // console.log(courseResponse.data);

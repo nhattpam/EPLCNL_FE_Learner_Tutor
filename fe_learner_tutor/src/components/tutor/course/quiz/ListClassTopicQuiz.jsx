@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import moduleService from '../../../../services/module.service';
 import ReactPaginate from 'react-paginate';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
-import classTopicService from '../../../../services/class-topic.service';
+import topicService from '../../../../services/topic.service';
 
 const ListClassTopicQuiz = () => {
 
@@ -30,7 +30,7 @@ const ListClassTopicQuiz = () => {
 
     useEffect(() => {
         if (storedClassTopicId) {
-            classTopicService
+            topicService
                 .getClassTopicById(storedClassTopicId)
                 .then((res) => {
                     classTopic(res.data);
@@ -43,7 +43,7 @@ const ListClassTopicQuiz = () => {
     }, [storedClassTopicId]);
 
     useEffect(() => {
-        classTopicService
+        topicService
             .getAllQuizzesByClassTopic(storedClassTopicId)
             .then((res) => {
                 console.log(res.data);
