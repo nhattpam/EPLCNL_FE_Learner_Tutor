@@ -63,7 +63,7 @@ import courseService from './services/course.service';
 import enrollmentService from './services/enrollment.service';
 import forumService from './services/forum.service';
 import learnerService from './services/learner.service';
-import lessonMaterialService from './services/lesson-material.service';
+import lessonMaterialService from './services/material.service';
 import moduleService from './services/module.service';
 import questionAnswerService from './services/question-answer.service';
 import questionService from './services/question.service';
