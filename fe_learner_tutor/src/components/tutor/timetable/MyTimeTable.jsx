@@ -95,7 +95,7 @@ const MyTimeTable = () => {
     // Function to generate time slots within the range
     const generateTimeSlots = () => {
         const slots = [];
-        const startTime = new Date(`01/01/2024 00:00 AM`);
+        const startTime = new Date(`01/01/2024 07:00 AM`);
         const endTime = new Date(`01/02/2024 00:00 AM`);
         let currentTime = new Date(startTime);
 
@@ -121,7 +121,6 @@ const MyTimeTable = () => {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="page-title-box">
-                                        <h4 className="page-title">Calendar</h4>
                                     </div>
                                 </div>
                             </div>
@@ -132,8 +131,11 @@ const MyTimeTable = () => {
                                         <div className="card-body">
                                             <div className="d-flex justify-content-between mb-3">
                                                 <button className="btn btn-success" onClick={handlePreviousWeek}>Previous Week</button>
+                                                <span style={{fontWeight: 'bold', fontSize: 'larger'}}>{new Date(startDate).toLocaleDateString('en-US')}</span> {/* Display date without time */}
                                                 <button className="btn btn-success" onClick={handleNextWeek}>Next Week</button>
                                             </div>
+
+
                                             <div className="table-responsive">
                                                 <table className="table table-bordered table-striped mb-0">
                                                     <thead>
