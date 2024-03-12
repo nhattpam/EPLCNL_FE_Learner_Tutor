@@ -11,6 +11,8 @@ import certificateCourseService from '../../../services/certificate-course.servi
 
 const EditCourse = () => {
 
+    const tutorId = localStorage.getItem('tutorId');
+
     const [course, setCourse] = useState({
         name: "",
         description: "",
@@ -236,6 +238,14 @@ const EditCourse = () => {
                                                 >
                                                     Request to delete
                                                 </button>
+
+                                                <Link
+                                                    type="button"
+                                                    className="btn btn-black mr-2"
+                                                    to={`/tutor/courses/list-video-course/${tutorId}`}
+                                                >
+                                                    <i class="fas fa-long-arrow-alt-left"></i> Back to List Course
+                                                </Link>
                                             </>
 
 
@@ -263,6 +273,14 @@ const EditCourse = () => {
                                                 >
                                                     Request to delete
                                                 </button>
+
+                                                <Link
+                                                    type="button"
+                                                    className="btn btn-black mr-2"
+                                                    to={`/tutor/courses/list-class-course/${tutorId}`}
+                                                >
+                                                    <i class="fas fa-long-arrow-alt-left"></i> Back to List Course
+                                                </Link>
                                             </>
 
 

@@ -194,7 +194,7 @@ const CreateQuestion = () => {
                                                 data-upload-preview-template="#uploadPreviewTemplate"
                                                 data-parsley-validate
                                                 onSubmit={submitQuestion} >
-                                                <div className="card" style={{marginTop: '-20px'}}>
+                                                <div className="card" style={{ marginTop: '-20px' }}>
                                                     <div className='card-body'>
                                                         <label htmlFor="defaultGrade">Grade * :</label>
                                                         <input type="number" className="form-control" name="defaultGrade" id="defaultGrade" required value={question.defaultGrade} onChange={(e) => handleChange(e)} />
@@ -263,8 +263,7 @@ const CreateQuestion = () => {
                                                 </div>
                                                 <div className="form-group mb-0  ">
                                                     <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                                                    <i class="fas fa-check-double"></i> Create
-
+                                                        Create
                                                     </button>
                                                 </div>
                                             </form>

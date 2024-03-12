@@ -105,8 +105,9 @@ const ListClassTopicQuiz = () => {
                                                 <div className="col-12 text-sm-center form-inline">
 
                                                     <div className="form-group mr-2">
-                                                        <Link to={`/tutor/courses/edit-class-topic/${storedClassTopicId}`} className='text-warning'>
-                                                            <i class="fas fa-info-circle"></i>                                                        </Link>
+                                                        <Link to={`/tutor/courses/edit-class-topic/${storedClassTopicId}`} className='text-success'>
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </Link>
 
                                                     </div>
                                                     <div className="form-group mr-2">

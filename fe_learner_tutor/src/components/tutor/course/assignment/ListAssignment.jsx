@@ -106,21 +106,17 @@ const ListAssignment = () => {
                                         <div className="mb-2">
                                             <div className="row">
                                                 <div className="col-12 text-sm-center form-inline">
-                                                    <div className="form-group mr-2">
-                                                        <Link to={`/tutor/courses/create/create-video-course/create-module/module-part/${storedModuleId}`} className='text-danger'>
-                                                            <i class="fas fa-layer-group"></i>
-                                                        </Link>
 
-                                                    </div>
                                                     <div className="form-group mr-2">
-                                                        <Link to={`/tutor/courses/edit-module/${storedModuleId}`} className='text-warning'>
-                                                            <i class="fas fa-info-circle"></i>                                                        </Link>
+                                                        <Link to={`/tutor/courses/edit-module/${storedModuleId}`} className='text-success'>
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </Link>
 
                                                     </div>
                                                     <div className="form-group">
                                                         <Link to={`/tutor/courses/create/create-video-course/create-assignment/${storedModuleId}`} >
                                                             <button className="btn btn-success mr-2">
-                                                                <i className="fas fa-plus-circle"></i> Create
+                                                                Create
                                                             </button>
                                                         </Link>
                                                     </div>
@@ -132,7 +128,7 @@ const ListAssignment = () => {
                                             </div>
                                         </div>
                                         <div className="table-responsive">
-                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                                                 <thead className="thead-light">
                                                     <tr>
                                                         <th>No.</th>
@@ -149,7 +145,7 @@ const ListAssignment = () => {
                                                             <tr key={assignment.id}>
                                                                 <td>{index + 1}</td>
                                                                 <td>{assignment.deadline}</td>
-                                                                <td className="truncate-text">{assignment.questionText}</td>
+                                                                <td dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
                                                                 <td>{assignment.createdDate}</td>
                                                                 <td>{assignment.updatedDate}</td>
                                                                 <td>

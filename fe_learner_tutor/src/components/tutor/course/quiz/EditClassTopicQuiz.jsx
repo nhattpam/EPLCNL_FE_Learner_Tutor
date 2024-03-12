@@ -131,8 +131,9 @@ const EditClassTopicQuiz = () => {
                                 <tr key={question.id}>
                                   <td>{index + 1}</td>
                                   <td className='truncate-text'>
-                                    {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
-                                  </td>
+                                    <div dangerouslySetInnerHTML={{ __html: question?.questionImageUrl || '' }} />
+                                    <div dangerouslySetInnerHTML={{ __html: question?.questionAudioUrl || '' }} />
+                                    <div dangerouslySetInnerHTML={{ __html: question?.questionText || '' }} />                                  </td>
                                   <td>{question.defaultGrade}</td>
                                   <td>{question.createdDate}</td>
                                   <td>
@@ -167,7 +168,7 @@ const EditClassTopicQuiz = () => {
                         className="btn btn-success mr-2"
                         to={`/tutor/courses/create/create-class-course/create-topic-question/${quiz.id}`}
                       >
-                        <i className="bi bi-plus"></i> Create new question
+                      Create new question
                       </Link>
 
                       <Link to={`/tutor/courses/edit-topic/${quiz.topicId}`} className="btn btn-black"  >

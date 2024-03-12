@@ -112,14 +112,15 @@ const ListLesson = () => {
                                                     </div> */}
 
                                                     <div className="form-group mr-2">
-                                                        <Link to={`/tutor/courses/edit-module/${storedModuleId}`} className='text-warning'>
-                                                            <i class="fas fa-info-circle"></i>                                                        </Link>
+                                                        <Link to={`/tutor/courses/edit-module/${storedModuleId}`} className='text-success'>
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </Link>
 
                                                     </div>
                                                     <div className="form-group mr-2">
                                                         <Link to={`/tutor/courses/create/create-video-course/create-lesson/${storedModuleId}`} >
                                                             <button className="btn btn-success">
-                                                                 Create
+                                                                Create
                                                             </button>
                                                         </Link>
 

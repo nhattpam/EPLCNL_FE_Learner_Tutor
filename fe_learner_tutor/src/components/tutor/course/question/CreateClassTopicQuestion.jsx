@@ -266,7 +266,7 @@ const CreateClassTopicQuestion = () => {
                                                 
                                                 <div className="form-group mb-0  ">
                                                     <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                                                    <i class="fas fa-check-double"></i> Create
+                                                    Create
 
                                                     </button>
                                                 </div>

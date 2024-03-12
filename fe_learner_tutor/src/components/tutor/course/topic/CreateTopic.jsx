@@ -202,7 +202,7 @@ const CreateTopic = () => {
                                     <span className='text-dark mr-2'><i class="fas fa-file-alt"></i> View materials</span></Link>
                                 </span>
                                 <Link to={`/tutor/courses/create/create-class-course/create-quiz/${topic.id}`}>
-                                  <span className='text-warning'><i class="fas fa-long-arrow-alt-right"></i> Create Quiz</span>
+                                  <span className='text-success'><i class="fas fa-long-arrow-alt-right"></i> Create Quiz</span>
                                 </Link>
 
                               </li>

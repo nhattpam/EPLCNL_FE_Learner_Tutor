@@ -252,7 +252,7 @@ const EditModule = () => {
                                                 </Link>
                                             </h5>
                                             <div className="table-responsive">
-                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                                                     <thead className="thead-light">
                                                         <tr>
                                                             <th>No.</th>
@@ -269,7 +269,7 @@ const EditModule = () => {
                                                                 <tr key={assignment.id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>{assignment.deadline}</td>
-                                                                    <td className="truncate-text">{assignment.questionText}</td>
+                                                                    <td className="truncate-text" dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
                                                                     <td>{assignment.createdDate}</td>
                                                                     <td>{assignment.updatedDate}</td>
                                                                     <td>

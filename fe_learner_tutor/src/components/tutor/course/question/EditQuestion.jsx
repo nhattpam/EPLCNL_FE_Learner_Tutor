@@ -134,20 +134,18 @@ const EditQuestion = () => {
                                             <label>Answers:</label>
 
                                             <ul className="list-group">
-                                                {
-                                                    questionAnswerList.length > 0 && questionAnswerList.map((questionAnswer) => (
-                                                        <li key={questionAnswer.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
-                                                            {questionAnswer.answerText}
-                                                            <Link
-                                                                onClick={() => handleDeleteQuestionAnswer(questionAnswer.id)}
-                                                            >
-                                                                <i className="far fa-trash-alt text-danger"></i>
-                                                            </Link>
-                                                        </li>
-                                                    ))
-                                                }
-
+                                                {questionAnswerList.length > 0 && questionAnswerList.map((questionAnswer) => (
+                                                    <li key={questionAnswer.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
+                                                        {questionAnswer.answerText} {questionAnswer.isAnswer && (
+                                                            <span>This is answer</span>
+                                                        )}
+                                                        <Link onClick={() => handleDeleteQuestionAnswer(questionAnswer.id)}>
+                                                            <i className="far fa-trash-alt text-danger"></i>
+                                                        </Link>
+                                                    </li>
+                                                ))}
                                             </ul>
+
                                         </div>
 
                                         <div className="form-group mb-2">
@@ -160,7 +158,7 @@ const EditQuestion = () => {
                                                     className="btn btn-success mr-2"
                                                     to={`/tutor/courses/create/create-video-course/create-question-answer/${question.id}`}
                                                 >
-                                                    <i className="bi bi-plus"></i> Create new answer
+                                                    Create new answer
                                                 </Link>
 
 
@@ -168,8 +166,16 @@ const EditQuestion = () => {
                                                     type="submit"
                                                     className="btn btn-danger"
                                                 >
-                                                    <i className="bi bi-x-lg"></i> Delete Question
+                                                    Delete Question
                                                 </button>
+
+                                                <Link
+                                                    type="button"
+                                                    className="btn btn-black mr-2"
+                                                    to={`/tutor/courses/edit-quiz/${question.quizId}`}
+                                                >
+                                                    <i class="fas fa-long-arrow-alt-left"></i> Back to Quiz Infomation
+                                                </Link>
                                             </>
 
 

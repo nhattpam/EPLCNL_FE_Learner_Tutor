@@ -166,7 +166,7 @@ const CreateClassTopicMaterial = () => {
                           <div className='card-body'>
                             <div className="form-group mb-0" style={{marginLeft: '-20px'}}>
                               <button type="submit" className="btn btn-success">
-                                <i class="fas fa-check-double"></i> Add
+                                Create
 
                               </button>
                             </div>

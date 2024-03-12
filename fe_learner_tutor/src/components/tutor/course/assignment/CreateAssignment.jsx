@@ -136,7 +136,7 @@ const CreateAssignment = () => {
                               onChange={handleMinutesChange}
                               className="form-control"
                             >
-                              {[5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map(
+                              {[1, 5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map(
                                 (minutes) => (
                                   <option key={minutes} value={minutes}>
                                     {minutes} minutes

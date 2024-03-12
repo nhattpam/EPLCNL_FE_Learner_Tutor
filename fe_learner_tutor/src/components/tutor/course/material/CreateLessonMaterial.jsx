@@ -96,7 +96,8 @@ const CreateClassMaterial = () => {
 
       // console.log(materialJsonParse)
 
-      navigate(`/tutor/courses/list-material-by-lesson/${storedLessonId}`);
+      // navigate(`/tutor/courses/list-material-by-lesson/${storedLessonId}`);
+      navigate(`/tutor/courses/edit-lesson/${storedLessonId}`);
 
 
     } catch (error) {

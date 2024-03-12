@@ -109,7 +109,7 @@ const ListClassTopicMaterial = () => {
                           {/* Create Tutor Button */}
                           <Link to={`/tutor/courses/create-class-material/${storedClassTopicId}`} >
                             <button className="btn btn-success mr-2">
-                              <i className="fas fa-plus-circle"></i> Create
+                              Create
                             </button>
                           </Link>
 

@@ -186,7 +186,7 @@ const CreateClassTopicAnswer = () => {
 
                         </div>
                         <div className="form-group ml-2 mb-0  ">
-                          <button type="submit" className="btn btn-dark " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                          <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
                             Finish
 
                           </button>

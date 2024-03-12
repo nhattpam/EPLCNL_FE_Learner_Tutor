@@ -155,7 +155,7 @@ const EditLesson = () => {
                         </div>
 
                         <div className="form-group mb-0  ">
-                          <button type="submit" className="btn btn-warning " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                          <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
                             Update
 
                           </button>
@@ -163,10 +163,10 @@ const EditLesson = () => {
                             View Materials
                           </Link>
                           <Link
-                            to={`/tutor/courses/list-lesson/${lesson.moduleId}`}
-                            className="btn btn-black mr-2"
+                            to={`/tutor/courses/edit-module/${lesson.moduleId}`}
+                            className="btn btn-black mr-2 mt-2"
                           >
-                            <i className="fas fa-long-arrow-alt-left"></i> Back to List of Lessons
+                            <i className="fas fa-long-arrow-alt-left"></i> Back to Module Information
                           </Link>
                         </div>
                       </form>

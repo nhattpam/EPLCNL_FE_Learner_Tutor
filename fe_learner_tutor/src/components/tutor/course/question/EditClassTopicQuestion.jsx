@@ -137,12 +137,15 @@ const EditClassTopicQuestion = () => {
                                                 {
                                                     questionAnswerList.length > 0 && questionAnswerList.map((questionAnswer) => (
                                                         <li key={questionAnswer.id} className="list-group-item d-flex justify-content-between align-items-center">
-                                                            {questionAnswer.answerText}
+                                                            {questionAnswer.answerText} {questionAnswer.isAnswer && (
+                                                                <span>This is answer</span>
+                                                            )}
                                                             <Link
                                                                 onClick={() => handleDeleteQuestionAnswer(questionAnswer.id)}
                                                             >
                                                                 <i className="far fa-trash-alt text-danger"></i>
                                                             </Link>
+                                                            
                                                         </li>
                                                     ))
                                                 }
@@ -170,6 +173,13 @@ const EditClassTopicQuestion = () => {
                                                 >
                                                     Delete Question
                                                 </button>
+                                                <Link
+                                                    type="button"
+                                                    className="btn btn-black mr-2"
+                                                    to={`/tutor/courses/edit-topic-quiz/${question.quizId}`}
+                                                >
+                                                    <i class="fas fa-long-arrow-alt-left"></i> Back to Quiz Infomation
+                                                </Link>
                                             </>
 
 

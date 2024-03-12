@@ -86,7 +86,7 @@ const EditClassModule = () => {
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="form-group">
-                                            <h5 htmlFor="name">Start Time :</h5>
+                                            <h5 htmlFor="name">Class Date:</h5>
                                             <ul>
                                                 {module.startDate ? new Date(module.startDate).toLocaleDateString('en-US') : "No start date"}
                                             </ul>

@@ -347,7 +347,7 @@ const CreateClassTopicQuiz = () => {
                                                             className="form-control"
                                                             style={{ width: '100%' }}
                                                         >
-                                                            {[5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map((minutes) => (
+                                                            {[1, 5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map((minutes) => (
                                                                 <option key={minutes} value={minutes}>
                                                                     {minutes} minutes
                                                                 </option>
@@ -527,7 +527,7 @@ const CreateClassTopicQuiz = () => {
 
                                                 </div>
                                                 <div className="form-group ml-2 mb-0  ">
-                                                    <button type="submit" className="btn btn-dark " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
                                                         Finish
 
                                                     </button>

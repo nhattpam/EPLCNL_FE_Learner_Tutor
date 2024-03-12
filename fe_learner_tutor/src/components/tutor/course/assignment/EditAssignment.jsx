@@ -138,7 +138,7 @@ const EditAssignment = () => {
                         data-upload-preview-template="#uploadPreviewTemplate"
                         data-parsley-validate
                         onSubmit={submitAssignment} >
-                        <div className="card" style={{marginTop: '-20px'}}>
+                        <div className="card" style={{ marginTop: '-20px' }}>
                           <div className='card-body'>
                             <label htmlFor="video">Time * :</label>
                             <select
@@ -146,7 +146,7 @@ const EditAssignment = () => {
                               onChange={handleMinutesChange}
                               className="form-control"
                             >
-                              {[5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map((minutes) => (
+                              {[1, 5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map((minutes) => (
                                 <option key={minutes} value={minutes}>
                                   {minutes} minutes
                                 </option>
@@ -161,27 +161,35 @@ const EditAssignment = () => {
                               style={{ height: '300px' }}
                               modules={{
                                 toolbar: [
-                                    [{ header: [1, 2, false] }],
-                                    ['bold', 'italic', 'underline', 'strike'],
-                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
-                                    [{ 'direction': 'rtl' }],
-                                    [{ 'align': [] }],
-                                    ['link', 'image', 'video'],
-                                    ['code-block'],
-                                    [{ 'color': [] }, { 'background': [] }],
-                                    ['clean']
+                                  [{ header: [1, 2, false] }],
+                                  ['bold', 'italic', 'underline', 'strike'],
+                                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                  [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                  [{ 'direction': 'rtl' }],
+                                  [{ 'align': [] }],
+                                  ['link', 'image', 'video'],
+                                  ['code-block'],
+                                  [{ 'color': [] }, { 'background': [] }],
+                                  ['clean']
                                 ]
-                            }}
-                            theme="snow"
+                              }}
+                              theme="snow"
                             />
                           </div>
                         </div>
                         <div className="form-group mb-0  ">
-                          <button type="submit" className="btn btn-warning " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                            <i class="fas fa-check-double"></i> Update
+                          <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                            Update
                           </button>
+                          <Link
+                            type="button"
+                            className="btn btn-black mr-2 mt-2"
+                            to={`/tutor/courses/edit-module/${assignment.moduleId}`}
+                          >
+                            <i class="fas fa-long-arrow-alt-left"></i> Back to Module Infomation
+                          </Link>
                         </div>
+
                       </form>
                     </div>
                   </div>

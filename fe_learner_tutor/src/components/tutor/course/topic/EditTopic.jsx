@@ -211,7 +211,7 @@ const EditTopic = () => {
                         onSubmit={(e) => submitClassTopic(e)}
                       >
                         <div className="form-group">
-                          <label htmlFor="roomLink">Class Time :</label>
+                          <label htmlFor="roomLink">Class Date:</label>
                           <input
                             type="text"
                             className="form-control"
@@ -253,7 +253,7 @@ const EditTopic = () => {
                         <div className="form-group mb-0">
                           <button
                             type="submit"
-                            className="btn btn-warning mr-2"
+                            className="btn btn-success mr-2"
                           >
                             Update
                           </button>
