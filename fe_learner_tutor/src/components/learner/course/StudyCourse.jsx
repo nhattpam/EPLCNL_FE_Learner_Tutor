@@ -392,7 +392,13 @@ const StudyCourse = () => {
     const [questionAnswerList, setQuestionAnswerList] = useState([]);
     //display result assignment attempt
     const [showResult, setShowResult] = useState(false);
-
+    const [point, setPoint] = useState(0);
+    // Retrieve the current question based on the current index
+    const currentQuestion = questionList[currentQuestionIndex];
+    const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+    const [showAnswerColor, setShowAnswerColor] = useState(false);
+    const [showScore, setShowScore] = useState(false);
+    const [msg, setMsg] = useState("");
 
     useEffect(() => {
         if (selectedQuizId) {
@@ -429,6 +435,19 @@ const StudyCourse = () => {
     }, [selectedQuizId]);
 
 
+    useEffect(() => {
+        if (currentQuestion) { // Ensure currentQuestion is defined before accessing its id
+            questionService
+                .getAllQuestionAnswersByQuestion(currentQuestion.id)
+                .then((res) => {
+                    console.log(res.data);
+                    setQuestionAnswerList(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [currentQuestion?.id]); // Use optional chaining to avoid errors if currentQuestion is undefined
 
     const handleStartQuiz = () => {
         setPoint(0);
@@ -457,11 +476,44 @@ const StudyCourse = () => {
         setCurrentQuestionIndex(0); // Reset currentQuestionIndex to 0
     };
 
+    const handleAnswerClick = (questionAnswer, index) => {
+        setSelectedAnswerIndex(index);
+
+        if (questionAnswer.isAnswer) {
+            // If the selected answer is correct
+            setMsg("+ " + questionAnswer.question.defaultGrade + "pts");
+            const newPoint = point + questionAnswer.question.defaultGrade;
+            setPoint(newPoint);
+            setShowScore(true);
+            setShowAnswerColor(true); // Move inside the block for correct answer
+            setTimeout(() => {
+                setShowScore(false);
+                handleNextQuestion(newPoint);
+
+            }, 2000);
+
+
+        } else {
+            // If the selected answer is incorrect
+            setMsg("+ 0 pts");
+            const newPoint = point;
+            setPoint(newPoint);
+            setShowScore(true);
+            setShowAnswerColor(true); // Move inside the block for incorrect answer
+            setTimeout(() => {
+                setShowScore(false);
+                handleNextQuestion(newPoint);
+
+            }, 2000);
+        }
+    };
+
 
 
     // Function to handle click on the "Next" button
-    const handleNextQuestion = () => {
+    const handleNextQuestion = (point) => {
         // Increment the current question index
+        console.log("last point: " + point)
         setCurrentQuestionIndex(prevIndex => prevIndex + 1);
         setShowScore(false);
         setShowAnswerColor(false); // Move inside the block for correct answer
@@ -522,60 +574,11 @@ const StudyCourse = () => {
         }
     };
 
-    // Retrieve the current question based on the current index
-    const currentQuestion = questionList[currentQuestionIndex];
-    const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
-    const [showAnswerColor, setShowAnswerColor] = useState(false);
-    const [showScore, setShowScore] = useState(false);
-    const [msg, setMsg] = useState("");
-    const [point, setPoint] = useState(0);
 
 
 
-    useEffect(() => {
-        if (currentQuestion) { // Ensure currentQuestion is defined before accessing its id
-            questionService
-                .getAllQuestionAnswersByQuestion(currentQuestion.id)
-                .then((res) => {
-                    console.log(res.data);
-                    setQuestionAnswerList(res.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-    }, [currentQuestion?.id]); // Use optional chaining to avoid errors if currentQuestion is undefined
 
 
-    const handleAnswerClick = (questionAnswer, index) => {
-        setSelectedAnswerIndex(index);
-
-        if (questionAnswer.isAnswer) {
-            // If the selected answer is correct
-            setMsg("+ " + questionAnswer.question.defaultGrade + "pts");
-            const newPoint = point + questionAnswer.question.defaultGrade;
-            setPoint(newPoint);
-            setShowScore(true);
-            setShowAnswerColor(true); // Move inside the block for correct answer
-            setTimeout(() => {
-                setShowScore(false);
-                handleNextQuestion();
-
-            }, 2000);
-
-
-        } else {
-            // If the selected answer is incorrect
-            setMsg("+ 0 pts");
-            setShowScore(true);
-            setShowAnswerColor(true); // Move inside the block for incorrect answer
-            setTimeout(() => {
-                setShowScore(false);
-                handleNextQuestion();
-
-            }, 2000);
-        }
-    };
 
 
 
@@ -878,13 +881,6 @@ const StudyCourse = () => {
                                                         </div>
                                                     </section>
                                                 </div>
-                                                {/* <button
-                                                    className="btn btn-primary"
-                                                    style={{ backgroundColor: '#f58d04', color: '#fff', marginLeft: '-170px' }}
-                                                    onClick={handleNextQuestion}
-                                                >
-                                                    Next Question
-                                                </button> */}
                                             </div>
                                         )}
                                         {showResult && (
