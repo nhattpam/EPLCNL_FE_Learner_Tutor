@@ -192,7 +192,7 @@ const EditCourse = () => {
                                                             onClick={() => handleEditModule(module.id)}
                                                             className="btn btn-link text-dark"
                                                         >
-                                                            <i className="far fa-edit"></i>
+                                                            <i class="far fa-eye"></i>
                                                         </button>
                                                     </li>
                                                 ))
@@ -207,7 +207,7 @@ const EditCourse = () => {
                                                             className="btn btn-link text-dark"
                                                             onClick={() => handleEditClassModule(module.id)}
                                                         >
-                                                            <i className="far fa-edit"></i>
+                                                            <i class="far fa-eye"></i>
 
                                                         </button>
                                                     </li>

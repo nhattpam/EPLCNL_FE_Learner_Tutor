@@ -257,13 +257,7 @@ const EditTopic = () => {
                           >
                             Update
                           </button>
-                          <button
-                            type="button"
-                            className="btn btn-secondary mr-2"
-                            onClick={handleListTopics}
-                          >
-                             List Topics
-                          </button>
+                          
                           <Link
                             to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
                             className="btn btn-black"
