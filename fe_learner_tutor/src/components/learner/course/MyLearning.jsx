@@ -27,6 +27,7 @@ const MyLearning = () => {
     const [learnersCount, setLearnersCount] = useState({});
     const [showRefundModal, setShowRefundModal] = useState(false); // State variable for modal visibility
     const [selectedCourseName, setSelectedCourseName] = useState(''); // State variable to store the name of the selected course
+    const [courseScore, setCoureScore] = useState(0); // State variable to store the name of the selected course
 
     const contentRef = useRef(null);
 
@@ -42,6 +43,14 @@ const MyLearning = () => {
                         const learnersResponse = await courseService.getAllEnrollmentsByCourse(enrollment.transaction.courseId);
                         const learnersOfCourse = learnersResponse.data;
                         learnersCounts[enrollment.transaction.courseId] = learnersOfCourse.length; // Store learner count for the course
+
+                        //CHECK PROGRESSING
+                        if (!enrollment.transaction?.course?.isOnlineClass) {
+                            const courseScoreResponse = await enrollmentService.getCourseScoreByEnrollmentId(enrollment.id);
+                            console.log("course Score: " + courseScoreResponse.data)
+                            setCoureScore(courseScoreResponse.data);
+                        }
+
                     } catch (error) {
                         console.error(`Error fetching learners for course ${enrollment.course.name}:`, error);
                     }
@@ -198,6 +207,9 @@ const MyLearning = () => {
         return diffInDays <= 2;
     };
 
+
+    //CHECK PROGRESSING
+
     return (
         <>
             <Header />
@@ -235,41 +247,48 @@ const MyLearning = () => {
                                         <div className="row " data-aos="zoom-in" data-aos-delay={100}>
                                             {
                                                 enrollmentList.length > 0 && enrollmentList.map((enrollment, index) => (
-                                                    <div key={enrollment.transaction.courseId} className="col-lg-4 col-md-6 d-flex align-items-stretch">
+                                                    <div key={enrollment.transaction?.courseId} className="col-lg-4 col-md-6 d-flex align-items-stretch">
                                                         <div className="course-item " id='iitem'>
-                                                            <img src={enrollment.transaction.course.imageUrl} className="img-fluid" alt="..." />
+                                                            <img src={enrollment.transaction?.course?.imageUrl} className="img-fluid" alt="..." />
                                                             <div className="course-content">
                                                                 <div className="d-flex justify-content-between align-items-center mb-3">
-                                                                    <h4>{enrollment.transaction.course.category?.name}</h4>
-                                                                    <p className="price">{parseFloat(enrollment.transaction.course.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
-                                                                    <p className="price">{`$${enrollment.transaction.course.stockPrice}`}</p>
+                                                                    <h4>{enrollment.transaction.course?.category?.name}</h4>
+                                                                    <p className="price">{parseFloat(enrollment.transaction?.course?.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
+                                                                    <p className="price">{`$${enrollment.transaction?.course?.stockPrice}`}</p>
                                                                 </div>
-                                                                {enrollment.transaction.course.isOnlineClass && (
-                                                                    <h3><Link to={`/study-class/${enrollment.transaction.courseId}`}>{enrollment.transaction.course.name}</Link></h3>
+                                                                {enrollment.transaction?.course?.isOnlineClass && (
+                                                                    <h3><Link to={`/study-class/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
 
                                                                 )}
                                                                 {!enrollment.transaction.course.isOnlineClass && (
-                                                                    <h3><Link to={`/study-course/${enrollment.transaction.courseId}`}>{enrollment.transaction.course.name}</Link></h3>
+                                                                    <h3><Link to={`/study-course/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
 
                                                                 )}
-                                                                <p>{enrollment.transaction.course.description}</p>
+                                                                <p>{enrollment.transaction?.course?.description}</p>
                                                                 <div className="trainer d-flex justify-content-between align-items-center">
                                                                     <div className="trainer-profile d-flex align-items-center">
-                                                                        <img src={enrollment.transaction.course.tutor.account.imageUrl} className="img-fluid" alt="" />
-                                                                        <span>{enrollment.transaction.course.tutor.account.fullName}</span>
+                                                                        <img src={enrollment.transaction?.course?.tutor?.account?.imageUrl} className="img-fluid" alt="" />
+                                                                        <span>{enrollment.transaction?.course?.tutor?.account?.fullName}</span>
                                                                     </div>
 
                                                                     <div className="trainer-rank d-flex align-items-center">
-                                                                        <i className="bx bx-user" />&nbsp;{learnersCount[enrollment.transaction.course.id]}
+                                                                        <i className="bx bx-user" />&nbsp;{learnersCount[enrollment.transaction?.course?.id]}
                                                                         &nbsp;&nbsp;
-                                                                        <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.transaction.courseId, learnerId)}></i>
+                                                                        <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.transaction?.courseId, learnerId)}></i>
                                                                         &nbsp;&nbsp;&nbsp;
-                                                                        <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction.courseId, learnerId)}></i>
+                                                                        <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction?.courseId, learnerId)}></i>
                                                                     </div>
                                                                 </div>
+                                                                {
+                                                                    !enrollment.transaction?.course?.isOnlineClass && (
+                                                                        <div>
+                                                                            {courseScore}
+                                                                        </div>
+                                                                    )
+                                                                }
                                                                 {isTransactionDateValid(enrollment.enrolledDate) && (
                                                                     <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(enrollment.id)}>
-                                                                        Request a refund
+                                                                        I want return
                                                                     </a>
                                                                 )}
 
@@ -279,7 +298,7 @@ const MyLearning = () => {
                                                                             <div className="modal-dialog  modal-dialog-scrollable">
                                                                                 <div className="modal-content">
                                                                                     <div className="modal-header">
-                                                                                        <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{enrollment.transaction.course.name}</span> </h5>
+                                                                                        <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
                                                                                         <button type="button" className="close" onClick={() => setShowFeedbackModal(false)}>
                                                                                             <span aria-hidden="true">&times;</span>
                                                                                         </button>
@@ -328,7 +347,7 @@ const MyLearning = () => {
                                                                             <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
                                                                                 <div className="modal-content">
                                                                                     <div className="modal-header">
-                                                                                        <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{enrollment.transaction.course.name}</span> </h5>
+                                                                                        <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
                                                                                         <button type="button" className="close" onClick={() => setShowReportModal(false)}>
                                                                                             <span aria-hidden="true">&times;</span>
                                                                                         </button>

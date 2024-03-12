@@ -33,6 +33,14 @@ class EnrollmentService {
           }
         });
       }
+
+      getCourseScoreByEnrollmentId(id) {
+        return axios.get(API_URL + `/enrollments/${id}/score`, {
+          headers: {
+            Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+          }
+        });
+      }
     
 }
 
