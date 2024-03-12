@@ -513,7 +513,6 @@ const StudyCourse = () => {
     // Function to handle click on the "Next" button
     const handleNextQuestion = (point) => {
         // Increment the current question index
-        console.log("last point: " + point)
         setCurrentQuestionIndex(prevIndex => prevIndex + 1);
         setShowScore(false);
         setShowAnswerColor(false); // Move inside the block for correct answer

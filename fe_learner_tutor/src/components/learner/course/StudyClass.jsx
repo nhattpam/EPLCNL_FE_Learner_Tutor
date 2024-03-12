@@ -299,7 +299,7 @@ const StudyClass = () => {
 
 
   // Function to handle click on the "Next" button
-  const handleNextQuestion = () => {
+  const handleNextQuestion = (point) => {
     // Increment the current question index
     setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     setShowScore(false);
@@ -340,7 +340,7 @@ const StudyClass = () => {
       setShowAnswerColor(true); // Move inside the block for correct answer
       setTimeout(() => {
         setShowScore(false);
-        handleNextQuestion();
+        handleNextQuestion(newPoint);
 
       }, 2000);
 
@@ -348,6 +348,8 @@ const StudyClass = () => {
     } else {
       // If the selected answer is incorrect
       setMsg("+ 0 pts");
+      const newPoint = point;
+      setPoint(newPoint);
       setShowScore(true);
       setShowAnswerColor(true); // Move inside the block for incorrect answer
       setTimeout(() => {
