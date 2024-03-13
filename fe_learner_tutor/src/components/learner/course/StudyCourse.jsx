@@ -279,6 +279,7 @@ const StudyCourse = () => {
         setSelectedLesson(null);
         setSelectedQuizId(null);
         setSelectedQuiz(null);
+        setShowTimer(false);
     };
 
     // State to track whether the form should be displayed or not
@@ -307,6 +308,8 @@ const StudyCourse = () => {
             if (remaining === 0) {
                 clearInterval(interval);
             }
+
+            
         }, 1000);
     };
 

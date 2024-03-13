@@ -22,6 +22,7 @@ const MyLearning = () => {
 
 
     const [enrollmentList, setEnrollmentList] = useState([]);
+    const [profileCertificateList, setProfileCertificateList] = useState([]);
     const [showFeedbackModal, setShowFeedbackModal] = useState(false); // State variable for modal visibility
     const [showReportModal, setShowReportModal] = useState(false); // State variable for modal visibility
     const [learnersCount, setLearnersCount] = useState({});
@@ -61,6 +62,17 @@ const MyLearning = () => {
                     }
                 }
                 setLearnersCount(prevState => ({ ...prevState, ...learnersCounts })); // Update state with learners count
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [learnerId]);
+
+    useEffect(() => {
+        learnerService
+            .getAllProfileCertificateByLearnerId(learnerId)
+            .then((res) => {
+                setProfileCertificateList(res.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -287,11 +299,11 @@ const MyLearning = () => {
                                                                 {
                                                                     !enrollment.transaction?.course?.isOnlineClass && (
                                                                         <div className="progress-container mt-3">
-                                                                            <div className="left-title" style={{fontWeight: 'bold'}}>{learningeScore}</div>
+                                                                            <div className="left-title" style={{ fontWeight: 'bold' }}>{learningeScore}</div>
                                                                             <div className="progress-wrapper">
                                                                                 <progress className="orange-progress-bar" value={learningeScore} max={courseScore}></progress>
                                                                             </div>
-                                                                            <div className="right-title" style={{fontWeight: 'bold'}}> {courseScore}</div>
+                                                                            <div className="right-title" style={{ fontWeight: 'bold' }}> {courseScore}</div>
                                                                         </div>
                                                                     )
                                                                 }
@@ -486,7 +498,35 @@ const MyLearning = () => {
 
                             <div className="tab-pane fade" id="tab-content-2">
                                 {/* Course Content for Tab 2 */}
-                                {/* You can customize this content based on your needs */}
+                                <div className="tab-pane fade show active" id="tab-content-1">
+                                    <section id="courses" className="courses">
+                                        <div className="container" data-aos="fade-up">
+                                            <div className="row " data-aos="zoom-in" data-aos-delay={100}>
+                                                <div>
+                                                    {profileCertificateList.length > 0 && profileCertificateList.map((proCertificate, index) => (
+                                                        <>
+                                                            <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                                                                <div className="course-item iitem">
+                                                                    <img src={proCertificate.certificate?.course?.imageUrl} className="img-fluid" alt="..." />
+                                                                    <div className="course-content">
+                                                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                                                            <h4>DONE</h4>
+                                                                        </div>
+                                                                        <h3><a href="course-details.html">{proCertificate.certificate?.name}</a></h3>
+                                                                        <p>{proCertificate.certificate?.description}</p>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                {/* End Course Item*/}
+                                                            </div>
+
+                                                        </>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
                             </div>
 
                         </div>

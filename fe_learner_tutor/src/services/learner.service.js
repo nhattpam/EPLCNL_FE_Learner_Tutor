@@ -92,5 +92,13 @@ class LearnerService {
       }
     });
   }
+
+  getAllProfileCertificateByLearnerId(id) {
+    return axios.get(API_URL + `/learners/${id}/profile-certificates`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new LearnerService;
