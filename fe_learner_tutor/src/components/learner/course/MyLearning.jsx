@@ -27,7 +27,8 @@ const MyLearning = () => {
     const [learnersCount, setLearnersCount] = useState({});
     const [showRefundModal, setShowRefundModal] = useState(false); // State variable for modal visibility
     const [selectedCourseName, setSelectedCourseName] = useState(''); // State variable to store the name of the selected course
-    const [courseScore, setCoureScore] = useState(0); // State variable to store the name of the selected course
+    const [courseScore, setCourseScore] = useState(0); // State variable to store the name of the selected course
+    const [learningeScore, setLearningScore] = useState(0); // State variable to store the name of the selected course
 
     const contentRef = useRef(null);
 
@@ -48,7 +49,11 @@ const MyLearning = () => {
                         if (!enrollment.transaction?.course?.isOnlineClass) {
                             const courseScoreResponse = await enrollmentService.getCourseScoreByEnrollmentId(enrollment.id);
                             console.log("course Score: " + courseScoreResponse.data)
-                            setCoureScore(courseScoreResponse.data);
+                            setCourseScore(courseScoreResponse.data);
+
+                            const learningScoreResponse = await enrollmentService.getLearningScoreByEnrollmentId(enrollment.id);
+                            console.log("learning Score: " + learningScoreResponse.data)
+                            setLearningScore(learningScoreResponse.data);
                         }
 
                     } catch (error) {
@@ -178,7 +183,7 @@ const MyLearning = () => {
         refund.enrollmentId = enrollmentId;
         enrollmentService.getEnrollmentById(enrollmentId)
             .then((res) => {
-                setSelectedCourseName(res.data.transaction.course.name); // Update the selected course name
+                setSelectedCourseName(res.data.transaction?.course?.name); // Update the selected course name
 
             })
 
@@ -281,11 +286,16 @@ const MyLearning = () => {
                                                                 </div>
                                                                 {
                                                                     !enrollment.transaction?.course?.isOnlineClass && (
-                                                                        <div>
-                                                                            {courseScore}
+                                                                        <div className="progress-container mt-3">
+                                                                            <div className="left-title" style={{fontWeight: 'bold'}}>{learningeScore}</div>
+                                                                            <div className="progress-wrapper">
+                                                                                <progress className="orange-progress-bar" value={learningeScore} max={courseScore}></progress>
+                                                                            </div>
+                                                                            <div className="right-title" style={{fontWeight: 'bold'}}> {courseScore}</div>
                                                                         </div>
                                                                     )
                                                                 }
+
                                                                 {isTransactionDateValid(enrollment.enrolledDate) && (
                                                                     <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(enrollment.id)}>
                                                                         I want return
@@ -516,6 +526,42 @@ const MyLearning = () => {
                     #iitem:hover {
                         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
                     }
+                    
+                    .progress-container {
+                        display: flex;
+                        align-items: center;
+                    }
+                    
+                    .left-title {
+                        flex: 1;
+                        text-align: right; /* Align text to the right */
+                        padding-right: 10px; /* Add some space between the title and the progress bar */
+                    }
+                    
+                    .progress-wrapper {
+                        flex: 5; /* Adjust the width of the progress bar */
+                    }
+                    
+                    .right-title {
+                        flex: 1;
+                        text-align: left; /* Align text to the left */
+                        padding-left: 10px; /* Add some space between the progress bar and the title */
+                    }
+                    
+                    .orange-progress-bar {
+                        appearance: none;
+                        width: 100%;
+                        height: 10px;
+                    }
+                    
+                    .orange-progress-bar::-webkit-progress-bar {
+                        background-color: #f2f2f2; /* Background color of the progress bar */
+                    }
+                    
+                    .orange-progress-bar::-webkit-progress-value {
+                        background-color: orange; /* Color of the progress bar */
+                    }
+                    
                     
                 `}
             </style>

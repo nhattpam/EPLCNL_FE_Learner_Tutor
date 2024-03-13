@@ -35,7 +35,15 @@ class EnrollmentService {
       }
 
       getCourseScoreByEnrollmentId(id) {
-        return axios.get(API_URL + `/enrollments/${id}/score`, {
+        return axios.get(API_URL + `/enrollments/${id}/course-score`, {
+          headers: {
+            Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+          }
+        });
+      }
+
+      getLearningScoreByEnrollmentId(id) {
+        return axios.get(API_URL + `/enrollments/${id}/learning-score`, {
           headers: {
             Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
           }
