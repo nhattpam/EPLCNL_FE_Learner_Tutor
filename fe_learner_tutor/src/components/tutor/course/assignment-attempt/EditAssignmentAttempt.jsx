@@ -211,7 +211,7 @@ const EditAssignmentAttempt = () => {
                                                     marginTop: "50px",
                                                 }}
                                             >
-                                                <i class="fas fa-check-double"></i> Save
+                                                 Save
                                             </button>
                                         </div>
 
