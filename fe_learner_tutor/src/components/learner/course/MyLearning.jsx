@@ -14,6 +14,7 @@ import Dropzone from "react-dropzone";
 import courseService from '../../../services/course.service';
 import enrollmentService from '../../../services/enrollment.service';
 import refundRequestService from '../../../services/refund-request.service';
+import moduleService from '../../../services/module.service';
 
 
 const MyLearning = () => {
@@ -42,9 +43,9 @@ const MyLearning = () => {
                 const learnersCounts = {}; // Object to store number of learners for each course
                 for (const enrollment of res.data) {
                     try {
-                        const learnersResponse = await courseService.getAllEnrollmentsByCourse(enrollment.transaction.courseId);
+                        const learnersResponse = await courseService.getAllEnrollmentsByCourse(enrollment.transaction?.courseId);
                         const learnersOfCourse = learnersResponse.data;
-                        learnersCounts[enrollment.transaction.courseId] = learnersOfCourse.length; // Store learner count for the course
+                        learnersCounts[enrollment.transaction?.courseId] = learnersOfCourse.length; // Store learner count for the course
 
                         //CHECK PROGRESSING
                         if (!enrollment.transaction?.course?.isOnlineClass) {
@@ -58,7 +59,7 @@ const MyLearning = () => {
                         }
 
                     } catch (error) {
-                        console.error(`Error fetching learners for course ${enrollment.course.name}:`, error);
+                        console.error(`Error fetching learners for course ${enrollment.course?.name}:`, error);
                     }
                 }
                 setLearnersCount(prevState => ({ ...prevState, ...learnersCounts })); // Update state with learners count
@@ -186,6 +187,93 @@ const MyLearning = () => {
         enrollmentId: "",
     });
 
+    const [refundSurvey, setRefundSurvey] = useState({
+        reason: "",
+        refundRequestId: "",
+    });
+
+    const [moduleList, setModuleList] = useState([]);
+    const [classModuleList, setClassModuleList] = useState([]);
+    const [assignmentList, setAssignmentList] = useState([]);
+    const [lessonList, setLessonList] = useState([]);
+    const [quizList, setQuizList] = useState([]);
+    //class topics by classLessonId
+    const [classTopicList, setClassTopicList] = useState([]);
+
+
+    useEffect(() => {
+        const fetchModules = async () => {
+            try {
+                // Create an array of promises for each module fetch operation
+                const promises = enrollmentList.map(async (enrollment) => {
+                    const res = await courseService.getAllModulesByCourse(enrollment.transaction?.courseId);
+                    return res.data || []; // Ensure moduleList is initialized with an empty array if res.data is undefined
+                });
+
+                // Wait for all promises to resolve
+                const moduleLists = await Promise.all(promises);
+
+                // Combine all module lists into a single array
+                const combinedModuleList = moduleLists.reduce((acc, modules) => acc.concat(modules), []);
+
+                // Set the combined module list
+                setModuleList(combinedModuleList);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        // Call the fetchModules function
+        fetchModules();
+    }, [enrollmentList]); // Add enrollmentList to the dependency array
+
+    useEffect(() => {
+        // Fetch lessons, assignments, and quizzes for each module
+        Promise.all(moduleList.map(module => {
+            return Promise.all([
+                moduleService.getAllLessonsByModule(module.id),
+                moduleService.getAllAssignmentsByModule(module.id),
+                moduleService.getAllQuizzesByModule(module.id)
+            ]);
+        })).then(responses => {
+            const allLessons = responses.flatMap(response => response[0].data);
+            const allAssignments = responses.flatMap(response => response[1].data);
+            const allQuizzes = responses.flatMap(response => response[2].data);
+            setLessonList(allLessons);
+            setAssignmentList(allAssignments);
+            setQuizList(allQuizzes);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, [moduleList]);
+
+    // Function to handle tab switching
+    const handleTabClick = (event, moduleId) => {
+        // Prevent the default behavior of the link
+        event.preventDefault();
+        // Remove the "active" class from all tab links
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        // Add the "active" class to the clicked tab link
+        event.target.classList.add('active');
+        // Hide all tab content
+        document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active', 'show'));
+        // Show the tab content corresponding to the clicked tab link
+        document.getElementById(`tab-${moduleId}`).classList.add('active', 'show');
+    };
+
+    const [combinedList, setCombinedList] = useState([]);
+    useEffect(() => {
+        // Combine lessons, assignments, and quizzes into a single array
+        const combined = [
+            ...lessonList.map(lesson => ({ ...lesson, type: 'lesson' })),
+            ...assignmentList.map(assignment => ({ ...assignment, type: 'assignment' })),
+            ...quizList.map(quiz => ({ ...quiz, type: 'quiz' }))
+        ];
+        // Sort the combined array based on your preferred logic
+
+        setCombinedList(combined);
+    }, [lessonList, assignmentList, quizList]);
+
     const handleReasonRefundChange = (value) => {
         setRefund({ ...refund, reason: value });
     };
@@ -200,6 +288,7 @@ const MyLearning = () => {
             })
 
     };
+
 
     const submitRefund = (e) => {
         e.preventDefault();
@@ -221,7 +310,7 @@ const MyLearning = () => {
         const currentDate = new Date();
         const diffInMilliseconds = currentDate - new Date(transactionDate);
         const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
-        return diffInDays <= 2;
+        return diffInDays <= 7;
     };
 
 
@@ -451,22 +540,66 @@ const MyLearning = () => {
                                                                                         </button>
                                                                                     </div>
                                                                                     <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Set maxHeight and overflowY */}
-                                                                                        <ReactQuill
-                                                                                            value={refund.reason}
-                                                                                            onChange={handleReasonRefundChange}
-                                                                                            modules={{
-                                                                                                toolbar: [
-                                                                                                    [{ header: [1, 2, false] }],
-                                                                                                    [{ 'direction': 'rtl' }],
-                                                                                                    [{ 'align': [] }],
-                                                                                                    ['code-block'],
-                                                                                                    [{ 'color': [] }, { 'background': [] }],
-                                                                                                    ['clean']
-                                                                                                ]
-                                                                                            }}
-                                                                                            theme="snow"
-                                                                                            preserveWhitespace={true}
-                                                                                        />
+                                                                                        {!enrollment.transaction?.course?.isOnlineClass && (
+                                                                                            <div className="container" data-aos="fade-up">
+                                                                                                {
+                                                                                                    moduleList.length > 0 && moduleList.map((module, index) => (
+                                                                                                        <div className="row" key={module.id}>
+                                                                                                            <div className="col-lg-3">
+                                                                                                                <ul className="nav nav-tabs flex-column">
+                                                                                                                    <li className="nav-item get-button">
+                                                                                                                        <a
+                                                                                                                            className={`nav-link ${index === 0 ? 'active show' : ''}`}
+                                                                                                                            onClick={(event) => handleTabClick(event, module.id)}
+                                                                                                                            href={`#tab-${module.id}`}
+                                                                                                                        >
+                                                                                                                            {module.name}
+                                                                                                                        </a>
+                                                                                                                    </li>
+                                                                                                                </ul>
+                                                                                                            </div>
+                                                                                                            <div className="col-lg-9 mt-4 mt-lg-0 ">
+                                                                                                                <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
+                                                                                                                    <div
+                                                                                                                        className={`tab-pane ${index === 0 ? 'active show' : ''}`}
+                                                                                                                        id={`tab-${module.id}`}
+                                                                                                                    >
+                                                                                                                        {
+                                                                                                                            combinedList.length > 0 && combinedList.map((item, combinedIndex) => (
+                                                                                                                                <div className="combined-item" key={combinedIndex}>
+                                                                                                                                    {item.type === 'lesson' && (
+                                                                                                                                        <div className="lesson">
+                                                                                                                                            <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
+                                                                                                                                        </div>
+                                                                                                                                    )}
+                                                                                                                                    {item.type === 'assignment' && (
+                                                                                                                                        <div className="assignment">
+                                                                                                                                            <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Assignment - Deadline: {item.deadline} minutes</p>
+                                                                                                                                        </div>
+                                                                                                                                    )}
+                                                                                                                                    {item.type === 'quiz' && (
+                                                                                                                                        <div className="quiz">
+                                                                                                                                            <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Quiz - {item.name}</p>
+                                                                                                                                        </div>
+                                                                                                                                    )}
+                                                                                                                                </div>
+                                                                                                                            ))
+                                                                                                                        }
+                                                                                                                        {
+                                                                                                                            combinedList.length === 0 && (
+                                                                                                                                <p>Empty.</p>
+                                                                                                                            )
+                                                                                                                        }
+
+                                                                                                                    </div>
+                                                                                                                </div>
+
+                                                                                                            </div>
+
+                                                                                                        </div>
+                                                                                                    ))}
+                                                                                            </div>
+                                                                                        )}
 
                                                                                     </div>
                                                                                     <div className="modal-footer">
@@ -514,7 +647,7 @@ const MyLearning = () => {
                                                                         </div>
                                                                         <h3><a href="course-details.html">{proCertificate.certificate?.name}</a></h3>
                                                                         <p>{proCertificate.certificate?.description}</p>
-                                                                        
+
                                                                     </div>
                                                                 </div>
                                                                 {/* End Course Item*/}

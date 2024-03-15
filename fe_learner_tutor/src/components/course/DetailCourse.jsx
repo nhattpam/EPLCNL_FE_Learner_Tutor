@@ -142,6 +142,20 @@ const DetailCourse = () => {
         });
     }, [moduleList]);
 
+    const [combinedList, setCombinedList] = useState([]);
+    const [filteredCombinedList, setFilteredCombinedList] = useState([]);
+    useEffect(() => {
+        // Combine lessons, assignments, and quizzes into a single array
+        const combined = [
+            ...lessonList.map(lesson => ({ ...lesson, type: 'lesson' })),
+            ...assignmentList.map(assignment => ({ ...assignment, type: 'assignment' })),
+            ...quizList.map(quiz => ({ ...quiz, type: 'quiz' }))
+        ];
+        // Sort the combined array based on your preferred logic
+
+        setCombinedList(combined);
+    }, [lessonList, assignmentList, quizList]);
+
     // Function to handle tab switching
     const handleTabClick = (event, moduleId) => {
         // Prevent the default behavior of the link
@@ -154,7 +168,12 @@ const DetailCourse = () => {
         document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active', 'show'));
         // Show the tab content corresponding to the clicked tab link
         document.getElementById(`tab-${moduleId}`).classList.add('active', 'show');
+
+        // Filter the combined list based on the clicked module ID
+        const filteredList = combinedList.filter(item => item.moduleId === moduleId);
+        setFilteredCombinedList(filteredList);
     };
+
 
     // Function to handle tab pay
     // Function to handle tab pay
@@ -247,18 +266,7 @@ const DetailCourse = () => {
         }
     }, [courseId, learnerId]);
 
-    const [combinedList, setCombinedList] = useState([]);
-    useEffect(() => {
-        // Combine lessons, assignments, and quizzes into a single array
-        const combined = [
-            ...lessonList.map(lesson => ({ ...lesson, type: 'lesson' })),
-            ...assignmentList.map(assignment => ({ ...assignment, type: 'assignment' })),
-            ...quizList.map(quiz => ({ ...quiz, type: 'quiz' }))
-        ];
-        // Sort the combined array based on your preferred logic
 
-        setCombinedList(combined);
-    }, [lessonList, assignmentList, quizList]);
 
 
     //list feedbacks
@@ -488,8 +496,8 @@ const DetailCourse = () => {
                                                     id={`tab-${module.id}`}
                                                 >
                                                     {
-                                                        combinedList.length > 0 && combinedList.map((item, combinedIndex) => (
-                                                            <div className="combined-item" key={combinedIndex}>
+                                                        filteredCombinedList.length > 0 && filteredCombinedList.map((item, combinedIndex) => (
+                                                            <div className="combined-item" key={combinedIndex}> 
                                                                 {item.type === 'lesson' && (
                                                                     <div className="lesson">
                                                                         <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
