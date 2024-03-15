@@ -15,6 +15,7 @@ import courseService from '../../../services/course.service';
 import enrollmentService from '../../../services/enrollment.service';
 import refundRequestService from '../../../services/refund-request.service';
 import moduleService from '../../../services/module.service';
+import classLessonService from '../../../services/class-lesson.service';
 
 
 const MyLearning = () => {
@@ -57,6 +58,10 @@ const MyLearning = () => {
                             console.log("learning Score: " + learningScoreResponse.data)
                             setLearningScore(learningScoreResponse.data);
                         }
+
+                        enrollmentList.forEach(element => {
+                            console.log("this is enrollment: ", element.transaction?.course?.name + element.transaction?.course?.isOnlineClass)
+                        });
 
                     } catch (error) {
                         console.error(`Error fetching learners for course ${enrollment.course?.name}:`, error);
@@ -201,31 +206,8 @@ const MyLearning = () => {
     const [classTopicList, setClassTopicList] = useState([]);
     const [combinedList, setCombinedList] = useState([]);
     const [filteredCombinedList, setFilteredCombinedList] = useState([]);
-    useEffect(() => {
-        const fetchModules = async () => {
-            try {
-                // Create an array of promises for each module fetch operation
-                const promises = enrollmentList.map(async (enrollment) => {
-                    const res = await courseService.getAllModulesByCourse(enrollment.transaction?.courseId);
-                    return res.data || []; // Ensure moduleList is initialized with an empty array if res.data is undefined
-                });
+    const [activeClassModuleId, setActiveClassModuleId] = useState(classModuleList.length > 0 ? classModuleList[0].id : null);
 
-                // Wait for all promises to resolve
-                const moduleLists = await Promise.all(promises);
-
-                // Combine all module lists into a single array
-                const combinedModuleList = moduleLists.reduce((acc, modules) => acc.concat(modules), []);
-
-                // Set the combined module list
-                setModuleList(combinedModuleList);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        // Call the fetchModules function
-        fetchModules();
-    }, [enrollmentList]); // Add enrollmentList to the dependency array
 
     useEffect(() => {
         // Fetch lessons, assignments, and quizzes for each module
@@ -258,6 +240,15 @@ const MyLearning = () => {
         setFilteredCombinedList(filteredList);
     };
 
+    const handleTabClick2 = (event, moduleId) => {
+        // Prevent the default behavior of the link
+        event.preventDefault();
+        // Remove the "active" class from all tab links
+        setActiveClassModuleId(moduleId);
+
+
+    };
+
     useEffect(() => {
         // Set filteredCombinedList with the content of the first module initially
         if (moduleList.length > 0) {
@@ -266,6 +257,13 @@ const MyLearning = () => {
             setFilteredCombinedList(filteredList);
         }
     }, [moduleList, combinedList]);
+    
+    useEffect(() => {
+        // Set the active class module ID to the ID of the first class module
+        if (classModuleList.length > 0) {
+            setActiveClassModuleId(classModuleList[0].id);
+        }
+    }, [classModuleList]);
 
 
     useEffect(() => {
@@ -285,17 +283,63 @@ const MyLearning = () => {
         setRefund({ ...refund, reason: value });
     };
 
+
+    const [course, setCourse] = useState({
+        name: "",
+        description: "",
+        code: "",
+        imageUrl: "",
+        stockPrice: "",
+        rating: "",
+        categoryId: "",
+        tags: "",
+        createdDate: "",
+        updatedDate: "",
+        modules: [],
+        classModules: []
+    });
+
+
     const handleRefundClick = (enrollmentId) => {
         setShowRefundModal(true);
         refund.enrollmentId = enrollmentId;
         enrollmentService.getEnrollmentById(enrollmentId)
             .then((res) => {
                 setSelectedCourseName(res.data.transaction?.course?.name); // Update the selected course name
-
+                if (res.data.transaction?.course) {
+                    courseService
+                        .getCourseById(res.data.transaction?.course?.id)
+                        .then((res) => {
+                            setCourse(res.data);
+                            courseService.getAllModulesByCourse(res.data.id)
+                                .then((res) => {
+                                    setModuleList(res.data);
+                                })
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                    courseService
+                        .getCourseById(res.data.transaction?.course?.id)
+                        .then((res) => {
+                            setCourse(res.data);
+                            courseService.getAllClassModulesByCourse(res.data.id)
+                                .then((res) => {
+                                    setClassModuleList(res.data);
+                                })
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
             })
 
     };
 
+    useEffect(() => {
+        console.log("numbers of modules: " + moduleList.length);
+    }, [moduleList]);
+    //IS ONLINE CLASS
 
     const submitRefund = (e) => {
         e.preventDefault();
@@ -545,14 +589,51 @@ const MyLearning = () => {
                                                                                 <div className="modal-content">
                                                                                     <div className="modal-header">
                                                                                         <h5 className="modal-title">
-                                                                                            Refund course - <span style={{ color: '#f58d04' }}>{selectedCourseName}</span>
+                                                                                            Refund course - <span style={{ color: '#f58d04' }}>{course.name}</span>
                                                                                         </h5>
                                                                                         <button type="button" className="close" onClick={() => setShowRefundModal(false)}>
                                                                                             <span aria-hidden="true">&times;</span>
                                                                                         </button>
                                                                                     </div>
                                                                                     <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
-                                                                                        {!enrollment.transaction?.course?.isOnlineClass && (
+                                                                                        {course?.isOnlineClass && (
+                                                                                            <div className="container" data-aos="fade-up">
+                                                                                                {classModuleList.length > 0 && classModuleList.map((classModule, index) => (
+                                                                                                    <div className="row" key={index}>
+                                                                                                        <div className="col-lg-3">
+                                                                                                            <ul className="nav nav-tabs flex-column">
+                                                                                                                <li className="nav-item get-button">
+                                                                                                                    <a onClick={(event) => handleTabClick2(event, classModule.id)}>
+                                                                                                                        On Date: <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
+                                                                                                                    </a>
+                                                                                                                </li>
+                                                                                                            </ul>
+                                                                                                        </div>
+                                                                                                        <div className="col-lg-9 mt-4 mt-lg-0">
+                                                                                                            <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
+                                                                                                                <div className={`tab-pane ${activeClassModuleId === classModule.id ? 'active show' : ''}`} id={`tab-${classModule.id}`}>
+                                                                                                                    <div>
+                                                                                                                        <div>
+                                                                                                                            <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
+                                                                                                                            <ul>
+                                                                                                                                {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
+                                                                                                                                    <li key={topicIndex}>{classTopic.name}</li>
+                                                                                                                                ))}
+                                                                                                                            </ul>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                ))}
+                                                                                                {classModuleList.length === 0 && (
+                                                                                                    <p>No modules for this course.</p>
+                                                                                                )}
+                                                                                            </div>
+                                                                                        )}
+
+                                                                                        {!course?.isOnlineClass && (
                                                                                             <div className="container" data-aos="fade-up">
                                                                                                 {moduleList.length > 0 &&
                                                                                                     moduleList.map((module, index) => (

@@ -43,6 +43,7 @@ const DetailCourse = () => {
     const [learnersCount, setLearnersCount] = useState({});
     //class topics by classLessonId
     const [classTopicList, setClassTopicList] = useState([]);
+    const [activeModuleId, setActiveModuleId] = useState(moduleList.length > 0 ? moduleList[0].id : null);
 
 
     //get num of learners
@@ -174,11 +175,12 @@ const DetailCourse = () => {
         setFilteredCombinedList(filteredList);
     };
 
-     // Function to handle tab switching
-     const handleTabClick2 = (event, moduleId) => {
+    // Function to handle tab switching
+    const handleTabClick2 = (event, moduleId) => {
         // Prevent the default behavior of the link
         event.preventDefault();
-
+        // Set the active moduleId to the clicked moduleId
+        setActiveModuleId(moduleId);
 
         // Remove the "active" class from all tab links
         const filteredList = combinedList.filter(item => item.moduleId === moduleId);
@@ -485,62 +487,58 @@ const DetailCourse = () => {
                     )}
                     {!course.isOnlineClass && (
                         <div className="container" data-aos="fade-up">
-                            {
-                                moduleList.length > 0 && moduleList.map((module, index) => (
-                                    <div className="row" key={module.id}>
-                                        <div className="col-lg-3">
-                                            <ul className="nav nav-tabs flex-column">
-                                                <li className="nav-item get-button">
-                                                    <a
-                                                        className={`nav-link ${index === 0 ? 'active show' : ''}`}
-                                                        onClick={(event) => handleTabClick2(event, module.id)}
-                                                        href={`#tab-${module.id}`}
-                                                    >
-                                                        {module.name}
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-lg-9 mt-4 mt-lg-0 ">
-                                            <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
-                                                <div
-                                                    className={`tab-pane ${index === 0 ? 'active show' : ''}`}
-                                                    id={`tab-${module.id}`}
+                            {moduleList.length > 0 && moduleList.map((module, index) => (
+                                <div className="row" key={module.id}>
+                                    <div className="col-lg-3">
+                                        <ul className="nav nav-tabs flex-column">
+                                            <li className="nav-item get-button">
+                                                <a
+                                                    className={`nav-link ${module.id === activeModuleId ? 'active show' : ''}`}
+                                                    onClick={(event) => handleTabClick2(event, module.id)}
+                                                    href={`#tab-${module.id}`}
                                                 >
-                                                    {
-                                                        filteredCombinedList.length > 0 && filteredCombinedList.map((item, combinedIndex) => (
-                                                            <div className="combined-item" key={combinedIndex}> 
-                                                                {item.type === 'lesson' && (
-                                                                    <div className="lesson">
-                                                                        <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
-                                                                    </div>
-                                                                )}
-                                                                {item.type === 'assignment' && (
-                                                                    <div className="assignment">
-                                                                        <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Assignment - Deadline: {item.deadline} minutes</p>
-                                                                    </div>
-                                                                )}
-                                                                {item.type === 'quiz' && (
-                                                                    <div className="quiz">
-                                                                        <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Quiz - {item.name}</p>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        ))
-                                                    }
-                                                    {
-                                                        filteredCombinedList.length === 0 && (
-                                                            <p>Empty.</p>
-                                                        )
-                                                    }
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-
+                                                    {module.name}
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                ))}
+                                    <div className="col-lg-9 mt-4 mt-lg-0 ">
+                                        <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
+                                            <div
+                                                className={`tab-pane ${module.id === activeModuleId ? 'active show' : ''}`}
+                                                id={`tab-${module.id}`}
+                                            >
+                                                {
+                                                    filteredCombinedList.length > 0 && filteredCombinedList.map((item, combinedIndex) => (
+                                                        <div className="combined-item" key={combinedIndex}>
+                                                            {item.type === 'lesson' && (
+                                                                <div className="lesson">
+                                                                    <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
+                                                                </div>
+                                                            )}
+                                                            {item.type === 'assignment' && (
+                                                                <div className="assignment">
+                                                                    <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Assignment - Deadline: {item.deadline} minutes</p>
+                                                                </div>
+                                                            )}
+                                                            {item.type === 'quiz' && (
+                                                                <div className="quiz">
+                                                                    <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Quiz - {item.name}</p>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ))
+                                                }
+                                                {
+                                                    filteredCombinedList.length === 0 && (
+                                                        <p>Empty.</p>
+                                                    )
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     )}
 
