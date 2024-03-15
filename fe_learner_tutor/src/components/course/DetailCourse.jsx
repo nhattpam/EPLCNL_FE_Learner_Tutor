@@ -517,7 +517,7 @@ const DetailCourse = () => {
                                                         ))
                                                     }
                                                     {
-                                                        combinedList.length === 0 && (
+                                                        filteredCombinedList.length === 0 && (
                                                             <p>Empty.</p>
                                                         )
                                                     }

@@ -199,8 +199,8 @@ const MyLearning = () => {
     const [quizList, setQuizList] = useState([]);
     //class topics by classLessonId
     const [classTopicList, setClassTopicList] = useState([]);
-
-
+    const [combinedList, setCombinedList] = useState([]);
+    const [filteredCombinedList, setFilteredCombinedList] = useState([]);
     useEffect(() => {
         const fetchModules = async () => {
             try {
@@ -251,17 +251,16 @@ const MyLearning = () => {
     const handleTabClick = (event, moduleId) => {
         // Prevent the default behavior of the link
         event.preventDefault();
+
+
         // Remove the "active" class from all tab links
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-        // Add the "active" class to the clicked tab link
-        event.target.classList.add('active');
-        // Hide all tab content
-        document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active', 'show'));
-        // Show the tab content corresponding to the clicked tab link
-        document.getElementById(`tab-${moduleId}`).classList.add('active', 'show');
+        const filteredList = combinedList.filter(item => item.moduleId === moduleId);
+        setFilteredCombinedList(filteredList);
     };
 
-    const [combinedList, setCombinedList] = useState([]);
+
+
+
     useEffect(() => {
         // Combine lessons, assignments, and quizzes into a single array
         const combined = [
@@ -272,6 +271,7 @@ const MyLearning = () => {
         // Sort the combined array based on your preferred logic
 
         setCombinedList(combined);
+
     }, [lessonList, assignmentList, quizList]);
 
     const handleReasonRefundChange = (value) => {
@@ -523,94 +523,107 @@ const MyLearning = () => {
                                                                     </form>
                                                                 )}
                                                                 {showRefundModal && (
-                                                                    <form method="post"
-                                                                        className="dropzone"
-                                                                        id="myAwesomeDropzone"
-                                                                        data-plugin="dropzone"
-                                                                        data-previews-container="#file-previews"
-                                                                        data-upload-preview-template="#uploadPreviewTemplate"
-                                                                        data-parsley-validate onSubmit={(e) => submitRefund(e)}>
-                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                                                                            <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
-                                                                                <div className="modal-content">
-                                                                                    <div className="modal-header">
-                                                                                        <h5 className="modal-title">Refund course - <span style={{ color: '#f58d04' }}>{selectedCourseName}</span> </h5>
-                                                                                        <button type="button" className="close" onClick={() => setShowRefundModal(false)}>
-                                                                                            <span aria-hidden="true">&times;</span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Set maxHeight and overflowY */}
-                                                                                        {!enrollment.transaction?.course?.isOnlineClass && (
-                                                                                            <div className="container" data-aos="fade-up">
-                                                                                                {
-                                                                                                    moduleList.length > 0 && moduleList.map((module, index) => (
-                                                                                                        <div className="row" key={module.id}>
-                                                                                                            <div className="col-lg-3">
-                                                                                                                <ul className="nav nav-tabs flex-column">
-                                                                                                                    <li className="nav-item get-button">
-                                                                                                                        <a
-                                                                                                                            className={`nav-link ${index === 0 ? 'active show' : ''}`}
-                                                                                                                            onClick={(event) => handleTabClick(event, module.id)}
-                                                                                                                            href={`#tab-${module.id}`}
-                                                                                                                        >
-                                                                                                                            {module.name}
-                                                                                                                        </a>
-                                                                                                                    </li>
-                                                                                                                </ul>
-                                                                                                            </div>
-                                                                                                            <div className="col-lg-9 mt-4 mt-lg-0 ">
-                                                                                                                <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
-                                                                                                                    <div
-                                                                                                                        className={`tab-pane ${index === 0 ? 'active show' : ''}`}
-                                                                                                                        id={`tab-${module.id}`}
-                                                                                                                    >
-                                                                                                                        {
-                                                                                                                            combinedList.length > 0 && combinedList.map((item, combinedIndex) => (
-                                                                                                                                <div className="combined-item" key={combinedIndex}>
-                                                                                                                                    {item.type === 'lesson' && (
-                                                                                                                                        <div className="lesson">
-                                                                                                                                            <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
-                                                                                                                                        </div>
-                                                                                                                                    )}
-                                                                                                                                    {item.type === 'assignment' && (
-                                                                                                                                        <div className="assignment">
-                                                                                                                                            <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Assignment - Deadline: {item.deadline} minutes</p>
-                                                                                                                                        </div>
-                                                                                                                                    )}
-                                                                                                                                    {item.type === 'quiz' && (
-                                                                                                                                        <div className="quiz">
-                                                                                                                                            <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Quiz - {item.name}</p>
-                                                                                                                                        </div>
-                                                                                                                                    )}
-                                                                                                                                </div>
-                                                                                                                            ))
-                                                                                                                        }
-                                                                                                                        {
-                                                                                                                            combinedList.length === 0 && (
-                                                                                                                                <p>Empty.</p>
-                                                                                                                            )
-                                                                                                                        }
-
-                                                                                                                    </div>
-                                                                                                                </div>
-
-                                                                                                            </div>
-
-                                                                                                        </div>
-                                                                                                    ))}
-                                                                                            </div>
-                                                                                        )}
-
-                                                                                    </div>
-                                                                                    <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-secondary" onClick={() => setShowRefundModal(false)}>Close</button>
-                                                                                        <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }} onClick={(e) => submitRefund(e)}>Send</button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
+    <form
+        method="post"
+        className="dropzone"
+        id="myAwesomeDropzone"
+        data-plugin="dropzone"
+        data-previews-container="#file-previews"
+        data-upload-preview-template="#uploadPreviewTemplate"
+        data-parsley-validate
+        onSubmit={(e) => submitRefund(e)}
+    >
+        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+            <div className="modal-dialog modal-dialog-scrollable">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title">
+                            Refund course - <span style={{ color: '#f58d04' }}>{selectedCourseName}</span>
+                        </h5>
+                        <button type="button" className="close" onClick={() => setShowRefundModal(false)}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+                        {!enrollment.transaction?.course?.isOnlineClass && (
+                            <div className="container" data-aos="fade-up">
+                                {moduleList.length > 0 &&
+                                    moduleList.map((module, index) => (
+                                        <div className="row" key={module.id}>
+                                            <div className="col-lg-3">
+                                                <ul className="nav nav-tabs flex-column">
+                                                    <li className="nav-item get-button">
+                                                        <a onClick={(event) => handleTabClick(event, module.id)}>{module.name}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div className="col-lg-9 mt-4 mt-lg-0">
+                                                {filteredCombinedList.length > 0 &&
+                                                    filteredCombinedList.map((item, combinedIndex) => {
+                                                        // Check if the item belongs to the clicked module
+                                                        if (item.moduleId === module.id) {
+                                                            return (
+                                                                <div className="combined-item" key={combinedIndex}>
+                                                                    {item.type === 'lesson' && (
+                                                                        <div className="lesson">
+                                                                            <p style={{ textAlign: 'justify' }}>
+                                                                                <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                    {combinedIndex + 1}.
+                                                                                </span>{' '}
+                                                                                Lesson: {item.name}
+                                                                            </p>
                                                                         </div>
-                                                                    </form>
-                                                                )}
+                                                                    )}
+                                                                    {item.type === 'assignment' && (
+                                                                        <div className="assignment">
+                                                                            <p style={{ textAlign: 'justify' }}>
+                                                                                <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                    {combinedIndex + 1}.
+                                                                                </span>{' '}
+                                                                                Assignment - Deadline: {item.deadline} minutes
+                                                                            </p>
+                                                                        </div>
+                                                                    )}
+                                                                    {item.type === 'quiz' && (
+                                                                        <div className="quiz">
+                                                                            <p style={{ textAlign: 'justify' }}>
+                                                                                <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                    {combinedIndex + 1}.
+                                                                                </span>{' '}
+                                                                                Quiz - {item.name}
+                                                                            </p>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            );
+                                                        }
+                                                        return null; // Don't render if it doesn't belong to the clicked module
+                                                    })}
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" onClick={() => setShowRefundModal(false)}>
+                            Close
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            style={{ backgroundColor: '#f58d04' }}
+                            onClick={(e) => submitRefund(e)}
+                        >
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+)}
+
 
                                                             </div>
                                                         </div>
