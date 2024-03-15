@@ -174,6 +174,18 @@ const DetailCourse = () => {
         setFilteredCombinedList(filteredList);
     };
 
+     // Function to handle tab switching
+     const handleTabClick2 = (event, moduleId) => {
+        // Prevent the default behavior of the link
+        event.preventDefault();
+
+
+        // Remove the "active" class from all tab links
+        const filteredList = combinedList.filter(item => item.moduleId === moduleId);
+        setFilteredCombinedList(filteredList);
+    };
+
+
 
     // Function to handle tab pay
     // Function to handle tab pay
@@ -481,7 +493,7 @@ const DetailCourse = () => {
                                                 <li className="nav-item get-button">
                                                     <a
                                                         className={`nav-link ${index === 0 ? 'active show' : ''}`}
-                                                        onClick={(event) => handleTabClick(event, module.id)}
+                                                        onClick={(event) => handleTabClick2(event, module.id)}
                                                         href={`#tab-${module.id}`}
                                                     >
                                                         {module.name}
