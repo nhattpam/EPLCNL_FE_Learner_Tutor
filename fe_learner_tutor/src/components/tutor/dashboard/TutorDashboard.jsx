@@ -277,8 +277,7 @@ const TutorDashboard = () => {
                                                         <th>Marketplaces</th>
                                                         <th>Date</th>
                                                         <th>Payouts</th>
-                                                        <th>Status</th>
-                                                        <th>Action</th>
+                                                        
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -292,12 +291,7 @@ const TutorDashboard = () => {
                                                         <td>
                                                             $5848.68
                                                         </td>
-                                                        <td>
-                                                            <span className="badge bg-soft-warning text-warning">Upcoming</span>
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-pencil" /></a>
-                                                        </td>
+                                                       
                                                     </tr>
                                                     <tr>
                                                         <td>
@@ -309,12 +303,7 @@ const TutorDashboard = () => {
                                                         <td>
                                                             $1247.25
                                                         </td>
-                                                        <td>
-                                                            <span className="badge bg-soft-success text-success">Paid</span>
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-pencil" /></a>
-                                                        </td>
+                                                        
                                                     </tr>
                                                     <tr>
                                                         <td>
@@ -326,12 +315,7 @@ const TutorDashboard = () => {
                                                         <td>
                                                             $815.89
                                                         </td>
-                                                        <td>
-                                                            <span className="badge bg-soft-success text-success">Paid</span>
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-pencil" /></a>
-                                                        </td>
+                                                       
                                                     </tr>
                                                     <tr>
                                                         <td>
@@ -343,12 +327,7 @@ const TutorDashboard = () => {
                                                         <td>
                                                             $248.75
                                                         </td>
-                                                        <td>
-                                                            <span className="badge bg-soft-danger text-danger">Overdue</span>
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-pencil" /></a>
-                                                        </td>
+                                                       
                                                     </tr>
                                                     <tr>
                                                         <td>
@@ -360,12 +339,7 @@ const TutorDashboard = () => {
                                                         <td>
                                                             $978.21
                                                         </td>
-                                                        <td>
-                                                            <span className="badge bg-soft-warning text-warning">Upcoming</span>
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-pencil" /></a>
-                                                        </td>
+                                                       
                                                     </tr>
                                                     <tr>
                                                         <td>
@@ -377,12 +351,7 @@ const TutorDashboard = () => {
                                                         <td>
                                                             $358.10
                                                         </td>
-                                                        <td>
-                                                            <span className="badge bg-soft-success text-success">Paid</span>
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-pencil" /></a>
-                                                        </td>
+                                                        
                                                     </tr>
                                                 </tbody>
                                             </table>
