@@ -16,6 +16,7 @@ import enrollmentService from '../../../services/enrollment.service';
 import refundRequestService from '../../../services/refund-request.service';
 import moduleService from '../../../services/module.service';
 import classLessonService from '../../../services/class-lesson.service';
+import refundSurveyService from '../../../services/refund-survey.service';
 
 
 const MyLearning = () => {
@@ -50,12 +51,12 @@ const MyLearning = () => {
                         const learnersResponse = await courseService.getAllEnrollmentsByCourse(enrollment.transaction?.courseId);
                         const learnersOfCourse = learnersResponse.data;
                         learnersCounts[enrollment.transaction?.courseId] = learnersOfCourse.length; // Store learner count for the course
-    
+
                         //CHECK PROGRESSING
                         if (!enrollment.transaction?.course?.isOnlineClass) {
                             const courseScoreResponse = await enrollmentService.getCourseScoreByEnrollmentId(enrollment.id);
                             const learningScoreResponse = await enrollmentService.getLearningScoreByEnrollmentId(enrollment.id);
-                            
+
                             scores[enrollment.id] = {
                                 courseScore: courseScoreResponse.data,
                                 learningScore: learningScoreResponse.data
@@ -78,11 +79,11 @@ const MyLearning = () => {
 
         fetchData();
     }, [learnerId]);
-    
-    
+
+
     useEffect(() => {
         enrollmentList.forEach(enrollment => {
-            
+
         });
     }, []);
 
@@ -98,7 +99,7 @@ const MyLearning = () => {
     }, [learnerId]);
 
 
-    
+
 
 
     //FEEBACK
@@ -201,16 +202,7 @@ const MyLearning = () => {
     };
     //REPORT
 
-    //REFUND
-    const [refund, setRefund] = useState({
-        reason: "",
-        enrollmentId: "",
-    });
 
-    const [refundSurvey, setRefundSurvey] = useState({
-        reason: "",
-        refundRequestId: "",
-    });
 
     const [moduleList, setModuleList] = useState([]);
     const [classModuleList, setClassModuleList] = useState([]);
@@ -294,10 +286,6 @@ const MyLearning = () => {
 
     }, [lessonList, assignmentList, quizList]);
 
-    const handleReasonRefundChange = (value) => {
-        setRefund({ ...refund, reason: value });
-    };
-
 
     const [course, setCourse] = useState({
         name: "",
@@ -341,7 +329,24 @@ const MyLearning = () => {
                             courseService.getAllClassModulesByCourse(res.data.id)
                                 .then((res) => {
                                     setClassModuleList(res.data);
+                                    // Fetch class topics for each class lesson
+                                    const promises = res.data.map(classModule =>
+                                        classLessonService.getAllClassTopicsByClassLesson(classModule.classLesson.id)
+                                    );
+
+                                    // Wait for all promises to resolve
+                                    Promise.all(promises)
+                                        .then(topicResponses => {
+                                            // Extract data from each response and update classTopicList
+                                            const topics = topicResponses.map(response => response.data || []);
+                                            setClassTopicList(topics);
+                                            console.log("LENGTH: " + topics.length);
+                                        })
+                                        .catch((error) => {
+                                            console.log(error);
+                                        });
                                 })
+
                         })
                         .catch((error) => {
                             console.log(error);
@@ -356,20 +361,49 @@ const MyLearning = () => {
     }, [moduleList]);
     //IS ONLINE CLASS
 
+    //REFUND
+    const [refund, setRefund] = useState({
+        enrollmentId: "",
+    });
+
+    const [refundSurvey, setRefundSurvey] = useState({
+        reason: "",
+        refundRequestId: "",
+    });
+
+    const [refundSurveys, setRefundSurveys] = useState([]);
+
+    // Function to handle change in reason for a specific refund survey
+    const handleReasonRefundChange = (index, value) => {
+        setRefundSurveys(prevSurveys => {
+            const updatedSurveys = [...prevSurveys];
+            updatedSurveys[index] = { ...updatedSurveys[index], reason: value };
+            return updatedSurveys;
+        });
+    };
+    // Function to submit refund
     const submitRefund = (e) => {
         e.preventDefault();
-        console.log(JSON.stringify(refund))
-        // If the note is not empty, proceed with the form submission
-        refundRequestService
-            .saveRefundRequest(refund)
+        refundRequestService.saveRefundRequest(refund)
             .then((res) => {
-                window.alert("You refund sent! Wait for us");
-                setShowRefundModal(false)
+                // Submit refund requests for all refund surveys
+                Promise.all(refundSurveys.map(refundSurvey => {
+                    const newRefundSurvey = { ...refundSurvey, refundRequestId: res.data.id };
+                    return refundSurveyService.saveRefundSurvey(newRefundSurvey);
+                }))
+                    .then(() => {
+                        console.log("All refund surveys submitted successfully");
+                        window.alert("Your refund requests have been sent! Please wait for our response.");
+                        setShowRefundModal(false);
+                    })
+                    .catch(error => {
+                        console.log("Error submitting refund surveys:", error);
+                    });
             })
-            .catch((error) => {
-                console.log(error);
-            });
+
     };
+
+
 
     // Function to check if the transaction date exceeds 2 days
     const isTransactionDateValid = (transactionDate) => {
@@ -451,16 +485,16 @@ const MyLearning = () => {
                                                                         <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction?.courseId, learnerId)}></i>
                                                                     </div>
                                                                 </div>
-                                                               {/* Display courseScore and learningScore */}
-                {!enrollment.transaction?.course?.isOnlineClass && enrollmentScores[enrollment.id] && (
-                    <div className="progress-container mt-3">
-                        <div className="left-title" style={{ fontWeight: 'bold' }}>{enrollmentScores[enrollment.id]?.learningScore}</div>
-                        <div className="progress-wrapper">
-                            <progress className="orange-progress-bar" value={enrollmentScores[enrollment.id]?.learningScore} max={enrollmentScores[enrollment.id]?.courseScore}></progress>
-                        </div>
-                        <div className="right-title" style={{ fontWeight: 'bold' }}> {enrollmentScores[enrollment.id]?.courseScore}</div>
-                    </div>
-                )}
+                                                                {/* Display courseScore and learningScore */}
+                                                                {!enrollment.transaction?.course?.isOnlineClass && enrollmentScores[enrollment.id] && (
+                                                                    <div className="progress-container mt-3">
+                                                                        <div className="left-title" style={{ fontWeight: 'bold' }}>{enrollmentScores[enrollment.id]?.learningScore}</div>
+                                                                        <div className="progress-wrapper">
+                                                                            <progress className="orange-progress-bar" value={enrollmentScores[enrollment.id]?.learningScore} max={enrollmentScores[enrollment.id]?.courseScore}></progress>
+                                                                        </div>
+                                                                        <div className="right-title" style={{ fontWeight: 'bold' }}> {enrollmentScores[enrollment.id]?.courseScore}</div>
+                                                                    </div>
+                                                                )}
                                                                 {isTransactionDateValid(enrollment.enrolledDate) && (
                                                                     <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(enrollment.id)}>
                                                                         I want return
@@ -621,6 +655,17 @@ const MyLearning = () => {
                                                                                                                     </a>
                                                                                                                 </li>
                                                                                                             </ul>
+                                                                                                            <ul className="nav nav-tabs flex-column">
+                                                                                                                <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
+                                                                                                                    <input
+                                                                                                                        name={`reason-${index}`}
+                                                                                                                        type='text'
+                                                                                                                        placeholder='reason...'
+                                                                                                                        style={{ width: '100px', height: '40px', lineHeight: '20px', overflowWrap: 'break-word' }}
+                                                                                                                        onChange={(e) => handleReasonRefundChange(index, e.target.value)}
+
+                                                                                                                    />                                                                                                                </li>
+                                                                                                            </ul>
                                                                                                         </div>
                                                                                                         <div className="col-lg-9 mt-4 mt-lg-0">
                                                                                                             <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
@@ -628,11 +673,11 @@ const MyLearning = () => {
                                                                                                                     <div>
                                                                                                                         <div>
                                                                                                                             <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
-                                                                                                                            <ul>
-                                                                                                                                {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
-                                                                                                                                    <li key={topicIndex}>{classTopic.name}</li>
-                                                                                                                                ))}
-                                                                                                                            </ul>
+                                                                                                                            {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
+                                                                                                                                <div>
+                                                                                                                                    <span key={topicIndex} style={{ justifyContent: 'left' }}><span style={{ fontWeight: 'bold' }}>Topic: </span>{classTopic.name}</span>
+                                                                                                                                </div>
+                                                                                                                            ))}
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
@@ -657,7 +702,22 @@ const MyLearning = () => {
                                                                                                                         <a onClick={(event) => handleTabClick(event, module.id)}>{module.name}</a>
                                                                                                                     </li>
                                                                                                                 </ul>
+                                                                                                                <ul className="nav nav-tabs flex-column">
+                                                                                                                    <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
+                                                                                                                        <input
+                                                                                                                            name={`reason-${index}`}
+                                                                                                                            type='text'
+                                                                                                                            placeholder='reason...'
+                                                                                                                            style={{ width: '100px', height: '40px', lineHeight: '20px', overflowWrap: 'break-word' }}
+                                                                                                                            onChange={(e) => handleReasonRefundChange(index, e.target.value)}
+
+                                                                                                                        />                                                                                                                       </li>
+                                                                                                                </ul>
                                                                                                             </div>
+
+
+
+
                                                                                                             <div className="col-lg-9 mt-4 mt-lg-0">
                                                                                                                 {filteredCombinedList.length > 0 &&
                                                                                                                     filteredCombinedList.map((item, combinedIndex) => {
