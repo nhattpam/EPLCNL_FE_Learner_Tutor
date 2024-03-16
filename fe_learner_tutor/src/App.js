@@ -186,7 +186,7 @@ function App() {
         <Route path="/tutor/courses/list-material-by-topic/:storedClassTopicId" element={<ListClassTopicMaterial />} />
 
         {/* dashboard */}
-        <Route path="/tutor-dashboard" element={<TutorDashboard />} />
+        <Route path="/tutor-dashboard/:tutorId" element={<TutorDashboard />} />
         {/* payment */}
 
         <Route path="/payment-callback" element={<PaymentCallBack />} />

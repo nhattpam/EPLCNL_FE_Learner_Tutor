@@ -78,5 +78,21 @@ class TutorService {
       }
     });
   }
+
+  getAllEnrollmentsByTutor(id) {
+    return axios.get(`${API_URL}/tutors/${id}/enrollments`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
+  getAllLearnersByTutor(id) {
+    return axios.get(`${API_URL}/tutors/${id}/learners`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new TutorService;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; import Header from './Header';
+import { useNavigate, useParams } from 'react-router-dom';
+ import Header from './Header';
 import Footer from './Footer';
 import authenticationService from '../services/authentication.service';
 import accountService from '../services/account.service';

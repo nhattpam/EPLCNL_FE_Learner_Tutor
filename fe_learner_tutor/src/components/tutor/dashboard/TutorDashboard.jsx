@@ -1,10 +1,110 @@
-import React from 'react'
-import Header from '../Header' 
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import Header from '../Header'
 import Footer from '../Footer'
 import Sidebar from '../Sidebar'
+import accountService from '../../../services/account.service'
+import tutorService from '../../../services/tutor.service';
 
 const TutorDashboard = () => {
+
+    const { tutorId } = useParams();
+    const storedAccountId = localStorage.getItem('accountId');
+    const [enrollmentList, setEnrollmentList] = useState([]);
+    const [courseList, setCourseList] = useState([]);
+    const [learnerList, setLearnerList] = useState([]);
+    const [rating, setRating] = useState(0);
+    const [learnersPerPage] = useState(5);
+    const [errors, setErrors] = useState({});
+    const [msg, setMsg] = useState('');
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(0);
+    const [account, setAccount] = useState({
+        email: "",
+        password: "",
+        fullName: "",
+        phoneNumber: "",
+        imageUrl: "",
+        gender: "",
+        wallet: []
+    });
+
+    useEffect(() => {
+        if (storedAccountId) {
+            accountService
+                .getAccountById(storedAccountId)
+                .then((res) => {
+                    setAccount(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [storedAccountId]);
+
+    useEffect(() => {
+        if (tutorId) {
+            tutorService
+                .getAllEnrollmentsByTutor(tutorId)
+                .then((res) => {
+                    setEnrollmentList(res.data)
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            tutorService
+                .getAllLearnersByTutor(tutorId)
+                .then((res) => {
+                    setLearnerList(res.data)
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [tutorId]);
+
+    const filteredLearners = learnerList
+        .filter((learner) => {
+            return (
+                learner.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+
+            );
+        });
+
+    const pageCount = Math.ceil(filteredLearners.length / learnersPerPage);
+
+    const handlePageClick = (data) => {
+        setCurrentPage(data.selected);
+    };
+    const offset = currentPage * learnersPerPage;
+    const currentLearners = filteredLearners.slice(offset, offset + learnersPerPage);
+
+
+    useEffect(() => {
+        if (tutorId) {
+            let totalRating = 0; // Initialize totalRating variable
+            tutorService
+                .getAllCoursesByTutor(tutorId)
+                .then((res) => {
+                    setCourseList(res.data);
+                    res.data.forEach(course => {
+                        totalRating += course.rating; // Add course rating to totalRating
+                    });
+                    setRating(totalRating); // Update rating state with the totalRating
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [tutorId]);
+
+
+
+
     return (
+
+
         <>
             <div id="wrapper">
                 <Header />
@@ -58,7 +158,7 @@ const TutorDashboard = () => {
                                             </div>
                                             <div className="col-6">
                                                 <div className="text-right">
-                                                    <h3 className="mt-1">$<span data-plugin="counterup">58,947</span></h3>
+                                                    <h3 className="mt-1">$<span data-plugin="counterup">{account.wallet?.balance}</span></h3>
                                                     <p className="text-muted mb-1 text-truncate">Total Revenue</p>
                                                 </div>
                                             </div>
@@ -75,8 +175,8 @@ const TutorDashboard = () => {
                                             </div>
                                             <div className="col-6">
                                                 <div className="text-right">
-                                                    <h3 className="text-dark mt-1"><span data-plugin="counterup">127</span></h3>
-                                                    <p className="text-muted mb-1 text-truncate">Today's Sales</p>
+                                                    <h3 className="text-dark mt-1"><span data-plugin="counterup">{enrollmentList.length}</span></h3>
+                                                    <p className="text-muted mb-1 text-truncate">Total Enrollments</p>
                                                 </div>
                                             </div>
                                         </div> {/* end row*/}
@@ -92,90 +192,16 @@ const TutorDashboard = () => {
                                             </div>
                                             <div className="col-6">
                                                 <div className="text-right">
-                                                    <h3 className="text-dark mt-1"><span data-plugin="counterup">0.58</span>%</h3>
-                                                    <p className="text-muted mb-1 text-truncate">Conversion</p>
+                                                    <h3 className="text-dark mt-1"><span data-plugin="counterup">{rating}</span>%</h3>
+                                                    <p className="text-muted mb-1 text-truncate">Course Rating</p>
                                                 </div>
                                             </div>
                                         </div> {/* end row*/}
                                     </div> {/* end widget-rounded-circle*/}
                                 </div> {/* end col*/}
-                                <div className="col-md-6 col-xl-3">
-                                    <div className="widget-rounded-circle card-box">
-                                        <div className="row">
-                                            <div className="col-6">
-                                                <div className="avatar-lg rounded-circle bg-soft-warning border-warning border">
-                                                    <i className="fe-eye font-22 avatar-title text-warning" />
-                                                </div>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="text-right">
-                                                    <h3 className="text-dark mt-1"><span data-plugin="counterup">78.41</span>k</h3>
-                                                    <p className="text-muted mb-1 text-truncate">Today's Visits</p>
-                                                </div>
-                                            </div>
-                                        </div> {/* end row*/}
-                                    </div> {/* end widget-rounded-circle*/}
-                                </div> {/* end col*/}
+
                             </div>
                             {/* end row*/}
-                            <div className="row">
-                                <div className="col-lg-4">
-                                    <div className="card-box">
-                                        <div className="dropdown float-right">
-                                            <a href="#" className="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
-                                                <i className="mdi mdi-dots-vertical" />
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-right">
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Sales Report</a>
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Export Report</a>
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Profit</a>
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Action</a>
-                                            </div>
-                                        </div>
-                                        <h4 className="header-title mb-0">Total Revenue</h4>
-                                        <div className="widget-chart text-center" dir="ltr">
-                                            <div id="total-revenue" className="mt-0" data-colors="#f1556c" />
-                                            <h5 className="text-muted mt-0">Total sales made today</h5>
-                                            <h2>$178</h2>
-                                            <p className="text-muted w-75 mx-auto sp-line-2">Traditional heading elements are designed to work best in the meat of your page content.</p>
-                                            <div className="row mt-3">
-                                                <div className="col-4">
-                                                    <p className="text-muted font-15 mb-1 text-truncate">Target</p>
-                                                    <h4><i className="fe-arrow-down text-danger mr-1" />$7.8k</h4>
-                                                </div>
-                                                <div className="col-4">
-                                                    <p className="text-muted font-15 mb-1 text-truncate">Last week</p>
-                                                    <h4><i className="fe-arrow-up text-success mr-1" />$1.4k</h4>
-                                                </div>
-                                                <div className="col-4">
-                                                    <p className="text-muted font-15 mb-1 text-truncate">Last Month</p>
-                                                    <h4><i className="fe-arrow-down text-danger mr-1" />$15k</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> {/* end card-box */}
-                                </div> {/* end col*/}
-                                <div className="col-lg-8">
-                                    <div className="card-box pb-2">
-                                        <div className="float-right d-none d-md-inline-block">
-                                            <div className="btn-group mb-2">
-                                                <button type="button" className="btn btn-xs btn-light">Today</button>
-                                                <button type="button" className="btn btn-xs btn-light">Weekly</button>
-                                                <button type="button" className="btn btn-xs btn-secondary">Monthly</button>
-                                            </div>
-                                        </div>
-                                        <h4 className="header-title mb-3">Sales Analytics</h4>
-                                        <div dir="ltr">
-                                            <div id="sales-analytics" className="mt-4" data-colors="#1abc9c,#4a81d4" />
-                                        </div>
-                                    </div> {/* end card-box */}
-                                </div> {/* end col*/}
-                            </div>
-                            {/* end row */}
                             <div className="row">
                                 <div className="col-xl-6">
                                     <div className="card-box">
@@ -192,7 +218,7 @@ const TutorDashboard = () => {
                                                 <a href="javascript:void(0);" className="dropdown-item">Action</a>
                                             </div>
                                         </div>
-                                        <h4 className="header-title mb-3">Top 5 Users Balances</h4>
+                                        <h4 className="header-title mb-3">Top 5 Users</h4>
                                         <div className="table-responsive">
                                             <table className="table table-borderless table-hover table-nowrap table-centered m-0">
                                                 <thead className="thead-light">
@@ -205,116 +231,33 @@ const TutorDashboard = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td style={{ width: 36 }}>
-                                                            <img src="../assets/images/users/user-2.jpg" alt="contact-img" title="contact-img" className="rounded-circle avatar-sm" />
-                                                        </td>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Tomaslau</h5>
-                                                            <p className="mb-0 text-muted"><small>Member Since 2017</small></p>
-                                                        </td>
-                                                        <td>
-                                                            <i className="mdi mdi-currency-btc text-primary" /> BTC
-                                                        </td>
-                                                        <td>
-                                                            0.00816117 BTC
-                                                        </td>
-                                                        <td>
-                                                            0.00097036 BTC
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-plus" /></a>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-danger"><i className="mdi mdi-minus" /></a>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style={{ width: 36 }}>
-                                                            <img src="../assets/images/users/user-3.jpg" alt="contact-img" title="contact-img" className="rounded-circle avatar-sm" />
-                                                        </td>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Erwin E. Brown</h5>
-                                                            <p className="mb-0 text-muted"><small>Member Since 2017</small></p>
-                                                        </td>
-                                                        <td>
-                                                            <i className="mdi mdi-currency-eth text-primary" /> ETH
-                                                        </td>
-                                                        <td>
-                                                            3.16117008 ETH
-                                                        </td>
-                                                        <td>
-                                                            1.70360009 ETH
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-plus" /></a>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-danger"><i className="mdi mdi-minus" /></a>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style={{ width: 36 }}>
-                                                            <img src="../assets/images/users/user-4.jpg" alt="contact-img" title="contact-img" className="rounded-circle avatar-sm" />
-                                                        </td>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Margeret V. Ligon</h5>
-                                                            <p className="mb-0 text-muted"><small>Member Since 2017</small></p>
-                                                        </td>
-                                                        <td>
-                                                            <i className="mdi mdi-currency-eur text-primary" /> EUR
-                                                        </td>
-                                                        <td>
-                                                            25.08 EUR
-                                                        </td>
-                                                        <td>
-                                                            12.58 EUR
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-plus" /></a>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-danger"><i className="mdi mdi-minus" /></a>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style={{ width: 36 }}>
-                                                            <img src="../assets/images/users/user-5.jpg" alt="contact-img" title="contact-img" className="rounded-circle avatar-sm" />
-                                                        </td>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Jose D. Delacruz</h5>
-                                                            <p className="mb-0 text-muted"><small>Member Since 2017</small></p>
-                                                        </td>
-                                                        <td>
-                                                            <i className="mdi mdi-currency-cny text-primary" /> CNY
-                                                        </td>
-                                                        <td>
-                                                            82.00 CNY
-                                                        </td>
-                                                        <td>
-                                                            30.83 CNY
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-plus" /></a>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-danger"><i className="mdi mdi-minus" /></a>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style={{ width: 36 }}>
-                                                            <img src="../assets/images/users/user-6.jpg" alt="contact-img" title="contact-img" className="rounded-circle avatar-sm" />
-                                                        </td>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Luke J. Sain</h5>
-                                                            <p className="mb-0 text-muted"><small>Member Since 2017</small></p>
-                                                        </td>
-                                                        <td>
-                                                            <i className="mdi mdi-currency-btc text-primary" /> BTC
-                                                        </td>
-                                                        <td>
-                                                            2.00816117 BTC
-                                                        </td>
-                                                        <td>
-                                                            1.00097036 BTC
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-plus" /></a>
-                                                            <a href="javascript: void(0);" className="btn btn-xs btn-danger"><i className="mdi mdi-minus" /></a>
-                                                        </td>
-                                                    </tr>
+                                                    {
+                                                        currentLearners.length > 0 && currentLearners.map((learner, index) => (
+                                                            <tr>
+                                                                <td style={{ width: 36 }}>
+                                                                    <img src={learner.account?.imageUrl} alt="contact-img" title="contact-img" className="rounded-circle avatar-sm" />
+                                                                </td>
+                                                                <td>
+                                                                    <h5 className="m-0 font-weight-normal">{learner.account?.fullName}</h5>
+                                                                    <p className="mb-0 text-muted"><small>Member Since 2017</small></p>
+                                                                </td>
+                                                                <td>
+                                                                    <i className="mdi mdi-currency-btc text-primary" /> BTC
+                                                                </td>
+                                                                <td>
+                                                                    0.00816117 BTC
+                                                                </td>
+                                                                <td>
+                                                                    0.00097036 BTC
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-plus" /></a>
+                                                                    <a href="javascript: void(0);" className="btn btn-xs btn-danger"><i className="mdi mdi-minus" /></a>
+                                                                </td>
+                                                            </tr>
+
+                                                        ))}
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -460,29 +403,12 @@ const TutorDashboard = () => {
                         </div> {/* container */}
                     </div> {/* content */}
                     {/* Footer Start */}
-                    <footer className="footer">
-                        <div className="container-fluid">
-                            <div className="row">
-                                <div className="col-md-6">
-                                    2015 -  © UBold theme by <a href="#">Coderthemes</a>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="text-md-right footer-links d-none d-sm-block">
-                                        <a href="javascript:void(0);">About Us</a>
-                                        <a href="javascript:void(0);">Help</a>
-                                        <a href="javascript:void(0);">Contact Us</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                    {/* end Footer */}
+
                 </div>
                 {/* ============================================================== */}
                 {/* End Page content */}
                 {/* ============================================================== */}
 
-                <Footer />
             </div>
 
         </>
