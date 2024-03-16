@@ -58,10 +58,13 @@ const TutorDashboard = () => {
                 .catch((error) => {
                     console.log(error);
                 });
-            tutorService
-                .getAllLearnersByTutor(tutorId)
+            tutorService.getAllLearnersByTutor(tutorId)
                 .then((res) => {
-                    setLearnerList(res.data)
+                    // Extracting unique learner IDs
+                    const uniqueLearnerIds = [...new Set(res.data.map(learner => learner.id))];
+                    // Creating new array with unique learners
+                    const uniqueLearnerArray = uniqueLearnerIds.map(id => res.data.find(learner => learner.id === id));
+                    setLearnerList(uniqueLearnerArray);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -158,7 +161,7 @@ const TutorDashboard = () => {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="page-title-box">
-                                        
+
                                         <h4 className="page-title">Dashboard</h4>
                                     </div>
                                 </div>
