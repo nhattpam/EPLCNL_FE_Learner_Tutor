@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../Header'
 import Footer from '../Footer'
 import Sidebar from '../Sidebar'
 import accountService from '../../../services/account.service'
 import tutorService from '../../../services/tutor.service';
+import learnerService from '../../../services/learner.service';
 
 const TutorDashboard = () => {
 
     const { tutorId } = useParams();
     const storedAccountId = localStorage.getItem('accountId');
     const [enrollmentList, setEnrollmentList] = useState([]);
+    const [enrollmentLearnerList, setEnrollmentLearnerList] = useState([]);
     const [courseList, setCourseList] = useState([]);
+    const [courseTutorList, setCourseTutorList] = useState([]);
     const [learnerList, setLearnerList] = useState([]);
     const [rating, setRating] = useState(0);
     const [learnersPerPage] = useState(5);
@@ -20,6 +23,8 @@ const TutorDashboard = () => {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
+    const [showModal, setShowModal] = useState(false);
+
     const [account, setAccount] = useState({
         email: "",
         password: "",
@@ -101,6 +106,37 @@ const TutorDashboard = () => {
 
 
 
+    const openModal = (learnerId, accountId) => {
+        accountService
+            .getAccountById(accountId)
+            .then((res) => {
+                setAccount(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        learnerService.getAllEnrollmentByLearnerId(learnerId)
+            .then((res) => {
+                setEnrollmentLearnerList(res.data);
+            })
+        const filteredEnrollments = enrollmentLearnerList.filter(enrollment =>
+            enrollment.transaction?.course?.tutorId === tutorId
+        );
+        filteredEnrollments.forEach(element => {
+            console.log(JSON.stringify(element))
+        });
+        setEnrollmentLearnerList(filteredEnrollments)
+
+
+
+
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
 
     return (
 
@@ -122,26 +158,7 @@ const TutorDashboard = () => {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="page-title-box">
-                                        <div className="page-title-right">
-                                            <form className="form-inline">
-                                                <div className="form-group">
-                                                    <div className="input-group input-group-sm">
-                                                        <input type="text" className="form-control border" id="dash-daterange" />
-                                                        <div className="input-group-append">
-                                                            <span className="input-group-text bg-blue border-blue text-white">
-                                                                <i className="mdi mdi-calendar-range" />
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <a href="javascript: void(0);" className="btn btn-blue btn-sm ml-2">
-                                                    <i className="mdi mdi-autorenew" />
-                                                </a>
-                                                <a href="javascript: void(0);" className="btn btn-blue btn-sm ml-1">
-                                                    <i className="mdi mdi-filter-variant" />
-                                                </a>
-                                            </form>
-                                        </div>
+                                        
                                         <h4 className="page-title">Dashboard</h4>
                                     </div>
                                 </div>
@@ -205,28 +222,15 @@ const TutorDashboard = () => {
                             <div className="row">
                                 <div className="col-xl-6">
                                     <div className="card-box">
-                                        <div className="dropdown float-right">
-                                            <a href="#" className="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
-                                                <i className="mdi mdi-dots-vertical" />
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-right">
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Edit Report</a>
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Export Report</a>
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Action</a>
-                                            </div>
-                                        </div>
+
                                         <h4 className="header-title mb-3">Top 5 Users</h4>
                                         <div className="table-responsive">
                                             <table className="table table-borderless table-hover table-nowrap table-centered m-0">
                                                 <thead className="thead-light">
                                                     <tr>
                                                         <th colSpan={2}>Profile</th>
-                                                        <th>Currency</th>
-                                                        <th>Balance</th>
-                                                        <th>Reserved in orders</th>
+                                                        <th>Email</th>
+                                                        <th>Phone</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -239,20 +243,17 @@ const TutorDashboard = () => {
                                                                 </td>
                                                                 <td>
                                                                     <h5 className="m-0 font-weight-normal">{learner.account?.fullName}</h5>
-                                                                    <p className="mb-0 text-muted"><small>Member Since 2017</small></p>
+                                                                    <p className="mb-0 text-muted"><small>Member Since {learner.account?.createdDate ? learner.account.createdDate.substring(0, 4) : ""}</small></p>
                                                                 </td>
                                                                 <td>
-                                                                    <i className="mdi mdi-currency-btc text-primary" /> BTC
+                                                                    {learner.account?.email}
                                                                 </td>
                                                                 <td>
-                                                                    0.00816117 BTC
+                                                                    {learner.account?.phoneNumber}
                                                                 </td>
+
                                                                 <td>
-                                                                    0.00097036 BTC
-                                                                </td>
-                                                                <td>
-                                                                    <a href="javascript: void(0);" className="btn btn-xs btn-light"><i className="mdi mdi-plus" /></a>
-                                                                    <a href="javascript: void(0);" className="btn btn-xs btn-danger"><i className="mdi mdi-minus" /></a>
+                                                                    <a href="javascript: void(0);" className="btn btn-xs btn-light" onClick={() => openModal(learner.id, learner.account?.id)}><i class="far fa-eye"></i></a>
                                                                 </td>
                                                             </tr>
 
@@ -265,19 +266,6 @@ const TutorDashboard = () => {
                                 </div> {/* end col */}
                                 <div className="col-xl-6">
                                     <div className="card-box">
-                                        <div className="dropdown float-right">
-                                            <a href="#" className="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
-                                                <i className="mdi mdi-dots-vertical" />
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-right">
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Edit Report</a>
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Export Report</a>
-                                                {/* item*/}
-                                                <a href="javascript:void(0);" className="dropdown-item">Action</a>
-                                            </div>
-                                        </div>
                                         <h4 className="header-title mb-3">Revenue History</h4>
                                         <div className="table-responsive">
                                             <table className="table table-borderless table-nowrap table-hover table-centered m-0">
@@ -403,7 +391,99 @@ const TutorDashboard = () => {
                         </div> {/* container */}
                     </div> {/* content */}
                     {/* Footer Start */}
+                    {showModal && (
+                        <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                            <div className="modal-dialog modal-lg" role="document"> {/* Added modal-lg class here */}
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Learner Information</h5>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Adjust max height as needed */}
+                                        <div>
+                                            <div className='row'>
+                                                <div className="col-md-4">
+                                                    <img src={account.imageUrl} alt="avatar" className="rounded-circle mt-4" style={{ width: '50%' }} />
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <table className="table table-responsive table-hover mt-3">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th style={{ width: '30%' }}>Full Name:</th>
+                                                                <td>{account.fullName}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Email:</th>
+                                                                <td>{account.email}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Phone Number:</th>
+                                                                <td>{account.phoneNumber}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Gender:</th>
+                                                                <td>{account.gender ? "Male" : "Female"}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
 
+                                            <div className="table-responsive">
+                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                    <thead className="thead-light">
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>Image</th>
+                                                            <th>CODE</th>
+                                                            <th>Course Name</th>
+                                                            <th>Category</th>
+                                                            <th>Type</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            enrollmentLearnerList.length > 0 && enrollmentLearnerList.map((enrollment, index) => (
+                                                                <tr key={enrollment.id}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td><img src={enrollment.transaction?.course?.imageUrl} style={{ height: '50px', width: '70px' }} alt={enrollment.transaction?.course?.name} /></td>
+                                                                    <td>{enrollment.transaction?.course?.code}</td>
+                                                                    <td>{enrollment.transaction?.course?.name}</td>
+                                                                    <td>{enrollment.transaction?.course?.category?.name}</td>
+                                                                    <td>
+                                                                        <span className={`badge ${enrollment.transaction?.course?.isOnlineClass ? 'badge-success' : 'badge-danger'}`}>{enrollment.transaction?.course?.isOnlineClass ? 'Class' : 'Video'}</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span className={`badge ${enrollment.transaction?.course?.isActive ? 'badge-success' : 'badge-danger'}`}>{enrollment.transaction?.course?.isActive ? 'Active' : 'Inactive'}</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <Link to={`/tutor/courses/edit-course/${enrollment.transaction?.course?.id}`} className='text-secondary'>
+                                                                            <i className="fa-regular fa-eye"></i>
+                                                                        </Link>
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div className="modal-footer">
+
+                                        <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
                 {/* ============================================================== */}
                 {/* End Page content */}
