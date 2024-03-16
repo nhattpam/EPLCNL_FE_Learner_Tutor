@@ -31,48 +31,60 @@ const MyLearning = () => {
     const [showRefundModal, setShowRefundModal] = useState(false); // State variable for modal visibility
     const [selectedCourseName, setSelectedCourseName] = useState(''); // State variable to store the name of the selected course
     const [courseScore, setCourseScore] = useState(0); // State variable to store the name of the selected course
-    const [learningeScore, setLearningScore] = useState(0); // State variable to store the name of the selected course
+    const [learningScore, setLearningScore] = useState(0); // State variable to store the name of the selected course
+    const [enrollmentScores, setEnrollmentScores] = useState({});
 
     const contentRef = useRef(null);
 
 
     useEffect(() => {
-        learnerService
-            .getAllEnrollmentByLearnerId(learnerId)
-            .then(async (res) => {
+        const fetchData = async () => {
+            try {
+                const res = await learnerService.getAllEnrollmentByLearnerId(learnerId);
                 setEnrollmentList(res.data);
                 const learnersCounts = {}; // Object to store number of learners for each course
+                const scores = {}; // Object to store scores for each enrollment
+
                 for (const enrollment of res.data) {
                     try {
                         const learnersResponse = await courseService.getAllEnrollmentsByCourse(enrollment.transaction?.courseId);
                         const learnersOfCourse = learnersResponse.data;
                         learnersCounts[enrollment.transaction?.courseId] = learnersOfCourse.length; // Store learner count for the course
-
+    
                         //CHECK PROGRESSING
                         if (!enrollment.transaction?.course?.isOnlineClass) {
                             const courseScoreResponse = await enrollmentService.getCourseScoreByEnrollmentId(enrollment.id);
-                            console.log("course Score: " + courseScoreResponse.data)
-                            setCourseScore(courseScoreResponse.data);
-
                             const learningScoreResponse = await enrollmentService.getLearningScoreByEnrollmentId(enrollment.id);
-                            console.log("learning Score: " + learningScoreResponse.data)
-                            setLearningScore(learningScoreResponse.data);
+                            
+                            scores[enrollment.id] = {
+                                courseScore: courseScoreResponse.data,
+                                learningScore: learningScoreResponse.data
+                            };
+
+                            console.log("Course score for enrollment ID " + enrollment.id + ": " + courseScoreResponse.data);
                         }
-
-                        enrollmentList.forEach(element => {
-                            console.log("this is enrollment: ", element.transaction?.course?.name + element.transaction?.course?.isOnlineClass)
-                        });
-
                     } catch (error) {
                         console.error(`Error fetching learners for course ${enrollment.course?.name}:`, error);
                     }
                 }
+
+                console.log("every course:", res.data.map(enrollment => enrollment.transaction?.course?.name));
                 setLearnersCount(prevState => ({ ...prevState, ...learnersCounts })); // Update state with learners count
-            })
-            .catch((error) => {
+                setEnrollmentScores(scores); // Update state with scores for each enrollment
+            } catch (error) {
                 console.log(error);
-            });
+            }
+        };
+
+        fetchData();
     }, [learnerId]);
+    
+    
+    useEffect(() => {
+        enrollmentList.forEach(enrollment => {
+            
+        });
+    }, []);
 
     useEffect(() => {
         learnerService
@@ -84,6 +96,9 @@ const MyLearning = () => {
                 console.log(error);
             });
     }, [learnerId]);
+
+
+    
 
 
     //FEEBACK
@@ -257,7 +272,7 @@ const MyLearning = () => {
             setFilteredCombinedList(filteredList);
         }
     }, [moduleList, combinedList]);
-    
+
     useEffect(() => {
         // Set the active class module ID to the ID of the first class module
         if (classModuleList.length > 0) {
@@ -436,18 +451,16 @@ const MyLearning = () => {
                                                                         <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction?.courseId, learnerId)}></i>
                                                                     </div>
                                                                 </div>
-                                                                {
-                                                                    !enrollment.transaction?.course?.isOnlineClass && (
-                                                                        <div className="progress-container mt-3">
-                                                                            <div className="left-title" style={{ fontWeight: 'bold' }}>{learningeScore}</div>
-                                                                            <div className="progress-wrapper">
-                                                                                <progress className="orange-progress-bar" value={learningeScore} max={courseScore}></progress>
-                                                                            </div>
-                                                                            <div className="right-title" style={{ fontWeight: 'bold' }}> {courseScore}</div>
-                                                                        </div>
-                                                                    )
-                                                                }
-
+                                                               {/* Display courseScore and learningScore */}
+                {!enrollment.transaction?.course?.isOnlineClass && enrollmentScores[enrollment.id] && (
+                    <div className="progress-container mt-3">
+                        <div className="left-title" style={{ fontWeight: 'bold' }}>{enrollmentScores[enrollment.id]?.learningScore}</div>
+                        <div className="progress-wrapper">
+                            <progress className="orange-progress-bar" value={enrollmentScores[enrollment.id]?.learningScore} max={enrollmentScores[enrollment.id]?.courseScore}></progress>
+                        </div>
+                        <div className="right-title" style={{ fontWeight: 'bold' }}> {enrollmentScores[enrollment.id]?.courseScore}</div>
+                    </div>
+                )}
                                                                 {isTransactionDateValid(enrollment.enrolledDate) && (
                                                                     <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(enrollment.id)}>
                                                                         I want return
