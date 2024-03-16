@@ -662,7 +662,7 @@ const MyLearning = () => {
                                                                                                                         type='text'
                                                                                                                         placeholder='reason...'
                                                                                                                         style={{ width: '100px', height: '40px', lineHeight: '20px', overflowWrap: 'break-word' }}
-                                                                                                                        onChange={(e) => handleReasonRefundChange(index, e.target.value)}
+                                                                                                                        onChange={(e) => handleReasonRefundChange(index, `Date ${classModule.startDate} has reason ${e.target.value}`)}
 
                                                                                                                     />                                                                                                                </li>
                                                                                                             </ul>
@@ -709,7 +709,7 @@ const MyLearning = () => {
                                                                                                                             type='text'
                                                                                                                             placeholder='reason...'
                                                                                                                             style={{ width: '100px', height: '40px', lineHeight: '20px', overflowWrap: 'break-word' }}
-                                                                                                                            onChange={(e) => handleReasonRefundChange(index, e.target.value)}
+                                                                                                                            onChange={(e) => handleReasonRefundChange(index, `Section ${module.name} has reason: ${e.target.value}`)}
 
                                                                                                                         />                                                                                                                       </li>
                                                                                                                 </ul>
