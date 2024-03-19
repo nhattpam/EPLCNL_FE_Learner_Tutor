@@ -24,7 +24,6 @@ const SignUp = () => {
     fullName: "",
     phoneNumber: "",
     roleId: "",
-    isActive: false
   });
 
 
@@ -69,6 +68,7 @@ const SignUp = () => {
       let roleId = "";
       if (document.getElementById("learner").checked) {
         roleId = "f3db0ef2-7f03-4728-a868-aacbe76891a8";
+        account.isActive = true;
       } else if (document.getElementById("tutor").checked) {
         roleId = "1dc7ed61-a13d-4cfc-9e3e-2159f61bad3b";
         account.isActive = false;
