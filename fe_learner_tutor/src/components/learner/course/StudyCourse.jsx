@@ -121,6 +121,8 @@ const StudyCourse = () => {
                                 res.data.forEach(assignmentAttempt => {
                                     if (assignmentAttempt.assignmentId === assignment.id) {
                                         if (assignmentAttempt.totalGrade >= assignment.gradeToPass) {
+                                            console.log("TOTAL: " + assignmentAttempt.totalGrade);
+                                            console.log("PASS: " + assignment.gradeToPass);
                                             setIsDoneAssignment(true);
                                         }
                                     } else {
@@ -328,6 +330,21 @@ const StudyCourse = () => {
         answerText: "",
     });
 
+
+    // useEffect(() => {
+    //     if (selectedAssignmentId) {
+    //       assignmentService
+    //         .get(assignmentId)
+    //         .then((res) => {
+    //           setAssignment(res.data);
+    //         })
+    //         .catch((error) => {
+    //           console.log(error);
+    //         });
+    //     }
+    //   }, [selectedAssignmentId]);
+
+
     const handleChangeAnswerText = (value) => {
         setAssignmentAttempt(prevState => ({
             ...prevState,
@@ -369,19 +386,44 @@ const StudyCourse = () => {
 
     const [showAttempts, setShowAttempts] = useState(false);
     const [attemptList, setAttemptList] = useState([]);
+    const [attemptList2, setAttemptList2] = useState([]);
+    //my assignment attempt
+    const [myAssignmentAttempt, setMyAssignmentAttempt] = useState({
+        assignmentId: "",
+        learnerId: "",
+        answerText: "",
+    });
     useEffect(() => {
         assignmentService.getAllAssignmentAttemptByAssignmentId(selectedAssignmentId)
             .then((res) => {
 
                 const list = res.data.filter(attempt => attempt.learnerId !== learnerId);
+                const list2 = res.data.filter(attempt => attempt.learnerId === learnerId);
                 console.log(list);
                 setAttemptList(list);
-                console.log("LENGTH: " + attemptList.length)
+                setAttemptList2(list2);
+
             })
             .catch((error) => {
                 console.log(error);
             });
     }, [selectedAssignmentId]);
+
+    useEffect(() => {
+        if (attemptList2.length === 0) return; // Do nothing if attemptList2 is empty
+
+        const learnerAttempt = attemptList2.find(attempt => attempt.learnerId === learnerId);
+        if (learnerAttempt) {
+            assignmentAttemptService.getAssignmentAttemptById(learnerAttempt.id)
+                .then((res) => {
+                    setMyAssignmentAttempt(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [attemptList2, learnerId]);
+
 
     //QUIZ
     const [quiz, setQuiz] = useState({
@@ -610,9 +652,10 @@ const StudyCourse = () => {
         console.log(JSON.stringify(peerReview));
 
         await peerReviewService.savePeerReview(peerReview)
-        .then((res) => {
-            window.alert("Thank you!")
-        })
+            .then((res) => {
+                window.alert("Thank you!")
+
+            })
     }
     //PEER REVIEW
 
@@ -715,6 +758,7 @@ const StudyCourse = () => {
                             )}
                             {selectedAssignment && selectedAssignment.questionText && (
                                 <>
+
                                     <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
                                         <div className="tab-pane show active" id="tab-content-1">
                                             <section id="courses" className="courses">
@@ -725,101 +769,120 @@ const StudyCourse = () => {
                                                 </div>
                                             </section>
                                         </div>
-                                        {/* Render the timer if showTimer state is true */}
-                                        {showTimer ? (
-                                            <div className="d-flex align-items-center ml-1" style={{ marginTop: '-60px' }}>
-                                                <i className="fas fa-clock" ></i>
-                                                <span>  Time Remaining: {formatTime(timeRemaining)}
-                                                </span>
-                                            </div>
-                                        ) : (
-                                            // Render the "Start Assignment" button if showTimer state is false
-                                            !showAttempts && (
-                                                <button
-                                                    className="btn btn-primary"
-                                                    style={{ backgroundColor: '#f58d04', color: '#fff' }}
-                                                    onClick={handleStartAssignment}
-                                                >
-                                                    Start Assignment
-                                                </button>
+                                        {
+                                            attemptList2 && attemptList2.length > 0 && (
+                                                <>
+                                                    <div>
+                                                        Grade: <span style={{fontWeight: 'bold', color: '#f58d04'}}>{myAssignmentAttempt.totalGrade}</span>
+                                                    </div>
+                                                    <div className='card' dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
+                                                </>
                                             )
-                                        )}
-                                        {/* Render the form if showForm state is true */}
-                                        {showForm && (
-                                            <form onSubmit={(e) => submitAssignmentAttempt(e)}>
-                                                <div className="tab-pane show active" id="tab-content-1">
-                                                    <section id="courses" className="courses">
-                                                        <div className="card ml-1">
-                                                            <div className="card" style={{ textAlign: 'left' }}>
-                                                                <ReactQuill
-                                                                    value={assignmentAttempt.answerText}
-                                                                    onChange={handleChangeAnswerText}
-                                                                    style={{ height: "300px" }}
-                                                                    modules={{
-                                                                        toolbar: [
-                                                                            [{ header: [1, 2, false] }],
-                                                                            ['bold', 'italic', 'underline', 'strike'],
-                                                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                                                            [{ 'indent': '-1' }, { 'indent': '+1' }],
-                                                                            [{ 'direction': 'rtl' }],
-                                                                            [{ 'align': [] }],
-                                                                            ['link', 'image', 'video'],
-                                                                            ['code-block'],
-                                                                            [{ 'color': [] }, { 'background': [] }],
-                                                                            ['clean']
-                                                                        ]
-                                                                    }}
-                                                                    theme="snow"
-                                                                />
-                                                            </div>
+                                        }
+                                        {
+                                            attemptList2 && attemptList2.length === 0 && (
+                                                <>
+                                                    {/* Render the timer if showTimer state is true */}
+                                                    {showTimer ? (
+                                                        <div className="d-flex align-items-center ml-1" style={{ marginTop: '-60px' }}>
+                                                            <i className="fas fa-clock" ></i>
+                                                            <span>  Time Remaining: {formatTime(timeRemaining)}
+                                                            </span>
                                                         </div>
-                                                    </section>
-                                                </div>
-                                                <button
-                                                    className="btn btn-primary"
-                                                    style={{ backgroundColor: '#f58d04', color: '#fff' }}
-                                                >
-                                                    Submit
-                                                </button>
-                                            </form>
-                                        )}
-                                        {showAttempts && (
-                                            <>
-                                                {attemptList.map((attempt, index) => (
-                                                    <>
-                                                        <div className='row'>
-                                                            <div className='col-md-4' style={{ fontWeight: 'bold' }}>
-                                                                <div className='mb-1'>
-                                                                    {attempt.learner?.account?.fullName}
-
-                                                                </div>
-                                                                <div style={{ /* your container styles */ }}>
-                                                                    <form onSubmit={(e) => submitPeerReview(e, attempt.id)}>
-                                                                        &nbsp; <input type="radio" id="2" name="grade" defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                        &nbsp; <label htmlFor="html">2</label><br />
-                                                                        &nbsp; <input type="radio" id="4" name="grade" defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                        &nbsp; <label htmlFor="css">4</label><br />
-                                                                        &nbsp; <input type="radio" id="6" name="grade" defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                        &nbsp; <label htmlFor="css">6</label><br />
-                                                                        &nbsp; <input type="radio" id="8" name="grade" defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                        &nbsp; <label htmlFor="css">8</label><br />
-                                                                        &nbsp; <input type="radio" id="10" name="grade" defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                        &nbsp; <label htmlFor="css">10</label><br />
-                                                                        <input type='submit' className="btn btn-primary"
-                                                                            style={{ backgroundColor: '#f58d04', color: '#fff' }} value='Send' />
-                                                                    </form>
-                                                                </div>
-
+                                                    ) : (
+                                                        // Render the "Start Assignment" button if showTimer state is false
+                                                        !showAttempts && (
+                                                            <button
+                                                                className="btn btn-primary"
+                                                                style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                                onClick={handleStartAssignment}
+                                                            >
+                                                                Start Assignment
+                                                            </button>
+                                                        )
+                                                    )}
+                                                    {/* Render the form if showForm state is true */}
+                                                    {showForm && (
+                                                        <form onSubmit={(e) => submitAssignmentAttempt(e)}>
+                                                            <div className="tab-pane show active" id="tab-content-1">
+                                                                <section id="courses" className="courses">
+                                                                    <div className="card ml-1">
+                                                                        <div className="card" style={{ textAlign: 'left' }}>
+                                                                            <ReactQuill
+                                                                                value={assignmentAttempt.answerText}
+                                                                                onChange={handleChangeAnswerText}
+                                                                                style={{ height: "300px" }}
+                                                                                modules={{
+                                                                                    toolbar: [
+                                                                                        [{ header: [1, 2, false] }],
+                                                                                        ['bold', 'italic', 'underline', 'strike'],
+                                                                                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                                                        [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                                                                        [{ 'direction': 'rtl' }],
+                                                                                        [{ 'align': [] }],
+                                                                                        ['link', 'image', 'video'],
+                                                                                        ['code-block'],
+                                                                                        [{ 'color': [] }, { 'background': [] }],
+                                                                                        ['clean']
+                                                                                    ]
+                                                                                }}
+                                                                                theme="snow"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                </section>
                                                             </div>
-                                                            <div className='col-md-8 card'>
-                                                                <div dangerouslySetInnerHTML={{ __html: attempt.answerText }}></div>
-                                                            </div>
-                                                        </div>
-                                                    </>
+                                                            <button
+                                                                className="btn btn-primary"
+                                                                style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                            >
+                                                                Submit
+                                                            </button>
+                                                        </form>
+                                                    )}
+                                                    {showAttempts && (
+                                                        <>
+                                                        <h3>Review for another students:</h3>
+                                                            {attemptList.map((attempt, index) => (
+                                                                <>
+                                                                    <div className='row'>
+                                                                        <div className='col-md-4' style={{ fontWeight: 'bold' }}>
+                                                                            <div className='mb-1'>
+                                                                                {attempt.learner?.account?.fullName}
 
-                                                ))}
-                                            </>
-                                        )}
+                                                                            </div>
+                                                                            <div style={{ /* your container styles */ }}>
+                                                                                <form onSubmit={(e) => submitPeerReview(e, attempt.id)}>
+                                                                                    &nbsp; <input type="radio" id="2" name="grade" defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                    &nbsp; <label htmlFor="html">2</label><br />
+                                                                                    &nbsp; <input type="radio" id="4" name="grade" defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                    &nbsp; <label htmlFor="css">4</label><br />
+                                                                                    &nbsp; <input type="radio" id="6" name="grade" defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                    &nbsp; <label htmlFor="css">6</label><br />
+                                                                                    &nbsp; <input type="radio" id="8" name="grade" defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                    &nbsp; <label htmlFor="css">8</label><br />
+                                                                                    &nbsp; <input type="radio" id="10" name="grade" defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                    &nbsp; <label htmlFor="css">10</label><br />
+                                                                                    <input type='submit' className="btn btn-primary"
+                                                                                        style={{ backgroundColor: '#f58d04', color: '#fff' }} value='Send' />
+                                                                                </form>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div className='col-md-8 card'>
+                                                                            <div dangerouslySetInnerHTML={{ __html: attempt.answerText }}></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </>
+
+                                                            ))}
+                                                        </>
+                                                    )}
+                                                </>
+                                            )
+                                        }
+
+
                                     </div>
                                 </>
                             )}
