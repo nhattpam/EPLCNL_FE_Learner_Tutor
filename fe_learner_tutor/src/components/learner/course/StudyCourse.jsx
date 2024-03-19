@@ -12,6 +12,7 @@ import quizAttemptService from '../../../services/quiz-attempt.service';
 import quizService from '../../../services/quiz.service';
 import questionService from '../../../services/question.service';
 import learnerService from '../../../services/learner.service';
+import peerReviewService from '../../../services/peer-review.service';
 
 const StudyCourse = () => {
     const { courseId } = useParams();
@@ -594,7 +595,26 @@ const StudyCourse = () => {
     };
 
 
+    //PEER REVIEW
+    const [peerReview, setPeerReview] = useState({
+        assignmentAttemptId: "",
+        learnerId: learnerId, //la thang dang dang nhap
+        grade: ""
 
+    });
+    const submitPeerReview = async (e, assignmentAttemptId) => {
+        e.preventDefault();
+
+        peerReview.assignmentAttemptId = assignmentAttemptId;
+
+        console.log(JSON.stringify(peerReview));
+
+        await peerReviewService.savePeerReview(peerReview)
+        .then((res) => {
+            window.alert("Thank you!")
+        })
+    }
+    //PEER REVIEW
 
 
 
@@ -774,24 +794,21 @@ const StudyCourse = () => {
 
                                                                 </div>
                                                                 <div style={{ /* your container styles */ }}>
-                                                                    <form>
-                                                                        &nbsp; <input type="radio" id="2" name="grade" defaultValue="2" style={{ display: 'inline-block' }} />
+                                                                    <form onSubmit={(e) => submitPeerReview(e, attempt.id)}>
+                                                                        &nbsp; <input type="radio" id="2" name="grade" defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
                                                                         &nbsp; <label htmlFor="html">2</label><br />
-                                                                        &nbsp; <input type="radio" id="4" name="grade" defaultValue="4" style={{ display: 'inline-block' }} />
+                                                                        &nbsp; <input type="radio" id="4" name="grade" defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
                                                                         &nbsp; <label htmlFor="css">4</label><br />
-                                                                        &nbsp; <input type="radio" id="6" name="grade" defaultValue="6" style={{ display: 'inline-block' }} />
+                                                                        &nbsp; <input type="radio" id="6" name="grade" defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
                                                                         &nbsp; <label htmlFor="css">6</label><br />
-                                                                        &nbsp; <input type="radio" id="8" name="grade" defaultValue="8" style={{ display: 'inline-block' }} />
+                                                                        &nbsp; <input type="radio" id="8" name="grade" defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
                                                                         &nbsp; <label htmlFor="css">8</label><br />
-                                                                        &nbsp; <input type="radio" id="10" name="grade" defaultValue="10" style={{ display: 'inline-block' }} />
+                                                                        &nbsp; <input type="radio" id="10" name="grade" defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
                                                                         &nbsp; <label htmlFor="css">10</label><br />
                                                                         <input type='submit' className="btn btn-primary"
-                                                                            style={{ backgroundColor: '#f58d04', color: '#fff' }} value='Send'/>
+                                                                            style={{ backgroundColor: '#f58d04', color: '#fff' }} value='Send' />
                                                                     </form>
                                                                 </div>
-
-
-
 
                                                             </div>
                                                             <div className='col-md-8 card'>
