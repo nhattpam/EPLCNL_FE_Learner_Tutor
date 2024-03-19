@@ -399,7 +399,6 @@ const StudyCourse = () => {
 
                 const list = res.data.filter(attempt => attempt.learnerId !== learnerId);
                 const list2 = res.data.filter(attempt => attempt.learnerId === learnerId);
-                console.log(list);
                 setAttemptList(list);
                 setAttemptList2(list2);
 
@@ -657,6 +656,24 @@ const StudyCourse = () => {
 
             })
     }
+
+    //check neu trong list peer review co assignment id
+    const [peerReviewList, setPeerReviewList] = useState([]);
+
+    useEffect(() => {
+        if (selectedAssignmentId) {
+            peerReviewService
+                .getAllPeerReview()
+                .then((res) => {
+                    const list = res.data.filter(peerReview => peerReview.assignmentAttempt?.assignmentId === selectedAssignmentId);
+                    console.log("DDDD: " + list.length)
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
+    }, [selectedAssignmentId]);
     //PEER REVIEW
 
 
@@ -773,7 +790,7 @@ const StudyCourse = () => {
                                             attemptList2 && attemptList2.length > 0 && (
                                                 <>
                                                     <div>
-                                                        Grade: <span style={{fontWeight: 'bold', color: '#f58d04'}}>{myAssignmentAttempt.totalGrade}</span>
+                                                        Grade: <span style={{ fontWeight: 'bold', color: '#f58d04' }}>{myAssignmentAttempt.totalGrade}</span>
                                                     </div>
                                                     <div className='card' dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
                                                 </>
@@ -842,7 +859,7 @@ const StudyCourse = () => {
                                                     )}
                                                     {showAttempts && (
                                                         <>
-                                                        <h3>Review for another students:</h3>
+                                                            <h3>Review for another students:</h3>
                                                             {attemptList.map((attempt, index) => (
                                                                 <>
                                                                     <div className='row'>
