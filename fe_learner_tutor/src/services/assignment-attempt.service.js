@@ -46,6 +46,13 @@ class AssignmentAttemptService {
     });
   }
 
+  getAllPeerReviewByAssignmentAttemptId(id) {
+    return axios.get(API_URL + `/assignment-attempts/${id}/peer-reviews`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 
  
 

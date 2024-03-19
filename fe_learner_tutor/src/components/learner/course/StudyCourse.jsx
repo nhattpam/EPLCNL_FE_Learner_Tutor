@@ -658,28 +658,19 @@ const StudyCourse = () => {
     }
 
     //check neu trong list peer review co assignment id
-    const [peerReviewList, setPeerReviewList] = useState([]);
+    const [notReviewYetList, setNotReviewList] = useState([]);
+    const [showNotReviewYetList, setShowReviewYetList] = useState(false);
 
     useEffect(() => {
         if (selectedAssignmentId) {
-            peerReviewService
-                .getAllPeerReview()
+            assignmentService.getAllAssignmentAttemptByAssignmentId(selectedAssignmentId)
                 .then((res) => {
-                    const list = res.data.filter(peerReview => peerReview.assignmentAttempt?.assignmentId === selectedAssignmentId);
-                    console.log("DDDD: " + list.length)
+
                 })
-                .catch((error) => {
-                    console.log(error);
-                });
         }
 
     }, [selectedAssignmentId]);
     //PEER REVIEW
-
-
-
-
-
 
 
 
@@ -793,6 +784,45 @@ const StudyCourse = () => {
                                                         Grade: <span style={{ fontWeight: 'bold', color: '#f58d04' }}>{myAssignmentAttempt.totalGrade}</span>
                                                     </div>
                                                     <div className='card' dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            showNotReviewYetList && (
+                                                <>
+                                                    {attemptList.map((attempt, index) => (
+                                                        <>
+                                                            <div className='row'>
+                                                                <div className='col-md-4' style={{ fontWeight: 'bold' }}>
+                                                                    <div className='mb-1'>
+                                                                        {attempt.learner?.account?.fullName}
+
+                                                                    </div>
+                                                                    <div style={{ /* your container styles */ }}>
+                                                                        <form onSubmit={(e) => submitPeerReview(e, attempt.id)}>
+                                                                            &nbsp; <input type="radio" id="2" name="grade" defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                            &nbsp; <label htmlFor="html">2</label><br />
+                                                                            &nbsp; <input type="radio" id="4" name="grade" defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                            &nbsp; <label htmlFor="css">4</label><br />
+                                                                            &nbsp; <input type="radio" id="6" name="grade" defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                            &nbsp; <label htmlFor="css">6</label><br />
+                                                                            &nbsp; <input type="radio" id="8" name="grade" defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                            &nbsp; <label htmlFor="css">8</label><br />
+                                                                            &nbsp; <input type="radio" id="10" name="grade" defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                            &nbsp; <label htmlFor="css">10</label><br />
+                                                                            <input type='submit' className="btn btn-primary"
+                                                                                style={{ backgroundColor: '#f58d04', color: '#fff' }} value='Send' />
+                                                                        </form>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div className='col-md-8 card'>
+                                                                    <div dangerouslySetInnerHTML={{ __html: attempt.answerText }}></div>
+                                                                </div>
+                                                            </div>
+                                                        </>
+
+                                                    ))}
                                                 </>
                                             )
                                         }
