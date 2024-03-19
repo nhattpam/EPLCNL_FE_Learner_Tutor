@@ -46,5 +46,13 @@ class AssignmentService {
     });
   }
 
+  getAllAssignmentAttemptByAssignmentId(id) {
+    return axios.get(API_URL + `/assignments/${id}/assignment-attempts`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
+
 }
 export default new AssignmentService;
