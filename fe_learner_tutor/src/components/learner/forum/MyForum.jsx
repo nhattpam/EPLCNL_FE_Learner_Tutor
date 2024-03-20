@@ -121,7 +121,7 @@ const MyForum = () => {
                                 {accountForum.tutor?.account?.fullName ?? accountForum.learner?.account?.fullName}
                               </div>
 
-                              <div className="message-content">{accountForum.message}</div>
+                              <div className="message-content" style={{width: '400px' }}>{accountForum.message}</div>
                               <div className="message-date">{accountForum.messagedDate}</div>
                             </div>
                           ))

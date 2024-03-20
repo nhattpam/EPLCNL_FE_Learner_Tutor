@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../Header';
 import Footer from '../../Footer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import learnerService from '../../../services/learner.service';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -38,46 +38,47 @@ const MyLearning = () => {
     const contentRef = useRef(null);
 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await learnerService.getAllEnrollmentByLearnerId(learnerId);
-                setEnrollmentList(res.data);
-                const learnersCounts = {}; // Object to store number of learners for each course
-                const scores = {}; // Object to store scores for each enrollment
+    // Define fetchData function before useEffect
+    const fetchData = async () => {
+        try {
+            const res = await learnerService.getAllEnrollmentByLearnerId(learnerId);
+            setEnrollmentList(res.data);
+            const learnersCounts = {}; // Object to store number of learners for each course
+            const scores = {}; // Object to store scores for each enrollment
 
-                for (const enrollment of res.data) {
-                    try {
-                        const learnersResponse = await courseService.getAllEnrollmentsByCourse(enrollment.transaction?.courseId);
-                        const learnersOfCourse = learnersResponse.data;
-                        learnersCounts[enrollment.transaction?.courseId] = learnersOfCourse.length; // Store learner count for the course
+            for (const enrollment of res.data) {
+                try {
+                    const learnersResponse = await courseService.getAllEnrollmentsByCourse(enrollment.transaction?.courseId);
+                    const learnersOfCourse = learnersResponse.data;
+                    learnersCounts[enrollment.transaction?.courseId] = learnersOfCourse.length; // Store learner count for the course
 
-                        //CHECK PROGRESSING
-                        if (!enrollment.transaction?.course?.isOnlineClass) {
-                            const courseScoreResponse = await enrollmentService.getCourseScoreByEnrollmentId(enrollment.id);
-                            const learningScoreResponse = await enrollmentService.getLearningScoreByEnrollmentId(enrollment.id);
+                    //CHECK PROGRESSING
+                    if (!enrollment.transaction?.course?.isOnlineClass) {
+                        const courseScoreResponse = await enrollmentService.getCourseScoreByEnrollmentId(enrollment.id);
+                        const learningScoreResponse = await enrollmentService.getLearningScoreByEnrollmentId(enrollment.id);
 
-                            scores[enrollment.id] = {
-                                courseScore: courseScoreResponse.data,
-                                learningScore: learningScoreResponse.data
-                            };
+                        scores[enrollment.id] = {
+                            courseScore: courseScoreResponse.data,
+                            learningScore: learningScoreResponse.data
+                        };
 
-                            console.log("Course score for enrollment ID " + enrollment.id + ": " + courseScoreResponse.data);
-                        }
-                    } catch (error) {
-                        console.error(`Error fetching learners for course ${enrollment.course?.name}:`, error);
+                        console.log("Course score for enrollment ID " + enrollment.id + ": " + courseScoreResponse.data);
                     }
+                } catch (error) {
+                    console.error(`Error fetching learners for course ${enrollment.course?.name}:`, error);
                 }
-
-                console.log("every course:", res.data.map(enrollment => enrollment.transaction?.course?.name));
-                setLearnersCount(prevState => ({ ...prevState, ...learnersCounts })); // Update state with learners count
-                setEnrollmentScores(scores); // Update state with scores for each enrollment
-            } catch (error) {
-                console.log(error);
             }
-        };
 
-        fetchData();
+            console.log("every course:", res.data.map(enrollment => enrollment.transaction?.course?.name));
+            setLearnersCount(prevState => ({ ...prevState, ...learnersCounts })); // Update state with learners count
+            setEnrollmentScores(scores); // Update state with scores for each enrollment
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData(); // Call fetchData function
     }, [learnerId]);
 
 
@@ -132,6 +133,8 @@ const MyLearning = () => {
             .then((res) => {
                 window.alert("You feedback sent! Thank you");
                 setShowFeedbackModal(false)
+                // Fetch the updated list of enrollments
+                fetchData();
             })
             .catch((error) => {
                 console.log(error);
@@ -530,7 +533,7 @@ const MyLearning = () => {
                                                                                             }}
                                                                                             theme="snow"
                                                                                             preserveWhitespace={true} // Add this line to preserve whitespace
-
+                                                                                            style={{ height: '400px' }}
                                                                                         />
                                                                                     </div>
                                                                                     <div className="modal-footer">
@@ -562,6 +565,7 @@ const MyLearning = () => {
                                                                                         </button>
                                                                                     </div>
                                                                                     <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Set maxHeight and overflowY */}
+
                                                                                         <ReactQuill
                                                                                             value={report.reason}
                                                                                             onChange={handleReasonChange}
@@ -577,6 +581,7 @@ const MyLearning = () => {
                                                                                             }}
                                                                                             theme="snow"
                                                                                             preserveWhitespace={true}
+                                                                                            style={{ height: '300px' }}
                                                                                         />
                                                                                         <Dropzone
                                                                                             onDrop={handleFileDrop}
