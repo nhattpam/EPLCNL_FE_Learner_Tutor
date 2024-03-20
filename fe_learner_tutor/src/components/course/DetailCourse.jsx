@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../Header'
 import Footer from '../Footer'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import courseService from '../../services/course.service'
 import moduleService from '../../services/module.service';
 import transactionService from '../../services/transaction.service';
 import { Button } from 'bootstrap';
 import enrollmentService from '../../services/enrollment.service';
 import classLessonService from '../../services/class-lesson.service';
+import accountService from '../../services/account.service';
 
 const DetailCourse = () => {
 
@@ -18,6 +19,7 @@ const DetailCourse = () => {
     const [showNotification, setShowNotification] = useState(false);
     const [loading, setLoading] = useState(false); // State to track loading status
     const [isEnrolled, setIsEnrolled] = useState(false);
+    const accountId = localStorage.getItem('accountId');
 
 
     const [course, setCourse] = useState({
@@ -257,7 +259,72 @@ const DetailCourse = () => {
             });
     };
 
+    //pay by wallet
+    const [account, setAccount] = useState({
+        email: "",
+        password: "",
+        fullName: "",
+        phoneNumber: "",
+        imageUrl: "",
+        gender: "",
+        wallet: []
+    });
 
+    useEffect(() => {
+        if (accountId) {
+            accountService
+                .getAccountById(accountId)
+                .then((res) => {
+                    setAccount(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [accountId]);
+
+    const [showPayBalanceModal, setShowPayBalanceModal] = useState(false);
+
+    const openPayBalanceModal = () => {
+        setShowPayBalanceModal(true);
+    };
+
+    const closePayBalanceModal = () => {
+        setShowPayBalanceModal(false);
+    };
+    const handlePayBalance = (event) => {
+        event.preventDefault();
+
+        openPayBalanceModal();
+    }
+    const navigate = useNavigate();
+
+    const PayBalance = () => {
+        try {
+            const transactionData = {
+                courseId: courseId,
+                learnerId: learnerId,
+                amount: course.stockPrice * 24000,
+                paymentMethodId: "2968c869-dceb-4b3e-8c6d-720fccb89a88"
+            };
+    
+            transactionService
+            .saveTransaction(transactionData)
+            .then((response) => {
+                transactionService.payByWallet(response.data.id);
+                window.alert("Pay successfully")
+                navigate(`/my-learning/${learnerId}`)
+            })
+            .catch((error) => {
+                console.error("Error while saving transaction:", error);
+                window.alert("Payment failed. Please try again later.");
+            });
+        } catch (error) {
+            console.error("Error during payment process:", error);
+            window.alert("Payment failed. Please try again later.");
+        }
+    }
+    
 
     //check enrollment by learner and course
     useEffect(() => {
@@ -354,6 +421,16 @@ const DetailCourse = () => {
                                                 </div>
                                                 <p>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
                                                 </p>
+                                                <div className="course-info d-flex justify-content-between align-items-center">
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary btn-lg btn-block"
+                                                        onClick={handlePayBalance}
+                                                        style={{ backgroundColor: '#fff', color: '#000' }}
+                                                    >
+                                                        Or use your balance - ${course.stockPrice}
+                                                    </button>
+                                                </div>
                                             </>
 
 
@@ -380,7 +457,7 @@ const DetailCourse = () => {
                                                         </Link>
                                                     )
                                                 ) : (
-                                                    <div>
+                                                    <>
                                                         <button
                                                             type="button"
                                                             className="btn btn-primary btn-lg btn-block get-button"
@@ -391,7 +468,18 @@ const DetailCourse = () => {
                                                         </button>
                                                         <p className='mt-2'>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
                                                         </p>
-                                                    </div>
+                                                        <div className="course-info d-flex justify-content-between align-items-center">
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-primary btn-lg btn-block"
+                                                                onClick={handlePayBalance}
+                                                                style={{ backgroundColor: '#fff', color: '#000' }}
+                                                            >
+                                                                Or use your balance - ${course.stockPrice}
+                                                            </button>
+                                                        </div>
+                                                    </>
+
 
 
                                                 )}
@@ -419,9 +507,54 @@ const DetailCourse = () => {
                                 )}
 
 
-
-
                             </div>
+                            {
+                                showPayBalanceModal && (
+                                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                                        <div className="modal-dialog" role="document">
+                                            <div className="modal-content">
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title">Do you want to use your balance - <span style={{ fontWeight: 'bold', color: '#f58d04' }}>{account.wallet?.balance}$</span></h5>
+                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closePayBalanceModal}>
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div className="modal-body">
+                                                    <div className="table-responsive">
+                                                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
+                                                            <thead className="thead-light">
+                                                                <tr>
+                                                                    <th>Image</th>
+                                                                    <th>Name</th>
+                                                                    <th>Price</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <img src={course.imageUrl} style={{ width: '100px', height: '60px' }}></img>
+                                                                    </td>
+                                                                    <td>{course.name}</td>
+                                                                    <td>{course.stockPrice}<span style={{ fontWeight: 'bold' }}>$</span></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div className="modal-footer">
+                                                    {/* Conditional rendering of buttons based on edit mode */}
+                                                    <button type="button" className="btn btn-secondary" onClick={closePayBalanceModal}>Close</button>
+                                                    {
+                                                        course.stockPrice < account.wallet?.balance && (
+                                                            <button type="button" className="btn btn-secondary" style={{ backgroundColor: '#f58d04' }} onClick={() => PayBalance()}>Pay</button>
+                                                        )
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </section>{/* End Cource Details Section */}
