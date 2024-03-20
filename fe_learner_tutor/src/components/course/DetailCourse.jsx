@@ -307,24 +307,24 @@ const DetailCourse = () => {
                 amount: course.stockPrice * 24000,
                 paymentMethodId: "2968c869-dceb-4b3e-8c6d-720fccb89a88"
             };
-    
+
             transactionService
-            .saveTransaction(transactionData)
-            .then((response) => {
-                transactionService.payByWallet(response.data.id);
-                window.alert("Pay successfully")
-                navigate(`/my-learning/${learnerId}`)
-            })
-            .catch((error) => {
-                console.error("Error while saving transaction:", error);
-                window.alert("Payment failed. Please try again later.");
-            });
+                .saveTransaction(transactionData)
+                .then((response) => {
+                    transactionService.payByWallet(response.data.id);
+                    window.alert("Pay successfully")
+                    navigate(`/my-learning/${learnerId}`)
+                })
+                .catch((error) => {
+                    console.error("Error while saving transaction:", error);
+                    window.alert("Payment failed. Please try again later.");
+                });
         } catch (error) {
             console.error("Error during payment process:", error);
             window.alert("Payment failed. Please try again later.");
         }
     }
-    
+
 
     //check enrollment by learner and course
     useEffect(() => {
@@ -596,9 +596,12 @@ const DetailCourse = () => {
 
                                                             <ul>
                                                                 {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
-                                                                    <li key={topicIndex}>{classTopic.name}</li>
+                                                                    <span key={topicIndex}>
+                                                                        <span style={{ fontWeight: 'bold' }}>Topic - </span>{classTopic.name}<br />
+                                                                    </span>
                                                                 ))}
                                                             </ul>
+
                                                         </div>
                                                     </div>
 

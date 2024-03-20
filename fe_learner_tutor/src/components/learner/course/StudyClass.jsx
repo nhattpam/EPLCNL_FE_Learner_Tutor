@@ -364,14 +364,16 @@ const StudyClass = () => {
       {/* <Header /> */}
       <main >
 
-        <div className="breadcrumbs" style={{ marginTop: '-30px', paddingBottom: '10px', position: 'fixed', top: 0, width: '100%', zIndex: 999, display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft: '20px', paddingRight: '20px' }} id='nav-fixed'>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src={process.env.PUBLIC_URL + '/meowlish_icon.png'} alt="MeowLish" style={{ width: '30px', marginRight: '5px', paddingTop: '10px' }} />
-            <Link to="/home" style={{ color: '#fff', textDecoration: 'none', fontSize: '18px', fontWeight: 'bold', marginRight: '10px' }}>MeowLish</Link><span style={{ color: '#fff' }} className='mr-2'>|</span>
-            <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{course.name}</h4>
-          </div>
-        </div>
-
+      <div className="breadcrumbs" style={{ marginTop: '-30px', paddingBottom: '10px', position: 'fixed', top: 0, width: '100%', zIndex: 999, display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingLeft: '20px', paddingRight: '20px' }} id='nav-fixed'>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img src={process.env.PUBLIC_URL + '/meowlish_icon.png'} alt="MeowLish" style={{ width: '30px', marginRight: '5px', paddingTop: '10px' }} />
+                        <Link to="/home" style={{ color: '#fff', textDecoration: 'none', fontSize: '18px', fontWeight: 'bold', marginRight: '10px' }}>MeowLish</Link><span style={{ color: '#fff' }} className='mr-2'>|</span>
+                        <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{course.name}</h4>
+                    </div>
+                    <div>
+                        <Link to={`/my-learning/${learnerId}`} style={{ color: 'white' }}><i className="fas fa-sign-out-alt"></i></Link>
+                    </div>
+                </div>
 
 
         <section id="courses" className="courses" style={{ marginTop: '-10px' }}>
