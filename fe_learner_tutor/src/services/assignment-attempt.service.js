@@ -54,6 +54,13 @@ class AssignmentAttemptService {
     });
   }
 
+  getAllAssignmentAttemptNotGradeYetByAssignment(assignmentId, learnerId) {
+    return axios.get(API_URL + `/assignment-attempts/${assignmentId}/assignments/${learnerId}/learners`, {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
  
 
 }

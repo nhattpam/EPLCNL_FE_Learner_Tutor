@@ -258,33 +258,39 @@ const StudyCourse = () => {
     const [assignmentAttemptList, setAssignmentAttemptList] = useState([]);
     const [quizAttemptList, setQuizAttemptList] = useState([]);
 
-    useEffect(() => {
-        if (selectedAssignmentId) {
-            assignmentService
-                .getAssignmentById(selectedAssignmentId)
-                .then((res) => {
-                    setSelectedAssignment(res.data);
-
-
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-    }, [selectedAssignmentId]);
-
-
+    //check neu trong list peer review co assignment id
+    const [notReviewYetList, setNotReviewList] = useState([]);
+    const [showNotReviewYetList, setShowReviewYetList] = useState(false);
 
     // Function to handle click on a assignment card to show details
-    const handleAssignmentClick = (assignmentId) => {
+    const handleAssignmentClick = async (assignmentId) => {
         setSelectedAssignmentId(assignmentId);
+        console.log("THIS IS ASS: " + assignmentId);
         setSelectedLessonId(null);
         setSelectedLesson(null);
         setSelectedQuizId(null);
         setSelectedQuiz(null);
         setShowTimer(false);
-
+    
+        if (assignmentId) {
+            try {
+                 setSelectedAssignmentId(assignmentId); // Await the state update
+    
+                const resAss = await assignmentService.getAssignmentById(assignmentId);
+                setSelectedAssignment(resAss.data);
+    
+                const res = await assignmentAttemptService.getAllAssignmentAttemptNotGradeYetByAssignment(assignmentId, learnerId);
+                setNotReviewList(res.data);
+                res.data.forEach(element => {
+                    console.log(JSON.stringify(element));
+                });
+            } catch (error) {
+                console.log("Error fetching assignment attempts:", error);
+            }
+        }
+        //PEER REVIEW
     };
+    
 
     // State to track whether the form should be displayed or not
     const [showForm, setShowForm] = useState(false);
@@ -401,6 +407,9 @@ const StudyCourse = () => {
                 const list2 = res.data.filter(attempt => attempt.learnerId === learnerId);
                 setAttemptList(list);
                 setAttemptList2(list2);
+                if (list2.length > 0) {
+                    setShowReviewYetList(true);
+                }
 
             })
             .catch((error) => {
@@ -657,20 +666,7 @@ const StudyCourse = () => {
             })
     }
 
-    //check neu trong list peer review co assignment id
-    const [notReviewYetList, setNotReviewList] = useState([]);
-    const [showNotReviewYetList, setShowReviewYetList] = useState(false);
 
-    useEffect(() => {
-        if (selectedAssignmentId) {
-            assignmentService.getAllAssignmentAttemptByAssignmentId(selectedAssignmentId)
-                .then((res) => {
-
-                })
-        }
-
-    }, [selectedAssignmentId]);
-    //PEER REVIEW
 
 
 
@@ -793,7 +789,7 @@ const StudyCourse = () => {
                                         {
                                             showNotReviewYetList && (
                                                 <>
-                                                    {attemptList.map((attempt, index) => (
+                                                    {notReviewYetList.map((attempt, index) => (
                                                         <>
                                                             <div className='row'>
                                                                 <div className='col-md-4' style={{ fontWeight: 'bold' }}>
