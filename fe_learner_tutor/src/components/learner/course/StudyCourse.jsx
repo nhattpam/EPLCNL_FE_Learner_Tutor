@@ -675,7 +675,7 @@ const StudyCourse = () => {
     return (
         <>
             {/* <Header /> */}
-            <main >
+            <main  style={{backgroundColor: '#fff'}}>
 
                 <div className="breadcrumbs" style={{ marginTop: '-30px', paddingBottom: '10px', position: 'fixed', top: 0, width: '100%', zIndex: 999, display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingLeft: '20px', paddingRight: '20px' }} id='nav-fixed'>
                     <div style={{ display: 'flex', alignItems: 'center' }}>

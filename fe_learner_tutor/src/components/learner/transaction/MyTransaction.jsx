@@ -89,7 +89,7 @@ const MyTransaction = () => {
     return (
         <>
             <Header />
-            <main id="main" data-aos="fade-in"  style={{backgroundColor: '#fff'}}>
+            <main id="main" data-aos="fade-in" style={{ backgroundColor: '#fff' }}>
                 <div className="breadcrumbs">
                     <div className="container">
                         <h2 style={{ color: '#fff' }}>My Transaction</h2>
@@ -99,10 +99,10 @@ const MyTransaction = () => {
                     <div className="container" data-aos="fade-up">
                         <div className="tab-content" id="myLearningTabsContent">
                             <div className="tab-pane fade show active" id="tab-content-1" style={{ marginTop: '-80px' }}>
-                                <div className="container" data-aos="fade-up">
+                                <div className="container-fluid" data-aos="fade-up">
                                     <div className="list-container" data-aos="zoom-in" data-aos-delay={100}>
-                                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
-                                            <thead className="thead-light">
+                                        <table className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                            <thead className="thead-light" >
                                                 <tr>
                                                     <th scope="col">#</th>
                                                     <th scope="col">Image</th>
@@ -206,17 +206,28 @@ const MyTransaction = () => {
 
                                             <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
                                                 <thead className="thead-light">
-                                                    <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Image</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Payment Method</th>
-                                                        <th scope="col">Amount</th>
-                                                        <th scope="col">Request Date</th>
-                                                        <th scope="col">Reason</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col"></th>
-                                                    </tr>
+                                                    {
+                                                        refundRequestList.length > 0 && (
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">Image</th>
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Payment Method</th>
+                                                                <th scope="col">Amount</th>
+                                                                <th scope="col">Request Date</th>
+                                                                <th scope="col">Reason</th>
+                                                                <th scope="col">Status</th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        )
+
+                                                    }
+                                                    {
+                                                        refundRequestList.length === 0 && (
+                                                            <h6>You have no refunds.</h6>
+                                                        )
+                                                    }
+
                                                 </thead>
                                                 <tbody>
                                                     {
@@ -237,7 +248,7 @@ const MyTransaction = () => {
                                                                     {refund.enrollment.transaction.paymentMethod.name}
                                                                 </td>
                                                                 <td>
-                                                                    ${refund.enrollment.transaction.amount /24000}
+                                                                    ${refund.enrollment.transaction.amount / 24000}
                                                                 </td>
                                                                 <td>
                                                                     {refund.requestedDate}
@@ -254,12 +265,7 @@ const MyTransaction = () => {
                                             </table>
 
                                         }
-                                        {
-                                            refundRequestList.length < 0 && (
-                                                <h6>You have no refund requests yet.</h6>
-                                            )
 
-                                        }
                                     </div>
                                 </div>
 
