@@ -6,6 +6,7 @@ import Sidebar from '../Sidebar'
 import accountService from '../../../services/account.service'
 import tutorService from '../../../services/tutor.service';
 import learnerService from '../../../services/learner.service';
+import walletService from '../../../services/wallet.service';
 
 const TutorDashboard = () => {
 
@@ -18,11 +19,13 @@ const TutorDashboard = () => {
     const [learnerList, setLearnerList] = useState([]);
     const [rating, setRating] = useState(0);
     const [learnersPerPage] = useState(5);
+    const [historiesPerPage] = useState(5);
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage2, setCurrentPage2] = useState(0);
     const [showModal, setShowModal] = useState(false);
 
     const [account, setAccount] = useState({
@@ -140,6 +143,36 @@ const TutorDashboard = () => {
         setShowModal(false);
     };
 
+    //WALLET HISTORY
+    const [walletHistoryList, setWalletHistoryList] = useState([]);
+
+    useEffect(() => {
+        walletService
+            .getAllWalletHistoryByWallet(account.wallet?.id)
+            .then((res) => {
+                setWalletHistoryList(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [account.wallet?.id]);
+
+
+    const filteredHistories = walletHistoryList
+        .filter((history) => {
+            return (
+                history.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+
+            );
+        });
+
+    const pageCount2 = Math.ceil(filteredHistories.length / historiesPerPage);
+
+    const handlePageClick2 = (data) => {
+        setCurrentPage2(data.selected);
+    };
+    const offset2 = currentPage2 * historiesPerPage;
+    const currentHistories = filteredHistories.slice(offset2, offset2 + historiesPerPage);
 
     return (
 
@@ -271,88 +304,30 @@ const TutorDashboard = () => {
                                     <div className="card-box">
                                         <h4 className="header-title mb-3">Revenue History</h4>
                                         <div className="table-responsive">
-                                            <table className="table table-borderless table-nowrap table-hover table-centered m-0">
+                                            <table className="table table-borderless table-wrap table-hover table-centered m-0">
                                                 <thead className="thead-light">
                                                     <tr>
-                                                        <th>Marketplaces</th>
-                                                        <th>Date</th>
-                                                        <th>Payouts</th>
-                                                        
+                                                        <th>Transaction Date</th>
+                                                        <th>Note</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Themes Market</h5>
-                                                        </td>
-                                                        <td>
-                                                            Oct 15, 2018
-                                                        </td>
-                                                        <td>
-                                                            $5848.68
-                                                        </td>
-                                                       
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Freelance</h5>
-                                                        </td>
-                                                        <td>
-                                                            Oct 12, 2018
-                                                        </td>
-                                                        <td>
-                                                            $1247.25
-                                                        </td>
-                                                        
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Share Holding</h5>
-                                                        </td>
-                                                        <td>
-                                                            Oct 10, 2018
-                                                        </td>
-                                                        <td>
-                                                            $815.89
-                                                        </td>
-                                                       
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Envato's Affiliates</h5>
-                                                        </td>
-                                                        <td>
-                                                            Oct 03, 2018
-                                                        </td>
-                                                        <td>
-                                                            $248.75
-                                                        </td>
-                                                       
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Marketing Revenue</h5>
-                                                        </td>
-                                                        <td>
-                                                            Sep 21, 2018
-                                                        </td>
-                                                        <td>
-                                                            $978.21
-                                                        </td>
-                                                       
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 className="m-0 font-weight-normal">Advertise Revenue</h5>
-                                                        </td>
-                                                        <td>
-                                                            Sep 15, 2018
-                                                        </td>
-                                                        <td>
-                                                            $358.10
-                                                        </td>
-                                                        
-                                                    </tr>
+                                                    {
+                                                        currentHistories.length > 0 && currentHistories.map((history, index) => (
+                                                            <tr>
+                                                                <td>
+                                                                    <h5 className="m-0 font-weight-normal">{history.transactionDate}</h5>
+                                                                </td>
+                                                                <td>
+                                                                    {history.note}
+                                                                </td>
+
+                                                            </tr>
+                                                        )
+                                                        )
+                                                    }
+
                                                 </tbody>
                                             </table>
                                         </div> {/* end .table-responsive*/}

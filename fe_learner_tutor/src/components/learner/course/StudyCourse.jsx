@@ -271,14 +271,14 @@ const StudyCourse = () => {
         setSelectedQuizId(null);
         setSelectedQuiz(null);
         setShowTimer(false);
-    
+
         if (assignmentId) {
             try {
-                 setSelectedAssignmentId(assignmentId); // Await the state update
-    
+                setSelectedAssignmentId(assignmentId); // Await the state update
+
                 const resAss = await assignmentService.getAssignmentById(assignmentId);
                 setSelectedAssignment(resAss.data);
-    
+
                 const res = await assignmentAttemptService.getAllAssignmentAttemptNotGradeYetByAssignment(assignmentId, learnerId);
                 setNotReviewList(res.data);
                 res.data.forEach(element => {
@@ -290,7 +290,7 @@ const StudyCourse = () => {
         }
         //PEER REVIEW
     };
-    
+
 
     // State to track whether the form should be displayed or not
     const [showForm, setShowForm] = useState(false);
@@ -662,8 +662,10 @@ const StudyCourse = () => {
         await peerReviewService.savePeerReview(peerReview)
             .then((res) => {
                 window.alert("Thank you!")
-
+                // Reload the page
+                setShowAttempts(true);
             })
+
     }
 
 

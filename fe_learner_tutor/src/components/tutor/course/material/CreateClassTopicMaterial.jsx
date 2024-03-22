@@ -96,7 +96,7 @@ const CreateClassTopicMaterial = () => {
 
       console.log(materialJsonParse)
 
-      navigate(`/tutor/courses/list-material-by-topic/${storedClassTopicId}`)
+      navigate(`/tutor/courses/edit-topic/${storedClassTopicId}`)
 
 
     } catch (error) {

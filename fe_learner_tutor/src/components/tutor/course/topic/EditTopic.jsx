@@ -257,7 +257,7 @@ const EditTopic = () => {
                           >
                             Update
                           </button>
-                          
+
                           <Link
                             to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
                             className="btn btn-black"
@@ -329,7 +329,7 @@ const EditTopic = () => {
                       </div>
                       {
                         currentQuizs.length === 0 && (
-                          <p>No quizzes found.</p>
+                          <p className='text-center'>No quizzes found.</p>
                         )
                       }
 
@@ -379,20 +379,24 @@ const EditTopic = () => {
                                       </Link>
                                     </td>
                                   </tr>
+
                                 ))
+
                               }
-                              {
-                                currentLessonMaterials.length === 0 && (
-                                  <p>No materials found.</p>
-                                )
-                              }
+
 
 
                             </tbody>
 
                           </table>
 
+
                         </div> {/* end .table-responsive*/}
+                        {
+                          currentLessonMaterials.length === 0 && (
+                            <p className='text-center'>No materials found.</p>
+                          )
+                        }
                       </div>
                       <div className='container-fluid'>
                         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>

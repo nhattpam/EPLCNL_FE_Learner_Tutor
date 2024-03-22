@@ -82,7 +82,7 @@ const CreateAssignment = () => {
 
         const assignmentJsonParse = JSON.parse(assignmentJson);
 
-        navigate(`/tutor/courses/list-assignment/${storedModuleId}`);
+        navigate(`/tutor/courses/edit-module/${storedModuleId}`);
       } catch (error) {
         console.log(error);
       }

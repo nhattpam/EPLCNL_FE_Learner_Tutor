@@ -5,6 +5,7 @@ import tutorService from '../../services/tutor.service';
 import paperWorkTypeService from '../../services/paper-work-type.service';
 import Dropzone from 'react-dropzone';
 import paperWorkService from '../../services/paper-work.service';
+import walletService from '../../services/wallet.service';
 
 const Header = () => {
 
@@ -20,7 +21,8 @@ const Header = () => {
         password: "",
         fullName: "",
         phoneNumber: "",
-        imageUrl: ""
+        imageUrl: "",
+        wallet: []
     });
 
     useEffect(() => {
@@ -211,6 +213,31 @@ const Header = () => {
             });
     }
 
+    //WALLET HISTORY
+    const [walletHistoryList, setWalletHistoryList] = useState([]);
+
+    useEffect(() => {
+        walletService
+            .getAllWalletHistoryByWallet(account.wallet?.id)
+            .then((res) => {
+                setWalletHistoryList(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [account.wallet?.id]);
+
+    const [showWalletHistoryModal, setShowWalletHistoryModal] = useState(false);
+
+    const openWalletHistoryModal = () => {
+        setShowWalletHistoryModal(true);
+    };
+
+    const closeWalletHistoryModal = () => {
+        setShowWalletHistoryModal(false);
+    };
+
+
     return (
         <>
             {/* Topbar Start */}
@@ -253,9 +280,10 @@ const Header = () => {
                                 {/* item*/}
                                 <div className="dropdown-header noti-title">
                                     <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
+                                    <p>Balance: {account.wallet?.balance} <i class="far fa-eye" onClick={openWalletHistoryModal}></i></p>
                                 </div>
                                 {/* item*/}
-                                <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={openModal}>
+                                <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={openModal} style={{ marginTop: '-30px' }}>
                                     <i className="fe-user" />
                                     <span>My Account</span>
                                 </a>
@@ -429,7 +457,7 @@ const Header = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {paperWorkList.map((paperWork, index) => (
+                                                    {paperWorkList.length > 0 && paperWorkList.map((paperWork, index) => (
 
                                                         <tr>
                                                             <th scope="row">{index + 1}</th>
@@ -438,6 +466,11 @@ const Header = () => {
                                                             <th scope="row" onClick={() => deletePaperWork(paperWork.id)} ><i class="fas fa-trash text-danger"></i></th>
                                                         </tr>
                                                     ))}
+                                                    {
+                                                        paperWorkList.length === 0 && (
+                                                            <p className='text-center'>No paper-works found.</p>
+                                                        )
+                                                    }
 
                                                 </tbody>
                                             </table>
@@ -497,6 +530,57 @@ const Header = () => {
                     </div>
                 </>
             )
+            }
+            {
+                showWalletHistoryModal && (
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Wallet History</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeWalletHistoryModal}>
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    {/* Conditional rendering based on edit mode */}
+
+                                    <div>
+                                        {/* Input fields for editing */}
+                                        <div className="table-responsive">
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
+                                                <thead className="thead-light">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Transaction Date</th>
+                                                        <th>Note</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        walletHistoryList.length > 0 && walletHistoryList.map((walletHistory, index) => (
+                                                            <tr key={walletHistory.id}>
+                                                                <td>{index + 1}</td>
+                                                                <td>{walletHistory.transactionDate}</td>
+                                                                <td>{walletHistory.note}</td>
+                                                            </tr>
+                                                        ))
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    {/* Conditional rendering of buttons based on edit mode */}
+                                    <button type="button" className="btn btn-secondary" onClick={closeWalletHistoryModal}>Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
             }
         </>
     )

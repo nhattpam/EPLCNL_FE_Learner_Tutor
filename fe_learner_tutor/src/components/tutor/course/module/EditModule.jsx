@@ -215,13 +215,15 @@ const EditModule = () => {
                                                     </tbody>
 
                                                 </table>
+                                                {
+                                                    currentLessons.length === 0 && (
+                                                        <p className='text-center'>No lessons yet.</p>
+                                                    )
+                                                }
                                             </div> {/* end .table-responsive*/}
+
                                         </div>
-                                        {
-                                            currentLessons.length === 0 && (
-                                                <p>No lessons yet.</p>
-                                            )
-                                        }
+
                                         <div className='container-fluid'>
                                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                                                 <ReactPaginate
@@ -283,13 +285,14 @@ const EditModule = () => {
                                                     </tbody>
 
                                                 </table>
+                                                {
+                                                    currentAssignments.length === 0 && (
+                                                        <p className='text-center'>No assignments yet.</p>
+                                                    )
+                                                }
                                             </div> {/* end .table-responsive*/}
                                         </div>
-                                        {
-                                            currentAssignments.length === 0 && (
-                                                <p>No assignments yet.</p>
-                                            )
-                                        }
+
                                         <div className='container-fluid'>
                                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                                                 <ReactPaginate
@@ -334,7 +337,7 @@ const EditModule = () => {
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            currentQuizs.length > 0 &&  currentQuizs.map((quiz, index) => (
+                                                            currentQuizs.length > 0 && currentQuizs.map((quiz, index) => (
                                                                 <tr key={quiz.id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>{quiz.name}</td>
@@ -354,13 +357,15 @@ const EditModule = () => {
                                                     </tbody>
 
                                                 </table>
+                                                {
+                                                    currentQuizs.length === 0 && (
+                                                        <p className='text-center'>No quizzes yet.</p>
+                                                    )
+                                                }
                                             </div> {/* end .table-responsive*/}
+
                                         </div>
-                                        {
-                                            currentQuizs.length === 0 && (
-                                                <p>No quizzes yet.</p>
-                                            )
-                                        }
+
                                         <div className='container-fluid'>
                                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                                                 <ReactPaginate

@@ -96,7 +96,7 @@ const CreateLesson = () => {
 
       console.log(lessonJsonParse);
 
-      navigate(`/tutor/courses/list-lesson/${storedModuleId}`);
+      navigate(`/tutor/courses/edit-module/${storedModuleId}`);
     } catch (error) {
       console.log(error);
     }

@@ -34,6 +34,7 @@ const ListAssignmentAttempt = () => {
             .getAllAssignmentAttemptsByTutor(tutorId)
             .then((res) => {
                 console.log(res.data);
+                // const list = res.data.filter((attempt) => attempt.assignment?.module?.course?.isOnlineClass === true);
                 setAssignmentAttemptList(res.data);
 
             })

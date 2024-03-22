@@ -142,7 +142,7 @@ const EditAssignmentAttempt = () => {
                                         <div className="form-group">
                                             <h4 className="header-title">ASSIGNMENT ATTEMPT INFORMATION</h4>
                                             <div className="table-responsive">
-                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
+                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                                                     <tbody>
                                                         <tr>
                                                             <th>Learner:</th>
@@ -154,7 +154,7 @@ const EditAssignmentAttempt = () => {
                                                         </tr>
                                                         <tr>
                                                             <th>Answer:</th>
-                                                            <td>
+                                                            {/* <td>
                                                                 <ReactQuill
                                                                     name="answerText"
                                                                     value={assignmentAttempt.answerText}
@@ -177,7 +177,12 @@ const EditAssignmentAttempt = () => {
                                                                 />
 
 
+                                                            </td> */}
+                                                            <td>
+                                                                <div dangerouslySetInnerHTML={{ __html: assignmentAttempt.answerText }}></div>
+
                                                             </td>
+
                                                         </tr>
                                                         <tr>
                                                             <th>Attempted Date:</th>
@@ -188,7 +193,7 @@ const EditAssignmentAttempt = () => {
                                             </div>
                                         </div>
 
-                                        <div className="form-group dropzone">
+                                        <div className="form-group ">
                                             <h5>Grade:</h5>
                                             <input
                                                 type="range"
@@ -202,7 +207,7 @@ const EditAssignmentAttempt = () => {
                                             <span>{assignmentAttempt.totalGrade} Point</span>
                                         </div>
 
-                                        <div className="form-group mb-0">
+                                        {/* <div className="form-group mb-0">
                                             <button
                                                 type="submit"
                                                 className="btn btn-success"
@@ -213,7 +218,7 @@ const EditAssignmentAttempt = () => {
                                             >
                                                  Save
                                             </button>
-                                        </div>
+                                        </div> */}
 
                                     </form>
 
