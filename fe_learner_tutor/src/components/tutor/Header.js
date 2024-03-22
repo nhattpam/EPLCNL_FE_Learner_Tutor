@@ -468,7 +468,7 @@ const Header = () => {
                                                     ))}
                                                     {
                                                         paperWorkList.length === 0 && (
-                                                            <p className='text-center'>No paper-works found.</p>
+                                                            <p className='text-center'>No paper works.</p>
                                                         )
                                                     }
 
@@ -534,7 +534,7 @@ const Header = () => {
             {
                 showWalletHistoryModal && (
                     <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
-                        <div className="modal-dialog" role="document">
+                        <div className="modal-dialog modal-dialog-scrollable" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">Wallet History</h5>
