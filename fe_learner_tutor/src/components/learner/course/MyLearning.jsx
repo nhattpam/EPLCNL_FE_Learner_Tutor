@@ -422,7 +422,7 @@ const MyLearning = () => {
     return (
         <>
             <Header />
-            <main id="main" data-aos="fade-in">
+            <main id="main" data-aos="fade-in" style={{backgroundColor: '#fff'}}>
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs" >
                     <div className="container" >
@@ -506,7 +506,7 @@ const MyLearning = () => {
 
                                                                 {showFeedbackModal && (
                                                                     <form id="demo-form" data-parsley-validate onSubmit={(e) => submitFeedback(e)}>
-                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                                                                             <div className="modal-dialog  modal-dialog-scrollable">
                                                                                 <div className="modal-content">
                                                                                     <div className="modal-header">
@@ -555,7 +555,7 @@ const MyLearning = () => {
                                                                         data-previews-container="#file-previews"
                                                                         data-upload-preview-template="#uploadPreviewTemplate"
                                                                         data-parsley-validate onSubmit={(e) => submitReport(e)}>
-                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                                                                             <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
                                                                                 <div className="modal-content">
                                                                                     <div className="modal-header">
@@ -581,7 +581,7 @@ const MyLearning = () => {
                                                                                             }}
                                                                                             theme="snow"
                                                                                             preserveWhitespace={true}
-                                                                                            style={{ height: '300px' }}
+                                                                                            style={{ height: '300px', marginBottom: '20px' }}
                                                                                         />
                                                                                         <Dropzone
                                                                                             onDrop={handleFileDrop}
@@ -636,7 +636,7 @@ const MyLearning = () => {
                                                                         data-parsley-validate
                                                                         onSubmit={(e) => submitRefund(e)}
                                                                     >
-                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                                                                             <div className="modal-dialog modal-dialog-scrollable">
                                                                                 <div className="modal-content">
                                                                                     <div className="modal-header">
@@ -834,6 +834,11 @@ const MyLearning = () => {
 
                                                         </>
                                                     ))}
+                                                    {
+                                                        profileCertificateList.length === 0 && (
+                                                            <h5>You haven't finished any course yet.</h5>
+                                                        )
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

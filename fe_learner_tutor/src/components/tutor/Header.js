@@ -244,21 +244,7 @@ const Header = () => {
             <div className="navbar-custom" style={{ backgroundColor: '#242732' }}>
                 <div className="container-fluid">
                     <ul className="list-unstyled topnav-menu float-right mb-0">
-                        <li className="d-none d-lg-block">
-                            <form className="app-search">
-                                <div className="app-search-box dropdown">
-                                    <div className="input-group">
-                                        <input type="search" className="form-control" placeholder="Search..." id="top-search" />
-                                        <div className="input-group-append">
-                                            <button className="btn" type="submit">
-                                                <i className="fe-search" />
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </form>
-                        </li>
+                        
                         <li className="dropdown d-inline-block d-lg-none">
                             <a className="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                 <i className="fe-search noti-icon" />
@@ -319,7 +305,7 @@ const Header = () => {
             {/* end Topbar */}
             {/* My Account Modal */}
             {showModal && (
-                <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -424,7 +410,7 @@ const Header = () => {
             {/* Tutor Qualification Modal */}
             {showQualificationModal && (
                 <>
-                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                         <div className="modal-dialog modal-lg modal-dialog-centered" role="document"> {/* Added modal-dialog-centered class */}
 
                             <div className="modal-content">
@@ -533,7 +519,7 @@ const Header = () => {
             }
             {
                 showWalletHistoryModal && (
-                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                         <div className="modal-dialog modal-dialog-scrollable" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">

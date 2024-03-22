@@ -4,11 +4,11 @@ const Footer = () => {
     return (
         <>
             {/* ======= Footer ======= */}
-            <footer id="footer">
-                <div className="footer-top">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-lg-8 col-md-6 footer-contact">
+            <footer id="footer" style={{backgroundColor: '#fff'}}>
+                <div className="footer-top" style={{backgroundColor: '#fff'}}>
+                    <div className="container" style={{backgroundColor: '#fff'}}>
+                        <div className="row" style={{backgroundColor: '#fff'}}>
+                            <div className="col-lg-8 col-md-6 footer-contact" style={{backgroundColor: '#fff'}}>
                                 <h3>MeowLish</h3>
                                 <p>
                                     A108 Adam Street <br />
@@ -31,12 +31,12 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-                <div className="container d-md-flex py-4">
+                <div className="container d-md-flex py-4" style={{backgroundColor: '#fff'}}>
                     <div className="me-md-auto text-center text-md-start">
                         <div className="copyright">
                             © Copyright <strong><span>MeowLish</span></strong>. All Rights Reserved
                         </div>
-                        <div className="credits">
+                        <div className="credits" style={{backgroundColor: '#fff'}}>
                             {/* All the links in the footer should remain intact. */}
                             {/* You can delete the links only if you purchased the pro version. */}
                             {/* Licensing information: https://bootstrapmade.com/license/ */}
@@ -51,7 +51,7 @@ const Footer = () => {
                         <a href="#" className="linkedin"><i className="bx bxl-linkedin" /></a>
                     </div>
                 </div>
-            </footer>{/* End Footer */}<br />
+            </footer>{/* End Footer */}
         </>
     )
 }

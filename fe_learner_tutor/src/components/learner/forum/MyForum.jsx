@@ -80,7 +80,7 @@ const MyForum = () => {
     <>
       <div id="wrapper">
         <Header />
-        <div className="content-page" style={{ marginLeft: '-2px' }}>
+        <div className="content-page" style={{ marginLeft: '-2px', backgroundColor: '#fff'}}>
           <div className="content">
             <div className="container-fluid">
               <div className="row">
@@ -90,14 +90,14 @@ const MyForum = () => {
                       <ol className="breadcrumb m-0">
                       </ol>
                     </div>
-                    <h4 className="page-title">FORUM OF COURSE - <span style={{ color: '#f58d04' }}>{forum.course?.name}</span></h4>
+                    <h4 className="page-title mt-2">FORUM OF COURSE - <span style={{ color: '#f58d04' }}>{forum.course?.name}</span></h4>
                   </div>
                 </div>
               </div>
 
               <div className="row">
                 <div className="col-12">
-                  <div className="card-box">
+                  <div className="">
                     <div className="chat-container">
                       {
                         accountForumList.length > 0 && accountForumList
@@ -132,7 +132,7 @@ const MyForum = () => {
                         )
                       }
 
-                      <form className="msger-inputarea" onSubmit={submitAccountForum} style={{ width: '100%', }}>
+                      <form className="msger-inputarea" onSubmit={submitAccountForum} style={{ width: '100%', backgroundColor: '#fff'}}>
                         <input
                           type="text"
                           className="msger-input"

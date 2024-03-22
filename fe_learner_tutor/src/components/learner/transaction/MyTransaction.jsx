@@ -89,7 +89,7 @@ const MyTransaction = () => {
     return (
         <>
             <Header />
-            <main id="main" data-aos="fade-in">
+            <main id="main" data-aos="fade-in"  style={{backgroundColor: '#fff'}}>
                 <div className="breadcrumbs">
                     <div className="container">
                         <h2 style={{ color: '#fff' }}>My Transaction</h2>
@@ -164,7 +164,7 @@ const MyTransaction = () => {
                                                 data-previews-container="#file-previews"
                                                 data-upload-preview-template="#uploadPreviewTemplate"
                                                 data-parsley-validate onSubmit={(e) => submitRefund(e)}>
-                                                <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                                                <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                                                     <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
                                                         <div className="modal-content">
                                                             <div className="modal-header">

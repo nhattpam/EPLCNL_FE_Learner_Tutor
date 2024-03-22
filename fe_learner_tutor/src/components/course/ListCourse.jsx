@@ -61,7 +61,7 @@ const ListCourse = () => {
     return (
         <>
             <Header />
-            <main id="main" data-aos="fade-in">
+            <main id="main" data-aos="fade-in" style={{backgroundColor: '#fff'}}>
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs">
                     <div className="container">

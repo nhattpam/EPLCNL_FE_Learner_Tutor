@@ -339,7 +339,7 @@ const TutorDashboard = () => {
                     </div> {/* content */}
                     {/* Footer Start */}
                     {showModal && (
-                        <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                        <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                             <div className="modal-dialog modal-lg" role="document"> {/* Added modal-lg class here */}
                                 <div className="modal-content">
                                     <div className="modal-header">

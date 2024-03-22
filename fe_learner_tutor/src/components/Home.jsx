@@ -87,9 +87,9 @@ const Home = () => {
           <Link to={"/list-course"} className="btn-get-started">Get Started</Link>
         </div>
       </section>{/* End Hero */}
-      <main id="main">
+      <main id="main" style={{backgroundColor: '#fff'}}>
         {/* ======= About Section ======= */}
-        <section id="about" className="about">
+        <section id="about" className="about" style={{backgroundColor: '#fff'}}>
           <div className="container" data-aos="fade-up">
             <div className="row">
               <div className="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay={100}>
@@ -109,7 +109,7 @@ const Home = () => {
           </div>
         </section>{/* End About Section */}
         {/* ======= Counts Section ======= */}
-        <section id="counts" className="counts section-bg">
+        <section id="counts" className="counts section-bg" style={{backgroundColor: '#fff'}}>
           <div className="container">
             <div className="row counters">
 
@@ -117,7 +117,7 @@ const Home = () => {
           </div>
         </section>{/* End Counts Section */}
         {/* ======= Why Us Section ======= */}
-        <section id="why-us" className="why-us">
+        <section id="why-us" className="why-us" style={{backgroundColor: '#fff'}}>
           <div className="container" data-aos="fade-up">
             <div className="row">
               <div className="col-lg-4 d-flex align-items-stretch">
@@ -162,79 +162,79 @@ const Home = () => {
           </div>
         </section>{/* End Why Us Section */}
         {/* ======= Features Section ======= */}
-        <section id="features" className="features">
+        <section id="features" className="features" style={{backgroundColor: '#fff'}}>
           <div className="container" data-aos="fade-up">
             <div className="row" data-aos="zoom-in" data-aos-delay={100}>
               <div className="col-lg-3 col-md-4">
                 <div className="icon-box">
                   <i className="ri-store-line" style={{ color: '#ffbb2c' }} />
-                  <h3><a href>Lorem Ipsum</a></h3>
+                  <h3><a href>Expert Guidance</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4 mt-md-0">
                 <div className="icon-box">
                   <i className="ri-bar-chart-box-line" style={{ color: '#5578ff' }} />
-                  <h3><a href>Dolor Sitema</a></h3>
+                  <h3><a href>Time-Saving Solutions</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4 mt-md-0">
                 <div className="icon-box">
                   <i className="ri-calendar-todo-line" style={{ color: '#e80368' }} />
-                  <h3><a href>Sed perspiciatis</a></h3>
+                  <h3><a href>Exceptional Quality</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4 mt-lg-0">
                 <div className="icon-box">
                   <i className="ri-paint-brush-line" style={{ color: '#e361ff' }} />
-                  <h3><a href>Magni Dolores</a></h3>
+                  <h3><a href>Efficient Services</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4">
                 <div className="icon-box">
                   <i className="ri-database-2-line" style={{ color: '#47aeff' }} />
-                  <h3><a href>Nemo Enim</a></h3>
+                  <h3><a href>Premium Performance</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4">
                 <div className="icon-box">
                   <i className="ri-gradienter-line" style={{ color: '#ffa76e' }} />
-                  <h3><a href>Eiusmod Tempor</a></h3>
+                  <h3><a href>Superior Results</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4">
                 <div className="icon-box">
                   <i className="ri-file-list-3-line" style={{ color: '#11dbcf' }} />
-                  <h3><a href>Midela Teren</a></h3>
+                  <h3><a href>Convenient Options</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4">
                 <div className="icon-box">
                   <i className="ri-price-tag-2-line" style={{ color: '#4233ff' }} />
-                  <h3><a href>Pira Neve</a></h3>
+                  <h3><a href>Reliable Support</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4">
                 <div className="icon-box">
                   <i className="ri-anchor-line" style={{ color: '#b2904f' }} />
-                  <h3><a href>Dirada Pack</a></h3>
+                  <h3><a href>Innovative Solutions</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4">
                 <div className="icon-box">
                   <i className="ri-disc-line" style={{ color: '#b20969' }} />
-                  <h3><a href>Moton Ideal</a></h3>
+                  <h3><a href>Streamlined Processes</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4">
                 <div className="icon-box">
                   <i className="ri-base-station-line" style={{ color: '#ff5828' }} />
-                  <h3><a href>Verdo Park</a></h3>
+                  <h3><a href>Effective Strategies</a></h3>
                 </div>
               </div>
               <div className="col-lg-3 col-md-4 mt-4">
                 <div className="icon-box">
                   <i className="ri-fingerprint-line" style={{ color: '#29cc61' }} />
-                  <h3><a href>Flavor Nivelanda</a></h3>
+                  <h3><a href>Unmatched Value</a></h3>
                 </div>
               </div>
             </div>

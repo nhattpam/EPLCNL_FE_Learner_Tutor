@@ -362,7 +362,7 @@ const Header = () => {
             {/* My Account Modal */}
             {
                 showModal && (
-                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                         <div className="modal-dialog" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
@@ -457,7 +457,7 @@ const Header = () => {
                                     ) : (
                                         <button type="button" className="btn btn-warning" onClick={toggleEditMode}>Edit</button>
                                     )}
-                                    <button type="button" className="btn btn-secondary" onClick={closeModal}>Close</button>
+                                    <button type="button" className="btn btn-dark" onClick={closeModal}>Close</button>
                                 </div>
                             </div>
                         </div>
@@ -468,7 +468,7 @@ const Header = () => {
             {/* wallet history */}
             {
                 showWalletHistoryModal && (
-                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                         <div className="modal-dialog modal-dialog-scrollable" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
@@ -510,7 +510,7 @@ const Header = () => {
                                 </div>
                                 <div className="modal-footer">
                                     {/* Conditional rendering of buttons based on edit mode */}
-                                    <button type="button" className="btn btn-secondary" onClick={closeWalletHistoryModal}>Close</button>
+                                    <button type="button" className="btn btn-dark" onClick={closeWalletHistoryModal}>Close</button>
                                 </div>
                             </div>
                         </div>

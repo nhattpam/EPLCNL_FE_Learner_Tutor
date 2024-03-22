@@ -7,11 +7,7 @@ const About = () => {
     return (
         <>
             <Header />
-            {/* ======= Hero Section ======= */}
-            <section className="d-flex justify-content-center align-items-center">
-
-            </section>{/* End Hero */}
-            <main id="main">
+            <main id="main" className=' mt-5' style={{backgroundColor: '#fff'}}>
                 {/* ======= About Section ======= */}
                 <section id="about" className="about">
                     <div className="container" data-aos="fade-up">

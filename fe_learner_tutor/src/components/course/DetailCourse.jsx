@@ -368,7 +368,7 @@ const DetailCourse = () => {
     return (
         <>
             <Header />
-            <main id="main">
+            <main id="main" style={{backgroundColor: '#fff'}}>
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs" data-aos="fade-in">
                     <div className="container">
@@ -386,22 +386,22 @@ const DetailCourse = () => {
                                     {course.description}
                                 </p>
                             </div>
-                            <div className="col-lg-4">
-                                <div className="course-info d-flex justify-content-between align-items-center">
+                            <div className="col-lg-4" style={{backgroundColor: '#fff'}}>
+                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Tutor</h5>
                                     <p><a href="#">{course.tutor?.account?.fullName}</a></p>
                                 </div>
-                                <div className="course-info d-flex justify-content-between align-items-center">
+                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Course Fee</h5>
                                     <p>${course.stockPrice}</p>
                                 </div>
-                                <div className="course-info d-flex justify-content-between align-items-center">
+                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Enrolled Students</h5>
                                     <p>{learnersCount[course.id]}</p>
                                 </div>
                                 {/* Notification */}
                                 {showNotification && (
-                                    <div className="notification fixed-top w-100 bg-warning text-center">
+                                    <div className="notification fixed-top w-100 bg-warning text-center" style={{backgroundColor: '#fff'}}>
                                         <p className="m-0">You need to login first</p>
                                     </div>
                                 )}
@@ -409,7 +409,7 @@ const DetailCourse = () => {
                                     <>
                                         {enrollment === null ? (
                                             <>
-                                                <div className="course-info d-flex justify-content-between align-items-center">
+                                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
                                                     <button
                                                         type="button"
                                                         className="btn btn-primary btn-lg btn-block"
@@ -421,7 +421,7 @@ const DetailCourse = () => {
                                                 </div>
                                                 <p>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
                                                 </p>
-                                                <div className="course-info d-flex justify-content-between align-items-center">
+                                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
                                                     <button
                                                         type="button"
                                                         className="btn btn-primary btn-lg btn-block"
@@ -435,7 +435,7 @@ const DetailCourse = () => {
 
 
                                         ) : (
-                                            <div className="course-info d-flex justify-content-between align-items-center">
+                                            <div className="course-info d-flex justify-content-between align-items-center"  style={{backgroundColor: '#fff'}}>
                                                 {isEnrolled ? (
                                                     course.isOnlineClass ? (
                                                         <Link
@@ -510,7 +510,7 @@ const DetailCourse = () => {
                             </div>
                             {
                                 showPayBalanceModal && (
-                                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                                         <div className="modal-dialog" role="document">
                                             <div className="modal-content">
                                                 <div className="modal-header">
@@ -685,14 +685,14 @@ const DetailCourse = () => {
 
             </main>{/* End #main */}
             {/* ======= Cource Details Section ======= */}
-            <section id="course-details" className="course-details">
+            <section id="course-details" className="course-details" style={{backgroundColor: '#fff'}}>
                 <div className="container-fluid" data-aos="fade-up">
                     <div className="row">
                         <>
                             <div className="container ">
                                 <div className="row height d-flex justify-content-center align-items-center">
                                     <div className="row">
-                                        <div className="card">
+                                        <div className="">
                                             <div className="p-3">
                                                 <h2>Feedbacks</h2>
                                             </div>

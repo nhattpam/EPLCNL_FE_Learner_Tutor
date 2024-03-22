@@ -164,7 +164,7 @@ const EditCourse = () => {
                                                     </tr>
                                                     <tr>
                                                         <th>Price:</th>
-                                                        <td>{course.stockPrice}</td>
+                                                        <td>{course.stockPrice}$</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Tags:</th>
@@ -288,7 +288,7 @@ const EditCourse = () => {
 
                                     )}
 
-                                    <div className="form-group mt-2">
+                                    <div className="form-group mt-4">
                                         <h5>Certificate:</h5>
 
                                         <form
