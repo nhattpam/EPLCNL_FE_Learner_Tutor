@@ -126,7 +126,7 @@ const handleSubmit = async (e) => {
 
 
                 const storedTutorId = localStorage.getItem('tutorId');
-                navigate(`/tutor/course/list-course-by-tutor/${storedTutorId}`);
+                navigate(`/tutor-dashboard/${storedTutorId}`);
 
                 // setAccount(accountData);
                 // Access centerId from localStorage
