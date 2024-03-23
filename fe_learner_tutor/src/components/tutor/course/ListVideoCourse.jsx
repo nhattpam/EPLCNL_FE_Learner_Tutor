@@ -47,8 +47,10 @@ const ListVideoCourse = () => {
     const filteredCourses = courseList
         .filter((course) => {
             return (
-                course.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
-
+                course.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
+                course.code.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
+                course.stockPrice.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                course.category?.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) 
             );
         });
 
@@ -117,6 +119,7 @@ const ListVideoCourse = () => {
                                                         <th data-hide="phone">Image</th>
                                                         <th>CODE</th>
                                                         <th data-toggle="true">Course Name</th>
+                                                        <th data-toggle="true">Stock Price</th>
                                                         <th data-toggle="true">Category</th>
                                                         <th data-hide="phone, ">Type</th>
                                                         <th data-hide="phone, tablet">Status</th>
@@ -133,7 +136,8 @@ const ListVideoCourse = () => {
                                                                 </td>
                                                                 <td>{course.code}</td>
                                                                 <td>{course.name}</td>
-                                                                <td>{course.category.name}</td>
+                                                                <td>{course.stockPrice}$</td>
+                                                                <td>{course.category?.name}</td>
                                                                 <td>
                                                                     {course.isOnlineClass ? (
                                                                         <span className="badge label-table badge-success">Class</span>

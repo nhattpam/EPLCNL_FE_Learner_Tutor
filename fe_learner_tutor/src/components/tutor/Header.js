@@ -506,7 +506,7 @@ const Header = () => {
                                     <div className="modal-footer">
                                         {/* Conditional rendering of buttons based on edit mode */}
                                         <button type="submit" className="btn btn-warning" >Upload</button>
-                                        <button type="button" className="btn btn-secondary" onClick={closeQualificationModal}>Close</button>
+                                        <button type="button" className="btn btn-dark" onClick={closeQualificationModal}>Close</button>
                                     </div>
                                 </form>
 
@@ -561,7 +561,7 @@ const Header = () => {
                                 </div>
                                 <div className="modal-footer">
                                     {/* Conditional rendering of buttons based on edit mode */}
-                                    <button type="button" className="btn btn-secondary" onClick={closeWalletHistoryModal}>Close</button>
+                                    <button type="button" className="btn btn-dark" onClick={closeWalletHistoryModal}>Close</button>
                                 </div>
                             </div>
                         </div>

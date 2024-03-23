@@ -34,7 +34,12 @@ const CourseList = () => {
     };
 
     const filteredCourses = courseList.filter((course) => {
-        return course.id.toString().toLowerCase().includes(searchTerm.toLowerCase());
+        return (
+            course.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
+            course.code.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
+            course.stockPrice.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+            course.category?.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) 
+        );
     });
 
     const pageCount = Math.ceil(filteredCourses.length / coursesPerPage);
@@ -101,6 +106,7 @@ const CourseList = () => {
                                                         <th>Image</th>
                                                         <th>CODE</th>
                                                         <th>Course Name</th>
+                                                        <th>Stock Price</th>
                                                         <th>Category</th>
                                                         <th>Type</th>
                                                         <th>Status</th>
@@ -115,7 +121,8 @@ const CourseList = () => {
                                                                 <td><img src={course.imageUrl} style={{ height: '50px', width: '70px' }} alt={course.name} /></td>
                                                                 <td>{course.code}</td>
                                                                 <td>{course.name}</td>
-                                                                <td>{course.category.name}</td>
+                                                                <td>{course.stockPrice}$</td>
+                                                                <td>{course.category?.name}</td>
                                                                 <td>
                                                                     <span className={`badge ${course.isOnlineClass ? 'badge-success' : 'badge-danger'}`}>{course.isOnlineClass ? 'Class' : 'Video'}</span>
                                                                 </td>

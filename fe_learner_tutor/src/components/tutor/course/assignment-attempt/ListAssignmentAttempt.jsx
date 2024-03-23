@@ -46,8 +46,10 @@ const ListAssignmentAttempt = () => {
     const filteredAssignmentAttempts = assignmentAttemptList
         .filter((assignmentAttempt) => {
             return (
-                assignmentAttempt.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
-
+                assignmentAttempt.answerText.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
+                assignmentAttempt.assignment?.questionText.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                assignmentAttempt.learner?.account?.fullName.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
+                assignmentAttempt.totalGrade.toString().toLowerCase().includes(searchTerm.toLowerCase()) 
             );
         });
 
@@ -107,7 +109,7 @@ const ListAssignmentAttempt = () => {
                                                     <div className="form-group">
                                                     </div>
                                                     <div className="form-group">
-                                                        <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />
+                                                        <input id="demo-foo-search" onChange={handleSearch} type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />
                                                     </div>
                                                 </div>
                                             </div>
