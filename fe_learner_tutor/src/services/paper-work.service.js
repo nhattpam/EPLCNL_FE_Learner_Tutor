@@ -52,7 +52,7 @@ class PaperWorkService {
   }
 
   uploadMaterial(lessonMaterial) {
-    return axios.post(API_URL + "/lesson-materials/material/", lessonMaterial, {
+    return axios.post(API_URL + "/materials/material/", lessonMaterial, {
       headers: {
         Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
       }

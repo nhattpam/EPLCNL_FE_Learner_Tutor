@@ -150,7 +150,7 @@ const MyTransaction = () => {
                                                 }
                                                 {
                                                     transactionList.length === 0 && (
-                                                        <p>No transactions found.</p>
+                                                        <p className='text-center'>No transactions found.</p>
                                                     )
                                                 }
 

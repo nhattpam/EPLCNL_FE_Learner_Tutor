@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import accountService from '../services/account.service';
 import learnerService from '../services/learner.service';
 import tutorService from '../services/tutor.service';
+import paperWorkService from '../services/paper-work.service';
+import paperWorkTypeService from '../services/paper-work-type.service';
+import Dropzone from 'react-dropzone';
+import { Link } from 'react-router-dom';
 
 const SignUp = () => {
 
 
   const [tutor, setTutor] = useState({
+    id: "",
     accountId: "",
     isFreelancer: true,
   });
@@ -60,6 +65,7 @@ const SignUp = () => {
     return isValid;
   };
 
+ 
 
   const submitAccount = async (e) => {
     e.preventDefault();
@@ -73,38 +79,46 @@ const SignUp = () => {
         roleId = "1dc7ed61-a13d-4cfc-9e3e-2159f61bad3b";
         account.isActive = false;
       }
-  
+
       try {
         account.roleId = roleId;
         console.log("this is a cccc: " + JSON.stringify(account))
         const res = await accountService.saveAccount(account);
         console.log("Account created:", res.data);
-  
+
         if (document.getElementById("learner").checked) {
           learner.accountId = res.data.id;
           await learnerService.saveLearner(learner);
+
+          setMsg("Thanks for joining us. Sign In!");
+          setShowNotification(true);
+
+          // Reset form fields
+          setAccount({
+            email: "",
+            password: "",
+            fullName: "",
+            phoneNumber: "",
+            roleId: "",
+            isActive: ""
+          });
+          setErrors({}); // Clear any previous errors
+
+          setTimeout(() => {
+            setShowNotification(false);
+          }, 5000);
+
         } else if (document.getElementById("tutor").checked) {
           tutor.accountId = res.data.id;
-          await tutorService.saveTutor(tutor);
-        }
-  
-        setMsg("Thanks for joining us. Sign In!");
-        setShowNotification(true);
+          const tutorRes = await tutorService.saveTutor(tutor);
+          setPaperWork(prevState => ({ ...prevState, tutorId: tutorRes.data.  id })); // Update tutorId in paperWork
+          setTutor(tutorRes.data);
         
-        // Reset form fields
-        setAccount({
-          email: "",
-          password: "",
-          fullName: "",
-          phoneNumber: "",
-          roleId: "",
-          isActive: true
-        });
-        setErrors({}); // Clear any previous errors
-  
-        setTimeout(() => {
-          setShowNotification(false);
-        }, 5000);
+          setShowQualificationModal(true);
+        }
+        
+
+
       } catch (error) {
         console.error("Error creating account:", error);
         setMsg("Error: Unable to create account.");
@@ -115,7 +129,132 @@ const SignUp = () => {
       }
     }
   };
-  
+
+   //qualification 
+   const [showQualificationModal, setShowQualificationModal] = useState(false);
+   const openQualificationModal = () => {
+     setShowQualificationModal(true);
+ 
+   };
+ 
+   const closeQualificationModal = () => {
+     setShowQualificationModal(false);
+     setMsg("Thanks for joining us. MeowLish will contact you soon!");
+     setShowNotification(true);
+
+     // Reset form fields
+     setAccount({
+       email: "",
+       password: "",
+       fullName: "",
+       phoneNumber: "",
+       roleId: "",
+       isActive: ""
+     });
+     setErrors({}); // Clear any previous errors
+
+     setTimeout(() => {
+       setShowNotification(false);
+     }, 5000);
+   };
+ 
+   const [paperWork, setPaperWork] = useState({
+     paperWorkUrl: "",
+     paperWorkTypeId: "",
+     tutorId: "",
+   });
+ 
+   const [paperWorkList, setPaperWorkList] = useState([]);
+   const [paperWorkTypeList, setPaperWorkTypeList] = useState([]);
+ 
+   useEffect(() => {
+     paperWorkTypeService
+       .getAllPaperWorkType()
+       .then((res) => {
+         setPaperWorkTypeList(res.data);
+       })
+       .catch((error) => {
+         console.log(error);
+       });
+   }, []);
+ 
+ 
+   const [file, setFile] = useState(null);
+   const [pdfPreview, setPdfPreview] = useState("");
+ 
+ 
+   const handleFileDrop = (acceptedFiles) => {
+     if (acceptedFiles && acceptedFiles.length > 0) {
+       setFile(acceptedFiles[0]);
+ 
+       // Set the PDF preview URL
+       const previewUrl = URL.createObjectURL(acceptedFiles[0]);
+       setPdfPreview(previewUrl);
+     }
+   };
+ 
+   const submitPaperWork = async (e) => {
+     e.preventDefault();
+ 
+     try {
+       // Save account
+       let paperWorkUrl = paperWork.paperWorkUrl; // Keep the existing imageUrl if available
+ 
+       if (file) {
+         // Upload image and get the link
+         const paperWorkData = new FormData();
+         paperWorkData.append('file', file);
+ 
+         const paperWorkResponse = await paperWorkService.uploadMaterial(paperWorkData);
+ 
+         // Update the imageUrl with the link obtained from the API
+         paperWorkUrl = paperWorkResponse.data;
+ 
+         // Log the imageUrl after updating
+         // console.log("this is url: " + materialUrl);
+       }
+ 
+       const paperWorkData = { ...paperWork, paperWorkUrl }; // Create a new object with updated imageUrl
+ 
+ 
+       // Save account
+       const paperWorklResponse = await paperWorkService.savePaperWork(paperWorkData);
+ 
+       // Fetch the updated list of paperwork
+       tutorService.getAllPaperWorksByTutor(tutor.id)
+         .then((res) => {
+           setPaperWorkList(res.data);
+           // window.alert("Upload successfully");
+         })
+         .catch((error) => {
+           console.log(error);
+         });
+       // console.log(courseResponse.data);
+       const paperWorkJson = JSON.stringify(paperWorklResponse.data);
+ 
+       const paperWorkJsonParse = JSON.parse(paperWorkJson);
+ 
+ 
+     } catch (error) {
+       console.log(error);
+     }
+   };
+ 
+   //delete paperWork
+   const deletePaperWork = async (id) => {
+     await paperWorkService.deletePaperWorkById(id);
+ 
+     // Fetch the updated list of paperwork
+     tutorService.getAllPaperWorksByTutor(tutor.id)
+       .then((res) => {
+         setPaperWorkList(res.data);
+       })
+       .catch((error) => {
+         console.log(error);
+       });
+   }
+ 
+
 
 
 
@@ -185,6 +324,115 @@ const SignUp = () => {
           </div>
         </div>
       </div>
+      {showQualificationModal && (
+        <>
+          <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+            <div className="modal-dialog modal-lg modal-dialog-centered" role="document"> {/* Added modal-dialog-centered class */}
+
+              <div className="modal-content">
+                <form
+                  method="post"
+                  className="dropzone"
+                  id="myAwesomeDropzone"
+                  data-plugin="dropzone"
+                  data-previews-container="#file-previews"
+                  data-upload-preview-template="#uploadPreviewTemplate"
+                  data-parsley-validate
+                  onSubmit={(e) => submitPaperWork(e)}
+                >
+
+                  <div className="modal-header">
+                    <h5 className="modal-title">Please upload your qualifications...</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeQualificationModal}>
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Added style for scrolling */}
+                    <div>
+                      <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                        <thead className="thead-light">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Url</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {paperWorkList.length > 0 && paperWorkList.map((paperWork, index) => (
+
+                            <tr>
+                              <th scope="row">{index + 1}</th>
+                              <td>{paperWork.paperWorkType.name}</td>
+                              <td className='text-truncate' style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link to={paperWork.paperWorkUrl}>{paperWork.paperWorkUrl}</Link></td>
+                              <th scope="row" onClick={() => deletePaperWork(paperWork.id)} ><i class="fas fa-trash text-danger"></i></th>
+                            </tr>
+                          ))}
+                          {
+                            paperWorkList.length === 0 && (
+                              <p className='text-center'>No paper works.</p>
+                            )
+                          }
+
+                        </tbody>
+                      </table>
+                      {/* Input fields for editing */}
+                      <div className="form-group">
+                        <select
+                          className="form-control"
+                          id="paperWorkType"
+                          name="paperWorkType"
+                          value={paperWork.paperWorkTypeId}
+                          onChange={(e) => setPaperWork({ ...paperWork, paperWorkTypeId: e.target.value })} // Update paperWorkTypeId when the type is selected
+                        >
+                          <option value="">Select a type</option>
+                          {paperWorkTypeList.map((paperWorkType, index) => (
+                            <option key={index} value={paperWorkType.id}>{paperWorkType.name}</option>
+                          ))}
+                        </select>
+
+                      </div>
+
+                      <Dropzone
+                        onDrop={handleFileDrop}
+                        accept="application/pdf" multiple={false}
+                        maxSize={5000000} // Maximum file size (5MB)
+                      >
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps()} className="fallback">
+                            <input {...getInputProps()} />
+                            <div className="dz-message needsclick">
+                              <i className="h1 text-muted dripicons-cloud-upload" />
+                              <h3>Drop files here or click to upload.</h3>
+                            </div>
+                            {pdfPreview && (
+                              <div>
+                                {/* PDF Preview */}
+                                <embed src={pdfPreview} type="application/pdf" width="100%" height="500px" />
+                              </div>
+                            )}
+
+                          </div>
+                        )}
+                      </Dropzone>
+                      <div className="dropzone-previews mt-3" id="file-previews" />
+
+                    </div>
+                  </div>
+                  <div className="modal-footer">
+                    {/* Conditional rendering of buttons based on edit mode */}
+                    <button type="submit" className="btn btn-warning" >Upload</button>
+                    <button type="button" className="btn btn-secondary" onClick={closeQualificationModal}>Close</button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </>
+      )
+      }
 
       <Footer />
       <style>
