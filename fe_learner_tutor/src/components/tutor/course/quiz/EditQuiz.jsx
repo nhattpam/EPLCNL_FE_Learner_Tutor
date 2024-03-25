@@ -129,10 +129,14 @@ const EditQuiz = () => {
                               questionList.length > 0 && questionList.map((question, index) => (
                                 <tr key={question.id}>
                                   <td>{index + 1}</td>
-                                  <td className='truncate-text'>
+                                  {/* <td className='truncate-text'>
                                     <div dangerouslySetInnerHTML={{ __html: question?.questionImageUrl || '' }} />
                                     <div dangerouslySetInnerHTML={{ __html: question?.questionAudioUrl || '' }} />
-                                    <div dangerouslySetInnerHTML={{ __html: question?.questionText || '' }} />                                  </td>
+                                    <div dangerouslySetInnerHTML={{ __html: question?.questionText || '' }} />
+                                  </td> */}
+                                  <td>
+                                    Question {index+1}
+                                  </td>
                                   <td>{question.defaultGrade}</td>
                                   <td>{question.createdDate}</td>
                                   <td>

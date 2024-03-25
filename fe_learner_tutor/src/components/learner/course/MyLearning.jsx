@@ -422,7 +422,7 @@ const MyLearning = () => {
     return (
         <>
             <Header />
-            <main id="main" data-aos="fade-in" style={{backgroundColor: '#fff'}}>
+            <main id="main" data-aos="fade-in" style={{ backgroundColor: '#fff' }}>
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs" >
                     <div className="container" >
@@ -700,73 +700,78 @@ const MyLearning = () => {
                                                                                             <div className="container" data-aos="fade-up">
                                                                                                 {moduleList.length > 0 &&
                                                                                                     moduleList.map((module, index) => (
-                                                                                                        <div className="row" key={module.id}>
-                                                                                                            <div className="col-lg-3">
-                                                                                                                <ul className="nav nav-tabs flex-column">
-                                                                                                                    <li className="nav-item get-button">
-                                                                                                                        <a onClick={(event) => handleTabClick(event, module.id)}>{module.name}</a>
-                                                                                                                    </li>
-                                                                                                                </ul>
-                                                                                                                <ul className="nav nav-tabs flex-column">
-                                                                                                                    <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
-                                                                                                                        <input
-                                                                                                                            name={`reason-${index}`}
-                                                                                                                            type='text'
-                                                                                                                            placeholder='reason...'
-                                                                                                                            style={{ width: '100px', height: '40px', lineHeight: '20px', overflowWrap: 'break-word' }}
-                                                                                                                            onChange={(e) => handleReasonRefundChange(index, `Section ${module.name} has reason: ${e.target.value}`)}
+                                                                                                        <>
+                                                                                                            <div className="row" key={module.id}>
+                                                                                                                <div className="col-lg-3">
+                                                                                                                    <ul className="nav nav-tabs flex-column">
+                                                                                                                        <li className="nav-item get-button">
+                                                                                                                            <a onClick={(event) => handleTabClick(event, module.id)}>{module.name}</a>
+                                                                                                                        </li>
+                                                                                                                    </ul>
+                                                                                                                    <ul className="nav nav-tabs flex-column">
+                                                                                                                        <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
+                                                                                                                        </li>
+                                                                                                                    </ul>
+                                                                                                                </div>
 
-                                                                                                                        />                                                                                                                       </li>
-                                                                                                                </ul>
+
+
+
+                                                                                                                <div className="col-lg-9 mt-4 mt-lg-0">
+                                                                                                                    {filteredCombinedList.length > 0 &&
+                                                                                                                        filteredCombinedList.map((item, combinedIndex) => {
+                                                                                                                            // Check if the item belongs to the clicked module
+                                                                                                                            if (item.moduleId === module.id) {
+                                                                                                                                return (
+                                                                                                                                    <div className="combined-item" key={combinedIndex}>
+                                                                                                                                        {item.type === 'lesson' && (
+                                                                                                                                            <div className="lesson">
+                                                                                                                                                <p style={{ textAlign: 'justify' }}>
+                                                                                                                                                    <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                                                                                        {combinedIndex + 1}.
+                                                                                                                                                    </span>{' '}
+                                                                                                                                                    Lesson: {item.name}
+                                                                                                                                                </p>
+                                                                                                                                            </div>
+                                                                                                                                        )}
+                                                                                                                                        {item.type === 'assignment' && (
+                                                                                                                                            <div className="assignment">
+                                                                                                                                                <p style={{ textAlign: 'justify' }}>
+                                                                                                                                                    <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                                                                                        {combinedIndex + 1}.
+                                                                                                                                                    </span>{' '}
+                                                                                                                                                    Assignment - Deadline: {item.deadline} minutes
+                                                                                                                                                </p>
+                                                                                                                                            </div>
+                                                                                                                                        )}
+                                                                                                                                        {item.type === 'quiz' && (
+                                                                                                                                            <div className="quiz">
+                                                                                                                                                <p style={{ textAlign: 'justify' }}>
+                                                                                                                                                    <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                                                                                        {combinedIndex + 1}.
+                                                                                                                                                    </span>{' '}
+                                                                                                                                                    Quiz - {item.name}
+                                                                                                                                                </p>
+                                                                                                                                            </div>
+                                                                                                                                        )}
+                                                                                                                                    </div>
+                                                                                                                                );
+                                                                                                                            }
+                                                                                                                            return null; // Don't render if it doesn't belong to the clicked module
+                                                                                                                        })}
+                                                                                                                </div>
                                                                                                             </div>
+                                                                                                            <input
+                                                                                                                name={`reason-${index}`}
+                                                                                                                type='text'
+                                                                                                                placeholder='reason...'
+                                                                                                                className={`form-control`}
+                                                                                                                style={{ }}
+                                                                                                                onChange={(e) => handleReasonRefundChange(index, `Section ${module.name} has reason: ${e.target.value}`)}
 
+                                                                                                            />
+                                                                                                        </>
 
-
-
-                                                                                                            <div className="col-lg-9 mt-4 mt-lg-0">
-                                                                                                                {filteredCombinedList.length > 0 &&
-                                                                                                                    filteredCombinedList.map((item, combinedIndex) => {
-                                                                                                                        // Check if the item belongs to the clicked module
-                                                                                                                        if (item.moduleId === module.id) {
-                                                                                                                            return (
-                                                                                                                                <div className="combined-item" key={combinedIndex}>
-                                                                                                                                    {item.type === 'lesson' && (
-                                                                                                                                        <div className="lesson">
-                                                                                                                                            <p style={{ textAlign: 'justify' }}>
-                                                                                                                                                <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
-                                                                                                                                                    {combinedIndex + 1}.
-                                                                                                                                                </span>{' '}
-                                                                                                                                                Lesson: {item.name}
-                                                                                                                                            </p>
-                                                                                                                                        </div>
-                                                                                                                                    )}
-                                                                                                                                    {item.type === 'assignment' && (
-                                                                                                                                        <div className="assignment">
-                                                                                                                                            <p style={{ textAlign: 'justify' }}>
-                                                                                                                                                <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
-                                                                                                                                                    {combinedIndex + 1}.
-                                                                                                                                                </span>{' '}
-                                                                                                                                                Assignment - Deadline: {item.deadline} minutes
-                                                                                                                                            </p>
-                                                                                                                                        </div>
-                                                                                                                                    )}
-                                                                                                                                    {item.type === 'quiz' && (
-                                                                                                                                        <div className="quiz">
-                                                                                                                                            <p style={{ textAlign: 'justify' }}>
-                                                                                                                                                <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
-                                                                                                                                                    {combinedIndex + 1}.
-                                                                                                                                                </span>{' '}
-                                                                                                                                                Quiz - {item.name}
-                                                                                                                                            </p>
-                                                                                                                                        </div>
-                                                                                                                                    )}
-                                                                                                                                </div>
-                                                                                                                            );
-                                                                                                                        }
-                                                                                                                        return null; // Don't render if it doesn't belong to the clicked module
-                                                                                                                    })}
-                                                                                                            </div>
-                                                                                                        </div>
                                                                                                     ))}
                                                                                             </div>
                                                                                         )}
