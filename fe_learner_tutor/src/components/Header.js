@@ -228,7 +228,7 @@ const Header = () => {
             errors.fullName = 'Name is required';
             isValid = false;
         }
-        
+
         if (account.address.trim() === '') {
             errors.address = 'Address is required';
             isValid = false;
@@ -451,7 +451,7 @@ const Header = () => {
                                 {editMode ? (
                                     <>
                                         <form onSubmit={(e) => submitAccount(e)}>
-                                            <div className="modal-body">
+                                            <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Added style for scrolling */}
                                                 {/* Input fields for editing */}
                                                 <label htmlFor="imageUrl">
                                                     <img src={account.imageUrl} alt="avatar" className="rounded-circle" style={{ width: '30%', cursor: 'pointer' }} />
