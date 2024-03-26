@@ -7,6 +7,7 @@ import tutorService from '../services/tutor.service';
 import learnerService from '../services/learner.service';
 import SearchResult from './learner/course/SearchResult';
 import walletService from '../services/wallet.service';
+import Dropzone from "react-dropzone";
 
 const Header = () => {
 
@@ -48,6 +49,7 @@ const Header = () => {
 
     const openModal = () => {
         setShowModal(true);
+        setEditMode(false);
     };
 
     const closeModal = () => {
@@ -199,11 +201,24 @@ const Header = () => {
     //UPDATE ACCOUNT
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
+    const [file, setFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState("");
+
+    const handleFileDrop = (acceptedFiles) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            setFile(acceptedFiles[0]);
+
+            // Set the image preview URL
+            const previewUrl = URL.createObjectURL(acceptedFiles[0]);
+            setImagePreview(previewUrl);
+        }
+    };
 
     const handleChange = (e) => {
         const value = e.target.value;
         setAccount({ ...account, [e.target.name]: value });
     };
+
 
     const validateForm = () => {
         let isValid = true;
@@ -211,6 +226,11 @@ const Header = () => {
 
         if (account.fullName.trim() === '') {
             errors.fullName = 'Name is required';
+            isValid = false;
+        }
+        
+        if (account.address.trim() === '') {
+            errors.address = 'Address is required';
             isValid = false;
         }
 
@@ -226,11 +246,30 @@ const Header = () => {
         return isValid;
     };
 
-    const submitAccount = (e) => {
+    const submitAccount = async (e) => {
         e.preventDefault();
 
         if (validateForm()) {
-            console.log(JSON.stringify(account))
+            // Save account
+            let imageUrl = account.imageUrl; // Keep the existing imageUrl if available
+
+            if (file) {
+                // Upload image and get the link
+                const imageData = new FormData();
+                imageData.append("file", file);
+                const imageResponse = await accountService.uploadImage(imageData);
+
+                // Update the imageUrl with the link obtained from the API
+                let imageUrl = imageResponse.data;
+
+                // Log the imageUrl after updating
+                console.log("this is url: " + imageUrl);
+                account.imageUrl = imageResponse.data;
+            }
+
+            // Update account
+            const accountData = { ...account, imageUrl }; // Create a new object with updated imageUrl
+            console.log(JSON.stringify(accountData))
 
             accountService
                 .updateAccount(account.id, account)
@@ -413,9 +452,37 @@ const Header = () => {
                                     <>
                                         <form onSubmit={(e) => submitAccount(e)}>
                                             <div className="modal-body">
-
                                                 {/* Input fields for editing */}
-                                                <img src={account.imageUrl} alt="avatar" className="rounded-circle" style={{ width: '30%' }} />
+                                                <label htmlFor="imageUrl">
+                                                    <img src={account.imageUrl} alt="avatar" className="rounded-circle" style={{ width: '30%', cursor: 'pointer' }} />
+                                                </label>
+                                                <Dropzone
+                                                    onDrop={handleFileDrop}
+                                                    accept="image/*"
+                                                    multiple={false}
+                                                    maxSize={5000000} // Maximum file size (5MB)
+
+                                                >
+                                                    {({ getRootProps, getInputProps }) => (
+                                                        <div {...getRootProps()} className="fallback">
+                                                            <input {...getInputProps()} />
+                                                            <div className="dz-message needsclick">
+                                                                <i className="h1 text-muted dripicons-cloud-upload" />
+                                                            </div>
+                                                            {imagePreview && (
+                                                                <img
+                                                                    src={imagePreview}
+                                                                    alt="Preview"
+                                                                    style={{
+                                                                        width: '30%', cursor: 'pointer'
+                                                                    }}
+                                                                    className='rounded-circle'
+                                                                />
+                                                            )}
+                                                        </div>
+
+                                                    )}
+                                                </Dropzone>
 
                                                 <div className="table-responsive">
                                                     <table className="table table-hover mt-3">
@@ -435,6 +502,13 @@ const Header = () => {
                                                                 </td>
                                                             </tr>
                                                             <tr>
+                                                                <th>Address:</th>
+                                                                <td>
+                                                                    <input type="text" className="form-control" name="address" value={account.address} onChange={(e) => handleChange(e)} />
+                                                                    {errors.address && <p className="text-danger">{errors.address}</p>}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
                                                                 <th>Gender:</th>
                                                                 <td>
                                                                     <select className="form-control" name="gender" value={account.gender} onChange={(e) => handleChange(e)}>
@@ -446,16 +520,14 @@ const Header = () => {
                                                         </tbody>
                                                     </table>
                                                 </div>
-
-
                                             </div>
                                             <div className="modal-footer">
-                                                <button type="submit" className="btn btn-success" >Save Changes</button>
+                                                <button type="submit" className="btn btn-success">Save Changes</button>
                                                 <button type="button" className="btn btn-dark" onClick={closeModal}>Close</button>
                                             </div>
                                         </form>
-
                                     </>
+
 
                                 ) : (
                                     <>
@@ -477,6 +549,10 @@ const Header = () => {
                                                         <tr>
                                                             <th>Phone Number:</th>
                                                             <td>{account && account.phoneNumber ? account.phoneNumber : 'Unknown Phone Number'}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Address:</th>
+                                                            <td>{account && account.address ? account.address : 'Unknown Address'}</td>
                                                         </tr>
                                                         <tr>
                                                             <th>Gender:</th>
