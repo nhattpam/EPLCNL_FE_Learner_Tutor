@@ -140,6 +140,7 @@ const CreateTopic = () => {
                             name="classHours"
                             id="classHours"
                             value={classLesson.classHours}
+                            readOnly
                           />
                         </div>
 
@@ -152,7 +153,7 @@ const CreateTopic = () => {
                             name="roomLink"
                             id="roomLink"
                             value={classLesson.classUrl}
-                            o
+                            readOnly
                           />
                         </div>
 
@@ -162,11 +163,13 @@ const CreateTopic = () => {
                         </div>
                         <div className="form-group">
                           <label htmlFor="name">Name * :</label>
-                          <input type="text" className="form-control" name="name" id="name" value={classTopic.name} onChange={(e) => handleChange(e)} />
+                          <input type="text" className="form-control" name="name" id="name"
+                            value={classTopic.name} onChange={(e) => handleChange(e)} required />
                         </div>
                         <div className="form-group">
                           <label htmlFor="code">Description * :</label>
-                          <input type="text" className="form-control" name="description" id="description" value={classTopic.description} onChange={(e) => handleChange(e)} />
+                          <input type="text" className="form-control" name="description"
+                            id="description" value={classTopic.description} onChange={(e) => handleChange(e)} required />
                         </div>
                         {/* <div className="form-group">
                           <label htmlFor="code">Materials * :</label>
@@ -177,22 +180,22 @@ const CreateTopic = () => {
                             type="submit"
                             className="btn btn-success mr-2"
                           >
-                             Create
+                            Create
                           </button>
-                          <button
+                          {/* <button
                             type="button"
                             className="btn btn-dark"
                             onClick={handleListTopics}
                           >
                             List Topics
-                          </button>
+                          </button> */}
                         </div>
                       </form>
 
                       {/* Display created topics */}
                       <div>
                         <h4>Created Topics:</h4>
-                        {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
+                        {/* {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
                           <ul className='text-success'>
                             {createdTopics.map((topic) => (
                               <li key={topic.id}>Topic: <span style={{ fontWeight: 'bold' }}>{topic.name}</span>
@@ -210,7 +213,41 @@ const CreateTopic = () => {
                           </ul>
                         ) : (
                           <p>No topics created yet.</p>
-                        )}
+                        )} */}
+                        <div className="table-responsive">
+                          <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                            <thead className="thead-light">
+                              <tr>
+                                <th data-toggle="true">No.</th>
+                                <th data-toggle="true">Topic Name</th>
+                                <th>Description</th>
+                                <th data-hide="phone">Created Date</th>
+                                <th data-hide="phone, tablet">Updated Date</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {
+                                createdTopics.length > 0 && createdTopics.map((classTopic, index) => (
+                                  <tr key={classTopic.id}>
+                                    <td>{index + 1}</td>
+                                    <td>{classTopic.name}</td>
+                                    <td>{classTopic.description}</td>
+                                    <td>{classTopic.createdDate}</td>
+                                    <td>{classTopic.updatedDate}</td>
+                                    <td>
+                                      <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>
+                                        <i class="fa-regular fa-eye"></i>
+                                      </Link>
+                                    </td>
+                                  </tr>
+                                ))
+                              }
+
+                            </tbody>
+
+                          </table>
+                        </div> {/* end .table-responsive*/}
                       </div>
 
                     </div>

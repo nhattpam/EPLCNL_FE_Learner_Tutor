@@ -171,6 +171,7 @@ const CreateLesson = () => {
                                 id="name"
                                 value={lesson.name}
                                 onChange={(e) => handleChange(e)}
+                                required
                               />
                             </div>
 
@@ -185,7 +186,7 @@ const CreateLesson = () => {
                             </div> */}
 
                             <div className="form-group">
-                              <label htmlFor="reading">Reading * :</label>
+                              <label htmlFor="reading">Reading:</label>
                               <ReactQuill
                                 value={lesson.reading}
                                 onChange={handleReadingChange}

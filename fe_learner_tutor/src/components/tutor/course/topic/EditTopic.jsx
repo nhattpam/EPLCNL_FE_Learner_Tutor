@@ -218,6 +218,7 @@ const EditTopic = () => {
                             name="classHours"
                             id="classHours"
                             value={classTopic.classLesson?.classHours}
+                            readOnly
                           />
                         </div>
 
@@ -230,7 +231,7 @@ const EditTopic = () => {
                             name="roomLink"
                             id="roomLink"
                             value={classTopic.classLesson?.classUrl}
-                            o
+                            readOnly
                           />
                         </div>
 
@@ -240,11 +241,13 @@ const EditTopic = () => {
                         </div>
                         <div className="form-group">
                           <label htmlFor="name">Name :</label>
-                          <input type="text" className="form-control" name="name" id="name" value={classTopic.name} onChange={(e) => handleChange(e)} />
+                          <input type="text" className="form-control" name="name" id="name" 
+                          value={classTopic.name} onChange={(e) => handleChange(e)} readOnly/>
                         </div>
                         <div className="form-group">
                           <label htmlFor="code">Description :</label>
-                          <input type="text" className="form-control" name="description" id="description" value={classTopic.description} onChange={(e) => handleChange(e)} />
+                          <input type="text" className="form-control" name="description" id="description" 
+                          value={classTopic.description} onChange={(e) => handleChange(e)} readOnly/>
                         </div>
                         {/* <div className="form-group">
                           <label htmlFor="code">Materials * :</label>

@@ -184,7 +184,7 @@ return (
                                 </div>
                                 <div className="form-floating mb-3">
                                     <input type="password" className="form-control" id="floatingPassword" placeholder="Password" value={password}
-                                        onChange={handlePasswordChange} />
+                                        onChange={handlePasswordChange} required/>
                                     <label htmlFor="floatingPassword">Password</label>
                                 </div>
 

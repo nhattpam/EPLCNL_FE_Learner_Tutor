@@ -148,14 +148,15 @@ const MyTransaction = () => {
                                                         ))
                                                     )
                                                 }
-                                                {
-                                                    transactionList.length === 0 && (
-                                                        <p className='text-center'>No transactions found.</p>
-                                                    )
-                                                }
+
 
                                             </tbody>
                                         </table>
+                                        {
+                                            transactionList.length === 0 && (
+                                                <h5 className='text-center'>No transactions found.</h5>
+                                            )
+                                        }
                                         {showRefundModal && (
                                             <form method="post"
                                                 className="dropzone"
@@ -224,7 +225,7 @@ const MyTransaction = () => {
                                                     }
                                                     {
                                                         refundRequestList.length === 0 && (
-                                                            <h6>You have no refunds.</h6>
+                                                            <h5>No requests found.</h5>
                                                         )
                                                     }
 

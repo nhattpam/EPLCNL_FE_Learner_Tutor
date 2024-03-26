@@ -200,10 +200,17 @@ const Header = () => {
         walletService
             .getAllWalletHistoryByWallet(account.wallet.id)
             .then((res) => {
-                setWalletHistoryList(res.data);
+                const filteredHistoryList = res.data;
+                // Sort refundList by requestedDate
+                const sortedHistoryList = [...filteredHistoryList].sort((a, b) => {
+                    // Assuming requestedDate is a string in ISO 8601 format
+                    return new Date(b.transactionDate) - new Date(a.transactionDate);
+                });
+
+                setWalletHistoryList(sortedHistoryList);
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
             });
     }, [account.wallet.id]);
 

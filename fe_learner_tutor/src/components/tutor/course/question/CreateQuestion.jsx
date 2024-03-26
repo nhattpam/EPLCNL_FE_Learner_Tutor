@@ -70,14 +70,7 @@ const CreateQuestion = () => {
         let isValid = true;
         const errors = {};
 
-        if (question.defaultGrade.trim() === '') {
-            errors.defaultGrade = 'Question Text is required';
-            isValid = false;
-        }
-        if (question.defaultGrade.trim() === '') {
-            errors.defaultGrade = 'Grade is required';
-            isValid = false;
-        } else if (isNaN(question.defaultGrade) || +question.defaultGrade <= 0) {
+        if (isNaN(question.defaultGrade) || +question.defaultGrade <= 0) {
             errors.defaultGrade = 'Grade should be a positive number';
             isValid = false;
         }
@@ -196,12 +189,15 @@ const CreateQuestion = () => {
                                                 onSubmit={submitQuestion} >
                                                 <div className="card" style={{ marginTop: '-20px' }}>
                                                     <div className='card-body'>
+                                                        {errors.defaultGrade && (
+                                                            <div className="text-danger">{errors.defaultGrade}</div>
+                                                        )}
                                                         <label htmlFor="defaultGrade">Grade * :</label>
-                                                        <input type="number" className="form-control" name="defaultGrade" id="defaultGrade" required value={question.defaultGrade} onChange={(e) => handleChange(e)} />
+                                                        <input type="number" className="form-control" name="defaultGrade" id="defaultGrade" value={question.defaultGrade} onChange={(e) => handleChange(e)} />
 
                                                     </div>
                                                     <div className='card-body'>
-                                                        <label htmlFor="video">Question Text * :</label>
+                                                        <label htmlFor="video">Question Text:</label>
                                                         <ReactQuill
                                                             value={question.questionText}
                                                             onChange={handleChangeQuestion}
@@ -209,7 +205,7 @@ const CreateQuestion = () => {
                                                         />
                                                     </div>
                                                     <div className='card-body'>
-                                                        <label htmlFor="image">Question Image * :</label>
+                                                        <label htmlFor="image">Question Image:</label>
                                                         <Dropzone
                                                             onDrop={handleFileDrop}
                                                             accept="image/*" multiple={false}
@@ -230,7 +226,7 @@ const CreateQuestion = () => {
                                                         </Dropzone>
                                                     </div>
                                                     <div className='card-body'>
-                                                        <label htmlFor="audio">Question Audio * :</label>
+                                                        <label htmlFor="audio">Question Audio:</label>
                                                         <Dropzone
                                                             onDrop={handleFileDrop2}
                                                             accept="audio/*"

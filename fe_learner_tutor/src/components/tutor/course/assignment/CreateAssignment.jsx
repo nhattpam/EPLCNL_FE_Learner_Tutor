@@ -8,6 +8,7 @@ import Footer from "../../Footer";
 import moduleService from "../../../../services/module.service";
 import assignmentService from "../../../../services/assignment.service";
 import DateTimePicker from "react-datetime-picker";
+import { error } from "jquery";
 
 const CreateAssignment = () => {
   const navigate = useNavigate();
@@ -135,6 +136,7 @@ const CreateAssignment = () => {
                               value={assignment.deadline}
                               onChange={handleMinutesChange}
                               className="form-control"
+                              required
                             >
                               {[1, 5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map(
                                 (minutes) => (
@@ -146,6 +148,8 @@ const CreateAssignment = () => {
                             </select>
                           </div>
                           <div className="card-body">
+                          {errors.questionText && <p style={{ color: 'red' }}>{errors.questionText}</p>}
+
                             <label htmlFor="video">Question * :</label>
                             <ReactQuill
                               value={assignment.questionText}
@@ -166,6 +170,7 @@ const CreateAssignment = () => {
                                 ]
                             }}
                             theme="snow"
+                            required
                             />
                           </div>
                         </div>

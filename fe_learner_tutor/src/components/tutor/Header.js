@@ -220,10 +220,17 @@ const Header = () => {
         walletService
             .getAllWalletHistoryByWallet(account.wallet?.id)
             .then((res) => {
-                setWalletHistoryList(res.data);
+                const filteredHistoryList = res.data;
+                // Sort refundList by requestedDate
+                const sortedHistoryList = [...filteredHistoryList].sort((a, b) => {
+                    // Assuming requestedDate is a string in ISO 8601 format
+                    return new Date(b.transactionDate) - new Date(a.transactionDate);
+                });
+
+                setWalletHistoryList(sortedHistoryList);
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
             });
     }, [account.wallet?.id]);
 
@@ -244,7 +251,7 @@ const Header = () => {
             <div className="navbar-custom" style={{ backgroundColor: '#242732' }}>
                 <div className="container-fluid">
                     <ul className="list-unstyled topnav-menu float-right mb-0">
-                        
+
                         <li className="dropdown d-inline-block d-lg-none">
                             <a className="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                 <i className="fe-search noti-icon" />
@@ -291,7 +298,7 @@ const Header = () => {
                     </ul>
                     {/* LOGO */}
                     <div className="logo-box">
-                        <Link to={"/tutor-dashboard"} className="logo logo-light text-center">
+                        <Link to={`/tutor-dashboard/${storedTutorId}`} className="logo logo-light text-center">
                             <span style={{ fontFamily: 'Comic Sans MS', fontSize: '24px', fontWeight: 'bold', color: '#fff' }}>
                                 MEOWLISH
                             </span>
@@ -452,14 +459,15 @@ const Header = () => {
                                                             <th scope="row" onClick={() => deletePaperWork(paperWork.id)} ><i class="fas fa-trash text-danger"></i></th>
                                                         </tr>
                                                     ))}
-                                                    {
-                                                        paperWorkList.length === 0 && (
-                                                            <p className='text-center'>No paper works.</p>
-                                                        )
-                                                    }
+
 
                                                 </tbody>
                                             </table>
+                                            {
+                                                paperWorkList.length === 0 && (
+                                                    <p className='text-center'>No paper works.</p>
+                                                )
+                                            }
                                             {/* Input fields for editing */}
                                             <div className="form-group">
                                                 <select

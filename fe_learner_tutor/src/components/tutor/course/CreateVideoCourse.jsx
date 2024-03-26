@@ -185,10 +185,11 @@ const CreateVideoCourse = () => {
                           accept="image/*"
                           multiple={false}
                           maxSize={5000000} // Maximum file size (5MB)
+
                         >
                           {({ getRootProps, getInputProps }) => (
                             <div {...getRootProps()} className="fallback">
-                              <input {...getInputProps()} />
+                              <input {...getInputProps()}  />
                               <div className="dz-message needsclick">
                                 <i className="h1 text-muted dripicons-cloud-upload" />
                                 <h3>Drop files here or click to upload.</h3>
@@ -205,8 +206,10 @@ const CreateVideoCourse = () => {
                                 />
                               )}
                             </div>
+
                           )}
                         </Dropzone>
+                      
 
                         {/* Preview */}
                         <div
@@ -224,6 +227,7 @@ const CreateVideoCourse = () => {
                             id="name"
                             value={course.name}
                             onChange={(e) => handleChange(e)}
+                            required
                           />
                         </div>
                         <div className="form-row">
@@ -237,6 +241,7 @@ const CreateVideoCourse = () => {
                               value={course.code}
                               onChange={(e) => handleChange(e)}
                               style={{ width: "100%" }}
+                              required
                             />
                           </div>
                           <div className="form-group col-md-6">
@@ -248,6 +253,7 @@ const CreateVideoCourse = () => {
                               value={course.categoryId}
                               onChange={handleChange}
                               style={{ width: "100%" }}
+                              required
                             >
                               <option value="">Select Category</option>
                               {categoryList.map((cate) => (
@@ -269,6 +275,7 @@ const CreateVideoCourse = () => {
                                 value={course.stockPrice}
                                 onChange={(e) => handleChange(e)}
                                 style={{ width: "60%" }} // Adjusted width to accommodate "USD"
+                                required
                               />
                               <div className="input-group-append">
                                 <span className="input-group-text">USD</span>
@@ -287,6 +294,7 @@ const CreateVideoCourse = () => {
                               value={course.tags}
                               onChange={(e) => handleChange(e)}
                               style={{ width: "100%" }}
+                              required
                             />
                           </div>
                         </div>
@@ -305,6 +313,7 @@ const CreateVideoCourse = () => {
                             defaultValue={""}
                             value={course.description}
                             onChange={(e) => handleChange(e)}
+                            required
                           />
                         </div>
                         <div className="form-group mb-0">

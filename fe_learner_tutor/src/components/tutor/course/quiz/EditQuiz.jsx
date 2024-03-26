@@ -100,8 +100,7 @@ const EditQuiz = () => {
                   <div className="form-group">
                     <h5>Questions:</h5>
 
-                    <ul className="list-group">
-                      {/* <li key={question.id} className="list-group-item d-flex justify-content-between align-items-center">
+                    {/* <li key={question.id} className="list-group-item d-flex justify-content-between align-items-center">
                         {question.questionImageUrl} {question.questionAudioUrl} {question.questionText}
                         <button
                           type="button"
@@ -113,60 +112,59 @@ const EditQuiz = () => {
                       </li> */}
 
 
-                      <div className="table-responsive">
-                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
-                          <thead className="thead-light">
-                            <tr>
-                              <th data-toggle="true">No.</th>
-                              <th data-toggle="true">Question</th>
-                              <th>Grade</th>
-                              <th data-hide="phone">Created Date</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {
-                              questionList.length > 0 && questionList.map((question, index) => (
-                                <tr key={question.id}>
-                                  <td>{index + 1}</td>
-                                  {/* <td className='truncate-text'>
+                    <div className="table-responsive">
+                      <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                        <thead className="thead-light">
+                          <tr>
+                            <th data-toggle="true">No.</th>
+                            <th data-toggle="true">Question</th>
+                            <th>Grade</th>
+                            <th data-hide="phone">Created Date</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {
+                            questionList.length > 0 && questionList.map((question, index) => (
+                              <tr key={question.id}>
+                                <td>{index + 1}</td>
+                                {/* <td className='truncate-text'>
                                     <div dangerouslySetInnerHTML={{ __html: question?.questionImageUrl || '' }} />
                                     <div dangerouslySetInnerHTML={{ __html: question?.questionAudioUrl || '' }} />
                                     <div dangerouslySetInnerHTML={{ __html: question?.questionText || '' }} />
                                   </td> */}
-                                  <td>
-                                    Question {index+1}
-                                  </td>
-                                  <td>{question.defaultGrade}</td>
-                                  <td>{question.createdDate}</td>
-                                  <td>
-                                    <Link to={`/tutor/courses/edit-question/${question.id}`} className='text-secondary'>
-                                      <i class="fa-regular fa-eye"></i>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              ))
-                            }
-                            {
-                              questionList.length === 0 && (
-                                <p>No questions found.</p>
-                              )
-                            }
+                                <td>
+                                  Question {index + 1}
+                                </td>
+                                <td>{question.defaultGrade}</td>
+                                <td>{question.createdDate}</td>
+                                <td>
+                                  <Link to={`/tutor/courses/edit-question/${question.id}`} className='text-secondary'>
+                                    <i class="fa-regular fa-eye"></i>
+                                  </Link>
+                                </td>
+                              </tr>
+                            ))
+                          }
 
-                          </tbody>
 
-                        </table>
-                      </div>
+                        </tbody>
 
-                    </ul>
+                      </table>
+
+
+                    </div>
+
 
                   </div>
-
+                  {
+                    questionList.length === 0 && (
+                      <p className='text-center'>No questions found.</p>
+                    )
+                  }
                   <div className="form-group mb-2">
                     <>
-                      {questionList.length === 0 && (
-                        <p>No questions available.</p>
-                      )}
+
                       <Link
                         type="button"
                         className="btn btn-success mr-2"

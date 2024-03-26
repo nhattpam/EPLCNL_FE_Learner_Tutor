@@ -56,7 +56,8 @@ const ListTopic = () => {
   const filteredClassTopics = classTopicList
     .filter((classTopic) => {
       return (
-        classTopic.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        classTopic.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        classTopic.description.toString().toLowerCase().includes(searchTerm.toLowerCase()) 
 
       );
     });
@@ -103,7 +104,8 @@ const ListTopic = () => {
                         <div className="col-12 text-sm-center form-inline">
 
                           <div className="form-group">
-                            <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />
+                            <input id="demo-foo-search" type="text" placeholder="Search" 
+                            className="form-control form-control-sm" autoComplete="on" alue={searchTerm} onChange={handleSearch}/>
                           </div>
                         </div>
                       </div>

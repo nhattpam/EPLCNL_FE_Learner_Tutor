@@ -232,12 +232,12 @@ const EditCourse = () => {
                                                 </Link>
 
 
-                                                <button
+                                                {/* <button
                                                     type="submit"
                                                     className="btn btn-danger"
                                                 >
                                                     Request to delete
-                                                </button>
+                                                </button> */}
 
                                                 <Link
                                                     type="button"

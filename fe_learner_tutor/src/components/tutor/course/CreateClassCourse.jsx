@@ -224,6 +224,7 @@ const CreateClassCourse = () => {
                                                         id="name"
                                                         value={course.name}
                                                         onChange={(e) => handleChange(e)}
+                                                        required
                                                     />
                                                 </div>
                                                 <div className="form-row">
@@ -237,6 +238,7 @@ const CreateClassCourse = () => {
                                                             value={course.code}
                                                             onChange={(e) => handleChange(e)}
                                                             style={{ width: "100%" }}
+                                                            required
                                                         />
                                                     </div>
                                                     <div className="form-group col-md-6">
@@ -248,6 +250,7 @@ const CreateClassCourse = () => {
                                                             value={course.categoryId}
                                                             onChange={handleChange}
                                                             style={{ width: "100%" }}
+                                                            required
                                                         >
                                                             <option value="">Select Category</option>
                                                             {categoryList.map((cate) => (
@@ -269,6 +272,7 @@ const CreateClassCourse = () => {
                                                                 value={course.stockPrice}
                                                                 onChange={(e) => handleChange(e)}
                                                                 style={{ width: "60%" }} // Adjusted width to accommodate "USD"
+                                                                required
                                                             />
                                                             <div className="input-group-append">
                                                                 <span className="input-group-text">USD</span>
@@ -287,6 +291,7 @@ const CreateClassCourse = () => {
                                                             value={course.tags}
                                                             onChange={(e) => handleChange(e)}
                                                             style={{ width: "100%" }}
+                                                            required
                                                         />
                                                     </div>
                                                 </div>
@@ -304,6 +309,7 @@ const CreateClassCourse = () => {
                                                         data-parsley-validation-threshold={10}
                                                         defaultValue={''}
                                                         value={course.description} onChange={(e) => handleChange(e)}
+                                                        required
                                                     />
                                                 </div>
                                                 <div className="form-group mb-0">

@@ -132,7 +132,10 @@ const CreateClassMaterial = () => {
                         <h4 className="header-title">Information</h4>
                         <div className="form-group">
                           <label htmlFor="name">Name * :</label>
-                          <input type="text" className="form-control" name="name" id="name" value={material.name} onChange={(e) => handleChange(e)} />
+                          <input type="text" className="form-control" name="name"
+                            id="name" value={material.name} onChange={(e) => handleChange(e)}
+                            required
+                          />
                         </div>
 
                         <label htmlFor="video">File * :</label>
@@ -165,9 +168,9 @@ const CreateClassMaterial = () => {
 
                         <div className="card">
                           <div className='card-body'>
-                            <div className="form-group mb-0" style={{marginLeft: '-20px'}}>
+                            <div className="form-group mb-0" style={{ marginLeft: '-20px' }}>
                               <button type="submit" className="btn btn-success">
-                               Create
+                                Create
 
                               </button>
                             </div>

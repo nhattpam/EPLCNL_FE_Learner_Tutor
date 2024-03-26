@@ -108,7 +108,7 @@ const ListCourse = () => {
                             }
                             {
                                 courseList.length === 0 && (
-                                    <p>There are no courses.</p>
+                                    <h5>There are no courses.</h5>
                                 )
                             }
 

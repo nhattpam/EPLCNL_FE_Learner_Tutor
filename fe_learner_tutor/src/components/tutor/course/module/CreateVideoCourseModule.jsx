@@ -238,6 +238,7 @@ const CreateVideoCourseModule = () => {
                                 name="name"
                                 value={module.name}
                                 onChange={(e) => handleChange(e)}
+                                required
                               />
                             </div>
                             {!createButtonClicked && (

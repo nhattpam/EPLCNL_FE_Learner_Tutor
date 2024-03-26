@@ -60,6 +60,11 @@ const CreateClassCourseModule = () => {
     const errors = {};
 
 
+    if (classLesson.classUrl.trim() === "") {
+      errors.classUrl = "Link is required";
+      isValid = false;
+    }
+
     setErrors(errors);
     return isValid;
   };
@@ -67,34 +72,35 @@ const CreateClassCourseModule = () => {
 
   const submitModule = async (e) => {
     e.preventDefault();
-  
+
     if (!module.startDate) {
       console.error("Please select a valid date.");
       return;
     }
-  
+
+
     try {
       // Save module
       console.log(JSON.stringify(module));
       const moduleResponse = await classModuleService.saveModule(module);
       console.log(moduleResponse.data);
-  
+
       setMsg('Module Added Successfully');
-  
+
       const moduleJson = JSON.stringify(moduleResponse.data);
       const moduleJsonParse = JSON.parse(moduleJson);
-  
+
       setCreateButtonClicked(true);
 
       console.log('this is module IDDDD: ' + moduleJsonParse.id)
 
       setStoredModuleId(moduleJsonParse.id); // Update storedModuleId using setStoredModuleId
-  
+
     } catch (error) {
       console.log(error);
     }
   };
-  
+
 
   //class lesson
   const [classLesson, setClassLesson] = useState({
@@ -155,20 +161,23 @@ const CreateClassCourseModule = () => {
 
 
     console.log(classLesson);
-    // Save class lesson
-    const classLessonResponse = await classLessonService.saveClassLesson(classLesson);
+    if (validateForm()) {
+      // Save class lesson
+      const classLessonResponse = await classLessonService.saveClassLesson(classLesson);
 
-    // console.log(JSON.stringify(courseResponse));
-    // console.log(courseResponse.data);
-    const classLessonJson = JSON.stringify(classLessonResponse.data);
+      // console.log(JSON.stringify(courseResponse));
+      // console.log(courseResponse.data);
+      const classLessonJson = JSON.stringify(classLessonResponse.data);
 
-    const classLessonJsonParse = JSON.parse(classLessonJson);
+      const classLessonJsonParse = JSON.parse(classLessonJson);
 
-    console.log('thanh cong: ' + classLessonJsonParse.id)
+      console.log('thanh cong: ' + classLessonJsonParse.id)
 
 
-    // navigate(`/tutor/course/list-course-by-tutor/${tutorId}`);
-    navigate(`/tutor/courses/create/create-class-course/create-topic/${classLessonJsonParse.id}`);
+      // navigate(`/tutor/course/list-course-by-tutor/${tutorId}`);
+      navigate(`/tutor/courses/create/create-class-course/create-topic/${classLessonJsonParse.id}`);
+    }
+
   };
   return (
     <>
@@ -243,6 +252,9 @@ const CreateClassCourseModule = () => {
 
 
                         <div className="form-group">
+                          {errors.classUrl && (
+                            <div className="text-danger">{errors.classUrl}</div>
+                          )}
                           <label htmlFor="classUrl">Room Link * :</label>
                           <input
                             type="text"
@@ -251,6 +263,7 @@ const CreateClassCourseModule = () => {
                             id="classUrl"
                             value={classLesson.classUrl}
                             onChange={handleClassLessonChange} // Pass the function directly
+                            required
                           />
                         </div>
 
@@ -260,7 +273,7 @@ const CreateClassCourseModule = () => {
                             className="btn btn-success"
                             onClick={handleClassLessonSubmit}
                           >
-                           Continue
+                            Continue
 
                           </button>
                         </div>

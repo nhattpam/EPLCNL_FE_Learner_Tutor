@@ -131,7 +131,8 @@ const CreateClassTopicMaterial = () => {
                         <h4 className="header-title">Information</h4>
                         <div className="form-group">
                           <label htmlFor="name">Name * :</label>
-                          <input type="text" className="form-control" name="name" id="name" value={material.name} onChange={(e) => handleChange(e)} />
+                          <input type="text" className="form-control"
+                           name="name" id="name" value={material.name} onChange={(e) => handleChange(e)} required/>
                         </div>
 
                         <label htmlFor="video">File * :</label>
