@@ -71,7 +71,7 @@ const Invoice = () => {
     }, [transaction.courseId]);
 
     useEffect(() => {
-        if (transaction.learnerId && transaction.courseId !== null) {
+        if (transaction.learnerId) {
             learnerService
                 .getLearnerById(transaction.learnerId)
                 .then((res) => {
@@ -265,7 +265,7 @@ const Invoice = () => {
                                                                             
                                                                             <tr>
                                                                                 <td scope="row" colspan="4" class="border-0 text-end">1</td>
-                                                                                <td class="border-0 text-end"><h4 class="m-0 fw-semibold"> ${transaction.amount} Dollars</h4></td>
+                                                                                <td class="border-0 text-end"><h4 class="m-0 fw-semibold"> ${transaction.amount / 24000} Dollars</h4></td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
