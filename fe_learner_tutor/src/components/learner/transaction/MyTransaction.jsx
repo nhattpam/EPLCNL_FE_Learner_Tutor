@@ -20,7 +20,15 @@ const MyTransaction = () => {
         learnerService
             .getAllTransactionByLearnerId(learnerId)
             .then((res) => {
-                setTransactionList(res.data);
+                // Filter the transactions where isActive is true
+                const filteredTransactionList = res.data;
+                // Sort refundList by requestedDate
+                const sortedTransactionList = [...filteredTransactionList].sort((a, b) => {
+                    // Assuming requestedDate is a string in ISO 8601 format
+                    return new Date(b.transactionDate) - new Date(a.transactionDate);
+                });
+                setTransactionList(sortedTransactionList);
+
             })
             .catch((error) => {
                 console.log(error);
@@ -122,17 +130,36 @@ const MyTransaction = () => {
                                                             <tr key={transaction.id}>
                                                                 <th scope="row">{index + 1}</th>
                                                                 <td>
-                                                                    <img src={transaction.course.imageUrl} alt={transaction.course.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
+                                                                    <img src={transaction.course?.imageUrl} alt={transaction.course?.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
                                                                 </td>
-                                                                <td>
-                                                                    {transaction.course.isOnlineClass ? (
-                                                                        <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
-                                                                    ) : (
-                                                                        <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course.name}</Link></h3>
-                                                                    )}
-                                                                </td>
-                                                                <td>${transaction.course.stockPrice}</td>
-                                                                <td>{transaction.paymentMethod.name}</td>
+                                                                {
+                                                                    transaction.courseId !== null && (
+                                                                        <td>
+                                                                            {transaction.course?.isOnlineClass ? (
+                                                                                <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course?.name}</Link></h3>
+                                                                            ) : (
+                                                                                <h3><Link to={`/detail-course/${transaction.courseId}`}>{transaction.course?.name}</Link></h3>
+                                                                            )}
+                                                                        </td>
+                                                                    )
+                                                                }
+                                                                {
+                                                                    transaction.courseId === null && (
+                                                                        <td><h3>Deposit</h3></td>
+                                                                    )
+                                                                }
+
+                                                                {
+                                                                    transaction.courseId !== null && (
+                                                                        <td>${transaction.course?.stockPrice}</td>
+                                                                    )
+                                                                }
+                                                                {
+                                                                    transaction.courseId === null && (
+                                                                        <td></td>
+                                                                    )
+                                                                }
+                                                                <td>{transaction.paymentMethod?.name}</td>
                                                                 <td>${transaction.amount / 24000}</td>
                                                                 <td>{transaction.transactionDate}</td>
                                                                 <td>{transaction.status}</td>
@@ -236,20 +263,20 @@ const MyTransaction = () => {
                                                             <tr key={refund.id}>
                                                                 <th scope="row">{index + 1}</th>
                                                                 <td>
-                                                                    <img src={refund.enrollment.transaction.course.imageUrl} alt={refund.enrollment.transaction.course.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
+                                                                    <img src={refund.enrollment?.transaction?.course?.imageUrl} alt={refund.enrollment?.transaction?.course?.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
                                                                 </td>
                                                                 <td>
-                                                                    {refund.enrollment.transaction.course.isOnlineClass ? (
-                                                                        <h3><Link to={`/detail-course/${refund.enrollment.transaction.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
+                                                                    {refund.enrollment?.transaction?.course?.isOnlineClass ? (
+                                                                        <h3><Link to={`/detail-course/${refund.enrollment?.transaction?.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
                                                                     ) : (
-                                                                        <h3><Link to={`/detail-course/${refund.enrollment.transaction.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
+                                                                        <h3><Link to={`/detail-course/${refund.enrollment?.transaction?.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
                                                                     )}
                                                                 </td>
                                                                 <td>
-                                                                    {refund.enrollment.transaction.paymentMethod.name}
+                                                                    {refund.enrollment?.transaction?.paymentMethod?.name}
                                                                 </td>
                                                                 <td>
-                                                                    ${refund.enrollment.transaction.amount / 24000}
+                                                                    ${refund.enrollment?.transaction?.amount / 24000}
                                                                 </td>
                                                                 <td>
                                                                     {refund.requestedDate}
