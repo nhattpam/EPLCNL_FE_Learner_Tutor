@@ -17,7 +17,8 @@ const Invoice = () => {
         transactionDate: "",
         learnerId: "",
         courseId: "",
-        learner: []
+        learner: [],
+        course: []
     });
 
     const [course, setCourse] = useState({
@@ -143,17 +144,17 @@ const Invoice = () => {
                                                                             <tr>
                                                                                 <th scope="row">01</th>
                                                                                 <td>
-                                                                                    <img src=${course.imageUrl} style="height: 50px; width: 80px;"></img>
+                                                                                    <img src=${transaction.course?.imageUrl} style="height: 50px; width: 80px;"></img>
                                                                                 </td>
                                                                                 <td>
                                                                                     <div>
-                                                                                        <h5 class="text-truncate font-size-14 mb-1">${course.name}</h5>
-                                                                                        <p class="text-muted mb-0">${course.code}</p>
+                                                                                        <h5 class="text-truncate font-size-14 mb-1">${transaction.course?.name}</h5>
+                                                                                        <p class="text-muted mb-0">${transaction.course?.code}</p>
                                                                                     </div>
                                                                                 </td>
-                                                                                <td>$ ${course.stockPrice}</td>
+                                                                                <td>$ ${transaction.course?.stockPrice}</td>
                                                                                 <td>1</td>
-                                                                                <td class="text-end">$ ${course.stockPrice}</td>
+                                                                                <td class="text-end">$ ${transaction.course?.stockPrice}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <th scope="row" colspan="4" class="border-0 text-end">Total</th>
