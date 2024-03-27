@@ -741,7 +741,7 @@ const Header = () => {
                                     </button>
                                 </div>
                                 <form onSubmit={submitDeposit}>
-                                    <div className="modal-body">
+                                    <div className="modal-body" >
                                         {/* Conditional rendering based on edit mode */}
 
                                         <div>
@@ -755,7 +755,7 @@ const Header = () => {
 
                                     </div>
 
-                                    <div className="modal-footer">
+                                    <div className="modal-footer" style={{marginTop: '325px'}}>
                                         {/* Conditional rendering of buttons based on edit mode */}
                                         <button
                                             type="submit"

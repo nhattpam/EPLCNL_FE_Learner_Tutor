@@ -17,6 +17,7 @@ const Invoice = () => {
         transactionDate: "",
         learnerId: "",
         courseId: "",
+        learner: []
     });
 
     const [course, setCourse] = useState({
@@ -101,10 +102,10 @@ const Invoice = () => {
                                                                 <div class="col-sm-6">
                                                                     <div class="text-muted">
                                                                         <h5 class="font-size-16 mb-3">Billed To:</h5>
-                                                                        <h5 class="font-size-15 mb-2">${account.name}</h5>
-                                                                        <p class="mb-1">${account.address}</p>
-                                                                        <p class="mb-1">${account.email}</p>
-                                                                        <p>${account.phoneNumber}</p>
+                                                                        <h5 class="font-size-15 mb-2">${transaction.learner?.account?.fullName}</h5>
+                                                                        <p class="mb-1">${transaction.learner?.account?.address}</p>
+                                                                        <p class="mb-1">${transaction.learner?.account?.email}</p>
+                                                                        <p>${transaction.learner?.account?.phoneNumber}</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-sm-6">
@@ -180,8 +181,8 @@ const Invoice = () => {
                                     `,
                                 });
                                 console.log(response.data);
-                                
-                        
+
+
                             })
                             .catch((accountError) => {
                                 console.log(accountError);
@@ -226,11 +227,11 @@ const Invoice = () => {
                                                             <div class="row">
                                                                 <div class="col-sm-6">
                                                                     <div class="text-muted">
-                                                                        <h5 class="font-size-16 mb-3">Billed To:</h5>
-                                                                        <h5 class="font-size-15 mb-2">${account.name}</h5>
-                                                                        <p class="mb-1">${account.address}</p>
-                                                                        <p class="mb-1">${account.email}</p>
-                                                                        <p>${account.phoneNumber}</p>
+                                                                         <h5 class="font-size-16 mb-3">Billed To:</h5>
+                                                                         <h5 class="font-size-15 mb-2">${transaction.learner?.account?.fullName}</h5>
+                                                                         <p class="mb-1">${transaction.learner?.account?.address}</p>
+                                                                         <p class="mb-1">${transaction.learner?.account?.email}</p>
+                                                                         <p>${transaction.learner?.account?.phoneNumber}</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-sm-6">
@@ -263,7 +264,7 @@ const Invoice = () => {
                                                                         <tbody>
                                                                             
                                                                             <tr>
-                                                                                <th scope="row" colspan="4" class="border-0 text-end">Total</th>
+                                                                                <td scope="row" colspan="4" class="border-0 text-end">1</td>
                                                                                 <td class="border-0 text-end"><h4 class="m-0 fw-semibold"> ${transaction.amount} Dollars</h4></td>
                                                                             </tr>
                                                                         </tbody>
@@ -288,8 +289,8 @@ const Invoice = () => {
                                     `,
                                 });
                                 console.log(response.data);
-                                
-                        
+
+
                             })
                             .catch((accountError) => {
                                 console.log(accountError);
@@ -355,54 +356,57 @@ const Invoice = () => {
                                     {/* end col */}
                                 </div>
                                 {/* end row */}
-                                <div className="py-2">
-                                    <h5 className="font-size-15">Transaction Summary</h5>
-                                    <div className="table-responsive">
-                                        <table className="table align-middle table-nowrap table-centered mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th style={{ width: 70 }}>No.</th>
-                                                    <th>Image</th>
-                                                    <th>Item</th>
-                                                    <th>Price</th>
-                                                    <th>Quantity</th>
-                                                    <th className="text-end" style={{ width: 120 }}>Total</th>
-                                                </tr>
-                                            </thead>{/* end thead */}
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">01</th>
-                                                    <td>
-                                                        <img src={course.imageUrl} style={{ height: '50px', width: '80px' }}></img>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            <h5 className="text-truncate font-size-14 mb-1">{course.name}</h5>
-                                                            <p className="text-muted mb-0">{course.code}</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>$ {course.stockPrice}</td>
-                                                    <td>1</td>
-                                                    <td className="text-end">$ {course.stockPrice}</td>
-                                                </tr>
-                                                {/* end tr */}
 
 
-                                                <tr>
-                                                    <th scope="row" colSpan={4} className="border-0 text-end">Total</th>
-                                                    <td className="border-0 text-end"><h4 className="m-0 fw-semibold">{transaction.amount /24000} dollars</h4></td>
-                                                </tr>
-                                                {/* end tr */}
-                                            </tbody>{/* end tbody */}
-                                        </table>{/* end table */}
-                                    </div>{/* end table responsive */}
-                                    <div className="d-print-none mt-4">
-                                        <div className="float-end">
-                                            <a href="javascript:window.print()" className="btn btn-success me-1"><i className="fa fa-print" /></a>
-                                            {/* <a href="#" className="btn btn-primary w-md">Send</a> */}
-                                        </div>
-                                    </div>
-                                </div>
+                                {
+                                    transaction.courseId === null && (
+                                        <>
+                                            <div className="py-2">
+                                                <h5 className="font-size-15">Transaction Summary</h5>
+                                                <div className="table-responsive">
+                                                    <table className="table align-middle table-nowrap table-centered mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style={{ width: 70 }}>No.</th>
+                                                                <th>Item</th>
+                                                                <th>Price</th>
+                                                                <th>Quantity</th>
+                                                                <th className="text-end" style={{ width: 120 }}>Total</th>
+                                                            </tr>
+                                                        </thead>{/* end thead */}
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">01</th>
+                                                                <td>
+                                                                    <div>
+                                                                        <h5 className="text-truncate font-size-14 mb-1">VNPay</h5>
+                                                                    </div>
+                                                                </td>
+                                                                <td>$ {transaction.amount / 24000}</td>
+                                                                <td>1</td>
+                                                                <td className="text-end">$ {transaction.amount / 24000}</td>
+                                                            </tr>
+                                                            {/* end tr */}
+
+
+                                                            <tr>
+                                                                <th scope="row" colSpan={4} className="border-0 text-end">Total</th>
+                                                                <td className="border-0 text-end"><h4 className="m-0 fw-semibold">{transaction.amount / 24000} dollars</h4></td>
+                                                            </tr>
+                                                            {/* end tr */}
+                                                        </tbody>{/* end tbody */}
+                                                    </table>{/* end table */}
+                                                </div>{/* end table responsive */}
+                                                <div className="d-print-none mt-4">
+                                                    <div className="float-end">
+                                                        <a href="javascript:window.print()" className="btn btn-success me-1"><i className="fa fa-print" /></a>
+                                                        {/* <a href="#" className="btn btn-primary w-md">Send</a> */}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>{/* end col */}
