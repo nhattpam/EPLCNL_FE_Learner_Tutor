@@ -314,7 +314,7 @@ const Header = () => {
 
         const transactionData = {
             learnerId: learnerId,
-            amount: amount,
+            amount: amount * 24000,
             paymentMethodId: "1dffb0d3-f5a5-4725-98fc-b4dea22f4b0e"
         };
 

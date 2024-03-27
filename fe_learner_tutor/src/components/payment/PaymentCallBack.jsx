@@ -54,13 +54,14 @@ const PaymentCallBack = () => {
           transactionService.updateTransaction(transactionId, updatedTransaction);
 
           if (updatedTransaction.courseId === null) {
-            walletService.getWalletById(transaction.learner?.account?.wallet?.id) //learner's wallet
+            walletService.getWalletById(updatedTransaction.learner?.account?.wallet?.id) //learner's wallet
               .then((response) => {
                 const updatedWallet = {
                   balance: response.data.balance + (updatedTransaction.amount / 24000),
-                  accountId: transaction.learner?.accountId,
+                  accountId: updatedTransaction.learner?.accountId,
                   transactionDate: updatedTransaction.transactionDate
                 }
+                console.log(JSON.stringify(updatedWallet));
 
                 walletService.updateWallet(response.data.id, updatedWallet);
                 const walletHistory = {
