@@ -537,7 +537,7 @@ const MyLearning = () => {
                                                                                         />
                                                                                     </div>
                                                                                     <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-secondary" onClick={() => setShowFeedbackModal(false)}>Close</button>
+                                                                                        <button type="button" className="btn btn-dark" onClick={() => setShowFeedbackModal(false)}>Close</button>
                                                                                         <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }} onClick={(e) => submitFeedback(e)}>Send</button>
                                                                                     </div>
                                                                                 </div>
@@ -617,7 +617,7 @@ const MyLearning = () => {
                                                                                         />
                                                                                     </div>
                                                                                     <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-secondary" onClick={() => setShowReportModal(false)}>Close</button>
+                                                                                        <button type="button" className="btn btn-dark" onClick={() => setShowReportModal(false)}>Close</button>
                                                                                         <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }} onClick={(e) => submitReport(e)}>Send</button>
                                                                                     </div>
                                                                                 </div>
@@ -636,7 +636,7 @@ const MyLearning = () => {
                                                                         data-parsley-validate
                                                                         onSubmit={(e) => submitRefund(e)}
                                                                     >
-                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)', }}>
                                                                             <div className="modal-dialog modal-dialog-scrollable">
                                                                                 <div className="modal-content">
                                                                                     <div className="modal-header">
@@ -651,44 +651,49 @@ const MyLearning = () => {
                                                                                         {course?.isOnlineClass && (
                                                                                             <div className="container" data-aos="fade-up">
                                                                                                 {classModuleList.length > 0 && classModuleList.map((classModule, index) => (
-                                                                                                    <div className="row" key={index}>
-                                                                                                        <div className="col-lg-3">
-                                                                                                            <ul className="nav nav-tabs flex-column">
-                                                                                                                <li className="nav-item get-button">
-                                                                                                                    <a onClick={(event) => handleTabClick2(event, classModule.id)}>
-                                                                                                                        On Date: <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
-                                                                                                                    </a>
-                                                                                                                </li>
-                                                                                                            </ul>
-                                                                                                            <ul className="nav nav-tabs flex-column">
-                                                                                                                <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
-                                                                                                                    <input
-                                                                                                                        name={`reason-${index}`}
-                                                                                                                        type='text'
-                                                                                                                        placeholder='reason...'
-                                                                                                                        style={{ width: '100px', height: '40px', lineHeight: '20px', overflowWrap: 'break-word' }}
-                                                                                                                        onChange={(e) => handleReasonRefundChange(index, `Date ${classModule.startDate} has reason ${e.target.value}`)}
-
-                                                                                                                    />                                                                                                                </li>
-                                                                                                            </ul>
-                                                                                                        </div>
-                                                                                                        <div className="col-lg-9 mt-4 mt-lg-0">
-                                                                                                            <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
-                                                                                                                <div className={`tab-pane ${activeClassModuleId === classModule.id ? 'active show' : ''}`} id={`tab-${classModule.id}`}>
-                                                                                                                    <div>
+                                                                                                    <>
+                                                                                                        <div className="row" key={index}>
+                                                                                                            <div className="col-lg-3">
+                                                                                                                <ul className="nav nav-tabs flex-column">
+                                                                                                                    <li className="nav-item get-button">
+                                                                                                                        <a onClick={(event) => handleTabClick2(event, classModule.id)}>
+                                                                                                                            On Date: <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
+                                                                                                                        </a>
+                                                                                                                    </li>
+                                                                                                                </ul>
+                                                                                                                <ul className="nav nav-tabs flex-column">
+                                                                                                                    <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
+                                                                                                                    </li>
+                                                                                                                </ul>
+                                                                                                            </div>
+                                                                                                            <div className="col-lg-9 mt-4 mt-lg-0">
+                                                                                                                <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
+                                                                                                                    <div className={`tab-pane ${activeClassModuleId === classModule.id ? 'active show' : ''}`} id={`tab-${classModule.id}`}>
                                                                                                                         <div>
-                                                                                                                            <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
-                                                                                                                            {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
-                                                                                                                                <div>
-                                                                                                                                    <span key={topicIndex} style={{ justifyContent: 'left' }}><span style={{ fontWeight: 'bold' }}>Topic: </span>{classTopic.name}</span>
-                                                                                                                                </div>
-                                                                                                                            ))}
+                                                                                                                            <div>
+                                                                                                                                <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
+                                                                                                                                {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
+                                                                                                                                    <div>
+                                                                                                                                        <span key={topicIndex} style={{ justifyContent: 'left' }}><span style={{ fontWeight: 'bold' }}>Topic: </span>{classTopic.name}</span>
+                                                                                                                                    </div>
+                                                                                                                                ))}
+                                                                                                                            </div>
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                    </div>
+                                                                                                        <input
+                                                                                                            name={`reason-${index}`}
+                                                                                                            type='text'
+                                                                                                            placeholder='Write your reason...'
+                                                                                                            className='form-control'
+                                                                                                            required
+                                                                                                            onChange={(e) => handleReasonRefundChange(index, `Date ${classModule.startDate} has reason ${e.target.value}`)}
+
+                                                                                                        />
+                                                                                                    </>
+
                                                                                                 ))}
                                                                                                 {classModuleList.length === 0 && (
                                                                                                     <p>No modules for this course.</p>
@@ -764,10 +769,10 @@ const MyLearning = () => {
                                                                                                             <input
                                                                                                                 name={`reason-${index}`}
                                                                                                                 type='text'
-                                                                                                                placeholder='reason...'
+                                                                                                                placeholder='Write your reason...'
                                                                                                                 className={`form-control`}
-                                                                                                                style={{ }}
-                                                                                                                onChange={(e) => handleReasonRefundChange(index, `Section ${module.name} has reason: ${e.target.value}`)}
+                                                                                                                required
+                                                                                                                onChange={(e) => handleReasonRefundChange(index, `Module ${module.name} has reason: ${e.target.value}`)}
 
                                                                                                             />
                                                                                                         </>
@@ -777,7 +782,7 @@ const MyLearning = () => {
                                                                                         )}
                                                                                     </div>
                                                                                     <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-secondary" onClick={() => setShowRefundModal(false)}>
+                                                                                        <button type="button" className="btn btn-dark" onClick={() => setShowRefundModal(false)}>
                                                                                             Close
                                                                                         </button>
                                                                                         <button
@@ -803,7 +808,11 @@ const MyLearning = () => {
                                             }
                                             {
                                                 enrollmentList.length === 0 && (
-                                                    <h5>You haven't joined any course yet.</h5>
+                                                    <>
+                                                        <i class="fas fa-university fa-2x mt-2"></i>
+                                                        <h5>You haven't joined any course yet.</h5>
+
+                                                    </>
                                                 )
                                             }
 
@@ -841,7 +850,11 @@ const MyLearning = () => {
                                                     ))}
                                                     {
                                                         profileCertificateList.length === 0 && (
-                                                            <h5>You haven't finished any course yet.</h5>
+                                                            <>
+                                                                <i class="fas fa-chalkboard fa-2x mt-2"></i>
+                                                                <h5>You haven't finished any course yet.</h5>
+                                                            </>
+
                                                         )
                                                     }
                                                 </div>

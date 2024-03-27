@@ -419,7 +419,7 @@ const DetailCourse = () => {
                                                         Get - ${course.stockPrice}
                                                     </button>
                                                 </div>
-                                                <p>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
+                                                <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
                                                 </p>
                                                 <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
                                                     <button
@@ -466,7 +466,7 @@ const DetailCourse = () => {
                                                         >
                                                             Get - ${course.stockPrice}
                                                         </button>
-                                                        <p className='mt-2'>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
+                                                        <p className='mt-2'>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
                                                         </p>
                                                         <div className="course-info d-flex justify-content-between align-items-center">
                                                             <button
@@ -500,7 +500,7 @@ const DetailCourse = () => {
                                                 Loading...
                                             </button>
                                         </div>
-                                        <p>Powered by VnPay <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
+                                        <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
                                         </p>
                                     </>
 

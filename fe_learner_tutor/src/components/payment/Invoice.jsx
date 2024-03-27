@@ -70,7 +70,7 @@ const Invoice = () => {
     }, [transaction.courseId]);
 
     useEffect(() => {
-        if (transaction.learnerId) {
+        if (transaction.learnerId && transaction.courseId !== null) {
             learnerService
                 .getLearnerById(transaction.learnerId)
                 .then((res) => {

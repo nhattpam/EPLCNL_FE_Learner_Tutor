@@ -18,6 +18,7 @@ const Header = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [showWalletHistoryModal, setShowWalletHistoryModal] = useState(false);
+    const [showDepositModal, setShowDepositModal] = useState(false);
     const navigate = useNavigate();
 
 
@@ -63,6 +64,16 @@ const Header = () => {
     const closeWalletHistoryModal = () => {
         setShowWalletHistoryModal(false);
     };
+
+    const openDepositModal = () => {
+        setShowDepositModal(true);
+    };
+
+    const closeDepositModal = () => {
+        setShowDepositModal(false);
+    };
+
+
 
 
 
@@ -282,6 +293,64 @@ const Header = () => {
         }
     };
 
+    //DEPOSIT
+    const [showNotification, setShowNotification] = useState(false);
+    const [loading, setLoading] = useState(false); // State to track loading status
+
+    const submitDeposit = (event) => {
+        event.preventDefault();
+        const learnerId = localStorage.getItem('learnerId');
+        const amount = parseFloat(event.target.amount.value); // Capture the amount from the input field
+
+        if (!learnerId) {
+            setShowNotification(true);
+            setTimeout(() => {
+                setShowNotification(false);
+            }, 3000);
+            return;
+        }
+        setLoading(true);
+
+        const transactionData = {
+            learnerId: learnerId,
+            amount: amount,
+            paymentMethodId: "1dffb0d3-f5a5-4725-98fc-b4dea22f4b0e"
+        };
+
+        console.log(JSON.stringify(transactionData));
+
+        transactionService
+            .saveTransaction(transactionData)
+            .then((response) => {
+                transactionService
+                    .payTransaction(response.data.id)
+                    .then((res) => {
+                        window.open(res.data, '_blank');
+                        const checkTransactionStatus = setInterval(() => {
+                            transactionService.getTransactionById(response.data.id)
+                                .then((transactionRes) => {
+                                    if (transactionRes.data.status === 'DONE') {
+                                        setLoading(false);
+                                        clearInterval(checkTransactionStatus);
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        }, 5000);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        setLoading(false);
+                    });
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+            });
+    };
+    //DEPOSIT
+
     //UPDATE ACCOUNT
     return (
         <>
@@ -361,7 +430,10 @@ const Header = () => {
                                         }
                                         {
                                             forumList.length === 0 && (
-                                                <p>You haven't joined any course.</p>
+                                                <>
+                                                    <i class="fas fa-unlink fa-1x"></i>
+                                                    <p>You haven't joined any course.</p>
+                                                </>
                                             )
                                         }
 
@@ -382,9 +454,11 @@ const Header = () => {
                                             {isLearner && (
                                                 <>
                                                     <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
-                                                    <p>Balance: {account.wallet?.balance} <i class="far fa-eye" onClick={openWalletHistoryModal}></i></p>
+                                                    <p>Balance: {account.wallet?.balance}
+                                                        <i class="far fa-eye text-dark ml-1" onClick={openWalletHistoryModal}></i>
+                                                        <i class="fas fa-funnel-dollar text-success" onClick={openDepositModal}></i>
+                                                        <i class="fas fa-funnel-dollar text-danger"></i></p>
                                                 </>
-
                                             )}
 
                                         </div>
@@ -622,14 +696,69 @@ const Header = () => {
 
                                                 </tbody>
                                             </table>
+
                                         </div>
 
                                     </div>
+                                    {
+                                        walletHistoryList.length === 0 && (
+                                            <>
+                                                <i class="fas fa-hand-holding-usd fa-2x mt-4"></i>
+                                                <p>No histories found.</p>
+                                            </>
+
+                                        )
+                                    }
                                 </div>
+
                                 <div className="modal-footer">
                                     {/* Conditional rendering of buttons based on edit mode */}
                                     <button type="button" className="btn btn-dark" onClick={closeWalletHistoryModal}>Close</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+            {/* deposit history */}
+            {
+                showDepositModal && (
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                        <div className="modal-dialog modal-dialog-scrollable" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Deposit</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeDepositModal}>
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form onSubmit={submitDeposit}>
+                                    <div className="modal-body">
+                                        {/* Conditional rendering based on edit mode */}
+
+                                        <div>
+                                            {/* Input fields for editing */}
+                                            <h3>Enter the amount you want to deposit:</h3>
+                                            <input className='form-control' placeholder='USD accepted' type='number' name='amount' />
+                                            <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%', marginTop: '20px' }} />
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="modal-footer">
+                                        {/* Conditional rendering of buttons based on edit mode */}
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary btn-lg btn-block"
+                                            // onClick={handlePayClick}
+                                            style={{ backgroundColor: '#f58d04' }}
+                                        >
+                                            Continue
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

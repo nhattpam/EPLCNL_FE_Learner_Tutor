@@ -53,37 +53,57 @@ const PaymentCallBack = () => {
           console.log(updatedTransaction);
           transactionService.updateTransaction(transactionId, updatedTransaction);
 
-          const updatedEnrollment = {
-            status: "ONGOING",
-            totalGrade: 0,
-            transactionId: updatedTransaction.id,
-            enrolledDate: updatedTransaction.transactionDate,
-            refundStatus: false
-          };
+          if (updatedTransaction.courseId === null) {
+            walletService.getWalletById(transaction.learner?.account?.wallet?.id) //learner's wallet
+              .then((response) => {
+                const updatedWallet = {
+                  balance: response.data.balance + (updatedTransaction.amount / 24000),
+                  accountId: transaction.learner?.accountId,
+                  transactionDate: updatedTransaction.transactionDate
+                }
+
+                walletService.updateWallet(response.data.id, updatedWallet);
+                const walletHistory = {
+                  walletId: response.data.id,
+                  note: `+${updatedTransaction.amount / 24000}$ receiving money from e-wallet at ${updatedTransaction.transactionDate}`,
+                  transactionDate: updatedTransaction.transactionDate
+                }
+
+                walletHistoryService.saveWalletHistory(walletHistory);
+              })
+          } else {
+            const updatedEnrollment = {
+              status: "ONGOING",
+              totalGrade: 0,
+              transactionId: updatedTransaction.id,
+              enrolledDate: updatedTransaction.transactionDate,
+              refundStatus: false
+            };
 
 
-          console.log("This is enrollment: " + JSON.stringify(updatedEnrollment));
-          enrollmentService.saveEnrollment(updatedEnrollment);
+            console.log("This is enrollment: " + JSON.stringify(updatedEnrollment));
+            enrollmentService.saveEnrollment(updatedEnrollment);
 
-          walletService.getWalletById("188e9df9-be4b-4531-858e-098ff8c3735c") //admin's wallet
-            .then((response) => {
-              const updatedWallet = {
-                balance: response.data.balance + (updatedTransaction.amount / 24000),
-                accountId: "9b868733-8ab1-4191-92ab-65d1b82863c3",
-                note: `+${updatedTransaction.amount / 24000}$ from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId} at ${updatedTransaction.transactionDate}`,
-                transactionDate: updatedTransaction.transactionDate
-              }
+            walletService.getWalletById("188e9df9-be4b-4531-858e-098ff8c3735c") //admin's wallet
+              .then((response) => {
+                const updatedWallet = {
+                  balance: response.data.balance + (updatedTransaction.amount / 24000),
+                  accountId: "9b868733-8ab1-4191-92ab-65d1b82863c3",
+                  transactionDate: updatedTransaction.transactionDate
+                }
 
-              //update admin wallet balance
-              walletService.updateWallet(response.data.id, updatedWallet);
-              const walletHistory = {
-                walletId: response.data.id,
-                note: `+${updatedTransaction.amount / 24000}$ from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId} at ${updatedTransaction.transactionDate}`,
-                transactionDate: updatedTransaction.transactionDate
-              }
+                //update admin wallet balance
+                walletService.updateWallet(response.data.id, updatedWallet);
+                const walletHistory = {
+                  walletId: response.data.id,
+                  note: `+${updatedTransaction.amount / 24000}$ from ${updatedTransaction.learner.account.fullName} by transaction ${transactionId} at ${updatedTransaction.transactionDate}`,
+                  transactionDate: updatedTransaction.transactionDate
+                }
 
-              walletHistoryService.saveWalletHistory(walletHistory);
-            })
+                walletHistoryService.saveWalletHistory(walletHistory);
+              })
+          }
+
           // Navigate to invoice page
           navigate(`/invoice/${transactionId}`)
         })
