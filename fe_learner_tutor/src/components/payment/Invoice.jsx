@@ -196,6 +196,114 @@ const Invoice = () => {
                     console.log(error);
                 });
         }
+        if (transaction.learnerId && transaction.courseId === null) {
+            learnerService
+                .getLearnerById(transaction.learnerId)
+                .then((res) => {
+                    setLearner(res.data);
+                    // Check if accountId is available
+                    if (res.data.accountId) {
+                        accountService
+                            .getAccountById(res.data.accountId)
+                            .then((accountRes) => {
+                                setAccount(accountRes.data);
+                                console.log('Account Data:', accountRes.data);
+                                const response = accountService.sendMail(res.data.accountId, {
+                                    content: `
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="invoice-title">
+                                                                <h4 class="float-end font-size-15">Invoice #DS0204 <span class="badge bg-success font-size-12 ms-2">Paid</span></h4>
+                                                                <div class="text-muted">
+                                                                    <p class="mb-1">3184 Spruce Drive Pittsburgh, PA 15201</p>
+                                                                    <p class="mb-1"><i class="uil uil-envelope-alt me-1" /> meowlish.com</p>
+                                                                </div>
+                                                            </div>
+                                                            <hr class="my-4" />
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="text-muted">
+                                                                        <h5 class="font-size-16 mb-3">Billed To:</h5>
+                                                                        <h5 class="font-size-15 mb-2">${account.name}</h5>
+                                                                        <p class="mb-1">${account.address}</p>
+                                                                        <p class="mb-1">${account.email}</p>
+                                                                        <p>${account.phoneNumber}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="text-muted text-sm-end">
+                                                                        <div>
+                                                                            <h5 class="font-size-15 mb-1">Invoice No:</h5>
+                                                                            <p>#DZ0112</p>
+                                                                        </div>
+                                                                        <div class="mt-4">
+                                                                            <h5 class="font-size-15 mb-1">Invoice Date:</h5>
+                                                                            <p>${transaction.transactionDate}</p>
+                                                                        </div>
+                                                                        <div class="mt-4">
+                                                                            <h5 class="font-size-15 mb-1">Transaction No:</h5>
+                                                                            <p>${transaction.id}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="py-2">
+                                                                <h5 class="font-size-15">Transaction Summary</h5>
+                                                                <div class="table-responsive">
+                                                                    <table class="table align-middle table-nowrap table-centered mb-0">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Quantity</th>
+                                                                                <th class="text-end" style="width: 120">Total</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                            <tr>
+                                                                                <th scope="row" colspan="4" class="border-0 text-end">Total</th>
+                                                                                <td class="border-0 text-end"><h4 class="m-0 fw-semibold"> ${transaction.amount} Dollars</h4></td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="d-print-none mt-4">
+                                                                    <div class="float-end">
+                                                                        <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <style>
+                                            body { margin-top: 20px; background-color: #eee; }
+                                            .card { box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%); }
+                                            .card { position: relative; display: flex; flex-direction: column; min-width: 0; word-wrap: break-word; background-color: #fff; background-clip: border-box; border: 0 solid rgba(0,0,0,.125); border-radius: 1rem; }
+                                        </style>
+                                    `,
+                                });
+                                console.log(response.data);
+                                
+                        
+                            })
+                            .catch((accountError) => {
+                                console.log(accountError);
+                            });
+                    } else {
+                        // Handle the case where accountId is not available
+                        console.log('Learner does not have an accountId');
+                    }
+                    console.log('Learner Data:', res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }, [transaction.learnerId]);
 
 

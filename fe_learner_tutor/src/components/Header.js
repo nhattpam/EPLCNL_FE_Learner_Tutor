@@ -333,21 +333,28 @@ const Header = () => {
                                     if (transactionRes.data.status === 'DONE') {
                                         setLoading(false);
                                         clearInterval(checkTransactionStatus);
+                                        // Reload the page
+                                        window.location.reload();
                                     }
                                 })
                                 .catch((error) => {
                                     console.log(error);
+                                    window.alert("Error while processing transaction...");
                                 });
                         }, 5000);
                     })
                     .catch((error) => {
                         console.log(error);
                         setLoading(false);
+                        window.alert("Error while processing transaction...");
+
                     });
             })
             .catch((error) => {
                 console.log(error);
                 setLoading(false);
+                window.alert("Error while processing transaction...");
+
             });
     };
     //DEPOSIT
