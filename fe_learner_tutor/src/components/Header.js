@@ -8,6 +8,7 @@ import learnerService from '../services/learner.service';
 import SearchResult from './learner/course/SearchResult';
 import walletService from '../services/wallet.service';
 import Dropzone from "react-dropzone";
+import transactionService from '../services/transaction.service';
 
 const Header = () => {
 
