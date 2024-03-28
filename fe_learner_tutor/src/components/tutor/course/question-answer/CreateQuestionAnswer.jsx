@@ -113,7 +113,7 @@ const CreateQuestionAnswer = () => {
 
             console.log("Question Answers Added Successfully", questionAnswersResponse);
 
-            navigate(`/tutor/courses/edit-question/${storedQuestionId}`);
+            navigate(`/tutor/courses/edit-quiz/${question.quizId}`);
 
             setMsg('Question Answers Added Successfully');
         } catch (error) {
@@ -157,9 +157,9 @@ const CreateQuestionAnswer = () => {
                                                                             className="form-control"
                                                                             name="answerText"
                                                                             id={`answerText${index}`}
-                                                                            required
                                                                             value={answer.answerText}
                                                                             onChange={(e) => handleAnswerChange(index, e)}
+                                                                            style={{ borderRadius: '20px', padding: `8px 25px` }}
                                                                         />
 
                                                                         <div className="input-group-append ml-2">
@@ -185,7 +185,7 @@ const CreateQuestionAnswer = () => {
 
                                                 </div>
                                                 <div className="form-group ml-2 mb-0  ">
-                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' ,borderRadius: '50px', padding: `8px 25px` }} >
                                                         Finish
 
                                                     </button>

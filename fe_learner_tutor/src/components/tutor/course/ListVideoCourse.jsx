@@ -98,7 +98,7 @@ const ListVideoCourse = () => {
                                                 <div className="col-12 text-sm-center form-inline">
                                                     {/* Create Tutor Button */}
                                                     <Link to="/tutor/courses/create" >
-                                                        <button className="btn btn-success mr-2">
+                                                        <button className="btn btn-success mr-2" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                              Create
                                                         </button>
                                                     </Link>
@@ -106,7 +106,7 @@ const ListVideoCourse = () => {
                                                     <div className="form-group">
                                                         <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on"
                                                             value={searchTerm}
-                                                            onChange={handleSearch} />
+                                                            onChange={handleSearch} style={{ borderRadius: '50px', padding: `18px 25px` }}/>
                                                     </div>
                                                 </div>
                                             </div>

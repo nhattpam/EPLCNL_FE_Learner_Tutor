@@ -109,7 +109,10 @@ const ListAssignmentAttempt = () => {
                                                     <div className="form-group">
                                                     </div>
                                                     <div className="form-group">
-                                                        <input id="demo-foo-search" onChange={handleSearch} type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" />
+                                                        <input id="demo-foo-search" onChange={handleSearch} type="text" 
+                                                        placeholder="Search" className="form-control form-control-sm" autoComplete="on" 
+                                                        style={{ borderRadius: '50px', padding: `18px 25px` }}
+                                                        />
                                                     </div>
                                                 </div>
                                             </div>

@@ -331,13 +331,14 @@ const CreateClassTopicQuiz = () => {
                                                 <div className="row" style={{ marginTop: '-20px', opacity: !createQuizButtonClicked ? 1 : 0.5, pointerEvents: !createQuizButtonClicked ? 'auto' : 'none' }}>
                                                     <div className='col-12'>
                                                         <label htmlFor="name">Quiz Name * :</label>
-                                                        <input type="text" className="form-control" name="name" id="name" required value={quiz.name} onChange={(e) => handleQuizChange(e)} />
+                                                        <input type="text" className="form-control" name="name" id="name" required value={quiz.name} onChange={(e) => handleQuizChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                                        />
                                                     </div>
                                                     <div className='col-6'>
                                                         <label htmlFor="gradeToPass">Grade to pass * :</label>
                                                         <input type="number" className="form-control" name="gradeToPass"
                                                             id="gradeToPass" required value={quiz.gradeToPass} onChange={(e) => handleQuizChange(e)}
-                                                            style={{ width: '100%' }} />
+                                                            style={{ width: '100%', borderRadius: '50px', padding: `8px 25px` }} />
                                                     </div>
                                                     <div className='col-6'>
                                                         <label htmlFor="video">Time * :</label>
@@ -345,7 +346,7 @@ const CreateClassTopicQuiz = () => {
                                                             value={quiz.deadline}
                                                             onChange={handleMinutesChange}
                                                             className="form-control"
-                                                            style={{ width: '100%' }}
+                                                            style={{ width: '100%', borderRadius: '50px', padding: `8px 25px` }}
                                                         >
                                                             {[1, 5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map((minutes) => (
                                                                 <option key={minutes} value={minutes}>
@@ -356,7 +357,7 @@ const CreateClassTopicQuiz = () => {
                                                     </div>
                                                     {!createQuizButtonClicked && (
                                                         <div className="col">
-                                                            <button type="submit" className="btn btn-success " style={{ marginTop: '10px' }} >
+                                                            <button type="submit" className="btn btn-success " style={{ marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
                                                                 Create
 
                                                             </button>
@@ -392,7 +393,8 @@ const CreateClassTopicQuiz = () => {
                                                 <div className="card" style={{ marginTop: '-20px' }}>
                                                     <div className='card-body'>
                                                         <label htmlFor="defaultGrade">Grade * :</label>
-                                                        <input type="number" className="form-control" name="defaultGrade" id="defaultGrade" required value={question.defaultGrade} onChange={(e) => handleQuestionChange(e)} />
+                                                        <input type="number" className="form-control" name="defaultGrade" id="defaultGrade" required value={question.defaultGrade} onChange={(e) => handleQuestionChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                                        />
 
                                                     </div>
                                                     <div className='card-body '>
@@ -458,8 +460,8 @@ const CreateClassTopicQuiz = () => {
                                                 </div>
                                                 {!createQuestionButtonClicked && (
                                                     <div className="form-group mb-0  ">
-                                                        <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                                                         Create
+                                                        <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
+                                                            Create
 
                                                         </button>
                                                     </div>
@@ -503,6 +505,8 @@ const CreateClassTopicQuiz = () => {
                                                                             required
                                                                             value={answer.answerText}
                                                                             onChange={(e) => handleAnswerChange(index, e)}
+                                                                            style={{  borderRadius: '20px', padding: `8px 25px` }}
+
                                                                         />
 
                                                                         <div className="input-group-append ml-2">
@@ -527,7 +531,7 @@ const CreateClassTopicQuiz = () => {
 
                                                 </div>
                                                 <div className="form-group ml-2 mb-0  ">
-                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
                                                         Finish
 
                                                     </button>

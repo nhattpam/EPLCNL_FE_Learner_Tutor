@@ -141,6 +141,8 @@ const CreateTopic = () => {
                             id="classHours"
                             value={classLesson.classHours}
                             readOnly
+                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+
                           />
                         </div>
 
@@ -154,6 +156,8 @@ const CreateTopic = () => {
                             id="roomLink"
                             value={classLesson.classUrl}
                             readOnly
+                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+
                           />
                         </div>
 
@@ -164,12 +168,14 @@ const CreateTopic = () => {
                         <div className="form-group">
                           <label htmlFor="name">Name * :</label>
                           <input type="text" className="form-control" name="name" id="name"
-                            value={classTopic.name} onChange={(e) => handleChange(e)} required />
+                            value={classTopic.name} onChange={(e) => handleChange(e)} required style={{ borderRadius: '50px', padding: `8px 25px` }}
+                          />
                         </div>
                         <div className="form-group">
                           <label htmlFor="code">Description * :</label>
                           <input type="text" className="form-control" name="description"
-                            id="description" value={classTopic.description} onChange={(e) => handleChange(e)} required />
+                            id="description" value={classTopic.description} onChange={(e) => handleChange(e)} required style={{ borderRadius: '50px', padding: `8px 25px` }}
+                          />
                         </div>
                         {/* <div className="form-group">
                           <label htmlFor="code">Materials * :</label>
@@ -178,7 +184,8 @@ const CreateTopic = () => {
                         <div className="form-group mb-0">
                           <button
                             type="submit"
-                            className="btn btn-success mr-2"
+                            className="btn btn-success mr-2" style={{ borderRadius: '50px', padding: `8px 25px` }}
+
                           >
                             Create
                           </button>
@@ -215,7 +222,7 @@ const CreateTopic = () => {
                           <p>No topics created yet.</p>
                         )} */}
                         <div className="table-responsive">
-                          <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                          <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                             <thead className="thead-light">
                               <tr>
                                 <th data-toggle="true">No.</th>

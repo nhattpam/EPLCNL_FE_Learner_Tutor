@@ -130,9 +130,9 @@ const MyTimeTable = () => {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="d-flex justify-content-between mb-3">
-                                                <button className="btn btn-success" onClick={handlePreviousWeek}>Previous Week</button>
+                                                <button className="btn btn-success" onClick={handlePreviousWeek} style={{borderRadius: '50px', padding: `8px 25px` }}>Previous Week</button>
                                                 <span style={{ fontWeight: 'bold', fontSize: 'larger' }}>{new Date(startDate).toLocaleDateString('en-US')}</span> {/* Display date without time */}
-                                                <button className="btn btn-success" onClick={handleNextWeek}>Next Week</button>
+                                                <button className="btn btn-success" onClick={handleNextWeek} style={{borderRadius: '50px', padding: `8px 25px` }}>Next Week</button>
                                             </div>
 
 

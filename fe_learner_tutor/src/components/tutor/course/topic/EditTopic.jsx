@@ -219,6 +219,8 @@ const EditTopic = () => {
                             id="classHours"
                             value={classTopic.classLesson?.classHours}
                             readOnly
+                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+
                           />
                         </div>
 
@@ -232,6 +234,8 @@ const EditTopic = () => {
                             id="roomLink"
                             value={classTopic.classLesson?.classUrl}
                             readOnly
+                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+
                           />
                         </div>
 
@@ -241,29 +245,30 @@ const EditTopic = () => {
                         </div>
                         <div className="form-group">
                           <label htmlFor="name">Name :</label>
-                          <input type="text" className="form-control" name="name" id="name" 
-                          value={classTopic.name} onChange={(e) => handleChange(e)} readOnly/>
+                          <input type="text" className="form-control" name="name" id="name"
+                            value={classTopic.name} onChange={(e) => handleChange(e)} readOnly style={{ borderRadius: '50px', padding: `8px 25px` }}
+                          />
                         </div>
                         <div className="form-group">
                           <label htmlFor="code">Description :</label>
-                          <input type="text" className="form-control" name="description" id="description" 
-                          value={classTopic.description} onChange={(e) => handleChange(e)} readOnly/>
+                          <input type="text" className="form-control" name="description" id="description"
+                            value={classTopic.description} onChange={(e) => handleChange(e)} readOnly style={{ borderRadius: '50px', padding: `8px 25px` }}
+                          />
                         </div>
-                        {/* <div className="form-group">
-                          <label htmlFor="code">Materials * :</label>
-                          <input type="text" className="form-control" name="materialUrl" id="materialUrl" value={classTopic.materialUrl} onChange={(e) => handleChange(e)} />
-                        </div> */}
+                      
                         <div className="form-group mb-0">
                           <button
                             type="submit"
-                            className="btn btn-success mr-2"
+                            className="btn btn-success mr-2" style={{ borderRadius: '50px', padding: `8px 25px` }}
+
                           >
                             Update
                           </button>
 
                           <Link
                             to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
-                            className="btn btn-black"
+                            className="btn btn-black" style={{ borderRadius: '50px', padding: `8px 25px` }}
+
                           >
                             <i class="fas fa-long-arrow-alt-left"></i> Back to Class Information
                           </Link>
@@ -271,7 +276,7 @@ const EditTopic = () => {
                       </form>
 
                       {/* Display created topics */}
-                      <div>
+                      <div className='mt-2'>
                         <div className="row">
                           <div className="col-md-2">
                             <h4>Created Quizzes:</h4>
@@ -282,15 +287,7 @@ const EditTopic = () => {
                             </Link>
                           </div>
                         </div>
-                        {/* {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
-                          <ul>
-                            {createdTopics.map((topic) => (
-                              <li key={topic.id}>{topic.name}</li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p>No topics created yet.</p>
-                        )} */}
+                        
                         <div className="table-responsive">
                           <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
                             <thead className="thead-light">

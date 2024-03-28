@@ -196,18 +196,19 @@ const CreateClassCourseModule = () => {
                         <div className="form-group">
                           <label htmlFor="moduleName">Class Date:</label> &nbsp;
                           <div className="row" style={{ opacity: !createButtonClicked ? 1 : 0.5, pointerEvents: !createButtonClicked ? 'auto' : 'none' }}>
-                            <div className="col-md-4">
+                            <div className="col-md-4" >
                               <DatePicker
-                                className="form-control"
+                                className="form-control custom-datepicker"
                                 selected={module.startDate} // Use selected instead of value
                                 onChange={(date) => handleChange(date)}
                                 dateFormat="dd/MM/yyyy"
                                 placeholderText="Select Date"
+                                style={{ borderRadius: '50px', padding: `8px 25px` }}
                               />
                             </div>
                             {!createButtonClicked && (
                               <div className="col-md-2" style={{ marginLeft: '-200px' }}>
-                                <button type="submit" className="btn btn-success">
+                                <button type="submit" className="btn btn-success"  style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                   Select
                                 </button>
                               </div>
@@ -230,7 +231,8 @@ const CreateClassCourseModule = () => {
                             showTimeSelectOnly
                             dateFormat="h:mm aa"
                             timeIntervals={15}
-                            className="form-control"
+                            className="form-control custom-datepicker"
+                            
                           />
                         </div>
 
@@ -245,7 +247,7 @@ const CreateClassCourseModule = () => {
                             showTimeSelectOnly
                             dateFormat="h:mm aa"
                             timeIntervals={15}
-                            className="form-control"
+                            className="form-control custom-datepicker"
                           />
                         </div>
 
@@ -264,6 +266,7 @@ const CreateClassCourseModule = () => {
                             value={classLesson.classUrl}
                             onChange={handleClassLessonChange} // Pass the function directly
                             required
+                            style={{ borderRadius: '50px', padding: `8px 25px` }}
                           />
                         </div>
 
@@ -272,6 +275,7 @@ const CreateClassCourseModule = () => {
                             type="submit"
                             className="btn btn-success"
                             onClick={handleClassLessonSubmit}
+                            style={{ borderRadius: '50px', padding: `8px 25px` }}
                           >
                             Continue
 
@@ -304,6 +308,11 @@ const CreateClassCourseModule = () => {
             width: 85%;
             text-align: left;
           }
+          .custom-datepicker {
+            border-radius: 50px;
+            padding: 8px 25px;
+        }
+        
         `}
       </style>
     </>

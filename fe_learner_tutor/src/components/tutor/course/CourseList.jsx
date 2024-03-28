@@ -87,13 +87,14 @@ const CourseList = () => {
                                             <div className="row">
                                                 <div className="col-12 text-sm-center form-inline">
                                                     <Link to="/tutor/courses/create" >
-                                                        <button className="btn btn-success mr-2">
+                                                        <button className="btn btn-success mr-2" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                             Create
                                                         </button>
                                                     </Link>
 
                                                     <div className="form-group">
-                                                        <input type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" value={searchTerm} onChange={handleSearch} />
+                                                        <input type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on" 
+                                                        value={searchTerm} onChange={handleSearch} style={{ borderRadius: '50px', padding: `18px 25px` }} />
                                                     </div>
                                                 </div>
                                             </div>

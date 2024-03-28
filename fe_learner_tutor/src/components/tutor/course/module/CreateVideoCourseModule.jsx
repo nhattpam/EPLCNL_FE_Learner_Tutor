@@ -239,6 +239,7 @@ const CreateVideoCourseModule = () => {
                                 value={module.name}
                                 onChange={(e) => handleChange(e)}
                                 required
+                                style={{ borderRadius: '50px', padding: `8px 25px` }}
                               />
                             </div>
                             {!createButtonClicked && (
@@ -246,7 +247,8 @@ const CreateVideoCourseModule = () => {
                                 <button
                                   type="submit"
                                   className="btn btn-success"
-                                // onClick={handleSubmit}
+                                  // onClick={handleSubmit}
+                                  style={{ borderRadius: '50px', padding: `8px 25px` }}
                                 >
                                   Create
                                 </button>
@@ -301,7 +303,10 @@ const CreateVideoCourseModule = () => {
                           </div>
                           {
                             currentLessons.length === 0 && (
-                              <p className="text-center">No lessons yet.</p>
+                              <>
+                                <p className="text-center">No lessons yet.</p>
+
+                              </>
                             )
                           }
                           <div className='container-fluid'>
@@ -369,7 +374,10 @@ const CreateVideoCourseModule = () => {
                           </div>
                           {
                             currentAssignments.length === 0 && (
-                              <p className="text-center">No assignments yet.</p>
+                              <>
+                                <p className="text-center">No assignments yet.</p>
+
+                              </>
                             )
                           }
                           <div className='container-fluid'>
@@ -439,7 +447,9 @@ const CreateVideoCourseModule = () => {
                           </div>
                           {
                             currentQuizs.length === 0 && (
-                              <p className="text-center">No quizzes yet.</p>
+                              <>
+                                <p className="text-center">No quizzes yet.</p>
+                              </>
                             )
                           }
                           <div className='container-fluid'>

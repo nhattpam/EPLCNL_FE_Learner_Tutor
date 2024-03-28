@@ -90,8 +90,8 @@ const EditClassTopicQuestion = () => {
                                     <h4 className="header-title">QUESTION INFORMATION</h4>
 
                                     <form id="demo-form" data-parsley-validate>
-                                        <div className="table-responsive">
-                                            <table className="table table-bordered">
+                                        <div className="table-responsive" >
+                                            <table className="table table-bordered" >
                                                 <tbody>
                                                     {question.questionText !== "" && (
                                                         <tr>
@@ -162,6 +162,8 @@ const EditClassTopicQuestion = () => {
                                                     type="button"
                                                     className="btn btn-success mr-2"
                                                     to={`/tutor/courses/create/create-class-course/create-topic-question-answer/${question.id}`}
+                                                    style={{borderRadius: '50px', padding: `8px 25px` }}
+
                                                 >
                                                     Create new answer
                                                 </Link>
@@ -170,6 +172,7 @@ const EditClassTopicQuestion = () => {
                                                 <button
                                                     type="submit"
                                                     className="btn btn-danger"
+                                                    style={{borderRadius: '50px', padding: `8px 25px` }}
                                                 >
                                                     Delete Question
                                                 </button>

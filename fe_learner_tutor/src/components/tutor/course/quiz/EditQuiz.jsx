@@ -169,6 +169,7 @@ const EditQuiz = () => {
                         type="button"
                         className="btn btn-success mr-2"
                         to={`/tutor/courses/create/create-video-course/create-question/${quiz.id}`}
+                        style={{ borderRadius: '50px', padding: `8px 25px` }}
                       >
                         Create new question
                       </Link>

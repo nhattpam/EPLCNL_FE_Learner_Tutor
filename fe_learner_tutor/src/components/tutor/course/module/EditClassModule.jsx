@@ -160,7 +160,7 @@ const EditClassModule = () => {
                                         <div className="form-group mb-0">
                                             <Link
                                                 to={`/tutor/courses/create/create-class-course/create-topic/${module.classLesson.id}`}
-                                                className="btn btn-success"
+                                                className="btn btn-success" style={{borderRadius: '50px', padding: `8px 25px` }}
                                             >
                                                 Create new topic
                                             </Link>

@@ -225,6 +225,8 @@ const CreateClassCourse = () => {
                                                         value={course.name}
                                                         onChange={(e) => handleChange(e)}
                                                         required
+                                                        style={{ borderRadius: '50px', padding: `8px 25px` }}
+
                                                     />
                                                 </div>
                                                 <div className="form-row">
@@ -237,7 +239,7 @@ const CreateClassCourse = () => {
                                                             id="code"
                                                             value={course.code}
                                                             onChange={(e) => handleChange(e)}
-                                                            style={{ width: "100%" }}
+                                                            style={{ width: "100%", borderRadius: '50px', padding: `8px 25px` }}
                                                             required
                                                         />
                                                     </div>
@@ -249,7 +251,7 @@ const CreateClassCourse = () => {
                                                             name="categoryId"
                                                             value={course.categoryId}
                                                             onChange={handleChange}
-                                                            style={{ width: "100%" }}
+                                                            style={{ width: "100%" , borderRadius: '50px', padding: `8px 25px`}}
                                                             required
                                                         >
                                                             <option value="">Select Category</option>
@@ -271,11 +273,11 @@ const CreateClassCourse = () => {
                                                                 data-parsley-trigger="change"
                                                                 value={course.stockPrice}
                                                                 onChange={(e) => handleChange(e)}
-                                                                style={{ width: "60%" }} // Adjusted width to accommodate "USD"
+                                                                style={{ width: "60%", borderRadius: '50px', padding: `8px 25px` }} // Adjusted width to accommodate "USD"
                                                                 required
                                                             />
-                                                            <div className="input-group-append">
-                                                                <span className="input-group-text">USD</span>
+                                                            <div className="input-group-append" >
+                                                                <span className="input-group-text"  style={{ borderRadius: '50px', padding: `8px 25px` }}>USD</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -290,7 +292,7 @@ const CreateClassCourse = () => {
                                                             data-parsley-trigger="change"
                                                             value={course.tags}
                                                             onChange={(e) => handleChange(e)}
-                                                            style={{ width: "100%" }}
+                                                            style={{ width: "100%" , borderRadius: '50px', padding: `8px 25px`}}
                                                             required
                                                         />
                                                     </div>
@@ -310,10 +312,11 @@ const CreateClassCourse = () => {
                                                         defaultValue={''}
                                                         value={course.description} onChange={(e) => handleChange(e)}
                                                         required
+                                                        style={{ borderRadius: '20px', padding: `8px 25px` }}
                                                     />
                                                 </div>
                                                 <div className="form-group mb-0">
-                                                    <button type="submit" className="btn btn-success">
+                                                    <button type="submit" className="btn btn-success"  style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                         Continue
                                                     </button>
                                                 </div>

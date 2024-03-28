@@ -130,7 +130,7 @@ const EditCourse = () => {
             console.log(JSON.stringify(certificate))
             const responseCertificate = await certificateService.saveCertificate(certificate);
             if (responseCertificate.status == 201) {
-                window.alert("Sent ok")
+                window.alert("Create Certificate Successfully!")
             }
 
         } catch (error) {
@@ -227,6 +227,7 @@ const EditCourse = () => {
                                                     type="button"
                                                     className="btn btn-success mr-2"
                                                     to={`/tutor/courses/create/create-video-course/create-module/${course.id}`}
+                                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                 >
                                                     Create new module
                                                 </Link>
@@ -262,17 +263,18 @@ const EditCourse = () => {
                                                     type="button"
                                                     className="btn btn-success mr-2"
                                                     to={`/tutor/courses/create/create-class-course/create-class-module/${course.id}`}
+                                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                 >
                                                     Create new module
                                                 </Link>
 
 
-                                                <button
+                                                {/* <button
                                                     type="submit"
                                                     className="btn btn-danger"
                                                 >
                                                     Request to delete
-                                                </button>
+                                                </button> */}
 
                                                 <Link
                                                     type="button"
@@ -328,6 +330,7 @@ const EditCourse = () => {
                                                             style={{
                                                                 marginLeft: "-2px",
                                                                 marginTop: "50px",
+                                                                borderRadius: '50px', padding: `8px 25px`
                                                             }}
                                                         >
                                                             Create

@@ -131,7 +131,7 @@ const EditForum = () => {
                                                 )
                                             }
 
-                                            <form class="msger-inputarea" onSubmit={submitAccountForum}>
+                                            <form class="msger-inputarea" onSubmit={submitAccountForum} style={{borderRadius: '50px', padding: `8px 25px` }}>
                                                 <input
                                                     type="text"
                                                     class="msger-input"
@@ -139,9 +139,9 @@ const EditForum = () => {
                                                     name="message"
                                                     id="message"
                                                     value={accountForum.message}
-                                                    onChange={(e) => handleChange(e)}
+                                                    onChange={(e) => handleChange(e)} style={{borderRadius: '50px', padding: `8px 25px` }}
                                                 />
-                                                <button type="submit" class="msger-send-btn">
+                                                <button type="submit" class="msger-send-btn" style={{borderRadius: '50px', padding: `8px 25px` }}>
                                                     Send
                                                 </button>
                                             </form>
@@ -179,7 +179,7 @@ const EditForum = () => {
                         background: #eee;
                         position: fixed;
                         bottom: 0;
-                        width: 70%;
+                        width: 80%;
                         z-index: 1;
                       }
                       

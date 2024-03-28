@@ -172,6 +172,8 @@ const CreateLesson = () => {
                                 value={lesson.name}
                                 onChange={(e) => handleChange(e)}
                                 required
+                                style={{ borderRadius: '50px', padding: `8px 25px` }}
+
                               />
                             </div>
 
@@ -216,6 +218,7 @@ const CreateLesson = () => {
                                 style={{
                                   marginLeft: "-2px",
                                   marginTop: "50px",
+                                  borderRadius: '50px', padding: `8px 25px`
                                 }}
                               >
                                 Create

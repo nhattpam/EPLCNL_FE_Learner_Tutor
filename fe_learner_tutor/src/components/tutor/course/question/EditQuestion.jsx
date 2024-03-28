@@ -157,6 +157,7 @@ const EditQuestion = () => {
                                                     type="button"
                                                     className="btn btn-success mr-2"
                                                     to={`/tutor/courses/create/create-video-course/create-question-answer/${question.id}`}
+                                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                 >
                                                     Create new answer
                                                 </Link>
@@ -165,6 +166,7 @@ const EditQuestion = () => {
                                                 <button
                                                     type="submit"
                                                     className="btn btn-danger"
+                                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                 >
                                                     Delete Question
                                                 </button>

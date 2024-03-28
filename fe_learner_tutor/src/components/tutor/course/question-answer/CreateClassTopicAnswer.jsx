@@ -164,9 +164,10 @@ const CreateClassTopicAnswer = () => {
                                       className="form-control"
                                       name="answerText"
                                       id={`answerText${index}`}
-                                      required
                                       value={answer.answerText}
                                       onChange={(e) => handleAnswerChange(index, e)}
+                                      style={{ borderRadius: '20px', padding: `8px 25px` }}
+
                                     />
 
                                     <div className="input-group-append ml-2">
@@ -183,13 +184,13 @@ const CreateClassTopicAnswer = () => {
                               ))
                             }
                           </div>
+                          <div className="form-group ml-2 mb-0  ">
+                            <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
+                              Finish
 
-                        </div>
-                        <div className="form-group ml-2 mb-0  ">
-                          <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                            Finish
+                            </button>
+                          </div>
 
-                          </button>
                         </div>
                       </form>
 

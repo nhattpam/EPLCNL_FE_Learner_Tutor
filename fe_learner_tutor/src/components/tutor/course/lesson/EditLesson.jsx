@@ -22,16 +22,16 @@ const EditLesson = () => {
   });
 
   useEffect(() => {
-      lessonService
-        .getLessonById(lessonId)
-        .then((res) => {
-          setLesson(res.data);
+    lessonService
+      .getLessonById(lessonId)
+      .then((res) => {
+        setLesson(res.data);
         console.log("THIS IS NAME" + res.data.name)
 
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [lessonId]);
 
   useEffect(() => {
@@ -89,6 +89,22 @@ const EditLesson = () => {
       }
     }
   };
+
+  const [materialList, setMaterialList] = useState([]);
+
+
+  useEffect(() => {
+    if (lessonId) {
+      lessonService
+        .getAllMaterialsByLesson(lessonId)
+        .then((res) => {
+          setMaterialList(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [lessonId]);
 
   return (
     <>
@@ -152,26 +168,73 @@ const EditLesson = () => {
                               theme="snow"
                             />
                           </div>
+                          <div className="form-group mb-0  ">
+                            <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
+                              Update
+                            </button>
+                           
+                            <Link
+                              to={`/tutor/courses/edit-module/${lesson.moduleId}`}
+                              className="btn btn-black mr-2 mt-2"
+                            >
+                              <i className="fas fa-long-arrow-alt-left"></i> Back to Module Information
+                            </Link>
+                          </div>
                         </div>
 
-                        <div className="form-group mb-0  ">
-                          <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
-                            Update
 
-                          </button>
-                          <Link to={`/tutor/courses/list-material-by-lesson/${lesson.id}`} className="btn btn-dark " style={{ marginLeft: '10px', marginTop: '10px' }} >
-                            View Materials
-                          </Link>
-                          <Link
-                            to={`/tutor/courses/edit-module/${lesson.moduleId}`}
-                            className="btn btn-black mr-2 mt-2"
-                          >
-                            <i className="fas fa-long-arrow-alt-left"></i> Back to Module Information
-                          </Link>
-                        </div>
                       </form>
+
+                      <div className='mt-2'>
+                        <h5>Materials of lesson:
+                          &nbsp;
+                          <Link to={`/tutor/courses/create-lesson-material/${lessonId}`} >
+                            <i className="fas fa-plus-circle text-success"></i>
+                          </Link>
+                        </h5>
+                      </div>
+                      <div className="table-responsive">
+                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                          <thead className="thead-light">
+                            <tr>
+                              <th data-toggle="true">Material Name</th>
+                              {/* <th>Url</th> */}
+                              <th data-hide="phone">Created Date</th>
+                              <th data-hide="phone, tablet">Updated Date</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {
+                              materialList.length > 0 && materialList.map((material) => (
+                                <tr key={material.id}>
+                                  <td>{material.name}</td>
+                                  {/* <td>{material.materialUrl}</td> */}
+                                  <td>{material.createdDate}</td>
+                                  <td>{material.updatedDate}</td>
+                                  <td>
+                                    <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
+                                      <i class="fas fa-trash-alt"></i>
+                                    </Link>
+                                  </td>
+                                </tr>
+                              ))
+                            }
+
+                          </tbody>
+
+                        </table>
+
+                      </div> {/* end .table-responsive*/}
+                      {materialList.length === 0 && (
+                        <p className='text-center'>No materials yet</p>
+                      )}
                     </div>
-                  </div>
+
+
+
+                  </div> {/* end card-box */}
+
                 </div>
               </div>
             </div>

@@ -199,7 +199,7 @@ const CreateClassTopicQuestion = () => {
                                                 <div className="card" style={{marginTop: '-20px'}}>
                                                     <div className='card-body'>
                                                         <label htmlFor="defaultGrade">Grade * :</label>
-                                                        <input type="number" className="form-control" name="defaultGrade" id="defaultGrade" required value={question.defaultGrade} onChange={(e) => handleChange(e)} />
+                                                        <input type="number" className="form-control" name="defaultGrade" id="defaultGrade" required value={question.defaultGrade} onChange={(e) => handleChange(e)} style={{borderRadius: '50px', padding: `8px 25px` }}/>
 
                                                     </div>
                                                     <div className='card-body'>
@@ -265,7 +265,7 @@ const CreateClassTopicQuestion = () => {
                                                 </div>
                                                 
                                                 <div className="form-group mb-0  ">
-                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                                                    <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
                                                     Create
 
                                                     </button>

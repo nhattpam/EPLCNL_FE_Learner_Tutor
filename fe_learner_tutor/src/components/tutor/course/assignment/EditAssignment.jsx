@@ -145,6 +145,7 @@ const EditAssignment = () => {
                               value={assignment.deadline}
                               onChange={handleMinutesChange}
                               className="form-control"
+                              style={{ borderRadius: '50px', padding: `8px 25px` }}
                             >
                               {[1, 5, 10, 15, 20, 30, 45, 60, 75, 90, 120].map((minutes) => (
                                 <option key={minutes} value={minutes}>
@@ -178,7 +179,7 @@ const EditAssignment = () => {
                           </div>
                         </div>
                         <div className="form-group mb-0  ">
-                          <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' }} >
+                          <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px' , borderRadius: '50px', padding: `8px 25px` }} >
                             Update
                           </button>
                           <Link

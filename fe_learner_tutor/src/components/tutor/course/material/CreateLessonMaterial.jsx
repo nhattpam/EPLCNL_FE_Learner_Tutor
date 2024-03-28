@@ -133,7 +133,7 @@ const CreateClassMaterial = () => {
                         <div className="form-group">
                           <label htmlFor="name">Name * :</label>
                           <input type="text" className="form-control" name="name"
-                            id="name" value={material.name} onChange={(e) => handleChange(e)}
+                            id="name" value={material.name} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}
                             required
                           />
                         </div>
@@ -169,7 +169,7 @@ const CreateClassMaterial = () => {
                         <div className="card">
                           <div className='card-body'>
                             <div className="form-group mb-0" style={{ marginLeft: '-20px' }}>
-                              <button type="submit" className="btn btn-success">
+                              <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                 Create
 
                               </button>
