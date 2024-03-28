@@ -92,7 +92,7 @@ const BusinessSignUp = () => {
                         <div className="form-left">
                             <h2>INFORMATION</h2>
                             <p className="text-1">This is the first step to becoming a MeowLish partner!</p>
-                            <img src={"banner_business.png"} alt="Business Image" className="business-image" />
+                            <img src={"banner_business.png"} alt="Business Image" className="business-image" style={{width: '300px'}} />
                         </div>
                         <form className="form-detail" onSubmit={(e) => submitCenter(e)} id="myform">
                             <h2>REGISTER FORM</h2>
@@ -100,13 +100,14 @@ const BusinessSignUp = () => {
                                 <div className="form-row form-row-1">
                                     <label htmlFor="name">Center Name</label>
                                     <input type="text" name="name" value={center.name} onChange={(e) => handleChange(e)} className={`form-control ${errors.name ? 'is-invalid' : ''
-                                        }`} />
+                                        }`} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
                                 </div>
                             </div>
                             <div className="form-row mt-1">
                                 <div className="form-row form-row-1">
                                     <label htmlFor="email">Email</label>
-                                    <input type="text" name="email" value={center.email} onChange={(e) => handleChange(e)} className="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" />
+                                    <input type="text" name="email" value={center.email}
+                                     onChange={(e) => handleChange(e)} className="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"  style={{ borderRadius: '50px', padding: `8px 25px` }}/>
                                 </div>
                             </div>
                             <div className="form-row">
@@ -114,12 +115,12 @@ const BusinessSignUp = () => {
                                     <div className='col-md-6 form-row mr-2'>
                                         <label htmlFor="phoneNumber">Phone Number</label>
                                         <input type="number" name="phoneNumber" value={center.phoneNumber} onChange={(e) => handleChange(e)} className={`form-control ${errors.name ? 'is-invalid' : ''
-                                            }`} />
+                                            }`} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
                                     </div>
                                     <div className='col-md-6 form-row'>
                                         <label htmlFor="taxIdentificationNumber">Tax Number</label>
                                         <input type="number" name="taxIdentificationNumber" value={center.taxIdentificationNumber} onChange={(e) => handleChange(e)} className={`form-control ${errors.name ? 'is-invalid' : ''
-                                            }`} />
+                                            }`} style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                     </div>
                                 </div>
 
@@ -130,7 +131,7 @@ const BusinessSignUp = () => {
                                 <div className="form-row form-row-1 ">
                                     <label htmlFor="address">Address</label>
                                     <input type="text" name="address" value={center.address} onChange={(e) => handleChange(e)} className={`form-control ${errors.address ? 'is-invalid' : ''
-                                        }`} required />
+                                        }`} required style={{ borderRadius: '50px', padding: `8px 25px` }}/>
                                 </div>
                             </div>
                             <div className="form-row mt-1">
@@ -146,6 +147,7 @@ const BusinessSignUp = () => {
                                         className={`form-control ${errors.description ? 'is-invalid' : ''
                                             }`}
                                         required
+                                        style={{ borderRadius: '20px', padding: `8px 25px` }}
                                     />
                                 </div>
                             </div>
@@ -158,8 +160,8 @@ const BusinessSignUp = () => {
                                     <span className="checkmark" />
                                 </label>
                             </div>
-                            <div className="form-row-last">
-                                <input type="submit" name="register" className="register" value="Register" />
+                            <div className="d-grid">
+                                <input type="submit" name="register" className="btn btn-primary" value="JOIN US" style={{ borderRadius: '50px', padding: `10px 25px`, backgroundColor: '#f58d04', color: '#fff', fontWeight: 'bold' }}/>
                             </div>
                         </form>
                         {/* Notification */}

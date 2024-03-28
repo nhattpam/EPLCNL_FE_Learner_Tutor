@@ -402,8 +402,8 @@ const DetailCourse = () => {
                                 </div>
                                 {/* Notification */}
                                 {showNotification && (
-                                    <div className="notification fixed-top w-100 bg-warning text-center" style={{ backgroundColor: '#fff' }}>
-                                        <p className="m-0">You need to login first</p>
+                                    <div className="notification fixed-top w-100  text-center" style={{ backgroundColor: '#f58d04' }}>
+                                        <p className="m-0 text-dark" style={{fontWeight: 'bold'}}>You need to login first!</p>
                                     </div>
                                 )}
                                 {!loading ? (
@@ -422,16 +422,23 @@ const DetailCourse = () => {
                                                 </div>
                                                 <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
                                                 </p>
-                                                <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-primary btn-lg btn-block"
-                                                        onClick={handlePayBalance}
-                                                        style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px` }}
-                                                    >
-                                                        Or use your balance - ${course.stockPrice}
-                                                    </button>
-                                                </div>
+                                                {
+                                                    learnerId !== null && (
+                                                        <>
+                                                            <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-primary btn-lg btn-block"
+                                                                    onClick={handlePayBalance}
+                                                                    style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px` }}
+                                                                >
+                                                                    Or use your balance - ${course.stockPrice}
+                                                                </button>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                }
+
                                             </>
 
 
@@ -459,26 +466,40 @@ const DetailCourse = () => {
                                                     )
                                                 ) : (
                                                     <>
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-primary btn-lg btn-block get-button"
-                                                            onClick={handlePayClick}
-                                                            style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
-                                                        >
-                                                            Get - ${course.stockPrice}
-                                                        </button>
-                                                        <p className='mt-2'>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
-                                                        </p>
-                                                        <div className="course-info d-flex justify-content-between align-items-center">
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-primary btn-lg btn-block"
-                                                                onClick={handlePayBalance}
-                                                                style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px` }}
-                                                            >
-                                                                Or use your balance - ${course.stockPrice}
-                                                            </button>
+                                                        <div>
+                                                            <div>
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-primary btn-lg btn-block get-button"
+                                                                    onClick={handlePayClick}
+                                                                    style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                                >
+                                                                    Get - ${course.stockPrice}
+                                                                </button>
+                                                            </div>
+                                                            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                                                                <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} /></p>
+                                                            </div>
                                                         </div>
+
+                                                        {
+                                                            learnerId !== null && (
+                                                                <>
+                                                                    <div className="course-info d-flex justify-content-between align-items-center">
+                                                                        <button
+                                                                            type="button"
+                                                                            className="btn btn-primary btn-lg btn-block"
+                                                                            onClick={handlePayBalance}
+                                                                            style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px` }}
+                                                                        >
+                                                                            Or use your balance - ${course.stockPrice}
+                                                                        </button>
+                                                                    </div>
+                                                                </>
+                                                            )
+                                                        }
+
+
                                                     </>
 
 
@@ -583,11 +604,11 @@ const DetailCourse = () => {
                                             </ul>
                                         </div>
                                         <div className="col-lg-9 mt-4 mt-lg-0">
-                                            <div className="tab-content card get-button" style={{ alignItems: 'center',  borderRadius: '50px', padding: `8px 25px` }}>
+                                            <div className="tab-content card get-button" style={{ alignItems: 'center', borderRadius: '50px', padding: `8px 25px` }}>
 
                                                 <div
                                                     className={`tab-pane ${index === 0 ? 'active show' : ''}`}
-                                                    id={`tab-${classModule.id}`} 
+                                                    id={`tab-${classModule.id}`}
                                                 >
 
                                                     <div>
@@ -631,11 +652,11 @@ const DetailCourse = () => {
                                 <div className="row" key={module.id}>
                                     <div className="col-lg-3">
                                         <ul className="nav nav-tabs flex-column">
-                                            <li className="nav-item get-button" style={{ borderRadius: '50px', padding: `8px 25px` }}> 
+                                            <li className="nav-item get-button" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                 <a
                                                     className={`nav-link ${module.id === activeModuleId ? 'active show' : ''}`}
                                                     onClick={(event) => handleTabClick2(event, module.id)}
-                                                    href={`#tab-${module.id}`}  style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                                    href={`#tab-${module.id}`} style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                 >
                                                     {module.name}
                                                 </a>
@@ -643,7 +664,7 @@ const DetailCourse = () => {
                                         </ul>
                                     </div>
                                     <div className="col-lg-9 mt-4 mt-lg-0 ">
-                                        <div className="tab-content card get-button" style={{ alignItems: 'center',  borderRadius: '50px', padding: `8px 25px` }}>
+                                        <div className="tab-content card get-button" style={{ alignItems: 'center', borderRadius: '50px', padding: `8px 25px` }}>
                                             <div
                                                 className={`tab-pane ${module.id === activeModuleId ? 'active show' : ''}`}
                                                 id={`tab-${module.id}`}
