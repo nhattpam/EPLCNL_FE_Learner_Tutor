@@ -31,7 +31,7 @@ const MyTimeTable = () => {
                 setClassModuleList(classModules);
 
                 const classTopicsPromises = classModules.map(classModule =>
-                    classLessonService.getAllClassTopicsByClassLesson(classModule.classLesson.id)
+                    classLessonService.getAllClassTopicsByClassLesson(classModule.classLesson?.id)
                 );
 
                 const classTopicsResponses = await Promise.all(classTopicsPromises);
@@ -169,8 +169,8 @@ const MyTimeTable = () => {
                                                                     return (
                                                                         <td key={dayIndex} style={{
                                                                             backgroundColor: modulesForDay.some(classModule => {
-                                                                                const startTime = new Date(`01/01/2024 ${classModule.classLesson.classHours.split(' - ')[0]}`);
-                                                                                const endTime = new Date(`01/01/2024 ${classModule.classLesson.classHours.split(' - ')[1]}`);
+                                                                                const startTime = new Date(`01/01/2024 ${classModule.classLesson?.classHours.split(' - ')[0]}`);
+                                                                                const endTime = new Date(`01/01/2024 ${classModule.classLesson?.classHours.split(' - ')[1]}`);
                                                                                 return startTime <= new Date(`01/01/2024 ${time}`) && endTime >= new Date(`01/01/2024 ${time}`);
                                                                             }) ? getRandomColor() : 'transparent'
                                                                         }}>
@@ -179,8 +179,8 @@ const MyTimeTable = () => {
                                                                                     modulesForDay.length > 0 && modulesForDay.map((classModule, classIndex) => (
                                                                                         <div key={classIndex}>
                                                                                             {/* Check if class falls within the time range */}
-                                                                                            {(new Date(`01/01/2024 ${classModule.classLesson.classHours.split(' - ')[0]}`) <= new Date(`01/01/2024 ${time}`) &&
-                                                                                                new Date(`01/01/2024 ${classModule.classLesson.classHours.split(' - ')[1]}`) >= new Date(`01/01/2024 ${time}`)) && (
+                                                                                            {(new Date(`01/01/2024 ${classModule.classLesson?.classHours.split(' - ')[0]}`) <= new Date(`01/01/2024 ${time}`) &&
+                                                                                                new Date(`01/01/2024 ${classModule.classLesson?.classHours.split(' - ')[1]}`) >= new Date(`01/01/2024 ${time}`)) && (
                                                                                                     <div>
                                                                                                         <div>{classModule.classLesson?.classHours}</div>
                                                                                                         <div>
@@ -189,7 +189,7 @@ const MyTimeTable = () => {
                                                                                                         <div>
                                                                                                             <span className='text-danger' style={{ fontWeight: 'bold' }}>Topics:</span>
                                                                                                             {classTopicList
-                                                                                                                .filter(topic => topic.classLessonId === classModule.classLesson.id)
+                                                                                                                .filter(topic => topic.classLessonId === classModule.classLesson?.id)
                                                                                                                 .map((topic, topicIndex) => (
                                                                                                                     <div key={topicIndex}>- {topic.name}</div>
                                                                                                                 ))}
