@@ -119,6 +119,23 @@ const EditAssignmentAttempt = () => {
         }
     };
 
+    //list peer review
+    const [peerReviewLish, setPeerReviewList] = useState([]);
+    useEffect(() => {
+        if (assignmentAttemptId) {
+            assignmentAttemptService
+                .getAllPeerReviewByAssignmentAttemptId(assignmentAttemptId)
+                .then((res) => {
+                    setPeerReviewList(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [assignmentAttemptId]);
+
+
+
     return (
         <>
             <div id="wrapper">
@@ -154,30 +171,7 @@ const EditAssignmentAttempt = () => {
                                                         </tr>
                                                         <tr>
                                                             <th>Answer:</th>
-                                                            {/* <td>
-                                                                <ReactQuill
-                                                                    name="answerText"
-                                                                    value={assignmentAttempt.answerText}
-                                                                    onChange={handleChangeAnswerText}
-                                                                    modules={{
-                                                                        toolbar: [
-                                                                            [{ header: [1, 2, false] }],
-                                                                            ['bold', 'italic', 'underline', 'strike'],
-                                                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                                                            [{ 'indent': '-1' }, { 'indent': '+1' }],
-                                                                            [{ 'direction': 'rtl' }],
-                                                                            [{ 'align': [] }],
-                                                                            ['link', 'image', 'video'],
-                                                                            ['code-block'],
-                                                                            [{ 'color': [] }, { 'background': [] }],
-                                                                            ['clean']
-                                                                        ]
-                                                                    }}
-                                                                    theme="snow"
-                                                                />
 
-
-                                                            </td> */}
                                                             <td>
                                                                 <div dangerouslySetInnerHTML={{ __html: assignmentAttempt.answerText }}></div>
 
@@ -207,28 +201,39 @@ const EditAssignmentAttempt = () => {
                                             <span>{assignmentAttempt.totalGrade} Point</span>
                                         </div>
 
-                                        {/* <div className="form-group mb-0">
-                                            <button
-                                                type="submit"
-                                                className="btn btn-success"
-                                                style={{
-                                                    marginLeft: "-2px",
-                                                    marginTop: "50px",
-                                                }}
-                                            >
-                                                 Save
-                                            </button>
-                                        </div> */}
-
                                     </form>
+                                    {/* end row*/}
+                                    <h5>Grade histories:</h5>
+                                    <div className="table-responsive">
+                                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                            <thead className="thead-light">
+                                                <tr>
+                                                    <th data-toggle="true">Learner</th>
+                                                    <th data-hide="phone, tablet">Grade</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    peerReviewLish.length > 0 && peerReviewLish.map((peerReview) => (
+                                                        <tr key={peerReview.id}>
+                                                            <td>{peerReview.learner?.account?.fullName}</td>
+                                                            <td>{peerReview.grade}</td>
 
+                                                        </tr>
+                                                    ))
+                                                }
 
+                                            </tbody>
 
+                                        </table>
 
+                                    </div> {/* end .table-responsive*/}
                                 </div> {/* end card-box*/}
+
                             </div> {/* end col*/}
+
                         </div>
-                        {/* end row*/}
+
 
                     </div> {/* container */}
                 </div>

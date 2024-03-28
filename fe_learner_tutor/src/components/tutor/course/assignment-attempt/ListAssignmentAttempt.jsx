@@ -33,9 +33,14 @@ const ListAssignmentAttempt = () => {
         tutorService
             .getAllAssignmentAttemptsByTutor(tutorId)
             .then((res) => {
-                console.log(res.data);
-                // const list = res.data.filter((attempt) => attempt.assignment?.module?.course?.isOnlineClass === true);
-                setAssignmentAttemptList(res.data);
+                const filteredAssignmentAttemptList = res.data;
+                // Sort refundList by requestedDate
+                const sortedAssignmentAttemptList = [...filteredAssignmentAttemptList].sort((a, b) => {
+                    // Assuming requestedDate is a string in ISO 8601 format
+                    return new Date(b.attemptedDate) - new Date(a.attemptedDate);
+                });
+                
+                setAssignmentAttemptList(sortedAssignmentAttemptList);
 
             })
             .catch((error) => {
@@ -135,9 +140,9 @@ const ListAssignmentAttempt = () => {
                                                         currentAssignmentAttempts.length > 0 && currentAssignmentAttempts.map((assignmentAttempt, index) => (
                                                             <tr key={assignmentAttempt.id}>
                                                                 <td>{index + 1}</td>
-                                                                <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.assignment.questionText) }}></td>
+                                                                <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.assignment?.questionText) }}></td>
 
-                                                                <td>{assignmentAttempt.learner.account.fullName}</td>
+                                                                <td>{assignmentAttempt.learner?.account?.fullName}</td>
                                                                 <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.answerText) }}></td>
                                                                 <td>{assignmentAttempt.attemptedDate}</td>
                                                                 <td><span className="badge label-table badge-danger">{assignmentAttempt.totalGrade}</span></td>

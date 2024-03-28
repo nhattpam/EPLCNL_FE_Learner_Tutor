@@ -842,7 +842,7 @@ const StudyCourse = () => {
                                                         !showAttempts && (
                                                             <button
                                                                 className="btn btn-primary"
-                                                                style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`  }}
                                                                 onClick={handleStartAssignment}
                                                             >
                                                                 Start Assignment
@@ -882,7 +882,7 @@ const StudyCourse = () => {
                                                             </div>
                                                             <button
                                                                 className="btn btn-primary"
-                                                                style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`  }}
                                                             >
                                                                 Submit
                                                             </button>
@@ -950,7 +950,7 @@ const StudyCourse = () => {
                                         {!quizStarted && (
                                             <button
                                                 className="btn btn-primary"
-                                                style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`  }}
                                                 onClick={handleStartQuiz}
                                             >
                                                 Start Quiz
@@ -1084,7 +1084,7 @@ const StudyCourse = () => {
                                                 </div>
                                                 <button
                                                     className="btn btn-primary" onClick={() => handleStartQuiz(selectedQuiz.id)}
-                                                    style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                    style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`  }}
                                                 >
                                                     Re-Attempt Quiz
                                                 </button>
