@@ -120,7 +120,6 @@ const MyTransaction = () => {
                                                     <th scope="col">Amount</th>
                                                     <th scope="col">Transaction Date</th>
                                                     <th scope="col">Status</th>
-                                                    <th scope="col"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -181,7 +180,10 @@ const MyTransaction = () => {
                                         </table>
                                         {
                                             transactionList.length === 0 && (
-                                                <h5 className='text-center'>No transactions found.</h5>
+                                                <>
+                                                    <i class="fas fa-file-invoice fa-2x"></i>
+                                                    <h5 className='text-center'>No transactions found.</h5>
+                                                </>
                                             )
                                         }
                                         {showRefundModal && (
@@ -232,7 +234,10 @@ const MyTransaction = () => {
                                         <h4>Your refund requests:</h4>
                                         {
 
-                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                            <table id="demo-foo-filtering"
+                                                className="table table-borderless table-hover table-nowrap table-centered mb-0"
+                                                data-page-size={7}
+                                            >
                                                 <thead className="thead-light">
                                                     {
                                                         refundRequestList.length > 0 && (
@@ -252,7 +257,11 @@ const MyTransaction = () => {
                                                     }
                                                     {
                                                         refundRequestList.length === 0 && (
-                                                            <h5>No requests found.</h5>
+                                                            <>
+                                                                <i class="fas fa-paper-plane fa-2x"></i>
+                                                                <h5>No requests found.</h5>
+
+                                                            </>
                                                         )
                                                     }
 
@@ -265,11 +274,11 @@ const MyTransaction = () => {
                                                                 <td>
                                                                     <img src={refund.enrollment?.transaction?.course?.imageUrl} alt={refund.enrollment?.transaction?.course?.name} className="img-fluid" style={{ maxWidth: '250px', maxHeight: '100px' }} />
                                                                 </td>
-                                                                <td>
+                                                                <td style={{ color: `#f58d04` }}>
                                                                     {refund.enrollment?.transaction?.course?.isOnlineClass ? (
-                                                                        <h3><Link to={`/detail-course/${refund.enrollment?.transaction?.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
+                                                                        <h3><Link style={{ color: `#f58d04` }} to={`/detail-course/${refund.enrollment?.transaction?.courseId}`}>{refund.enrollment?.transaction?.course?.name}</Link></h3>
                                                                     ) : (
-                                                                        <h3><Link to={`/detail-course/${refund.enrollment?.transaction?.courseId}`}>{refund.enrollment.transaction.course.name}</Link></h3>
+                                                                        <h3 ><Link style={{ color: `#f58d04` }} to={`/detail-course/${refund.enrollment?.transaction?.courseId}`} >{refund.enrollment?.transaction?.course?.name}</Link></h3>
                                                                     )}
                                                                 </td>
                                                                 <td>
@@ -308,6 +317,21 @@ const MyTransaction = () => {
             </main>
 
             <Footer />
+            <style>
+                {`
+              
+                a {
+                    color: #f58d04;
+                    text-decoration: none;
+                    background-color: transparent;
+                }
+                a:hover {
+                    color: #000;
+                    text-decoration: none;
+                    background-color: transparent;
+                }
+            `}
+            </style>
         </>
     );
 };

@@ -165,11 +165,11 @@ const handleSubmit = async (e) => {
 return (
     <>
         <Header />
-        <div className="container my-5">
-            <div className="row">
+        <div className="container my-5" >
+            <div className="row" >
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div className="card border-0 shadow rounded-3 my-5">
-                        <div className="card-body p-4">
+                        <div className="card-body p-4" >
                             <h5 className="card-title mb-4 fw-bold fs-5">Log in to your MeowLish account</h5>
                             {showNotification && (
                                 <div className="alert alert-danger" role="alert">
@@ -179,12 +179,13 @@ return (
                             <form onSubmit={handleSubmit}>
                                 <div className="form-floating mb-3">
                                     <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" value={email}
-                                        onChange={handleEmailChange} />
+                                        onChange={handleEmailChange} required style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop: '20px' }}
+                                        />
                                     <label htmlFor="floatingInput">Email address</label>
                                 </div>
                                 <div className="form-floating mb-3">
                                     <input type="password" className="form-control" id="floatingPassword" placeholder="Password" value={password}
-                                        onChange={handlePasswordChange} required/>
+                                        onChange={handlePasswordChange} required  style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop : '20px' }}/>
                                     <label htmlFor="floatingPassword">Password</label>
                                 </div>
 

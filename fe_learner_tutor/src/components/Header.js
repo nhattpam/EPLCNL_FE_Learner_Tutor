@@ -373,13 +373,11 @@ const Header = () => {
                                 type="text"
                                 placeholder="Search for anything"
                                 className="form-control"
-                                style={{ width: '200px' }}
+                                style={{ width: '200px', borderRadius: '50px', padding: `8px 25px` }}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                            <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }}>
-                                <i className="fas fa-search"></i>
-                            </button>
+                          
                         </div>
                         {/* Render filtered courses if there are search results */}
                         <div className='search-result'>
@@ -393,19 +391,19 @@ const Header = () => {
 
 
 
-                    <nav id="navbar" className="navbar order-last order-lg-0">
-                        <ul>
+                    <nav id="navbar" className="navbar order-last order-lg-0" >
+                        <ul >
                             <li>
                                 <Link to="/home">Home</Link>
                             </li>
                             <li>
                                 <Link to="/about">About</Link>
                             </li>
-                            <li className="dropdown">
+                            <li className="dropdown" >
                                 <a href="#">
                                     <span>Course</span> <i className="bi bi-chevron-down" />
                                 </a>
-                                <ul>
+                                <ul style={{ borderRadius: '50px', padding: `8px 25px` }}> 
                                     {categoryList.map((category) => (
                                         <li key={category.id}> {/* Add a key to the mapped elements */}
                                             <Link to={`/list-course-by-category/${category.id}`}>{category.name}</Link>
@@ -427,7 +425,7 @@ const Header = () => {
                                     <a href="#">
                                         <span>Forums</span> <i className="bi bi-chevron-down" />
                                     </a>
-                                    <ul>
+                                    <ul style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                         {
                                             forumList.length > 0 && forumList.map((forum) => (
                                                 <li key={forum.id}> {/* Add a key to the mapped elements */}
@@ -456,7 +454,7 @@ const Header = () => {
 
                                         )}
                                     </a>
-                                    <div className="dropdown-menu dropdown-menu-right profile-dropdown ">
+                                    <div className="dropdown-menu dropdown-menu-right profile-dropdown " style={{ borderRadius: '50px', padding: `8px 25px`, justifyContent: 'left' }}>
                                         {/* item*/}
                                         <div className="dropdown-header noti-title">
                                             {isLearner && (
@@ -572,28 +570,28 @@ const Header = () => {
                                                             <tr>
                                                                 <th style={{ width: '30%' }}>Full Name:</th>
                                                                 <td>
-                                                                    <input type="text" className="form-control" name="fullName" value={account.fullName} onChange={(e) => handleChange(e)} />
+                                                                    <input type="text" className="form-control" name="fullName" value={account.fullName} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
                                                                     {errors.fullName && <p className="text-danger">{errors.fullName}</p>}
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Phone Number:</th>
                                                                 <td>
-                                                                    <input type="number" className="form-control" name="phoneNumber" value={account.phoneNumber} onChange={(e) => handleChange(e)} />
+                                                                    <input type="number" className="form-control" name="phoneNumber" value={account.phoneNumber} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
                                                                     {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber}</p>}
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Address:</th>
                                                                 <td>
-                                                                    <input type="text" className="form-control" name="address" value={account.address} onChange={(e) => handleChange(e)} />
+                                                                    <input type="text" className="form-control" name="address" value={account.address} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
                                                                     {errors.address && <p className="text-danger">{errors.address}</p>}
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Gender:</th>
                                                                 <td>
-                                                                    <select className="form-control" name="gender" value={account.gender} onChange={(e) => handleChange(e)}>
+                                                                    <select className="form-control" name="gender" value={account.gender} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                                         <option value="male">Male</option>
                                                                         <option value="female">Female</option>
                                                                     </select>
@@ -604,8 +602,8 @@ const Header = () => {
                                                 </div>
                                             </div>
                                             <div className="modal-footer">
-                                                <button type="submit" className="btn btn-success">Save Changes</button>
-                                                <button type="button" className="btn btn-dark" onClick={closeModal}>Close</button>
+                                                <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>Save Changes</button>
+                                                <button type="button" className="btn btn-dark" onClick={closeModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                                             </div>
                                         </form>
                                     </>
@@ -652,8 +650,8 @@ const Header = () => {
 
                                         </div>
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-warning" onClick={toggleEditMode}>Edit</button>
-                                            <button type="button" className="btn btn-dark" onClick={closeModal}>Close</button>
+                                            <button type="button" className="btn btn-warning" onClick={toggleEditMode} style={{ borderRadius: '50px', padding: `8px 25px` }}>Edit</button>
+                                            <button type="button" className="btn btn-dark" onClick={closeModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                                         </div>
                                     </>
 
@@ -721,7 +719,7 @@ const Header = () => {
 
                                 <div className="modal-footer">
                                     {/* Conditional rendering of buttons based on edit mode */}
-                                    <button type="button" className="btn btn-dark" onClick={closeWalletHistoryModal}>Close</button>
+                                    <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={closeWalletHistoryModal}>Close</button>
                                 </div>
                             </div>
                         </div>
@@ -747,7 +745,7 @@ const Header = () => {
                                         <div>
                                             {/* Input fields for editing */}
                                             <h3>Enter the amount you want to deposit:</h3>
-                                            <input className='form-control' placeholder='USD accepted' type='number' name='amount' />
+                                            <input className='form-control' placeholder='USD accepted' type='number' name='amount' style={{ borderRadius: '50px', padding: `8px 25px` }}/>
                                             <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%', marginTop: '20px' }} />
                                             </p>
 
@@ -761,7 +759,7 @@ const Header = () => {
                                             type="submit"
                                             className="btn btn-primary btn-lg btn-block"
                                             // onClick={handlePayClick}
-                                            style={{ backgroundColor: '#f58d04' }}
+                                            style={{ backgroundColor: '#f58d04',  borderRadius: '50px', padding: `8px 25px` }}
                                         >
                                             Continue
                                         </button>

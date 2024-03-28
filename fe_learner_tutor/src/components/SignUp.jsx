@@ -273,21 +273,21 @@ const SignUp = () => {
                   <div className="form-floating mb-3">
                     <input type="text" className={`form-control ${errors.fullName ? 'is-invalid' : ''
                       }`}
-                      id="fullName" placeholder="Xin chao" value={account.fullName} onChange={(e) => handleChange(e)} name='fullName' />
+                      id="fullName" placeholder="Xin chao" value={account.fullName} onChange={(e) => handleChange(e)} name='fullName' style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop: `20px`}}/>
                     <label htmlFor="floatingInput">Full name</label>
                   </div>
                   <div className="form-floating mb-3">
                     <input type="number" className={`form-control ${errors.phoneNumber ? 'is-invalid' : ''
-                      }`} id="phoneNumber" placeholder="024545" value={account.phoneNumber} onChange={(e) => handleChange(e)} name='phoneNumber' />
+                      }`} id="phoneNumber" placeholder="024545" value={account.phoneNumber} onChange={(e) => handleChange(e)} name='phoneNumber' style={{ borderRadius: '50px', padding: `8px 25px` , paddingTop: `20px`}}/>
                     <label htmlFor="floatingInput">Phone number</label>
                   </div>
                   <div className="form-floating mb-3">
-                    <input type="email" className="form-control" id="email" placeholder="name@example.com" value={account.email} onChange={(e) => handleChange(e)} name='email' />
+                    <input type="email" className="form-control" id="email" placeholder="name@example.com" value={account.email} onChange={(e) => handleChange(e)} name='email' style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop: `20px` }}/>
                     <label htmlFor="floatingInput">Email address</label>
                   </div>
                   <div className="form-floating mb-3">
                     <input type="password" className={`form-control ${errors.password ? 'is-invalid' : ''
-                      }`} id="password" placeholder="Password" value={account.password} onChange={(e) => handleChange(e)} name='password' />
+                      }`} id="password" placeholder="Password" value={account.password} onChange={(e) => handleChange(e)} name='password' style={{ borderRadius: '50px', padding: `8px 25px` , paddingTop: `20px`}}/>
                     <label htmlFor="floatingPassword">Password</label>
                   </div>
 
@@ -363,7 +363,7 @@ const SignUp = () => {
 
                             <tr>
                               <th scope="row">{index + 1}</th>
-                              <td>{paperWork.paperWorkType.name}</td>
+                              <td>{paperWork.paperWorkType?.name}</td>
                               <td className='text-truncate' style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link to={paperWork.paperWorkUrl}>{paperWork.paperWorkUrl}</Link></td>
                               <th scope="row" onClick={() => deletePaperWork(paperWork.id)} ><i class="fas fa-trash text-danger"></i></th>
                             </tr>
@@ -384,6 +384,7 @@ const SignUp = () => {
                           name="paperWorkType"
                           value={paperWork.paperWorkTypeId}
                           onChange={(e) => setPaperWork({ ...paperWork, paperWorkTypeId: e.target.value })} // Update paperWorkTypeId when the type is selected
+                          style={{ borderRadius: '50px', padding: `8px 25px` }}
                         >
                           <option value="">Select a type</option>
                           {paperWorkTypeList.map((paperWorkType, index) => (
@@ -421,8 +422,8 @@ const SignUp = () => {
                   </div>
                   <div className="modal-footer">
                     {/* Conditional rendering of buttons based on edit mode */}
-                    <button type="submit" className="btn btn-warning" >Upload</button>
-                    <button type="button" className="btn btn-secondary" onClick={closeQualificationModal}>Close</button>
+                    <button type="submit" className="btn btn-primary" style={{ borderRadius: '50px', padding: `8px 25px` , backgroundColor: `#f58d04`}} >Upload</button>
+                    <button type="button" className="btn btn-dark" onClick={closeQualificationModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                   </div>
                 </form>
 

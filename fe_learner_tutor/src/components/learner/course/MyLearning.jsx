@@ -457,9 +457,9 @@ const MyLearning = () => {
                                             {
                                                 enrollmentList.length > 0 && enrollmentList.map((enrollment, index) => (
                                                     <div key={enrollment.transaction?.courseId} className="col-lg-4 col-md-6 d-flex align-items-stretch">
-                                                        <div className="course-item " id='iitem'>
+                                                        <div className="course-item "  id='iitem'>
                                                             <img src={enrollment.transaction?.course?.imageUrl} className="img-fluid" alt="..." />
-                                                            <div className="course-content">
+                                                            <div className="course-content" >
                                                                 <div className="d-flex justify-content-between align-items-center mb-3">
                                                                     <h4>{enrollment.transaction.course?.category?.name}</h4>
                                                                     <p className="price">{parseFloat(enrollment.transaction?.course?.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
@@ -499,7 +499,7 @@ const MyLearning = () => {
                                                                     </div>
                                                                 )}
                                                                 {isTransactionDateValid(enrollment.enrolledDate) && (
-                                                                    <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(enrollment.id)}>
+                                                                    <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`  }} onClick={() => handleRefundClick(enrollment.id)}>
                                                                         I want return
                                                                     </a>
                                                                 )}
@@ -537,8 +537,8 @@ const MyLearning = () => {
                                                                                         />
                                                                                     </div>
                                                                                     <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-dark" onClick={() => setShowFeedbackModal(false)}>Close</button>
-                                                                                        <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }} onClick={(e) => submitFeedback(e)}>Send</button>
+                                                                                        <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowFeedbackModal(false)}>Close</button>
+                                                                                        <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04',  borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitFeedback(e)}>Send</button>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -617,8 +617,8 @@ const MyLearning = () => {
                                                                                         />
                                                                                     </div>
                                                                                     <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-dark" onClick={() => setShowReportModal(false)}>Close</button>
-                                                                                        <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04' }} onClick={(e) => submitReport(e)}>Send</button>
+                                                                                        <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowReportModal(false)}>Close</button>
+                                                                                        <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04',  borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitReport(e)}>Send</button>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -690,7 +690,7 @@ const MyLearning = () => {
                                                                                                             className='form-control'
                                                                                                             required
                                                                                                             onChange={(e) => handleReasonRefundChange(index, `Date ${classModule.startDate} has reason ${e.target.value}`)}
-
+                                                                                                            style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                                                                         />
                                                                                                     </>
 
@@ -773,7 +773,7 @@ const MyLearning = () => {
                                                                                                                 className={`form-control`}
                                                                                                                 required
                                                                                                                 onChange={(e) => handleReasonRefundChange(index, `Module ${module.name} has reason: ${e.target.value}`)}
-
+                                                                                                                style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                                                                             />
                                                                                                         </>
 
@@ -782,13 +782,13 @@ const MyLearning = () => {
                                                                                         )}
                                                                                     </div>
                                                                                     <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-dark" onClick={() => setShowRefundModal(false)}>
+                                                                                        <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowRefundModal(false)}>
                                                                                             Close
                                                                                         </button>
                                                                                         <button
                                                                                             type="button"
                                                                                             className="btn btn-primary"
-                                                                                            style={{ backgroundColor: '#f58d04' }}
+                                                                                            style={{ backgroundColor: '#f58d04' ,  borderRadius: '50px', padding: `8px 25px`}}
                                                                                             onClick={(e) => submitRefund(e)}
                                                                                         >
                                                                                             Send

@@ -28,7 +28,7 @@ const SearchResult = ({ searchQuery, filteredCourses, filteredTutors }) => {
                             {filteredTutors.map(tutor => (
                                 <div key={tutor.id} className='iitem'>
                                     <img src={tutor.account.imageUrl} alt={tutor.account.fullName} style={{ width: '100px', height: '70px' }} />
-                                    <Link to={`/detail-tutor/${tutor.id}`}>
+                                    <Link >
                                         <p style={{ fontWeight: 'bold', color: '#f58d04' }}>{tutor.account.fullName}</p>
                                     </Link>
                                     {/* Render other tutor details as needed */}

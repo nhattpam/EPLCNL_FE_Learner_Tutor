@@ -64,7 +64,7 @@ const ListCourseByCategory = () => {
     return (
         <>
             <Header />
-            <main id="main" data-aos="fade-in" style={{backgroundColor: '#fff'}}>
+            <main id="main" data-aos="fade-in" style={{ backgroundColor: '#fff' }}>
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs">
                     <div className="container">
@@ -79,7 +79,7 @@ const ListCourseByCategory = () => {
                             {
                                 courseList.length > 0 && courseList.map((course, index) => (
                                     <div key={course.id} className="col-lg-4 col-md-6 d-flex align-items-stretch">
-                                        <div className="course-item">
+                                        <div className="course-item" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                             <img src={course.imageUrl} className="img-fluid" alt="..." />
                                             <div className="course-content">
                                                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -111,7 +111,10 @@ const ListCourseByCategory = () => {
 
                             }
                             {courseList.length <= 0 && (
-                                <p>No Courses Found.</p>
+                                <>
+                                    <i class="fas fa-university fa-2x"></i>
+                                    <p>No Courses Found.</p>
+                                </>
                             )}
 
                         </div>

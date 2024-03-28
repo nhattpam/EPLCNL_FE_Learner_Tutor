@@ -232,6 +232,7 @@ const DetailCourse = () => {
                                                 // Update isEnrolled state if enrollment is not null
                                                 if (enrollmentRes.data !== null) {
                                                     setIsEnrolled(true);
+                                                    window.location.reload();
                                                 }
                                             })
                                             .catch((error) => {
@@ -368,7 +369,7 @@ const DetailCourse = () => {
     return (
         <>
             <Header />
-            <main id="main" style={{backgroundColor: '#fff'}}>
+            <main id="main" style={{ backgroundColor: '#fff' }}>
                 {/* ======= Breadcrumbs ======= */}
                 <div className="breadcrumbs" data-aos="fade-in">
                     <div className="container">
@@ -386,22 +387,22 @@ const DetailCourse = () => {
                                     {course.description}
                                 </p>
                             </div>
-                            <div className="col-lg-4" style={{backgroundColor: '#fff'}}>
-                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
+                            <div className="col-lg-4" style={{ backgroundColor: '#fff' }}>
+                                <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Tutor</h5>
                                     <p><a href="#">{course.tutor?.account?.fullName}</a></p>
                                 </div>
-                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
+                                <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Course Fee</h5>
                                     <p>${course.stockPrice}</p>
                                 </div>
-                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
+                                <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Enrolled Students</h5>
                                     <p>{learnersCount[course.id]}</p>
                                 </div>
                                 {/* Notification */}
                                 {showNotification && (
-                                    <div className="notification fixed-top w-100 bg-warning text-center" style={{backgroundColor: '#fff'}}>
+                                    <div className="notification fixed-top w-100 bg-warning text-center" style={{ backgroundColor: '#fff' }}>
                                         <p className="m-0">You need to login first</p>
                                     </div>
                                 )}
@@ -409,24 +410,24 @@ const DetailCourse = () => {
                                     <>
                                         {enrollment === null ? (
                                             <>
-                                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
+                                                <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
                                                     <button
                                                         type="button"
                                                         className="btn btn-primary btn-lg btn-block"
                                                         onClick={handlePayClick}
-                                                        style={{ backgroundColor: '#f58d04' }}
+                                                        style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
                                                     >
                                                         Get - ${course.stockPrice}
                                                     </button>
                                                 </div>
                                                 <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
                                                 </p>
-                                                <div className="course-info d-flex justify-content-between align-items-center" style={{backgroundColor: '#fff'}}>
+                                                <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
                                                     <button
                                                         type="button"
                                                         className="btn btn-primary btn-lg btn-block"
                                                         onClick={handlePayBalance}
-                                                        style={{ backgroundColor: '#fff', color: '#000' }}
+                                                        style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px` }}
                                                     >
                                                         Or use your balance - ${course.stockPrice}
                                                     </button>
@@ -435,14 +436,14 @@ const DetailCourse = () => {
 
 
                                         ) : (
-                                            <div className="course-info d-flex justify-content-between align-items-center"  style={{backgroundColor: '#fff'}}>
+                                            <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
                                                 {isEnrolled ? (
                                                     course.isOnlineClass ? (
                                                         <Link
                                                             type="button"
                                                             className="btn btn-primary btn-lg btn-block get-button"
                                                             to={`/study-class/${courseId}`}
-                                                            style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
                                                         >
                                                             Study Now
                                                         </Link>
@@ -451,7 +452,7 @@ const DetailCourse = () => {
                                                             type="button"
                                                             className="btn btn-primary btn-lg btn-block get-button"
                                                             to={`/study-course/${courseId}`}
-                                                            style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
                                                         >
                                                             Study Now
                                                         </Link>
@@ -462,7 +463,7 @@ const DetailCourse = () => {
                                                             type="button"
                                                             className="btn btn-primary btn-lg btn-block get-button"
                                                             onClick={handlePayClick}
-                                                            style={{ backgroundColor: '#f58d04' }}
+                                                            style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
                                                         >
                                                             Get - ${course.stockPrice}
                                                         </button>
@@ -473,7 +474,7 @@ const DetailCourse = () => {
                                                                 type="button"
                                                                 className="btn btn-primary btn-lg btn-block"
                                                                 onClick={handlePayBalance}
-                                                                style={{ backgroundColor: '#fff', color: '#000' }}
+                                                                style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px` }}
                                                             >
                                                                 Or use your balance - ${course.stockPrice}
                                                             </button>
@@ -495,7 +496,7 @@ const DetailCourse = () => {
                                                 type="button"
                                                 className="btn btn-primary btn-lg btn-block"
                                                 disabled
-                                                style={{ backgroundColor: '#f58d04', cursor: 'not-allowed' }}
+                                                style={{ backgroundColor: '#f58d04', cursor: 'not-allowed', borderRadius: '50px', padding: `8px 25px` }}
                                             >
                                                 Loading...
                                             </button>
@@ -514,7 +515,7 @@ const DetailCourse = () => {
                                         <div className="modal-dialog" role="document">
                                             <div className="modal-content">
                                                 <div className="modal-header">
-                                                    <h5 className="modal-title">Do you want to use your balance - <span style={{ fontWeight: 'bold', color: '#f58d04' }}>{account.wallet?.balance}$</span></h5>
+                                                    <h5 className="modal-title">Do you want to use your balance - <span style={{ fontWeight: 'bold', color: '#f58d04' }}>${account.wallet?.balance}</span></h5>
                                                     <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closePayBalanceModal}>
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -535,7 +536,7 @@ const DetailCourse = () => {
                                                                         <img src={course.imageUrl} style={{ width: '100px', height: '60px' }}></img>
                                                                     </td>
                                                                     <td>{course.name}</td>
-                                                                    <td>{course.stockPrice}<span style={{ fontWeight: 'bold' }}>$</span></td>
+                                                                    <td><span style={{ fontWeight: 'bold' }}>$</span>{course.stockPrice}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -543,10 +544,10 @@ const DetailCourse = () => {
                                                 </div>
                                                 <div className="modal-footer">
                                                     {/* Conditional rendering of buttons based on edit mode */}
-                                                    <button type="button" className="btn btn-dark" onClick={closePayBalanceModal}>Close</button>
+                                                    <button type="button" className="btn btn-dark" onClick={closePayBalanceModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                                                     {
                                                         course.stockPrice < account.wallet?.balance && (
-                                                            <button type="button" className="btn btn-secondary" style={{ backgroundColor: '#f58d04' }} onClick={() => PayBalance()}>Pay</button>
+                                                            <button type="button" className="btn btn-secondary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={() => PayBalance()}>Pay</button>
                                                         )
                                                     }
                                                 </div>
@@ -570,11 +571,11 @@ const DetailCourse = () => {
                                         <div className="col-lg-3">
 
                                             <ul className="nav nav-tabs flex-column">
-                                                <li className="nav-item get-button">
+                                                <li className="nav-item get-button" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                     <a
                                                         className={`nav-link ${index === 0 ? 'active show' : ''}`}
                                                         onClick={(event) => handleTabClick(event, classModule.id)}
-                                                        href={`#tab-${classModule.id}`}
+                                                        href={`#tab-${classModule.id}`} style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                     > On Date:
                                                         <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
                                                     </a>
@@ -582,11 +583,11 @@ const DetailCourse = () => {
                                             </ul>
                                         </div>
                                         <div className="col-lg-9 mt-4 mt-lg-0">
-                                            <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
+                                            <div className="tab-content card get-button" style={{ alignItems: 'center',  borderRadius: '50px', padding: `8px 25px` }}>
 
                                                 <div
                                                     className={`tab-pane ${index === 0 ? 'active show' : ''}`}
-                                                    id={`tab-${classModule.id}`}
+                                                    id={`tab-${classModule.id}`} 
                                                 >
 
                                                     <div>
@@ -614,7 +615,10 @@ const DetailCourse = () => {
                             }
                             {
                                 classModuleList.length === 0 && (
-                                    <p>No modules for this course.</p>
+                                    <>
+                                        <i class="fas fa-puzzle-piece fa-2x"></i>
+                                        <p>No modules for this course.</p>
+                                    </>
                                 )
                             }
 
@@ -627,11 +631,11 @@ const DetailCourse = () => {
                                 <div className="row" key={module.id}>
                                     <div className="col-lg-3">
                                         <ul className="nav nav-tabs flex-column">
-                                            <li className="nav-item get-button">
+                                            <li className="nav-item get-button" style={{ borderRadius: '50px', padding: `8px 25px` }}> 
                                                 <a
                                                     className={`nav-link ${module.id === activeModuleId ? 'active show' : ''}`}
                                                     onClick={(event) => handleTabClick2(event, module.id)}
-                                                    href={`#tab-${module.id}`}
+                                                    href={`#tab-${module.id}`}  style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                 >
                                                     {module.name}
                                                 </a>
@@ -639,14 +643,14 @@ const DetailCourse = () => {
                                         </ul>
                                     </div>
                                     <div className="col-lg-9 mt-4 mt-lg-0 ">
-                                        <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
+                                        <div className="tab-content card get-button" style={{ alignItems: 'center',  borderRadius: '50px', padding: `8px 25px` }}>
                                             <div
                                                 className={`tab-pane ${module.id === activeModuleId ? 'active show' : ''}`}
                                                 id={`tab-${module.id}`}
                                             >
                                                 {
                                                     filteredCombinedList.length > 0 && filteredCombinedList.map((item, combinedIndex) => (
-                                                        <div className="combined-item" key={combinedIndex}>
+                                                        <div className="combined-item" key={combinedIndex} style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                             {item.type === 'lesson' && (
                                                                 <div className="lesson">
                                                                     <p style={{ textAlign: 'justify' }}><span style={{ color: '#f58d04', fontWeight: 'bold' }}>{combinedIndex + 1}.</span> Lesson: {item.name}</p>
@@ -667,7 +671,10 @@ const DetailCourse = () => {
                                                 }
                                                 {
                                                     filteredCombinedList.length === 0 && (
-                                                        <p>Empty.</p>
+                                                        <>
+                                                            <i class="fas fa-puzzle-piece fa-2x"></i>
+                                                            <p>Empty.</p>
+                                                        </>
                                                     )
                                                 }
                                             </div>
@@ -685,7 +692,7 @@ const DetailCourse = () => {
 
             </main>{/* End #main */}
             {/* ======= Cource Details Section ======= */}
-            <section id="course-details" className="course-details" style={{backgroundColor: '#fff'}}>
+            <section id="course-details" className="course-details" style={{ backgroundColor: '#fff' }}>
                 <div className="container-fluid" data-aos="fade-up">
                     <div className="row">
                         <>
@@ -701,13 +708,12 @@ const DetailCourse = () => {
                                                     <>
                                                         {/* <div className="mt-3 d-flex flex-row align-items-center p-3 form-color"> <img src="https://i.imgur.com/zQZSWrt.jpg" width={50} className="rounded-circle mr-2" /> <input type="text" className="form-control" placeholder="Enter your comment..." /> </div> */}
                                                         < div className="mt-2" >
-                                                            <div className="d-flex flex-row p-3"> <img src={feedback.learner.account.imageUrl} width={40} height={40} className="rounded-circle mr-3" />
+                                                            <div className="d-flex flex-row p-3"> <img src={feedback.learner?.account?.imageUrl} width={40} height={40} className="rounded-circle mr-3" />
                                                                 <div className="w-100">
                                                                     <div className="d-flex justify-content-between align-items-center">
-                                                                        <div className="d-flex flex-row align-items-center"> <span className="mr-2" style={{ fontWeight: 'bold' }}>{feedback.learner.account.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{feedback.createdDate}</small>
+                                                                        <div className="d-flex flex-row align-items-center"> <span className="mr-2" style={{ fontWeight: 'bold' }}>{feedback.learner?.account?.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{feedback.createdDate}</small>
                                                                     </div>
                                                                     <p className="text-justify comment-text mb-0" dangerouslySetInnerHTML={{ __html: feedback.feedbackContent }}></p>
-                                                                    <div className="d-flex flex-row user-feed"> <span className="wish"><i className="fa fa-heartbeat mr-2" />24</span> <span className="ml-3"><i className="fa fa-comments-o mr-2" />Reply</span> </div>
                                                                 </div>
                                                             </div>
 
@@ -718,7 +724,11 @@ const DetailCourse = () => {
                                             }
                                             {
                                                 feedbackList.length === 0 && (
-                                                    <p>No feedbacks yet.</p>
+                                                    <>
+                                                        <i class="fas fa-comments fa-2x"></i>
+                                                        <p>No feedbacks yet.</p>
+
+                                                    </>
                                                 )
                                             }
 
