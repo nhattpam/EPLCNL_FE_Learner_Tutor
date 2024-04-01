@@ -287,6 +287,8 @@ const Header = () => {
                 .updateAccount(account.id, account)
                 .then((res) => {
                     window.alert("Update Account Successfully");
+                    window.location.reload();
+
                 })
                 .catch((error) => {
                     console.log(error);
@@ -638,9 +640,9 @@ const Header = () => {
                                                             <th>Gender:</th>
                                                             <td>
                                                                 {account.gender ? (
-                                                                    <span className="badge label-table badge-success">Male</span>
-                                                                ) : (
                                                                     <span className="badge label-table badge-danger">Female</span>
+                                                                ) : (
+                                                                    <span className="badge label-table badge-success">Male</span>
                                                                 )}
                                                             </td>
                                                         </tr>

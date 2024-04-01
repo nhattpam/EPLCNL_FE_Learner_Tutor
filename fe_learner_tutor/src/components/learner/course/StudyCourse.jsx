@@ -112,8 +112,8 @@ const StudyCourse = () => {
                     learnerService
                         .getAllAssignmentAttemptByLearnerId(learnerId)
                         .then((res) => {
-                            console.log("Response data:", res.data); // Log the entire response data to inspect its structure
-                            console.log("List assignment attempts:", res.data.length); // Log the length of the assignment attempts
+                            // console.log("Response data:", res.data); // Log the entire response data to inspect its structure
+                            // console.log("List assignment attempts:", res.data.length); // Log the length of the assignment attempts
                             setAssignmentAttemptList(res.data);
 
 
@@ -150,8 +150,8 @@ const StudyCourse = () => {
                     learnerService
                         .getAllQuizAttemptByLearnerId(learnerId)
                         .then((res) => {
-                            console.log("Response data:", res.data); // Log the entire response data to inspect its structure
-                            console.log("List quiz attempts:", res.data.length); // Log the length of the assignment attempts
+                            // console.log("Response data:", res.data); // Log the entire response data to inspect its structure
+                            // console.log("List quiz attempts:", res.data.length); // Log the length of the assignment attempts
                             setQuizAttemptList(res.data);
 
 
@@ -282,7 +282,7 @@ const StudyCourse = () => {
                 const res = await assignmentAttemptService.getAllAssignmentAttemptNotGradeYetByAssignment(assignmentId, learnerId);
                 setNotReviewList(res.data.slice(0, 5));
                 res.data.forEach(element => {
-                    console.log(JSON.stringify(element));
+                    // console.log(JSON.stringify(element));
                 });
             } catch (error) {
                 console.log("Error fetching assignment attempts:", error);
@@ -379,7 +379,7 @@ const StudyCourse = () => {
             // const assignmentAttemptJsonParse = JSON.parse(assignmentAttemptJson);
 
             // console.log(assignmentAttemptJsonParse);
-            window.alert('Your assignment is submmited!');
+            window.alert('Your assignment is submited!');
             setShowForm(false);
             setShowTimer(false);
             setShowAttempts(true);
@@ -496,7 +496,7 @@ const StudyCourse = () => {
         quizService
             .getAllQuestionsByQuiz(selectedQuizId)
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 setQuestionList(res.data);
 
             })
@@ -511,7 +511,7 @@ const StudyCourse = () => {
             questionService
                 .getAllQuestionAnswersByQuestion(currentQuestion.id)
                 .then((res) => {
-                    console.log(res.data);
+                    // console.log(res.data);
                     setQuestionAnswerList(res.data);
                 })
                 .catch((error) => {
@@ -650,19 +650,24 @@ const StudyCourse = () => {
 
     const submitPeerReviews = async (e) => {
         e.preventDefault();
-
+    
         // Loop through all peer reviews and submit them
         await Promise.all(peerReviews.map(async (review) => {
-            await peerReviewService.savePeerReview(review);
+            console.log("Before saving peer review:", JSON.stringify(review)); // First console.log
+            try {
+                await peerReviewService.savePeerReview(review);
+                console.log("After saving peer review:",  JSON.stringify(review)); // Second console.log
+            } catch (error) {
+                console.error('Error saving peer review:', error);
+            }
         }));
-
-        window.alert("Thank you!");
+    
         // Clear the peer reviews array
         setPeerReviews([]);
         // Reload the page or perform any other necessary actions
         setShowAttempts(true);
     }
-
+    
     // Update peer reviews array instead of peer review state
     const handleGradeChange = (e, attemptId) => {
         const grade = e.target.value;
@@ -815,7 +820,7 @@ const StudyCourse = () => {
                                                             <div className='col-md-4' style={{ fontWeight: 'bold' }}>
                                                                 <div className='mb-1'>{attempt.learner?.account?.fullName}</div>
                                                                 <div style={{ /* your container styles */ }}>
-                                                                    <form onSubmit={submitPeerReviews}>
+                                                                    <form>
                                                                         &nbsp; <input type="radio" id="2" name={`grade-${attempt.id}`} defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => handleGradeChange(e, attempt.id)} />
                                                                         &nbsp; <label htmlFor="html">2</label><br />
                                                                         &nbsp; <input type="radio" id="4" name={`grade-${attempt.id}`} defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => handleGradeChange(e, attempt.id)} />
@@ -835,7 +840,7 @@ const StudyCourse = () => {
                                                         </div>
                                                     ))}
                                                     {notReviewYetList.length > 0 && (
-                                                        <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff',  borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews}>Send</button>
+                                                        <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews}>Send</button>
                                                     )}
                                                 </>
                                             )
@@ -936,7 +941,7 @@ const StudyCourse = () => {
                                                                 </>
 
                                                             ))}
-                                                                <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff',  borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews}>Send</button>
+                                                            <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews}>Send</button>
                                                         </>
                                                     )}
                                                 </>
