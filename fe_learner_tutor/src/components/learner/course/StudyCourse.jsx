@@ -280,7 +280,7 @@ const StudyCourse = () => {
                 setSelectedAssignment(resAss.data);
 
                 const res = await assignmentAttemptService.getAllAssignmentAttemptNotGradeYetByAssignment(assignmentId, learnerId);
-                setNotReviewList(res.data);
+                setNotReviewList(res.data.slice(0, 5));
                 res.data.forEach(element => {
                     console.log(JSON.stringify(element));
                 });
@@ -403,7 +403,7 @@ const StudyCourse = () => {
         assignmentService.getAllAssignmentAttemptByAssignmentId(selectedAssignmentId)
             .then((res) => {
 
-                const list = res.data.filter(attempt => attempt.learnerId !== learnerId);
+                const list = res.data.filter(attempt => attempt.learnerId !== learnerId).slice(0, 5);
                 const list2 = res.data.filter(attempt => attempt.learnerId === learnerId);
                 setAttemptList(list);
                 setAttemptList2(list2);
@@ -646,27 +646,46 @@ const StudyCourse = () => {
 
 
     //PEER REVIEW
-    const [peerReview, setPeerReview] = useState({
-        assignmentAttemptId: "",
-        learnerId: learnerId, //la thang dang dang nhap
-        grade: ""
+    const [peerReviews, setPeerReviews] = useState([]);
 
-    });
-    const submitPeerReview = async (e, assignmentAttemptId) => {
+    const submitPeerReviews = async (e) => {
         e.preventDefault();
 
-        peerReview.assignmentAttemptId = assignmentAttemptId;
+        // Loop through all peer reviews and submit them
+        await Promise.all(peerReviews.map(async (review) => {
+            await peerReviewService.savePeerReview(review);
+        }));
 
-        console.log(JSON.stringify(peerReview));
-
-        await peerReviewService.savePeerReview(peerReview)
-            .then((res) => {
-                window.alert("Thank you!")
-                // Reload the page
-                setShowAttempts(true);
-            })
-
+        window.alert("Thank you!");
+        // Clear the peer reviews array
+        setPeerReviews([]);
+        // Reload the page or perform any other necessary actions
+        setShowAttempts(true);
     }
+
+    // Update peer reviews array instead of peer review state
+    const handleGradeChange = (e, attemptId) => {
+        const grade = e.target.value;
+        const updatedPeerReviews = [...peerReviews];
+
+        // Find existing peer review for the attempt
+        const existingReviewIndex = updatedPeerReviews.findIndex(review => review.assignmentAttemptId === attemptId);
+
+        // If peer review already exists, update its grade; otherwise, create a new one
+        if (existingReviewIndex !== -1) {
+            updatedPeerReviews[existingReviewIndex].grade = grade;
+        } else {
+            updatedPeerReviews.push({
+                assignmentAttemptId: attemptId,
+                learnerId: learnerId,
+                grade: grade
+            });
+        }
+
+        // Update the peer reviews array state
+        setPeerReviews(updatedPeerReviews);
+    }
+
 
 
 
@@ -675,7 +694,7 @@ const StudyCourse = () => {
     return (
         <>
             {/* <Header /> */}
-            <main  style={{backgroundColor: '#fff'}}>
+            <main style={{ backgroundColor: '#fff' }}>
 
                 <div className="breadcrumbs" style={{ marginTop: '-30px', paddingBottom: '10px', position: 'fixed', top: 0, width: '100%', zIndex: 999, display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingLeft: '20px', paddingRight: '20px' }} id='nav-fixed'>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -792,41 +811,36 @@ const StudyCourse = () => {
                                             showNotReviewYetList && (
                                                 <>
                                                     {notReviewYetList.map((attempt, index) => (
-                                                        <>
-                                                            <div className='row'>
-                                                                <div className='col-md-4' style={{ fontWeight: 'bold' }}>
-                                                                    <div className='mb-1'>
-                                                                        {attempt.learner?.account?.fullName}
-
-                                                                    </div>
-                                                                    <div style={{ /* your container styles */ }}>
-                                                                        <form onSubmit={(e) => submitPeerReview(e, attempt.id)}>
-                                                                            &nbsp; <input type="radio" id="2" name="grade" defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                            &nbsp; <label htmlFor="html">2</label><br />
-                                                                            &nbsp; <input type="radio" id="4" name="grade" defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                            &nbsp; <label htmlFor="css">4</label><br />
-                                                                            &nbsp; <input type="radio" id="6" name="grade" defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                            &nbsp; <label htmlFor="css">6</label><br />
-                                                                            &nbsp; <input type="radio" id="8" name="grade" defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                            &nbsp; <label htmlFor="css">8</label><br />
-                                                                            &nbsp; <input type="radio" id="10" name="grade" defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
-                                                                            &nbsp; <label htmlFor="css">10</label><br />
-                                                                            <input type='submit' className="btn btn-primary"
-                                                                                style={{ backgroundColor: '#f58d04', color: '#fff' }} value='Send' />
-                                                                        </form>
-                                                                    </div>
-
-                                                                </div>
-                                                                <div className='col-md-8 card'>
-                                                                    <div dangerouslySetInnerHTML={{ __html: attempt.answerText }}></div>
+                                                        <div className='row' key={index}>
+                                                            <div className='col-md-4' style={{ fontWeight: 'bold' }}>
+                                                                <div className='mb-1'>{attempt.learner?.account?.fullName}</div>
+                                                                <div style={{ /* your container styles */ }}>
+                                                                    <form onSubmit={submitPeerReviews}>
+                                                                        &nbsp; <input type="radio" id="2" name={`grade-${attempt.id}`} defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                        &nbsp; <label htmlFor="html">2</label><br />
+                                                                        &nbsp; <input type="radio" id="4" name={`grade-${attempt.id}`} defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                        &nbsp; <label htmlFor="css">4</label><br />
+                                                                        &nbsp; <input type="radio" id="6" name={`grade-${attempt.id}`} defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                        &nbsp; <label htmlFor="css">6</label><br />
+                                                                        &nbsp; <input type="radio" id="8" name={`grade-${attempt.id}`} defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                        &nbsp; <label htmlFor="css">8</label><br />
+                                                                        &nbsp; <input type="radio" id="10" name={`grade-${attempt.id}`} defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                        &nbsp; <label htmlFor="css">10</label><br />
+                                                                    </form>
                                                                 </div>
                                                             </div>
-                                                        </>
-
+                                                            <div className='col-md-8 card'>
+                                                                <div dangerouslySetInnerHTML={{ __html: attempt.answerText }}></div>
+                                                            </div>
+                                                        </div>
                                                     ))}
+                                                    {notReviewYetList.length > 0 && (
+                                                        <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff',  borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews}>Send</button>
+                                                    )}
                                                 </>
                                             )
                                         }
+
                                         {
                                             attemptList2 && attemptList2.length === 0 && (
                                                 <>
@@ -842,7 +856,7 @@ const StudyCourse = () => {
                                                         !showAttempts && (
                                                             <button
                                                                 className="btn btn-primary"
-                                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`  }}
+                                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
                                                                 onClick={handleStartAssignment}
                                                             >
                                                                 Start Assignment
@@ -882,7 +896,7 @@ const StudyCourse = () => {
                                                             </div>
                                                             <button
                                                                 className="btn btn-primary"
-                                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`  }}
+                                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
                                                             >
                                                                 Submit
                                                             </button>
@@ -900,19 +914,17 @@ const StudyCourse = () => {
 
                                                                             </div>
                                                                             <div style={{ /* your container styles */ }}>
-                                                                                <form onSubmit={(e) => submitPeerReview(e, attempt.id)}>
-                                                                                    &nbsp; <input type="radio" id="2" name="grade" defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                <form onSubmit={submitPeerReviews}>
+                                                                                    &nbsp; <input type="radio" id="2" name={`grade-${attempt.id}`} defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => handleGradeChange(e, attempt.id)} />
                                                                                     &nbsp; <label htmlFor="html">2</label><br />
-                                                                                    &nbsp; <input type="radio" id="4" name="grade" defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                    &nbsp; <input type="radio" id="4" name={`grade-${attempt.id}`} defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => handleGradeChange(e, attempt.id)} />
                                                                                     &nbsp; <label htmlFor="css">4</label><br />
-                                                                                    &nbsp; <input type="radio" id="6" name="grade" defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                    &nbsp; <input type="radio" id="6" name={`grade-${attempt.id}`} defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => handleGradeChange(e, attempt.id)} />
                                                                                     &nbsp; <label htmlFor="css">6</label><br />
-                                                                                    &nbsp; <input type="radio" id="8" name="grade" defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                    &nbsp; <input type="radio" id="8" name={`grade-${attempt.id}`} defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => handleGradeChange(e, attempt.id)} />
                                                                                     &nbsp; <label htmlFor="css">8</label><br />
-                                                                                    &nbsp; <input type="radio" id="10" name="grade" defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => setPeerReview({ ...peerReview, grade: e.target.value })} />
+                                                                                    &nbsp; <input type="radio" id="10" name={`grade-${attempt.id}`} defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => handleGradeChange(e, attempt.id)} />
                                                                                     &nbsp; <label htmlFor="css">10</label><br />
-                                                                                    <input type='submit' className="btn btn-primary"
-                                                                                        style={{ backgroundColor: '#f58d04', color: '#fff' }} value='Send' />
                                                                                 </form>
                                                                             </div>
 
@@ -924,6 +936,7 @@ const StudyCourse = () => {
                                                                 </>
 
                                                             ))}
+                                                                <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff',  borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews}>Send</button>
                                                         </>
                                                     )}
                                                 </>
@@ -950,7 +963,7 @@ const StudyCourse = () => {
                                         {!quizStarted && (
                                             <button
                                                 className="btn btn-primary"
-                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`  }}
+                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
                                                 onClick={handleStartQuiz}
                                             >
                                                 Start Quiz
@@ -1084,7 +1097,7 @@ const StudyCourse = () => {
                                                 </div>
                                                 <button
                                                     className="btn btn-primary" onClick={() => handleStartQuiz(selectedQuiz.id)}
-                                                    style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`  }}
+                                                    style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
                                                 >
                                                     Re-Attempt Quiz
                                                 </button>

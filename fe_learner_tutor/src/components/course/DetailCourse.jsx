@@ -614,7 +614,7 @@ const DetailCourse = () => {
                                                     <div>
 
                                                         <div>
-                                                            <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
+                                                            <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson?.classHours}</p>
 
                                                             <ul>
                                                                 {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
