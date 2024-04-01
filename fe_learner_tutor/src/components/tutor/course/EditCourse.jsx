@@ -8,6 +8,8 @@ import moduleService from '../../../services/module.service';
 import ReactQuill from 'react-quill';
 import certificateService from '../../../services/certificate.service';
 import certificateCourseService from '../../../services/certificate-course.service';
+import Dropzone from 'react-dropzone';
+import lessonMaterialService from '../../../services/material.service';
 
 const EditCourse = () => {
 
@@ -28,11 +30,6 @@ const EditCourse = () => {
         classModules: []
     });
 
-    const [certificate, setCertificate] = useState({
-        name: "",
-        courseId: "",
-        description: ""
-    });
 
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
@@ -109,34 +106,62 @@ const EditCourse = () => {
         navigate(`/tutor/courses/edit-class-module/${moduleId}`);
     };
 
+    const [file, setFile] = useState(null);
+    const [pdfPreview, setPdfPreview] = useState("");
 
-    //certificate
-    const handleCertificateChange = (e) => {
-        const value = e.target.value;
-        setCertificate({ ...certificate, [e.target.name]: value });
+
+    const handleFileDrop = (acceptedFiles) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            setFile(acceptedFiles[0]);
+
+            // Set the PDF preview URL
+            const previewUrl = URL.createObjectURL(acceptedFiles[0]);
+            setPdfPreview(previewUrl);
+        }
     };
 
-    const handleDescriptionChange = (value) => {
-        setCertificate({ ...certificate, description: value });
-    };
+    const [certificate, setCertificate] = useState({
+        name: "",
+        courseId: "",
+        description: ""
+    });
 
 
     const submitCertificate = async (e) => {
         e.preventDefault();
 
         try {
-            certificate.name = `Thanks for your time, this is certificate for course ${course.name}`;
-            certificate.courseId = courseId;
-            console.log(JSON.stringify(certificate))
-            const responseCertificate = await certificateService.saveCertificate(certificate);
-            if (responseCertificate.status == 201) {
-                window.alert("Create Certificate Successfully!")
+            // Save account
+            let description = certificate.description; // Keep the existing imageUrl if available
+
+            if (file) {
+                // Upload image and get the link
+                const materialData = new FormData();
+                materialData.append('file', file);
+                const materialResponse = await lessonMaterialService.uploadMaterial(materialData);
+
+                // Update the imageUrl with the link obtained from the API
+                description = materialResponse.data;
             }
 
+            const certificateData = {
+                name: `Thanks for your time, this is certificate for course ${course.name}`,
+                courseId: courseId,
+                description: description
+            }; // Create a new object with updated imageUrl
+
+            console.log(JSON.stringify(certificateData))
+
+            const responseCertificate = await certificateService.saveCertificate(certificateData);
+            if (responseCertificate.status === 201) {
+                window.alert("Create Certificate Successfully!");
+                // Optionally, you can navigate to another page or perform any other action upon successful creation
+            }
         } catch (error) {
             console.log(error);
         }
     };
+
 
     return (
         <>
@@ -293,6 +318,14 @@ const EditCourse = () => {
                                     <div className="form-group mt-4">
                                         <h5>Certificate:</h5>
 
+                                        {
+                                            course.certificate?.description != null && (
+                                                <embed src={course.certificate?.description} type="application/pdf" width="100%" height="500px" />
+
+                                            )
+                                        }
+
+
                                         <form
                                             method="post"
                                             data-parsley-validate
@@ -300,27 +333,33 @@ const EditCourse = () => {
                                         >
                                             <div className="card">
                                                 <div className="card-body">
+
+                                                    <input type='hidden' value={`Thanks for your time, this is certificate for course ${course.name}`} name='name' />
+                                                    <input type='hidden' value={courseId} name='courseId' />
                                                     <div className="form-group">
-                                                        <ReactQuill
-                                                            value={certificate.description}
-                                                            onChange={handleDescriptionChange}
-                                                            style={{ height: "300px" }}
-                                                            modules={{
-                                                                toolbar: [
-                                                                    [{ header: [1, 2, false] }],
-                                                                    ['bold', 'italic', 'underline', 'strike'],
-                                                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
-                                                                    [{ 'direction': 'rtl' }],
-                                                                    [{ 'align': [] }],
-                                                                    ['link', 'image', 'video'],
-                                                                    ['code-block'],
-                                                                    [{ 'color': [] }, { 'background': [] }],
-                                                                    ['clean']
-                                                                ]
-                                                            }}
-                                                            theme="snow"
-                                                        />
+                                                        <Dropzone
+                                                            onDrop={handleFileDrop}
+                                                            accept="application/pdf" multiple={false}
+                                                            maxSize={5000000} // Maximum file size (5MB)
+                                                        >
+                                                            {({ getRootProps, getInputProps }) => (
+                                                                <div {...getRootProps()} className="fallback">
+                                                                    <input {...getInputProps()} />
+                                                                    <div className="dz-message needsclick">
+                                                                        <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                        <h3>Drop files here or click to upload.</h3>
+                                                                    </div>
+                                                                    {pdfPreview && (
+                                                                        <div>
+                                                                            {/* PDF Preview */}
+                                                                            <embed src={pdfPreview} type="application/pdf" width="100%" height="500px" />
+                                                                        </div>
+                                                                    )}
+
+                                                                </div>
+                                                            )}
+                                                        </Dropzone>
+                                                        <div className="dropzone-previews mt-3" id="file-previews" />
                                                     </div>
 
                                                     <div className="form-group mb-0">
