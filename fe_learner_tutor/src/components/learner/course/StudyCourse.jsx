@@ -827,13 +827,13 @@ const StudyCourse = () => {
                                         {
                                             showNotReviewYetList && (
                                                 <>
+                                                    <div className='container'>
+                                                        <h4 style={{ textAlign: 'left' }}>Review for another students:</h4>
 
+                                                    </div>
                                                     {notReviewYetList.map((attempt, index) => (
                                                         <>
-                                                            <div className='container'>
-                                                                <h4 style={{ textAlign: 'left' }}>Review for another students:</h4>
 
-                                                            </div>
 
                                                             <div className='row' key={index}>
                                                                 <div className='col-md-4' style={{ fontWeight: 'bold' }}>
