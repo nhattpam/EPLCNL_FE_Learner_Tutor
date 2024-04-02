@@ -658,6 +658,7 @@ const StudyCourse = () => {
             try {
                 await peerReviewService.savePeerReview(review);
                 console.log("After saving peer review:", JSON.stringify(review)); // Second console.log
+                window.alert("Thank you!");
             } catch (error) {
                 console.error('Error saving peer review:', error);
             }
@@ -796,8 +797,12 @@ const StudyCourse = () => {
                                     <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
                                         <div className="tab-pane show active" id="tab-content-1">
                                             <section id="courses" className="courses">
+                                                <div className='container'>
+                                                    <h4 style={{ textAlign: 'left' }}>Question:</h4>
+
+                                                </div>
                                                 <div className="card ml-1">
-                                                    <div className="row" style={{ textAlign: 'left' }}>
+                                                    <div className="container" style={{ textAlign: 'left' }}>
                                                         <div dangerouslySetInnerHTML={{ __html: selectedAssignment.questionText }}></div>
                                                     </div>
                                                 </div>
@@ -809,36 +814,53 @@ const StudyCourse = () => {
                                                     <div>
                                                         Grade: <span style={{ fontWeight: 'bold', color: '#f58d04' }}>{myAssignmentAttempt.totalGrade}</span>
                                                     </div>
-                                                    <div className='card' dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
+                                                    <div className='container'>
+                                                        <h4 style={{ textAlign: 'left' }}>My Answer:</h4>
+                                                    </div>
+                                                    <div className='container ml-1'>
+                                                        <div className='card' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
+
+                                                    </div>
                                                 </>
                                             )
                                         }
                                         {
                                             showNotReviewYetList && (
                                                 <>
+
                                                     {notReviewYetList.map((attempt, index) => (
-                                                        <div className='row' key={index}>
-                                                            <div className='col-md-4' style={{ fontWeight: 'bold' }}>
-                                                                <div className='mb-1'>{attempt.learner?.account?.fullName}</div>
-                                                                <div style={{ /* your container styles */ }}>
-                                                                    <form>
-                                                                        &nbsp; <input type="radio" id="2" name={`grade-${attempt.id}`} defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => handleGradeChange(e, attempt.id)} />
-                                                                        &nbsp; <label htmlFor="html">2</label><br />
-                                                                        &nbsp; <input type="radio" id="4" name={`grade-${attempt.id}`} defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => handleGradeChange(e, attempt.id)} />
-                                                                        &nbsp; <label htmlFor="css">4</label><br />
-                                                                        &nbsp; <input type="radio" id="6" name={`grade-${attempt.id}`} defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => handleGradeChange(e, attempt.id)} />
-                                                                        &nbsp; <label htmlFor="css">6</label><br />
-                                                                        &nbsp; <input type="radio" id="8" name={`grade-${attempt.id}`} defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => handleGradeChange(e, attempt.id)} />
-                                                                        &nbsp; <label htmlFor="css">8</label><br />
-                                                                        &nbsp; <input type="radio" id="10" name={`grade-${attempt.id}`} defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => handleGradeChange(e, attempt.id)} />
-                                                                        &nbsp; <label htmlFor="css">10</label><br />
-                                                                    </form>
+                                                        <>
+                                                            <div className='container'>
+                                                                <h4 style={{ textAlign: 'left' }}>Review for another students:</h4>
+
+                                                            </div>
+
+                                                            <div className='row' key={index}>
+                                                                <div className='col-md-4' style={{ fontWeight: 'bold' }}>
+                                                                    <div className='mb-1' style={{ color: '#f58d04' }}>{attempt.learner?.account?.fullName}</div>
+                                                                    <div style={{ /* your container styles */ }}>
+                                                                        <form>
+                                                                            &nbsp; <input type="radio" id="2" name={`grade-${attempt.id}`} defaultValue="2" style={{ display: 'inline-block' }} value="2" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                            &nbsp; <label htmlFor="html">2</label><br />
+                                                                            &nbsp; <input type="radio" id="4" name={`grade-${attempt.id}`} defaultValue="4" style={{ display: 'inline-block' }} value="4" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                            &nbsp; <label htmlFor="css">4</label><br />
+                                                                            &nbsp; <input type="radio" id="6" name={`grade-${attempt.id}`} defaultValue="6" style={{ display: 'inline-block' }} value="6" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                            &nbsp; <label htmlFor="css">6</label><br />
+                                                                            &nbsp; <input type="radio" id="8" name={`grade-${attempt.id}`} defaultValue="8" style={{ display: 'inline-block' }} value="8" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                            &nbsp; <label htmlFor="css">8</label><br />
+                                                                            &nbsp; <input type="radio" id="10" name={`grade-${attempt.id}`} defaultValue="10" style={{ display: 'inline-block' }} value="10" onChange={(e) => handleGradeChange(e, attempt.id)} />
+                                                                            &nbsp; <label htmlFor="css">10</label><br />
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
+                                                                <div className='col-md-8 card'>
+                                                                    <div style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: attempt.answerText }}></div>
+                                                                </div>
+                                                                {/* Add a line below each item */}
+                                                                {index !== notReviewYetList.length - 1 && <hr style={{ margin: '20px 0', borderWidth: '20px' }} />}
                                                             </div>
-                                                            <div className='col-md-8 card'>
-                                                                <div dangerouslySetInnerHTML={{ __html: attempt.answerText }}></div>
-                                                            </div>
-                                                        </div>
+                                                        </>
+
                                                     ))}
                                                     {notReviewYetList.length > 0 && (
                                                         <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews}>Send</button>
@@ -909,13 +931,17 @@ const StudyCourse = () => {
                                                         </form>
                                                     )}
                                                     {showAttempts && (
+
                                                         <>
-                                                            <h3>Review for another students:</h3>
+                                                            <div className='container'>
+                                                                <h4 style={{ textAlign: 'left' }}>Review for another students:</h4>
+
+                                                            </div>
                                                             {attemptList.map((attempt, index) => (
                                                                 <>
                                                                     <div className='row'>
                                                                         <div className='col-md-4' style={{ fontWeight: 'bold' }}>
-                                                                            <div className='mb-1'>
+                                                                            <div className='mb-1' style={{ color: '#f58d04' }}>
                                                                                 {attempt.learner?.account?.fullName}
 
                                                                             </div>
@@ -938,6 +964,8 @@ const StudyCourse = () => {
                                                                         <div className='col-md-8 card'>
                                                                             <div dangerouslySetInnerHTML={{ __html: attempt.answerText }}></div>
                                                                         </div>
+                                                                        {index !== notReviewYetList.length - 1 && <hr style={{ margin: '20px 0', borderWidth: '20px' }} />}
+
                                                                     </div>
                                                                 </>
 
