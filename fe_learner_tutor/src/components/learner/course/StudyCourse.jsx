@@ -120,11 +120,12 @@ const StudyCourse = () => {
                             if (res.data.length > 0) {
                                 res.data.forEach(assignmentAttempt => {
                                     if (assignmentAttempt.assignmentId === assignment.id) {
-                                        if (assignmentAttempt.totalGrade >= assignment.gradeToPass) {
-                                            console.log("TOTAL: " + assignmentAttempt.totalGrade);
-                                            console.log("PASS: " + assignment.gradeToPass);
-                                            setIsDoneAssignment(true);
-                                        }
+                                        // if (assignmentAttempt.totalGrade >= assignment.gradeToPass) {
+                                        //     console.log("TOTAL: " + assignmentAttempt.totalGrade);
+                                        //     console.log("PASS: " + assignment.gradeToPass);
+                                        //     setIsDoneAssignment(true);
+                                        // }
+                                        console.log("assignmentID: " + assignment.id)
                                     } else {
                                         console.log("NOT FOUND")
                                     }
@@ -650,24 +651,24 @@ const StudyCourse = () => {
 
     const submitPeerReviews = async (e) => {
         e.preventDefault();
-    
+
         // Loop through all peer reviews and submit them
         await Promise.all(peerReviews.map(async (review) => {
             console.log("Before saving peer review:", JSON.stringify(review)); // First console.log
             try {
                 await peerReviewService.savePeerReview(review);
-                console.log("After saving peer review:",  JSON.stringify(review)); // Second console.log
+                console.log("After saving peer review:", JSON.stringify(review)); // Second console.log
             } catch (error) {
                 console.error('Error saving peer review:', error);
             }
         }));
-    
+
         // Clear the peer reviews array
         setPeerReviews([]);
         // Reload the page or perform any other necessary actions
         setShowAttempts(true);
     }
-    
+
     // Update peer reviews array instead of peer review state
     const handleGradeChange = (e, attemptId) => {
         const grade = e.target.value;
@@ -1150,9 +1151,19 @@ const StudyCourse = () => {
                                                         <div className="card-body" >{moduleContent.lessons.length + index + 1}. Question: <span className='truncate-text' dangerouslySetInnerHTML={{ __html: assignment.questionText }} ></span></div>
                                                         <div className="card-body" style={{ marginTop: '-40px' }}>
                                                             <i className="fab fa-wpforms"></i> {assignment.deadline} mins
-                                                            {isDoneAssignment && (
-                                                                <i class="fas fa-check-circle text-success ml-1"></i>
-                                                            )}
+
+                                                            {
+                                                                assignmentAttemptList.length > 0 && assignmentAttemptList.map((attempt) => {
+                                                                    if (attempt.assignmentId === assignment.id) {
+                                                                        if (attempt.totalGrade >= assignment.gradeToPass) {
+                                                                            return <i className="fas fa-check-circle text-success ml-1"></i>;
+                                                                        }
+                                                                    } else {
+                                                                        return null; // or any other JSX element if needed
+                                                                    }
+                                                                })
+                                                            }
+
                                                         </div>
                                                     </div>
                                                 ))}
