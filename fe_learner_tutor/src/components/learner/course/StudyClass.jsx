@@ -364,16 +364,16 @@ const StudyClass = () => {
       {/* <Header /> */}
       <main >
 
-      <div className="breadcrumbs" style={{ marginTop: '-30px', paddingBottom: '10px', position: 'fixed', top: 0, width: '100%', zIndex: 999, display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingLeft: '20px', paddingRight: '20px' }} id='nav-fixed'>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={process.env.PUBLIC_URL + '/meowlish_icon.png'} alt="MeowLish" style={{ width: '30px', marginRight: '5px', paddingTop: '10px' }} />
-                        <Link to="/home" style={{ color: '#fff', textDecoration: 'none', fontSize: '18px', fontWeight: 'bold', marginRight: '10px' }}>MeowLish</Link><span style={{ color: '#fff' }} className='mr-2'>|</span>
-                        <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{course.name}</h4>
-                    </div>
-                    <div>
-                        <Link to={`/my-learning/${learnerId}`} style={{ color: 'white' }}><i className="fas fa-sign-out-alt"></i></Link>
-                    </div>
-                </div>
+        <div className="breadcrumbs" style={{ marginTop: '-30px', paddingBottom: '10px', position: 'fixed', top: 0, width: '100%', zIndex: 999, display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingLeft: '20px', paddingRight: '20px' }} id='nav-fixed'>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={process.env.PUBLIC_URL + '/meowlish_icon.png'} alt="MeowLish" style={{ width: '30px', marginRight: '5px', paddingTop: '10px' }} />
+            <Link to="/home" style={{ color: '#fff', textDecoration: 'none', fontSize: '18px', fontWeight: 'bold', marginRight: '10px' }}>MeowLish</Link><span style={{ color: '#fff' }} className='mr-2'>|</span>
+            <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{course.name}</h4>
+          </div>
+          <div>
+            <Link to={`/my-learning/${learnerId}`} style={{ color: 'white' }}><i className="fas fa-sign-out-alt"></i></Link>
+          </div>
+        </div>
 
 
         <section id="courses" className="courses" style={{ marginTop: '-10px' }}>
@@ -403,7 +403,7 @@ const StudyClass = () => {
                         <div className="container">
                           <div key={selectedLesson.id}>
                             {/* <div dangerouslySetInnerHTML={{ __html: selectedLesson.reading }}></div> */}
-                            <a href={selectedLesson.classUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">Join the class</a>
+                            <a href={selectedLesson.classUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}>Join the class</a>
                           </div>
                           <img src={process.env.PUBLIC_URL + '/google_meet.jpg'} alt="google meet" style={{ width: '100%', paddingTop: '10px' }} />
 
@@ -545,7 +545,7 @@ const StudyClass = () => {
                               </div>
                               <button
                                 className="btn btn-primary" onClick={() => handleStartQuiz(selectedQuiz.id)}
-                                style={{ backgroundColor: '#f58d04', color: '#fff' }}
+                                style={{ backgroundColor: '#f58d04', color: '#fff' , borderRadius: '50px', padding: `8px 25px`}}
                               >
                                 Re-Attempt Quiz
                               </button>
@@ -590,7 +590,11 @@ const StudyClass = () => {
                               }
                               {
                                 classTopicList.length === 0 && (
-                                  <p>No topics found.</p>
+                                  <>
+                                    <i class="fa-solid fa-tags fa-2x"></i>
+                                    <p>No topics found.</p>
+
+                                  </>
                                 )
                               }
 
@@ -630,9 +634,9 @@ const StudyClass = () => {
                       </div>
                     </div>
                     {selectedModule && selectedModule.id === module.id && expandedModules.includes(module.id) && (
-                      <div className="card-content" onClick={() => handleLessonClick(selectedModule.classLesson.id)}>
+                      <div className="card-content" onClick={() => handleLessonClick(selectedModule.classLesson?.id)}>
                         <div key={`lesson_${index}`} className="card" style={{ marginBottom: '5px' }}>
-                          <div className="card-body"> <span style={{ fontWeight: 'bold', color: '#f58d04' }}>Time:</span> {selectedModule.classLesson.classHours}</div>
+                          <div className="card-body"> <span style={{ fontWeight: 'bold', color: '#f58d04' }}>Time:</span> {selectedModule.classLesson?.classHours}</div>
                           <div className="card-body" style={{ marginTop: '-40px' }}>
                             <span className="badge label-table badge-success mr-2"
                             > <i className="fas fa-file-video"></i> Join Class</span>
