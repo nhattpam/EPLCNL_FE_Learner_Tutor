@@ -65,7 +65,7 @@ const SignUp = () => {
     return isValid;
   };
 
- 
+
 
   const submitAccount = async (e) => {
     e.preventDefault();
@@ -83,6 +83,14 @@ const SignUp = () => {
       try {
         account.roleId = roleId;
         console.log("this is a cccc: " + JSON.stringify(account))
+        // Check if email already exists
+        const accountList = await accountService.getAllAccount();
+        const emailExists = accountList.data.some(acc => acc.email === account.email);
+        if (emailExists) {
+          window.alert("Email is already taken, please try another email!");
+          console.log("EMAIL is taken")
+          return; // Stop further execution
+        }
         const res = await accountService.saveAccount(account);
         console.log("Account created:", res.data);
 
@@ -111,12 +119,12 @@ const SignUp = () => {
         } else if (document.getElementById("tutor").checked) {
           tutor.accountId = res.data.id;
           const tutorRes = await tutorService.saveTutor(tutor);
-          setPaperWork(prevState => ({ ...prevState, tutorId: tutorRes.data.  id })); // Update tutorId in paperWork
+          setPaperWork(prevState => ({ ...prevState, tutorId: tutorRes.data.id })); // Update tutorId in paperWork
           setTutor(tutorRes.data);
-        
+
           setShowQualificationModal(true);
         }
-        
+
 
 
       } catch (error) {
@@ -130,130 +138,130 @@ const SignUp = () => {
     }
   };
 
-   //qualification 
-   const [showQualificationModal, setShowQualificationModal] = useState(false);
-   const openQualificationModal = () => {
-     setShowQualificationModal(true);
- 
-   };
- 
-   const closeQualificationModal = () => {
-     setShowQualificationModal(false);
-     setMsg("Thanks for joining us. MeowLish will contact you soon!");
-     setShowNotification(true);
+  //qualification 
+  const [showQualificationModal, setShowQualificationModal] = useState(false);
+  const openQualificationModal = () => {
+    setShowQualificationModal(true);
 
-     // Reset form fields
-     setAccount({
-       email: "",
-       password: "",
-       fullName: "",
-       phoneNumber: "",
-       roleId: "",
-       isActive: ""
-     });
-     setErrors({}); // Clear any previous errors
+  };
 
-     setTimeout(() => {
-       setShowNotification(false);
-     }, 5000);
-   };
- 
-   const [paperWork, setPaperWork] = useState({
-     paperWorkUrl: "",
-     paperWorkTypeId: "",
-     tutorId: "",
-   });
- 
-   const [paperWorkList, setPaperWorkList] = useState([]);
-   const [paperWorkTypeList, setPaperWorkTypeList] = useState([]);
- 
-   useEffect(() => {
-     paperWorkTypeService
-       .getAllPaperWorkType()
-       .then((res) => {
-         setPaperWorkTypeList(res.data);
-       })
-       .catch((error) => {
-         console.log(error);
-       });
-   }, []);
- 
- 
-   const [file, setFile] = useState(null);
-   const [pdfPreview, setPdfPreview] = useState("");
- 
- 
-   const handleFileDrop = (acceptedFiles) => {
-     if (acceptedFiles && acceptedFiles.length > 0) {
-       setFile(acceptedFiles[0]);
- 
-       // Set the PDF preview URL
-       const previewUrl = URL.createObjectURL(acceptedFiles[0]);
-       setPdfPreview(previewUrl);
-     }
-   };
- 
-   const submitPaperWork = async (e) => {
-     e.preventDefault();
- 
-     try {
-       // Save account
-       let paperWorkUrl = paperWork.paperWorkUrl; // Keep the existing imageUrl if available
- 
-       if (file) {
-         // Upload image and get the link
-         const paperWorkData = new FormData();
-         paperWorkData.append('file', file);
- 
-         const paperWorkResponse = await paperWorkService.uploadMaterial(paperWorkData);
- 
-         // Update the imageUrl with the link obtained from the API
-         paperWorkUrl = paperWorkResponse.data;
- 
-         // Log the imageUrl after updating
-         // console.log("this is url: " + materialUrl);
-       }
- 
-       const paperWorkData = { ...paperWork, paperWorkUrl }; // Create a new object with updated imageUrl
- 
- 
-       // Save account
-       const paperWorklResponse = await paperWorkService.savePaperWork(paperWorkData);
- 
-       // Fetch the updated list of paperwork
-       tutorService.getAllPaperWorksByTutor(tutor.id)
-         .then((res) => {
-           setPaperWorkList(res.data);
-           // window.alert("Upload successfully");
-         })
-         .catch((error) => {
-           console.log(error);
-         });
-       // console.log(courseResponse.data);
-       const paperWorkJson = JSON.stringify(paperWorklResponse.data);
- 
-       const paperWorkJsonParse = JSON.parse(paperWorkJson);
- 
- 
-     } catch (error) {
-       console.log(error);
-     }
-   };
- 
-   //delete paperWork
-   const deletePaperWork = async (id) => {
-     await paperWorkService.deletePaperWorkById(id);
- 
-     // Fetch the updated list of paperwork
-     tutorService.getAllPaperWorksByTutor(tutor.id)
-       .then((res) => {
-         setPaperWorkList(res.data);
-       })
-       .catch((error) => {
-         console.log(error);
-       });
-   }
- 
+  const closeQualificationModal = () => {
+    setShowQualificationModal(false);
+    setMsg("Thanks for joining us. MeowLish will contact you soon!");
+    setShowNotification(true);
+
+    // Reset form fields
+    setAccount({
+      email: "",
+      password: "",
+      fullName: "",
+      phoneNumber: "",
+      roleId: "",
+      isActive: ""
+    });
+    setErrors({}); // Clear any previous errors
+
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 5000);
+  };
+
+  const [paperWork, setPaperWork] = useState({
+    paperWorkUrl: "",
+    paperWorkTypeId: "",
+    tutorId: "",
+  });
+
+  const [paperWorkList, setPaperWorkList] = useState([]);
+  const [paperWorkTypeList, setPaperWorkTypeList] = useState([]);
+
+  useEffect(() => {
+    paperWorkTypeService
+      .getAllPaperWorkType()
+      .then((res) => {
+        setPaperWorkTypeList(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+
+  const [file, setFile] = useState(null);
+  const [pdfPreview, setPdfPreview] = useState("");
+
+
+  const handleFileDrop = (acceptedFiles) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+
+      // Set the PDF preview URL
+      const previewUrl = URL.createObjectURL(acceptedFiles[0]);
+      setPdfPreview(previewUrl);
+    }
+  };
+
+  const submitPaperWork = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Save account
+      let paperWorkUrl = paperWork.paperWorkUrl; // Keep the existing imageUrl if available
+
+      if (file) {
+        // Upload image and get the link
+        const paperWorkData = new FormData();
+        paperWorkData.append('file', file);
+
+        const paperWorkResponse = await paperWorkService.uploadMaterial(paperWorkData);
+
+        // Update the imageUrl with the link obtained from the API
+        paperWorkUrl = paperWorkResponse.data;
+
+        // Log the imageUrl after updating
+        // console.log("this is url: " + materialUrl);
+      }
+
+      const paperWorkData = { ...paperWork, paperWorkUrl }; // Create a new object with updated imageUrl
+
+
+      // Save account
+      const paperWorklResponse = await paperWorkService.savePaperWork(paperWorkData);
+
+      // Fetch the updated list of paperwork
+      tutorService.getAllPaperWorksByTutor(tutor.id)
+        .then((res) => {
+          setPaperWorkList(res.data);
+          // window.alert("Upload successfully");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      // console.log(courseResponse.data);
+      const paperWorkJson = JSON.stringify(paperWorklResponse.data);
+
+      const paperWorkJsonParse = JSON.parse(paperWorkJson);
+
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //delete paperWork
+  const deletePaperWork = async (id) => {
+    await paperWorkService.deletePaperWorkById(id);
+
+    // Fetch the updated list of paperwork
+    tutorService.getAllPaperWorksByTutor(tutor.id)
+      .then((res) => {
+        setPaperWorkList(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
 
 
 
@@ -273,21 +281,29 @@ const SignUp = () => {
                   <div className="form-floating mb-3">
                     <input type="text" className={`form-control ${errors.fullName ? 'is-invalid' : ''
                       }`}
-                      id="fullName" placeholder="Xin chao" value={account.fullName} onChange={(e) => handleChange(e)} name='fullName' style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop: `20px`}}/>
+                      id="fullName" placeholder="Xin chao" value={account.fullName}
+                      onChange={(e) => handleChange(e)} name='fullName'
+                      style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop: `20px` }} required />
                     <label htmlFor="floatingInput">Full name</label>
                   </div>
                   <div className="form-floating mb-3">
                     <input type="number" className={`form-control ${errors.phoneNumber ? 'is-invalid' : ''
-                      }`} id="phoneNumber" placeholder="024545" value={account.phoneNumber} onChange={(e) => handleChange(e)} name='phoneNumber' style={{ borderRadius: '50px', padding: `8px 25px` , paddingTop: `20px`}}/>
+                      }`} id="phoneNumber" placeholder="024545" value={account.phoneNumber}
+                      onChange={(e) => handleChange(e)} name='phoneNumber'
+                      style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop: `20px` }} required />
                     <label htmlFor="floatingInput">Phone number</label>
                   </div>
                   <div className="form-floating mb-3">
-                    <input type="email" className="form-control" id="email" placeholder="name@example.com" value={account.email} onChange={(e) => handleChange(e)} name='email' style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop: `20px` }}/>
+                    <input type="email" className="form-control" id="email" placeholder="name@example.com"
+                      value={account.email} onChange={(e) => handleChange(e)} name='email'
+                      style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop: `20px` }} required />
                     <label htmlFor="floatingInput">Email address</label>
                   </div>
                   <div className="form-floating mb-3">
                     <input type="password" className={`form-control ${errors.password ? 'is-invalid' : ''
-                      }`} id="password" placeholder="Password" value={account.password} onChange={(e) => handleChange(e)} name='password' style={{ borderRadius: '50px', padding: `8px 25px` , paddingTop: `20px`}}/>
+                      }`} id="password" placeholder="Password" value={account.password}
+                      onChange={(e) => handleChange(e)} name='password'
+                      style={{ borderRadius: '50px', padding: `8px 25px`, paddingTop: `20px` }} required />
                     <label htmlFor="floatingPassword">Password</label>
                   </div>
 
@@ -422,7 +438,7 @@ const SignUp = () => {
                   </div>
                   <div className="modal-footer">
                     {/* Conditional rendering of buttons based on edit mode */}
-                    <button type="submit" className="btn btn-primary" style={{ borderRadius: '50px', padding: `8px 25px` , backgroundColor: `#f58d04`}} >Upload</button>
+                    <button type="submit" className="btn btn-primary" style={{ borderRadius: '50px', padding: `8px 25px`, backgroundColor: `#f58d04` }} >Upload</button>
                     <button type="button" className="btn btn-dark" onClick={closeQualificationModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                   </div>
                 </form>
