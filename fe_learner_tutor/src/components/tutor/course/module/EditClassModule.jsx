@@ -40,7 +40,7 @@ const EditClassModule = () => {
 
     useEffect(() => {
         classLessonService
-            .getAllClassTopicsByClassLesson(module.classLesson.id)
+            .getAllClassTopicsByClassLesson(module.classLesson?.id)
             .then((res) => {
                 // console.log(res.data);
                 setClassTopicList(res.data);
@@ -49,7 +49,7 @@ const EditClassModule = () => {
             .catch((error) => {
                 console.log(error);
             });
-    }, [module.classLesson.id]);
+    }, [module.classLesson?.id]);
 
 
     const goBack = () => {
@@ -159,7 +159,7 @@ const EditClassModule = () => {
 
                                         <div className="form-group mb-0">
                                             <Link
-                                                to={`/tutor/courses/create/create-class-course/create-topic/${module.classLesson.id}`}
+                                                to={`/tutor/courses/create/create-class-course/create-topic/${module.classLesson?.id}`}
                                                 className="btn btn-success" style={{borderRadius: '50px', padding: `8px 25px` }}
                                             >
                                                 Create new topic

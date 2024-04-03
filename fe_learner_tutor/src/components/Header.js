@@ -281,10 +281,16 @@ const Header = () => {
 
             // Update account
             const accountData = { ...account, imageUrl }; // Create a new object with updated imageUrl
+             // Convert gender string to number if needed
+             if (accountData.gender === "male") {
+                accountData.gender = true;
+            } if (accountData.gender === "female") {
+                accountData.gender = false;
+            }
             console.log(JSON.stringify(accountData))
 
             accountService
-                .updateAccount(account.id, account)
+                .updateAccount(account.id, accountData)
                 .then((res) => {
                     window.alert("Update Account Successfully");
                     window.location.reload();
@@ -640,9 +646,9 @@ const Header = () => {
                                                             <th>Gender:</th>
                                                             <td>
                                                                 {account.gender ? (
-                                                                    <span className="badge label-table badge-danger">Female</span>
-                                                                ) : (
                                                                     <span className="badge label-table badge-success">Male</span>
+                                                                ) : (
+                                                                    <span className="badge label-table badge-danger">Female</span>
                                                                 )}
                                                             </td>
                                                         </tr>

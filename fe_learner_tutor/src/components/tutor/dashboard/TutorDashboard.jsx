@@ -245,7 +245,7 @@ const TutorDashboard = () => {
                                             </div>
                                             <div className="col-6">
                                                 <div className="text-right">
-                                                    <h3 className="text-dark mt-1"><span data-plugin="counterup">{rating}</span>%</h3>
+                                                    <h3 className="text-dark mt-1"><span data-plugin="counterup">{rating.toFixed(2)}</span>%</h3>
                                                     <p className="text-muted mb-1 text-truncate">Course Rating</p>
                                                 </div>
                                             </div>
