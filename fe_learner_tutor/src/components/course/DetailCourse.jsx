@@ -567,7 +567,7 @@ const DetailCourse = () => {
                                                     {/* Conditional rendering of buttons based on edit mode */}
                                                     <button type="button" className="btn btn-dark" onClick={closePayBalanceModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                                                     {
-                                                        course.stockPrice < account.wallet?.balance && (
+                                                        course.stockPrice <= account.wallet?.balance && (
                                                             <button type="button" className="btn btn-secondary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={() => PayBalance()}>Pay</button>
                                                         )
                                                     }

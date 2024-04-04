@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import tutorService from '../../../services/tutor.service';
 import courseService from '../../../services/course.service';
 import classLessonService from '../../../services/class-lesson.service';
+import { event } from 'jquery';
 
 const MyTimeTable = () => {
     const { tutorId } = useParams();
@@ -13,6 +14,7 @@ const MyTimeTable = () => {
     const [classModuleList, setClassModuleList] = useState([]);
     const [classTopicList, setClassTopicList] = useState([]);
     const [startDate, setStartDate] = useState(getStartOfWeek(new Date()));
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -108,6 +110,12 @@ const MyTimeTable = () => {
     };
 
 
+    //go to teach class
+    const handleTeachClass = (event, classModuleId) => {
+        event.preventDefault();
+        navigate(`/teach-class/${classModuleId}`)
+    }
+
     return (
         <>
             <div id="wrapper">
@@ -181,7 +189,7 @@ const MyTimeTable = () => {
                                                                                             {/* Check if class falls within the time range */}
                                                                                             {(new Date(`01/01/2024 ${classModule.classLesson?.classHours.split(' - ')[0]}`) <= new Date(`01/01/2024 ${time}`) &&
                                                                                                 new Date(`01/01/2024 ${classModule.classLesson?.classHours.split(' - ')[1]}`) >= new Date(`01/01/2024 ${time}`)) && (
-                                                                                                    <div>
+                                                                                                    <div  onClick={(event) => handleTeachClass(event, classModule.id)}>
                                                                                                         <div>{classModule.classLesson?.classHours}</div>
                                                                                                         <div>
                                                                                                             <a href={classModule.classLesson?.classUrl} target="_blank" rel="noopener noreferrer">Join Class</a>

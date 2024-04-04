@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Footer from '../../Footer'
-import Header from '../../Header'
-import Sidebar from '../../Sidebar'
 import { Link } from 'react-router-dom'
-import moduleService from '../../../../services/module.service';
 import ReactPaginate from 'react-paginate';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
-import tutorService from '../../../../services/tutor.service';
+import tutorService from '../../../services/tutor.service';
+import Header from '../Header';
+import Sidebar from '../Sidebar';
 
-const ListAssignmentAttempt = () => {
+const ListAssignmentAttemptByTopic = () => {
 
     const { tutorId } = useParams();
     const [assignmentAttemptList, setAssignmentAttemptList] = useState([]);
@@ -212,4 +211,4 @@ const ListAssignmentAttempt = () => {
     )
 }
 
-export default ListAssignmentAttempt
+export default ListAssignmentAttemptByTopic

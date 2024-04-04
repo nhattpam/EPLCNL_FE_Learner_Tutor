@@ -283,17 +283,22 @@ const Header = () => {
             let imageUrl = account.imageUrl; // Keep the existing imageUrl if available
 
             if (fileImage) {
-                // Upload image and get the link
-                const imageData = new FormData();
-                imageData.append("file", fileImage);
-                const imageResponse = await accountService.uploadImage(imageData);
-
-                // Update the imageUrl with the link obtained from the API
-                let imageUrl = imageResponse.data;
-
-                // Log the imageUrl after updating
-                console.log("this is url: " + imageUrl);
-                account.imageUrl = imageResponse.data;
+                try {
+                    // Upload image and get the link
+                    const imageData = new FormData();
+                    imageData.append("file", fileImage);
+                    const imageResponse = await accountService.uploadImage(imageData);
+    
+                    // Update the imageUrl with the link obtained from the API
+                    imageUrl = imageResponse.data;
+    
+                    // Log the imageUrl after updating
+                    console.log("Updated image URL:", imageUrl);
+                } catch (error) {
+                    console.error("Error uploading image:", error);
+                    // Handle image upload error here, show appropriate feedback to the user
+                    return;
+                }
             }
 
             // Update account

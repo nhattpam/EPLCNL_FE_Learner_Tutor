@@ -9,27 +9,29 @@ import moduleService from "../../../../services/module.service";
 import assignmentService from "../../../../services/assignment.service";
 import DateTimePicker from "react-datetime-picker";
 import { error } from "jquery";
+import classModuleService from "../../../../services/class-module.service";
+import topicService from "../../../../services/topic.service";
 
-const CreateAssignment = () => {
+const CreateTopicAssignment = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState("");
-  const { storedModuleId } = useParams();
+  const { storedClassTopicId } = useParams();
 
   useEffect(() => {
-    if (storedModuleId) {
-      moduleService
-        .getModuleById(storedModuleId)
+    if (storedClassTopicId) {
+      topicService
+        .getClassTopicById(storedClassTopicId)
         .then((res) => {
-          setModule(res.data);
+          setTopic(res.data);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-  }, [storedModuleId]);
+  }, [storedClassTopicId]);
 
-  const [module, setModule] = useState({
+  const [topic, setTopic] = useState({
     name: "",
   });
 
@@ -37,13 +39,10 @@ const CreateAssignment = () => {
   const [assignment, setAssignment] = useState({
     questionText: "",
     deadline: 5, // set a default value for minutes
-    moduleId: storedModuleId,
+    topicId: storedClassTopicId,
   });
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setModule({ ...module, [e.target.name]: value });
-  };
+
   const handleChangeAssignment = (value) => {
     setAssignment({ ...assignment, questionText: value });
   };
@@ -83,7 +82,7 @@ const CreateAssignment = () => {
 
         const assignmentJsonParse = JSON.parse(assignmentJson);
 
-        navigate(`/tutor/courses/edit-module/${storedModuleId}`);
+        navigate(`/tutor/courses/edit-topic/${storedClassTopicId}`);
       } catch (error) {
         console.log(error);
       }
@@ -110,13 +109,11 @@ const CreateAssignment = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        COURSE -
+                        TOPIC -
                         <span className="text-success">
                           {" "}
-                          {module.course ? module.course.name : "N/A"}
-                        </span>{" "}
-                        | MODULE -
-                        <span className="text-success"> {module.name}</span> | CREATING ASSIGNMENT...
+                          {topic.name ? topic.name : "N/A"}
+                        </span>{" "} | CREATING ASSIGNMENT...
                       </h4>
 
                       <form
@@ -218,4 +215,4 @@ const CreateAssignment = () => {
   );
 };
 
-export default CreateAssignment;
+export default CreateTopicAssignment;

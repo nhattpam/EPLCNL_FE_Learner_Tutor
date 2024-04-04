@@ -301,6 +301,11 @@ const StudyCourse = () => {
     // State variable for countdown
     const [timeRemaining, setTimeRemaining] = useState(0);
 
+    const [showTimer2, setShowTimer2] = useState(false);
+
+    // State variable for countdown
+    const [timeRemaining2, setTimeRemaining2] = useState(0);
+
     // Function to handle click on the "Start Assignment" button
     const handleStartAssignment = () => {
         setShowTimer(true);
@@ -527,7 +532,7 @@ const StudyCourse = () => {
         setShowQuestions(true);
         // Set the quizStarted state to true when the quiz starts
         setQuizStarted(true);
-        setShowTimer(true);
+        setShowTimer2(true);
         // Set the deadline time (in seconds) from now
         const deadlineInSeconds = Date.now() + selectedQuiz.deadline * 60 * 1000;
 
@@ -535,7 +540,7 @@ const StudyCourse = () => {
         const interval = setInterval(() => {
             const currentTime = Date.now();
             const remaining = Math.max(0, deadlineInSeconds - currentTime);
-            setTimeRemaining(remaining);
+            setTimeRemaining2(remaining);
 
             // If time runs out, clear the interval
             if (remaining === 0) {
@@ -1013,14 +1018,14 @@ const StudyCourse = () => {
                                                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }} data-aos="fade-in">{msg}</h5>
                                                                 </div>
                                                             )}
-                                                            {showTimer && (
+                                                            {showTimer2 && (
                                                                 <div className='row'>
                                                                     <div className="col-md-1">
 
                                                                     </div>
                                                                     <div className="col-md-3">
                                                                         <i className="fas fa-clock" ></i>
-                                                                        <span>  Time Remaining: {formatTime(timeRemaining)}
+                                                                        <span>  Time Remaining: {formatTime(timeRemaining2)}
                                                                         </span>
                                                                     </div>
                                                                     <div className="col-md-3">

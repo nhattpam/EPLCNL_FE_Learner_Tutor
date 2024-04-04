@@ -109,13 +109,6 @@ const EditClassModule = () => {
                                         <div className="form-group">
                                             <h5>Topics</h5>
 
-                                            {/* {classTopicList.map((classTopic) => (
-                                                <ul>
-                                                    {classTopic.name} &nbsp;
-                                                    <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>  <i class="fa-regular fa-eye"></i></Link>
-                                                </ul>
-
-                                            ))} */}
                                             <div className="table-responsive">
                                                 <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                                                     <thead className="thead-light">

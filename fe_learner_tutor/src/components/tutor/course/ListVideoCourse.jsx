@@ -165,12 +165,14 @@ const ListVideoCourse = () => {
 
                                             </table>
                                         </div> {/* end .table-responsive*/}
+                                        
                                     </div> {/* end card-box */}
                                     {
                                         currentCourses.length === 0 && (
                                             <p>No courses found.</p>
                                         )
                                     }
+                                   
                                 </div> {/* end col */}
                             </div>
                             {/* end row */}

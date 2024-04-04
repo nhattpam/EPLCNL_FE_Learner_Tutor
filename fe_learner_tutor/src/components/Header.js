@@ -262,43 +262,47 @@ const Header = () => {
         e.preventDefault();
 
         if (validateForm()) {
-            // Save account
             let imageUrl = account.imageUrl; // Keep the existing imageUrl if available
 
             if (file) {
-                // Upload image and get the link
-                const imageData = new FormData();
-                imageData.append("file", file);
-                const imageResponse = await accountService.uploadImage(imageData);
+                try {
+                    // Upload image and get the link
+                    const imageData = new FormData();
+                    imageData.append("file", file);
+                    const imageResponse = await accountService.uploadImage(imageData);
 
-                // Update the imageUrl with the link obtained from the API
-                let imageUrl = imageResponse.data;
+                    // Update the imageUrl with the link obtained from the API
+                    imageUrl = imageResponse.data;
 
-                // Log the imageUrl after updating
-                console.log("this is url: " + imageUrl);
-                account.imageUrl = imageResponse.data;
+                    // Log the imageUrl after updating
+                    console.log("this is url: " + imageUrl);
+                } catch (error) {
+                    console.error("Error uploading image:", error);
+                    // Handle image upload error here, show appropriate feedback to the user
+                    return;
+                }
             }
 
-            // Update account
-            const accountData = { ...account, imageUrl }; // Create a new object with updated imageUrl
-             // Convert gender string to number if needed
-             if (accountData.gender === "male") {
-                accountData.gender = true;
-            } if (accountData.gender === "female") {
-                accountData.gender = false;
+            // Convert gender string to boolean if needed
+            if (account.gender === "male") {
+                account.gender = true;
+            } else if (account.gender === "female") {
+                account.gender = false;
             }
-            console.log(JSON.stringify(accountData))
 
-            accountService
-                .updateAccount(account.id, accountData)
-                .then((res) => {
-                    window.alert("Update Account Successfully");
-                    window.location.reload();
+            // Update account data
+            const accountData = { ...account, imageUrl };
 
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            try {
+                const res = await accountService.updateAccount(account.id, accountData);
+                console.log("Update Account Successfully:", res.data);
+                window.alert("Update Account Successfully");
+                // Assuming you have a state management system, update account details in the state here instead of reloading the page
+                window.location.reload();
+            } catch (error) {
+                console.error("Error updating account:", error);
+                // Handle account update error here, show appropriate feedback to the user
+            }
         }
     };
 
@@ -385,7 +389,7 @@ const Header = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                          
+
                         </div>
                         {/* Render filtered courses if there are search results */}
                         <div className='search-result'>
@@ -411,7 +415,7 @@ const Header = () => {
                                 <a href="#">
                                     <span>Course</span> <i className="bi bi-chevron-down" />
                                 </a>
-                                <ul style={{ borderRadius: '50px', padding: `8px 25px` }}> 
+                                <ul style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                     {categoryList.map((category) => (
                                         <li key={category.id}> {/* Add a key to the mapped elements */}
                                             <Link to={`/list-course-by-category/${category.id}`}>{category.name}</Link>
@@ -578,21 +582,21 @@ const Header = () => {
                                                             <tr>
                                                                 <th style={{ width: '30%' }}>Full Name:</th>
                                                                 <td>
-                                                                    <input type="text" className="form-control" name="fullName" value={account.fullName} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
+                                                                    <input type="text" className="form-control" name="fullName" value={account.fullName} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                                                     {errors.fullName && <p className="text-danger">{errors.fullName}</p>}
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Phone Number:</th>
                                                                 <td>
-                                                                    <input type="number" className="form-control" name="phoneNumber" value={account.phoneNumber} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
+                                                                    <input type="number" className="form-control" name="phoneNumber" value={account.phoneNumber} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                                                     {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber}</p>}
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Address:</th>
                                                                 <td>
-                                                                    <input type="text" className="form-control" name="address" value={account.address} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
+                                                                    <input type="text" className="form-control" name="address" value={account.address} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                                                     {errors.address && <p className="text-danger">{errors.address}</p>}
                                                                 </td>
                                                             </tr>
@@ -753,7 +757,7 @@ const Header = () => {
                                         <div>
                                             {/* Input fields for editing */}
                                             <h3>Enter the amount you want to deposit:</h3>
-                                            <input className='form-control' placeholder='USD accepted' type='number' name='amount' style={{ borderRadius: '50px', padding: `8px 25px` }}/>
+                                            <input className='form-control' placeholder='USD accepted' type='number' name='amount' style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                             <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%', marginTop: '20px' }} />
                                             </p>
 
@@ -761,13 +765,13 @@ const Header = () => {
 
                                     </div>
 
-                                    <div className="modal-footer" style={{marginTop: '325px'}}>
+                                    <div className="modal-footer" style={{ marginTop: '325px' }}>
                                         {/* Conditional rendering of buttons based on edit mode */}
                                         <button
                                             type="submit"
                                             className="btn btn-primary btn-lg btn-block"
                                             // onClick={handlePayClick}
-                                            style={{ backgroundColor: '#f58d04',  borderRadius: '50px', padding: `8px 25px` }}
+                                            style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
                                         >
                                             Continue
                                         </button>

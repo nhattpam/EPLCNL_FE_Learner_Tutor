@@ -10,6 +10,9 @@ import certificateService from '../../../services/certificate.service';
 import certificateCourseService from '../../../services/certificate-course.service';
 import Dropzone from 'react-dropzone';
 import lessonMaterialService from '../../../services/material.service';
+import ReactPaginate from 'react-paginate';
+import { IconContext } from 'react-icons';
+import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 
 const EditCourse = () => {
 
@@ -255,9 +258,46 @@ const EditCourse = () => {
                 .catch((error) => {
                     console.log(error);
                 });
-                
+
         }
     };
+
+
+    //enrolled learners:
+    const [enrollmentList, setEnrollmentList] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(0);
+    const [enrollmentsPerPage] = useState(5);
+    useEffect(() => {
+        courseService
+            .getAllEnrollmentsByCourse(courseId)
+            .then((res) => {
+                const notRefundEnrollments = res.data.filter(enrollment => enrollment.refundStatus === false);
+
+                console.log(res.data);
+                setEnrollmentList(notRefundEnrollments);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [courseId]);
+
+    const filteredEnrollments = enrollmentList
+        .filter((enrollment) => {
+            return (
+                enrollment.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        });
+
+    const pageCount = Math.ceil(filteredEnrollments.length / enrollmentsPerPage);
+
+    const handlePageClick = (data) => {
+        setCurrentPage(data.selected);
+    };
+
+    const offset = currentPage * enrollmentsPerPage;
+    const currentEnrollments = filteredEnrollments.slice(offset, offset + enrollmentsPerPage);
 
 
     return (
@@ -475,6 +515,106 @@ const EditCourse = () => {
                                         }
 
                                     </div>
+                                    <div className="form-group mt-4">
+                                        <h5>Enrolled Learners:</h5>
+
+                                        <div className="table-responsive text-center">
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                <thead className="thead-light">
+                                                    <tr>
+                                                        <th data-toggle="true">No.</th>
+                                                        <th data-toggle="true">Image</th>
+                                                        <th data-toggle="true">Full Name</th>
+                                                        <th data-toggle="true">Phone</th>
+                                                        <th data-hide="phone">Gender</th>
+                                                        <th data-hide="phone, tablet">DOB</th>
+                                                        <th data-hide="phone, tablet">Status</th>
+                                                        {/* <th>Action</th> */}
+                                                        {/* <th>Courses</th> */}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        currentEnrollments.length > 0 && currentEnrollments.map((enrollment, index) => (
+                                                            <tr key={enrollment.id}>
+                                                                <td>{index + 1}</td>
+                                                                <td>
+                                                                    <img src={enrollment.transaction?.learner?.account?.imageUrl} style={{ height: '70px', width: '50px' }}>
+
+                                                                    </img>
+                                                                </td>
+                                                                <td>{enrollment.transaction?.learner?.account && enrollment.transaction?.learner?.account?.fullName ? enrollment.transaction?.learner?.account?.fullName : 'Unknown Name'}</td>
+                                                                <td>{enrollment.transaction?.learner?.account && enrollment.transaction?.learner?.account?.phoneNumber ? enrollment.transaction?.learner?.account?.phoneNumber : 'Unknown Phone Number'}</td>
+                                                                <td>{enrollment.transaction?.learner?.account && enrollment.transaction?.learner?.account?.gender !== undefined ? (enrollment.transaction?.learner?.account?.gender ? 'Male' : 'Female') : 'Unknown Gender'}</td>
+                                                                <td>
+                                                                    {enrollment.transaction?.learner?.account?.dateOfBirth && typeof enrollment.transaction.learner.account.dateOfBirth === 'string' ?
+                                                                        enrollment.transaction.learner.account.dateOfBirth.substring(0, 10) :
+                                                                        'Unknown DOB'}
+                                                                </td>
+                                                                <td>
+                                                                    {enrollment.transaction?.learner?.account?.isActive ? (
+                                                                        <span className="badge label-table badge-success">Active</span>
+                                                                    ) : (
+                                                                        <span className="badge label-table badge-danger">Inactive</span>
+                                                                    )}
+                                                                </td>
+                                                                {/* <td>
+                                                                    <Link to={`/edit-learner/${enrollment.transaction?.learner?.account?.id}`} className='text-secondary'>
+                                                                        <i className="fa-regular fa-eye"></i>
+                                                                    </Link>
+                                                                </td> */}
+                                                                {/* <td>
+                                                                            <Link to={`/list-course-by-tutor/${tutor.id}`} className='text-dark'>
+                                                                                <i class="ti-more-alt"></i>
+                                                                            </Link>
+                                                                        </td> */}
+                                                            </tr>
+                                                        ))
+                                                    }
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    {
+                                        enrollmentList.length === 0 && (
+                                            <p className='text-center'>No enrollments yet.</p>
+                                        )
+                                    }
+                                    {/* Pagination */}
+                                    <div className='container-fluid'>
+                                        {/* Pagination */}
+                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <ReactPaginate
+                                                previousLabel={
+                                                    <IconContext.Provider value={{ color: "#000", size: "14px" }}>
+                                                        <AiFillCaretLeft />
+                                                    </IconContext.Provider>
+                                                }
+                                                nextLabel={
+                                                    <IconContext.Provider value={{ color: "#000", size: "14px" }}>
+                                                        <AiFillCaretRight />
+                                                    </IconContext.Provider>
+                                                } breakLabel={'...'}
+                                                breakClassName={'page-item'}
+                                                breakLinkClassName={'page-link'}
+                                                pageCount={pageCount}
+                                                marginPagesDisplayed={2}
+                                                pageRangeDisplayed={5}
+                                                onPageChange={handlePageClick}
+                                                containerClassName={'pagination'}
+                                                activeClassName={'active'}
+                                                previousClassName={'page-item'}
+                                                nextClassName={'page-item'}
+                                                pageClassName={'page-item'}
+                                                previousLinkClassName={'page-link'}
+                                                nextLinkClassName={'page-link'}
+                                                pageLinkClassName={'page-link'}
+                                            />
+                                        </div>
+
+                                    </div>
 
                                     {showEditCourseModal && (
                                         <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
@@ -492,7 +632,7 @@ const EditCourse = () => {
                                                             <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Added style for scrolling */}
                                                                 {/* Input fields for editing */}
                                                                 <label htmlFor="imageUrl">
-                                                                    <img src={course.imageUrl} alt="avatar"  style={{ width: '100%', cursor: 'pointer' }} />
+                                                                    <img src={course.imageUrl} alt="avatar" style={{ width: '100%', cursor: 'pointer' }} />
                                                                 </label>
                                                                 <Dropzone
                                                                     onDrop={handleFileDropImage}
@@ -612,7 +752,10 @@ const EditCourse = () => {
                             grid-template-columns: 1fr;
                         }
                     }
-                    
+                    .page-item.active .page-link{
+                        background-color: #20c997;
+                        border-color: #20c997;
+                    }
                 `}
             </style>
         </>

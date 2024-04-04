@@ -84,6 +84,10 @@ import ListCourseByCategory from './components/course/ListCourseByCategory';
 import MyForum from './components/learner/forum/MyForum';
 import MyTimeTable from './components/tutor/timetable/MyTimeTable';
 import About from './components/About';
+import TeachClass from './components/tutor/teach/TeachClass';
+import ListAssignmentAttemptByTopic from './components/tutor/teach/ListAssignmentAttemptByTopic';
+import CreateTopicAssignment from './components/tutor/course/assignment/CreateTopicAssignment';
+import EditTopicAssignment from './components/tutor/course/assignment/EditTopicAssignment';
 
 function App() {
 
@@ -181,6 +185,8 @@ function App() {
         <Route path="/tutor/courses/edit-topic-question/:questionId" element={<EditClassTopicQuestion />} />
         <Route path="/tutor/courses/create/create-class-course/create-topic-question-answer/:storedQuestionId" element={<CreateClassTopicAnswer />} />
         <Route path="/tutor/courses/list-topic-quiz/:storedClassTopicId" element={<ListClassTopicQuiz />} />
+        <Route path="/tutor/courses/create/create-class-course/create-topic-assignment/:storedClassTopicId" element={<CreateTopicAssignment />} />
+        <Route path="/tutor/courses/edit-topic-assignment/:assignmentId" element={<EditTopicAssignment />} />
 
         <Route path="/tutor/courses/edit-class-module/:moduleId" element={<EditClassModule />} />
         <Route path="/tutor/courses/create-class-material/:storedClassTopicId" element={<CreateClassTopicMaterial />} />
@@ -215,7 +221,10 @@ function App() {
         <Route path="/search-result?:searchKey" element={<SearchResult />} />
         {/* timeable for tutor*/}
         <Route path="/my-timetable/:tutorId" element={<MyTimeTable />} />
+        <Route path="/teach-class/:classModuleId" element={<TeachClass />} />
+        <Route path="/list-assignment-attempt-by-topic/:classTopicId" element={<ListAssignmentAttemptByTopic />} />
 
+        {/* ABOUT*/}
         <Route path="/about" element={<About />} />
 
       </Routes>

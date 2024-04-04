@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "meowlish-web"
-  }
+    "default": "meowlish-website",
+    "staging": "meowlish-website"
+  },
+  "targets": {},
+  "etags": {}
 }

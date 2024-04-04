@@ -27,6 +27,7 @@ const EditAssignmentAttempt = () => {
         answerText: "",
         attemptedDate: "",
         totalGrade: "",
+        assignment: []
     });
 
     const [account, setAccount] = useState({
@@ -144,95 +145,196 @@ const EditAssignmentAttempt = () => {
                 <div className="content-page">
                     {/* Start Content*/}
                     <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="card-box">
-                                    <form
-                                        method="post"
-                                        id="myAwesomeDropzone"
-                                        data-plugin="dropzone"
-                                        data-previews-container="#file-previews"
-                                        data-upload-preview-template="#uploadPreviewTemplate"
-                                        data-parsley-validate
-                                        onSubmit={(e) => submitAssignmentAttempt(e)}
-                                    >
-                                        <div className="form-group">
-                                            <h4 className="header-title">ASSIGNMENT ATTEMPT INFORMATION</h4>
-                                            <div className="table-responsive">
-                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
-                                                    <tbody>
-                                                        <tr>
-                                                            <th>Learner:</th>
-                                                            <td>{account.fullName}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Assignment Question:</th>
-                                                            <td dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Answer:</th>
+                        {
+                            assignmentAttempt.assignment?.moduleId !== null && (
+                                <>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <div className="card-box">
+                                                <form
+                                                    method="post"
+                                                    id="myAwesomeDropzone"
+                                                    data-plugin="dropzone"
+                                                    data-previews-container="#file-previews"
+                                                    data-upload-preview-template="#uploadPreviewTemplate"
+                                                    data-parsley-validate
+                                                    onSubmit={(e) => submitAssignmentAttempt(e)}
+                                                >
+                                                    <div className="form-group">
+                                                        <h4 className="header-title">ASSIGNMENT ATTEMPT INFORMATION</h4>
+                                                        <div className="table-responsive">
+                                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th>Learner:</th>
+                                                                        <td>{account.fullName}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Assignment Question:</th>
+                                                                        <td dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Answer:</th>
 
-                                                            <td>
-                                                                <div dangerouslySetInnerHTML={{ __html: assignmentAttempt.answerText }}></div>
+                                                                        <td>
+                                                                            <div dangerouslySetInnerHTML={{ __html: assignmentAttempt.answerText }}></div>
 
-                                                            </td>
+                                                                        </td>
 
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Attempted Date:</th>
-                                                            <td>{assignmentAttempt.attemptedDate}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Attempted Date:</th>
+                                                                        <td>{assignmentAttempt.attemptedDate}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
 
-                                        <div className="form-group ">
-                                            <h5>Grade:</h5>
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="10"
-                                                step="1"
-                                                value={assignmentAttempt.totalGrade}
-                                                onChange={(e) => handleGradeChange(e.target.value)}
-                                                className={`form-control-range ${getGradeColor(assignmentAttempt.totalGrade)}`}
-                                            />
-                                            <span>{assignmentAttempt.totalGrade} Point</span>
-                                        </div>
 
-                                    </form>
-                                    {/* end row*/}
-                                    <h5>Grade histories:</h5>
-                                    <div className="table-responsive">
-                                        <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
-                                            <thead className="thead-light">
-                                                <tr>
-                                                    <th data-toggle="true">Learner</th>
-                                                    <th data-hide="phone, tablet">Grade</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    peerReviewLish.length > 0 && peerReviewLish.map((peerReview) => (
-                                                        <tr key={peerReview.id}>
-                                                            <td>{peerReview.learner?.account?.fullName}</td>
-                                                            <td>{peerReview.grade}</td>
+                                                    <div className="form-group ">
+                                                        <h5>Grade:</h5>
+                                                        <input
+                                                            type="range"
+                                                            min="0"
+                                                            max="10"
+                                                            step="1"
+                                                            value={assignmentAttempt.totalGrade}
+                                                            onChange={(e) => handleGradeChange(e.target.value)}
+                                                            className={`form-control-range ${getGradeColor(assignmentAttempt.totalGrade)}`}
+                                                        />
+                                                        <span>{assignmentAttempt.totalGrade} Point</span>
+                                                    </div>
 
-                                                        </tr>
-                                                    ))
-                                                }
+                                                </form>
 
-                                            </tbody>
+                                                <h5>Grade histories:</h5>
+                                                <div className="table-responsive">
+                                                    <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                        <thead className="thead-light">
+                                                            <tr>
+                                                                <th data-toggle="true">Learner</th>
+                                                                <th data-hide="phone, tablet">Grade</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {
+                                                                peerReviewLish.length > 0 && peerReviewLish.map((peerReview) => (
+                                                                    <tr key={peerReview.id}>
+                                                                        <td>{peerReview.learner?.account?.fullName}</td>
+                                                                        <td>{peerReview.grade}</td>
 
-                                        </table>
+                                                                    </tr>
+                                                                ))
+                                                            }
 
-                                    </div> {/* end .table-responsive*/}
-                                </div> {/* end card-box*/}
+                                                        </tbody>
 
-                            </div> {/* end col*/}
+                                                    </table>
 
-                        </div>
+                                                </div> {/* end .table-responsive*/}
+                                            </div> {/* end card-box*/}
+
+                                        </div> {/* end col*/}
+
+                                    </div>
+                                </>
+                            )
+
+                        }
+                        {
+                            assignmentAttempt.assignment?.topicId !== null && (
+                                <>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <div className="card-box">
+                                                <form
+                                                    method="post"
+                                                    id="myAwesomeDropzone"
+                                                    data-plugin="dropzone"
+                                                    data-previews-container="#file-previews"
+                                                    data-upload-preview-template="#uploadPreviewTemplate"
+                                                    data-parsley-validate
+                                                    onSubmit={(e) => submitAssignmentAttempt(e)}
+                                                >
+                                                    <div className="form-group">
+                                                        <h4 className="header-title">ASSIGNMENT ATTEMPT INFORMATION</h4>
+                                                        <div className="table-responsive">
+                                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th>Learner:</th>
+                                                                        <td>{account.fullName}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Assignment Question:</th>
+                                                                        <td dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Attempted Date:</th>
+                                                                        <td>{assignmentAttempt.attemptedDate}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mb-5" style={{ textAlign: 'left' }}>
+                                                        <ReactQuill
+                                                            value={assignmentAttempt.answerText}
+                                                            onChange={handleChangeAnswerText}
+                                                            style={{ height: "300px" }}
+                                                            modules={{
+                                                                toolbar: [
+                                                                    [{ header: [1, 2, false] }],
+                                                                    ['bold', 'italic', 'underline', 'strike'],
+                                                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                                                    [{ 'direction': 'rtl' }],
+                                                                    [{ 'align': [] }],
+                                                                    ['link', 'image', 'video'],
+                                                                    ['code-block'],
+                                                                    [{ 'color': [] }, { 'background': [] }],
+                                                                    ['clean']
+                                                                ]
+                                                            }}
+                                                            theme="snow"
+                                                        />
+                                                    </div>
+                                                    <div className="form-group ">
+                                                        <h5>Grade:</h5>
+                                                        <input
+                                                            type="range"
+                                                            min="0"
+                                                            max="10"
+                                                            step="1"
+                                                            value={assignmentAttempt.totalGrade}
+                                                            onChange={(e) => handleGradeChange(e.target.value)}
+                                                            className={`form-control-range ${getGradeColor(assignmentAttempt.totalGrade)}`}
+                                                        />
+                                                        <span>{assignmentAttempt.totalGrade} Point</span>
+                                                    </div>
+                                                    <div className="form-group mb-0">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-success"
+                                                            style={{marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }}
+                                                        >
+                                                            Save
+                                                        </button>
+                                                    </div>
+
+                                                </form>
+
+                                            </div> {/* end card-box*/}
+
+                                        </div> {/* end col*/}
+
+                                    </div>
+                                </>
+                            )
+
+                        }
+
 
 
                     </div> {/* container */}

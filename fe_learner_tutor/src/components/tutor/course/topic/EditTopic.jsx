@@ -17,12 +17,15 @@ const EditTopic = () => {
   const { storedClassTopicId } = useParams();
   const [createdTopics, setCreatedTopics] = useState([]);
   const [quizList, setQuizList] = useState([]);
+  const [assignmentList, setAssignmentList] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [currentPage2, setCurrentPage2] = useState(0);
-  const [quizsPerPage] = useState(2);
-  const [materialsPerPage] = useState(2);
+  const [currentPage3, setCurrentPage3] = useState(0);
+  const [quizsPerPage] = useState(5);
+  const [materialsPerPage] = useState(5);
+  const [assignmentsPerPage] = useState(5);
 
   //create class topic
   const [classTopic, setClassTopic] = useState({
@@ -139,6 +142,9 @@ const EditTopic = () => {
       );
     });
 
+  const pageCount2 = Math.ceil(filteredLessonMaterials.length / materialsPerPage);
+
+
   useEffect(() => {
     if (storedClassTopicId) {
       topicService
@@ -152,9 +158,44 @@ const EditTopic = () => {
     }
   }, [storedClassTopicId]);
 
+  const handlePageClick2 = (data) => {
+    setCurrentPage2(data.selected);
+  };
+
 
   const offset2 = currentPage2 * materialsPerPage;
-  const currentLessonMaterials = filteredLessonMaterials.slice(offset, offset + materialsPerPage);
+  const currentLessonMaterials = filteredLessonMaterials.slice(offset2, offset2 + materialsPerPage);
+
+  //list assignments by topic
+  useEffect(() => {
+    topicService
+      .getAllAssignmentsByClassTopic(storedClassTopicId)
+      .then((res) => {
+        console.log(res.data);
+        setAssignmentList(res.data);
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [storedClassTopicId]);
+
+  const filteredAssignments = assignmentList
+    .filter((assignment) => {
+      return (
+        assignment.id.toString().toLowerCase().includes(searchTerm.toLowerCase())
+
+      );
+    });
+
+  const pageCount3 = Math.ceil(filteredAssignments.length / assignmentsPerPage);
+
+  const handlePageClick3 = (data) => {
+    setCurrentPage3(data.selected);
+  };
+
+  const offset3 = currentPage3 * assignmentsPerPage;
+  const currentAssignments = filteredAssignments.slice(offset3, offset3 + assignmentsPerPage);
 
 
   const submitClassTopic = async (e) => {
@@ -198,7 +239,7 @@ const EditTopic = () => {
                   <div className="card">
                     <div className="card-body">
                       <h4 className="header-title">
-                        DATE - <span className='text-success'>{classModule.startDate}</span>
+                        DATE - <span className='text-success'>{classModule.startDate?.substring(0, 10)}</span>
                       </h4>
                       <form
                         method="post"
@@ -212,31 +253,15 @@ const EditTopic = () => {
                       >
                         <div className="form-group">
                           <label htmlFor="roomLink">Class Date:</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="classHours"
-                            id="classHours"
-                            value={classTopic.classLesson?.classHours}
-                            readOnly
-                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+                          <p className='ml-2'>{classTopic.classLesson?.classHours}</p>
 
-                          />
                         </div>
 
 
                         <div className="form-group">
                           <label htmlFor="roomLink">Room Link :</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="roomLink"
-                            id="roomLink"
-                            value={classTopic.classLesson?.classUrl}
-                            readOnly
-                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+                          <p className='ml-2'>{classTopic.classLesson?.classUrl}</p>
 
-                          />
                         </div>
 
                         <div className="form-group">
@@ -245,17 +270,14 @@ const EditTopic = () => {
                         </div>
                         <div className="form-group">
                           <label htmlFor="name">Name :</label>
-                          <input type="text" className="form-control" name="name" id="name"
-                            value={classTopic.name} onChange={(e) => handleChange(e)} readOnly style={{ borderRadius: '50px', padding: `8px 25px` }}
-                          />
+                          <p className='ml-2'>{classTopic.name}</p>
                         </div>
                         <div className="form-group">
                           <label htmlFor="code">Description :</label>
-                          <input type="text" className="form-control" name="description" id="description"
-                            value={classTopic.description} onChange={(e) => handleChange(e)} readOnly style={{ borderRadius: '50px', padding: `8px 25px` }}
-                          />
+                          <p className='ml-2'>{classTopic.description}</p>
+
                         </div>
-                      
+
                         <div className="form-group mb-0">
                           <button
                             type="submit"
@@ -287,7 +309,7 @@ const EditTopic = () => {
                             </Link>
                           </div>
                         </div>
-                        
+
                         <div className="table-responsive">
                           <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
                             <thead className="thead-light">
@@ -295,7 +317,7 @@ const EditTopic = () => {
                                 <th data-toggle="true">No.</th>
                                 <th data-toggle="true">Quiz Name</th>
                                 <th>Grade to pass</th>
-                                <th>Times</th>
+                                <th>Time</th>
                                 <th data-hide="phone">Created Date</th>
                                 <th data-hide="phone, tablet">Updated Date</th>
                                 <th>Action</th>
@@ -310,7 +332,7 @@ const EditTopic = () => {
                                     <td>
                                       <span className="badge label-table badge-success">{quiz.gradeToPass} </span>
                                     </td>
-                                    <td>{quiz.deadline}</td>
+                                    <td>{quiz.deadline} mins</td>
                                     <td>{quiz.createdDate}</td>
                                     <td>{quiz.updatedDate}</td>
                                     <td>
@@ -332,7 +354,103 @@ const EditTopic = () => {
                           <p className='text-center'>No quizzes found.</p>
                         )
                       }
+                      <div className='container-fluid'>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                          <ReactPaginate
+                            previousLabel={<AiFillCaretLeft style={{ color: "#000", fontSize: "14px" }} />}
+                            nextLabel={<AiFillCaretRight style={{ color: "#000", fontSize: "14px" }} />}
+                            breakLabel={'...'}
+                            breakClassName={'page-item'}
+                            breakLinkClassName={'page-link'}
+                            pageCount={pageCount}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                            previousClassName={'page-item'}
+                            nextClassName={'page-item'}
+                            pageClassName={'page-item'}
+                            previousLinkClassName={'page-link'}
+                            nextLinkClassName={'page-link'}
+                            pageLinkClassName={'page-link'}
+                          />
+                        </div>
+                      </div>
+                      <div className='mt-2'>
+                        <div className="row">
+                          <div className="col-md-2">
+                            <h4>Created Assignments:</h4>
+                          </div>
+                          <div className="col-md-6">
+                            <Link to={`/tutor/courses/create/create-class-course/create-topic-assignment/${storedClassTopicId}`}>
+                              <h4>  <i className="fas fa-plus-circle text-success"></i></h4>
+                            </Link>
+                          </div>
+                        </div>
 
+                        <div className="table-responsive">
+                          <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                            <thead className="thead-light">
+                              <tr>
+                                <th>No.</th>
+                                <th>Time</th>
+                                <th>Question</th>
+                                <th data-hide="phone">Created Date</th>
+                                <th data-hide="phone, tablet">Updated Date</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {
+                                currentAssignments.length > 0 && currentAssignments.map((assignment, index) => (
+                                  <tr key={assignment.id}>
+                                    <td>{index + 1}</td>
+                                    <td>{assignment.deadline} mins</td>
+                                    <td dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
+                                    <td>{assignment.createdDate}</td>
+                                    <td>{assignment.updatedDate}</td>
+                                    <td>
+                                      <Link to={`/tutor/courses/edit-topic-assignment/${assignment.id}`} className='text-secondary'>
+                                        <i class="fa-regular fa-eye"></i>
+                                      </Link>
+                                    </td>
+                                  </tr>
+                                ))
+                              }
+                            </tbody>
+
+                          </table>
+                        </div> {/* end .table-responsive*/}
+                      </div>
+                      {
+                        currentAssignments.length === 0 && (
+                          <p className='text-center'>No assignments found.</p>
+                        )
+                      }
+                      <div className='container-fluid'>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                          <ReactPaginate
+                            previousLabel={<AiFillCaretLeft style={{ color: "#000", fontSize: "14px" }} />}
+                            nextLabel={<AiFillCaretRight style={{ color: "#000", fontSize: "14px" }} />}
+                            breakLabel={'...'}
+                            breakClassName={'page-item'}
+                            breakLinkClassName={'page-link'}
+                            pageCount={pageCount3}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={handlePageClick3}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                            previousClassName={'page-item'}
+                            nextClassName={'page-item'}
+                            pageClassName={'page-item'}
+                            previousLinkClassName={'page-link'}
+                            nextLinkClassName={'page-link'}
+                            pageLinkClassName={'page-link'}
+                          />
+                        </div>
+                      </div>
                       <div>
                         <div className="row">
                           <div className="col-md-2">
@@ -345,15 +463,6 @@ const EditTopic = () => {
                           </div>
                         </div>
 
-                        {/* {Array.isArray(createdTopics) && createdTopics.length > 0 ? (
-                          <ul>
-                            {createdTopics.map((topic) => (
-                              <li key={topic.id}>{topic.name}</li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p>No topics created yet.</p>
-                        )} */}
                         <div className="table-responsive">
                           <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
                             <thead className="thead-light">
@@ -406,10 +515,10 @@ const EditTopic = () => {
                             breakLabel={'...'}
                             breakClassName={'page-item'}
                             breakLinkClassName={'page-link'}
-                            pageCount={pageCount}
+                            pageCount={pageCount2}
                             marginPagesDisplayed={2}
                             pageRangeDisplayed={5}
-                            onPageChange={handlePageClick}
+                            onPageChange={handlePageClick2}
                             containerClassName={'pagination'}
                             activeClassName={'active'}
                             previousClassName={'page-item'}

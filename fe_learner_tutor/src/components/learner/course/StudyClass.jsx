@@ -129,10 +129,15 @@ const StudyClass = () => {
   const [quizList, setQuizList] = useState([]);
   const [materialList, setMaterialList] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
+  const [showTimer2, setShowTimer2] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
   const [timeRemaining, setTimeRemaining] = useState(0);
+  const [timeRemaining2, setTimeRemaining2] = useState(0);
   const [questionList, setQuestionList] = useState([]);
   // Retrieve the current question based on the current index
   const currentQuestion = questionList[currentQuestionIndex];
@@ -167,7 +172,32 @@ const StudyClass = () => {
               ...classTopic,
               quizList: res.data, // Add quizList to the class topic
               showQuizzes: true, // Set showQuizzes to true for the class topic
-              showMaterials: false
+              showMaterials: false,
+              showAssignments: false
+            };
+          }
+          return classTopic;
+        });
+        setClassTopicList(updatedClassTopicList); // Update classTopicList state
+        setQuizList(res.data); // Update quizList state
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleShowAssignments = (classTopicId) => {
+    topicService
+      .getAllAssignmentsByClassTopic(classTopicId)
+      .then((res) => {
+        const updatedClassTopicList = classTopicList.map((classTopic) => {
+          if (classTopic.id === classTopicId) {
+            return {
+              ...classTopic,
+              assignmentList: res.data, // Add quizList to the class topic
+              showAssignments: true, // Set showQuizzes to true for the class topic
+              showMaterials: false,
+              showQuizzes: false
             };
           }
           return classTopic;
@@ -192,6 +222,7 @@ const StudyClass = () => {
               materialList: res.data, // Add quizList to the class topic
               showMaterials: true, // Set showQuizzes to true for the class topic
               showQuizzes: false,
+              showAssignments: false
             };
           }
           return classTopic;
@@ -248,6 +279,87 @@ const StudyClass = () => {
 
     // Set the deadline time (in seconds) from now
 
+  };
+
+
+
+
+
+
+  const handleStartAssignment = (assignmentId) => {
+    assignmentService
+      .getAssignmentById(assignmentId)
+      .then((res) => {
+        const selectedAssignment = res.data;
+        setSelectedAssignment(selectedAssignment);
+        console.log("ASSS: " + JSON.stringify(selectedAssignment));
+  
+        setShowTimer2(true);
+        setShowForm(true);
+  
+        // Set the deadline time (in seconds) from now
+        const deadlineInSeconds = Date.now() + selectedAssignment.deadline * 60 * 1000;
+  
+        // Update time remaining every second
+        const interval = setInterval(() => {
+          const currentTime = Date.now();
+          const remaining = Math.max(0, deadlineInSeconds - currentTime);
+          setTimeRemaining2(remaining);
+  
+          // If time runs out, clear the interval
+          if (remaining === 0) {
+            clearInterval(interval);
+          }
+        }, 1000);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
+
+  const [assignmentAttempt, setAssignmentAttempt] = useState({
+    assignmentId: selectedAssignment?.id,
+    learnerId: learnerId,
+    answerText: "",
+  });
+
+  const handleChangeAnswerText = (value) => {
+    setAssignmentAttempt(prevState => ({
+      ...prevState,
+      answerText: value
+    }));
+  };
+
+  useEffect(() => {
+    setAssignmentAttempt(prevState => ({
+      ...prevState,
+      assignmentId: selectedAssignment?.id
+    }));
+  }, [selectedAssignment?.id]);
+
+  const submitAssignmentAttempt = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Save assignmentAttempt
+      console.log("This is assignment attempt: " + JSON.stringify(assignmentAttempt))
+      const assignmentAttemptResponse = await assignmentAttemptService.saveAssignmentAttempt(assignmentAttempt);
+
+      // console.log(courseResponse.data);
+      const assignmentAttemptJson = JSON.stringify(assignmentAttemptResponse.data);
+
+      // const assignmentAttemptJsonParse = JSON.parse(assignmentAttemptJson);
+
+      // console.log(assignmentAttemptJsonParse);
+      window.alert('Your assignment is submited!');
+      setShowForm(false);
+      setShowTimer2(false);
+
+      // navigate(`/list-assignment-attempt/${tutorId}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -376,7 +488,7 @@ const StudyClass = () => {
         </div>
 
 
-        <section id="courses" className="courses" style={{ marginTop: '-10px' }}>
+        <section id="courses" className="courses" style={{ marginTop: '-10px', backgroundColor: `#fff` }}>
           <div className='row'>
             <div className="col-md-8">
               {/* Course Content */}
@@ -396,11 +508,11 @@ const StudyClass = () => {
                     </li>
 
                   </ul>
-                  <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
+                  <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px', backgroundColor: '#fff' }}>
 
-                    <div className="tab-pane  show active" id="tab-content-1">
-                      <section id="courses" className="courses">
-                        <div className="container">
+                    <div className="tab-pane  show active" id="tab-content-1" >
+                      <section id="courses" className="courses" >
+                        <div className="container" style={{ backgroundColor: '#fff' }} >
                           <div key={selectedLesson.id}>
                             {/* <div dangerouslySetInnerHTML={{ __html: selectedLesson.reading }}></div> */}
                             <a href={selectedLesson.classUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}>Join the class</a>
@@ -413,7 +525,7 @@ const StudyClass = () => {
 
 
 
-                    <div className="tab-pane fade" id="tab-content-2">
+                    <div className="tab-pane fade" id="tab-content-2" >
                       <section id="courses" className="courses">
                         <div className="container">
                           {showQuestions && (
@@ -545,7 +657,7 @@ const StudyClass = () => {
                               </div>
                               <button
                                 className="btn btn-primary" onClick={() => handleStartQuiz(selectedQuiz.id)}
-                                style={{ backgroundColor: '#f58d04', color: '#fff' , borderRadius: '50px', padding: `8px 25px`}}
+                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
                               >
                                 Re-Attempt Quiz
                               </button>
@@ -560,12 +672,23 @@ const StudyClass = () => {
                                     <h3 className="mb-1">Topic {index + 1}: {classTopic.name}</h3>
                                     <p className="mb-0">{classTopic.description}</p>
                                     <span className="badge label-table badge-primary" onClick={() => handleShowQuizzes(classTopic.id)}>  <i class="fas fa-play"></i> Start quiz</span>
+                                    <span className="badge label-table badge-success ml-1" onClick={() => handleShowAssignments(classTopic.id)}>  <i class="fa-solid fa-dumbbell"></i> Start Assignment</span>
                                     <span className="badge label-table badge-warning ml-1" onClick={() => handleShowMaterials(classTopic.id)}>  <i class="far fa-file-alt"></i> Materials</span>
                                     {classTopic.showQuizzes && ( // Check if showQuizzes is true for the current class topic
                                       <div className="quizzes">
                                         {classTopic.quizList.map((quiz, index) => (
                                           <div key={index}>
                                             <p className="mb-0" style={{ color: '#f58d04', fontWeight: 'bold' }} onClick={() => handleStartQuiz(quiz.id)}>Quiz {index + 1} - {quiz.name}
+                                              &nbsp; <i class="far fa-play-circle"></i></p>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
+                                    {classTopic.showAssignments && ( // Check if showQuizzes is true for the current class topic
+                                      <div className="assignments">
+                                        {classTopic.assignmentList.map((assignment, index) => (
+                                          <div key={index}>
+                                            <p className="mb-0" style={{ color: '#f58d04', fontWeight: 'bold' }} onClick={() => handleStartAssignment(assignment.id)}>Assignment {index + 1} -  <p dangerouslySetInnerHTML={{ __html: assignment.questionText }}></p>
                                               &nbsp; <i class="far fa-play-circle"></i></p>
                                           </div>
                                         ))}
@@ -588,6 +711,55 @@ const StudyClass = () => {
                                   </div>
                                 ))
                               }
+                              {showForm && (
+                                <>
+                                  <i className="fas fa-clock" ></i>
+                                  <span>  Time Remaining: {formatTime(timeRemaining2)}
+                                  </span>
+                                  < form onSubmit={(e) => submitAssignmentAttempt(e)}>
+
+                                    <div className="tab-pane show active" id="tab-content-1" style={{ backgroundColor: '#fff' }} >
+                                      <section id="courses" className="courses">
+                                        <div dangerouslySetInnerHTML={{ __html: selectedAssignment?.questionText }}></div>
+
+                                        <div className=" ml-1">
+
+
+                                          <div className="" style={{ textAlign: 'left' }}>
+                                            <ReactQuill
+                                              value={assignmentAttempt.answerText}
+                                              onChange={handleChangeAnswerText}
+                                              style={{ height: "300px" }}
+                                              modules={{
+                                                toolbar: [
+                                                  [{ header: [1, 2, false] }],
+                                                  ['bold', 'italic', 'underline', 'strike'],
+                                                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                  [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                                  [{ 'direction': 'rtl' }],
+                                                  [{ 'align': [] }],
+                                                  ['link', 'image', 'video'],
+                                                  ['code-block'],
+                                                  [{ 'color': [] }, { 'background': [] }],
+                                                  ['clean']
+                                                ]
+                                              }}
+                                              theme="snow"
+                                            />
+                                          </div>
+                                        </div>
+                                      </section>
+                                    </div>
+                                    <button
+                                      className="btn btn-primary"
+                                      style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
+                                    >
+                                      Submit
+                                    </button>
+                                  </form>
+                                </>
+
+                              )}
                               {
                                 classTopicList.length === 0 && (
                                   <>
@@ -660,11 +832,11 @@ const StudyClass = () => {
             </div>
 
           </div>
-        </section>
-      </main>
+        </section >
+      </main >
       {/* <Footer /> */}
 
-      <style>
+      < style >
         {`
                 
                 .module-title:hover {
@@ -885,7 +1057,7 @@ input[type="radio"] {
 
 
             `}
-      </style>
+      </style >
     </>
   )
 }
