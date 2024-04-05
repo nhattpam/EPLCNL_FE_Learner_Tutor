@@ -10,7 +10,7 @@ import Sidebar from '../Sidebar';
 
 const ListAssignmentAttemptByTopic = () => {
 
-    const { tutorId } = useParams();
+    const tutorId = localStorage.getItem('tutorId');
     const [assignmentAttemptList, setAssignmentAttemptList] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');

@@ -173,9 +173,9 @@ const CreateTopic = () => {
                         </div>
                         <div className="form-group">
                           <label htmlFor="code">Description * :</label>
-                          <input type="text" className="form-control" name="description"
-                            id="description" value={classTopic.description} onChange={(e) => handleChange(e)} required style={{ borderRadius: '50px', padding: `8px 25px` }}
-                          />
+                          <textarea type="text" className="form-control" name="description"
+                            id="description" value={classTopic.description} onChange={(e) => handleChange(e)} required style={{ borderRadius: '8px', padding: `8px 25px`}}
+                          ></textarea>
                         </div>
                         {/* <div className="form-group">
                           <label htmlFor="code">Materials * :</label>

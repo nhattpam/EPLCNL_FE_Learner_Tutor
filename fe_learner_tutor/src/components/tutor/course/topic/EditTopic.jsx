@@ -407,7 +407,7 @@ const EditTopic = () => {
                                   <tr key={assignment.id}>
                                     <td>{index + 1}</td>
                                     <td>{assignment.deadline} mins</td>
-                                    <td dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
+                                    <td className='truncate-text' dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
                                     <td>{assignment.createdDate}</td>
                                     <td>{assignment.updatedDate}</td>
                                     <td>
@@ -561,6 +561,11 @@ const EditTopic = () => {
             background-color: #20c997;
             border-color: #20c997;
         }
+        .truncate-text {
+          max-width: 200px; /* Adjust max-width as needed */
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
         `}
       </style>
     </>
