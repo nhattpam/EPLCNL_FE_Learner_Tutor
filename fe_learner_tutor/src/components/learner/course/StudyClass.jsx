@@ -713,14 +713,14 @@ const StudyClass = () => {
                               }
                               {showForm && (
                                 <>
+                                
+                                  < form className='card' onSubmit={(e) => submitAssignmentAttempt(e)}>
                                   <i className="fas fa-clock" ></i>
                                   <span>  Time Remaining: {formatTime(timeRemaining2)}
                                   </span>
-                                  < form onSubmit={(e) => submitAssignmentAttempt(e)}>
-
-                                    <div className="tab-pane show active" id="tab-content-1" style={{ backgroundColor: '#fff' }} >
-                                      <section id="courses" className="courses">
-                                        <div dangerouslySetInnerHTML={{ __html: selectedAssignment?.questionText }}></div>
+                                    <div className="tab-pane show active " id="tab-content-1" style={{ backgroundColor: '#fff' }} >
+                                      <section id="courses" className="courses ">
+                                        <div className='ml-1 ' style={{textAlign: 'left'}} dangerouslySetInnerHTML={{ __html: selectedAssignment?.questionText }}></div>
 
                                         <div className=" ml-1">
 
