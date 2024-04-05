@@ -30,6 +30,14 @@ const EditAssignmentAttempt = () => {
         assignment: []
     });
 
+    const [updateAssignmentAttempt, setUpdateAssignmentAttempt] = useState({
+        assignmentId: assignmentAttempt.assignment?.id,
+        learnerId: assignmentAttempt.learnerId,
+        answerText: assignmentAttempt.answerText,
+        attemptedDate: assignmentAttempt.attemptedDate,
+        totalGrade: assignmentAttempt.totalGrade,
+    });
+
     const [account, setAccount] = useState({
         fullName: "",
     });
@@ -44,6 +52,8 @@ const EditAssignmentAttempt = () => {
             answerText: value
         }));
     };
+
+
 
     useEffect(() => {
         if (assignmentAttemptId) {
@@ -99,26 +109,29 @@ const EditAssignmentAttempt = () => {
 
 
 
+    useEffect(() => {
+        setUpdateAssignmentAttempt({
+            assignmentId: assignmentAttempt.assignmentId,
+            learnerId: assignmentAttempt.learnerId,
+            answerText: assignmentAttempt.answerText,
+            attemptedDate: assignmentAttempt.attemptedDate,
+            totalGrade: assignmentAttempt.totalGrade,
+        });
+    }, [assignmentAttempt]);
+
     const submitAssignmentAttempt = async (e) => {
         e.preventDefault();
 
         try {
-            // Save assignmentAttempt
-            console.log("day la ss: " + JSON.stringify(assignmentAttempt))
-            const assignmentAttemptResponse = await assignmentAttemptService.updateAssignmentAttempt(assignmentAttemptId, assignmentAttempt);
-
-            // console.log(courseResponse.data);
-            const assignmentAttemptJson = JSON.stringify(assignmentAttemptResponse.data);
-
-            const assignmentAttemptJsonParse = JSON.parse(assignmentAttemptJson);
-
-            console.log(assignmentAttemptJsonParse);
-
+            console.log("Updated Assignment Attempt: ", updateAssignmentAttempt);
+            await assignmentAttemptService.updateAssignmentAttempt(assignmentAttemptId, updateAssignmentAttempt);
             navigate(`/list-assignment-attempt/${tutorId}`);
         } catch (error) {
-            console.log(error);
+            console.error("Error updating assignment attempt: ", error);
+            // Handle error appropriately (e.g., show error message to user)
         }
     };
+
 
     //list peer review
     const [peerReviewLish, setPeerReviewList] = useState([]);
@@ -317,7 +330,7 @@ const EditAssignmentAttempt = () => {
                                                         <button
                                                             type="submit"
                                                             className="btn btn-success"
-                                                            style={{marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }}
+                                                            style={{ marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }}
                                                         >
                                                             Save
                                                         </button>
