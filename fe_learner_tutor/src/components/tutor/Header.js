@@ -252,28 +252,30 @@ const Header = () => {
     const validateForm = () => {
         let isValid = true;
         const errors = {};
-
-        if (account.fullName.trim() === '') {
+    
+        if (!account || !account.fullName || account.fullName.trim() === '') {
             errors.fullName = 'Name is required';
             isValid = false;
         }
-
-        if (account.address.trim() === '') {
+    
+        if (!account || !account.address || account.address.trim() === '') {
             errors.address = 'Address is required';
             isValid = false;
         }
-
-        if (account.phoneNumber.trim() === '') {
+    
+        if (!account || !account.phoneNumber || account.phoneNumber.trim() === '') {
             errors.phoneNumber = 'Phone Number is required';
             isValid = false;
-        } else if (!/^\d{10}$/.test(account.phoneNumber.trim())) {
+        } else if (!account || !account.phoneNumber || !/^\d{10}$/.test(account.phoneNumber.trim())) {
             errors.phoneNumber = 'Phone Number must be exactly 10 digits';
             isValid = false;
         }
-
+    
         setErrors(errors);
         return isValid;
     };
+    
+    
 
     const submitAccount = async (e) => {
         e.preventDefault();
