@@ -169,7 +169,7 @@ const EditModule = () => {
                                     <h4 className="header-title">COURSE - <span className='text-success'>{module.course?.name}</span> | MODULE INFORMATION</h4>
 
 
-                                    <div className="mb-3">
+                                    <div className="mb-3 mt-3">
                                         <h5>Module Name: {module.name}</h5>
                                     </div>
 

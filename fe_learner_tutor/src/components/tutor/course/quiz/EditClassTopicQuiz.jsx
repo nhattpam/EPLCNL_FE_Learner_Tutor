@@ -75,7 +75,7 @@ const EditClassTopicQuiz = () => {
             <div className="row">
               <div className="col-12">
                 <div className="card-box">
-                  <h4 className="header-title">QUIZ INFORMATION</h4>
+                  <h4 className="header-title">QUIZ INFORMATION &nbsp;<i class="fa-solid fa-pen-to-square"></i></h4>
                   <div className="table-responsive">
                     <table className="table table-borderless table-hover table-nowrap table-centered mb-0">
                       <tbody>
@@ -144,31 +144,31 @@ const EditClassTopicQuiz = () => {
                                 </tr>
                               ))
                             }
-                            {
-                              questionList.length === 0 && (
-                                <p>No questions found.</p>
-                              )
-                            }
+
 
                           </tbody>
 
                         </table>
+
                       </div>
 
                     </ul>
+                    {
+                      questionList.length === 0 && (
+                        <p className='text-center'>No questions found.</p>
+                      )
+                    }
                   </div>
 
                   <div className="form-group mb-2">
                     <>
-                      {questionList.length === 0 && (
-                        <p>No questions available.</p>
-                      )}
+
                       <Link
                         type="button"
                         className="btn btn-success mr-2"
                         to={`/tutor/courses/create/create-class-course/create-topic-question/${quiz.id}`}
                       >
-                      Create new question
+                        Create new question
                       </Link>
 
                       <Link to={`/tutor/courses/edit-topic/${quiz.topicId}`} className="btn btn-black"  >

@@ -243,7 +243,6 @@ const EditTopic = () => {
                       </h4>
                       <form
                         method="post"
-                        className="mt-3"
                         id="myAwesomeDropzone"
                         data-plugin="dropzone"
                         data-previews-container="#file-previews"
@@ -252,7 +251,7 @@ const EditTopic = () => {
                         onSubmit={(e) => submitClassTopic(e)}
                       >
                         <div className="form-group">
-                          <label htmlFor="roomLink">Class Date:</label>
+                          <label htmlFor="roomLink">Class Hours:</label>
                           <p className='ml-2'>{classTopic.classLesson?.classHours}</p>
 
                         </div>
@@ -265,7 +264,7 @@ const EditTopic = () => {
                         </div>
 
                         <div className="form-group">
-                          <h2 htmlFor="topic">Topic</h2>
+                          <h4 htmlFor="topic">Topic Information &nbsp;<i class="fa-solid fa-pen-to-square"></i></h4>
 
                         </div>
                         <div className="form-group">
@@ -279,14 +278,6 @@ const EditTopic = () => {
                         </div>
 
                         <div className="form-group mb-0">
-                          <button
-                            type="submit"
-                            className="btn btn-success mr-2" style={{ borderRadius: '50px', padding: `8px 25px` }}
-
-                          >
-                            Update
-                          </button>
-
                           <Link
                             to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
                             className="btn btn-black" style={{ borderRadius: '50px', padding: `8px 25px` }}

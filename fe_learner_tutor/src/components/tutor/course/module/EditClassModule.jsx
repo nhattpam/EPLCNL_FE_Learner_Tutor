@@ -82,7 +82,7 @@ const EditClassModule = () => {
                                 <div className="card-box">
                                     <h4 className="header-title">COURSE -
                                         <span className='text-success'> {module.course?.name} </span>
-                                        | CLASS INFORMATION</h4>
+                                        | CLASS INFORMATION &nbsp;<i class="fa-solid fa-pen-to-square"></i></h4>
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="form-group">
@@ -107,7 +107,7 @@ const EditClassModule = () => {
                                         </div>
 
                                         <div className="form-group">
-                                            <h5>Topics</h5>
+                                            <h5>Topics:</h5>
 
                                             <div className="table-responsive">
                                                 <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>

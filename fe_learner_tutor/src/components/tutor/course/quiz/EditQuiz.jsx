@@ -74,7 +74,7 @@ const EditQuiz = () => {
             <div className="row">
               <div className="col-12">
                 <div className="card-box">
-                  <h4 className="header-title">QUIZ INFORMATION</h4>
+                  <h4 className="header-title">QUIZ INFORMATION &nbsp;<i class="fa-solid fa-pen-to-square"></i></h4>
                   <div className="table-responsive">
                     <table className="table table-borderless table-hover table-nowrap table-centered mb-0">
                       <tbody>

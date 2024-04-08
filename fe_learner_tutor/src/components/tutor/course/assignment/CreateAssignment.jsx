@@ -9,6 +9,8 @@ import moduleService from "../../../../services/module.service";
 import assignmentService from "../../../../services/assignment.service";
 import DateTimePicker from "react-datetime-picker";
 import { error } from "jquery";
+import Dropzone from 'react-dropzone';
+import questionService from "../../../../services/question.service";
 
 const CreateAssignment = () => {
   const navigate = useNavigate();
@@ -35,10 +37,29 @@ const CreateAssignment = () => {
 
   //tao assignment
   const [assignment, setAssignment] = useState({
+    gradeToPass: "",
     questionText: "",
+    questionAudioUrl: "",
     deadline: 5, // set a default value for minutes
     moduleId: storedModuleId,
   });
+
+  const [file2, setFile2] = useState(null);
+
+  const handleFileDrop2 = (acceptedFiles) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      const currentFile2 = acceptedFiles[0];
+
+      // Log the audio file details
+      console.log("Audio File: ", currentFile2);
+
+      setFile2(currentFile2);
+
+      // Set the audio preview URL
+      setAssignment({ ...assignment, questionAudioUrl: URL.createObjectURL(currentFile2) });
+    }
+  };
+
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -68,12 +89,23 @@ const CreateAssignment = () => {
   const submitAssignment = async (e) => {
     e.preventDefault();
 
+    let questionAudioUrl = assignment.questionAudioUrl;
+
+    if (file2) {
+      const audioData = new FormData();
+      audioData.append('file', file2);
+      const audioResponse = await questionService.uploadAudio(audioData);
+      questionAudioUrl = audioResponse.data;
+    }
+
+    const assignmentData = { ...assignment, questionAudioUrl };
+    console.log(JSON.stringify(assignmentData));
+
     if (validateForm()) {
       try {
         // Save account
-        console.log(JSON.stringify(assignment));
         const assignmentResponse = await assignmentService.saveAssignment(
-          assignment
+          assignmentData
         );
         console.log(assignmentResponse.data);
 
@@ -131,6 +163,47 @@ const CreateAssignment = () => {
                       >
                         <div className="card" style={{ marginTop: "-20px" }}>
                           <div className="card-body">
+                            <label htmlFor="video">Grade To Pass * :</label>
+                            <select
+                              value={assignment.gradeToPass}
+                              onChange={(e) => setAssignment({ ...assignment, gradeToPass: e.target.value })} className="form-control"
+                              required
+                              style={{ borderRadius: '50px', padding: `8px 25px` }}
+
+                            >
+                              <option value={1}>
+                                1
+                              </option>
+                              <option value={2}>
+                                2
+                              </option>
+                              <option value={3}>
+                                3
+                              </option>
+                              <option value={4}>
+                                4
+                              </option>
+                              <option value={5}>
+                                5
+                              </option>
+                              <option value={6}>
+                                6
+                              </option>
+                              <option value={7}>
+                                7
+                              </option>
+                              <option value={8}>
+                                8
+                              </option>
+                              <option value={9}>
+                                9
+                              </option>
+                              <option value={10}>
+                                10
+                              </option>
+                            </select>
+                          </div>
+                          <div className="card-body">
                             <label htmlFor="video">Time * :</label>
                             <select
                               value={assignment.deadline}
@@ -150,7 +223,7 @@ const CreateAssignment = () => {
                             </select>
                           </div>
                           <div className="card-body">
-                          {errors.questionText && <p style={{ color: 'red' }}>{errors.questionText}</p>}
+                            {errors.questionText && <p style={{ color: 'red' }}>{errors.questionText}</p>}
 
                             <label htmlFor="video">Question * :</label>
                             <ReactQuill
@@ -159,21 +232,51 @@ const CreateAssignment = () => {
                               style={{ height: "300px" }}
                               modules={{
                                 toolbar: [
-                                    [{ header: [1, 2, false] }],
-                                    ['bold', 'italic', 'underline', 'strike'],
-                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
-                                    [{ 'direction': 'rtl' }],
-                                    [{ 'align': [] }],
-                                    ['link', 'image', 'video'],
-                                    ['code-block'],
-                                    [{ 'color': [] }, { 'background': [] }],
-                                    ['clean']
+                                  [{ header: [1, 2, false] }],
+                                  ['bold', 'italic', 'underline', 'strike'],
+                                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                  [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                  [{ 'direction': 'rtl' }],
+                                  [{ 'align': [] }],
+                                  ['link', 'image', 'video'],
+                                  ['code-block'],
+                                  [{ 'color': [] }, { 'background': [] }],
+                                  ['clean']
                                 ]
-                            }}
-                            theme="snow"
-                            required
+                              }}
+                              theme="snow"
+                              required
                             />
+                          </div>
+                          <div className='card-body mt-3'>
+                            <label htmlFor="audio">Question Audio *:</label>
+                            <Dropzone
+                              onDrop={handleFileDrop2}
+                              accept="audio/*"
+                              multiple={false}
+                              maxSize={5000000}
+                            >
+                              {({ getRootProps, getInputProps }) => (
+                                <div {...getRootProps()} className="fallback">
+                                  <input {...getInputProps()} />
+                                  <div className="dz-message needsclick">
+                                    <i className="h1 text-muted dripicons-cloud-upload" />
+                                    <h3>Drop files here or click to upload.</h3>
+                                  </div>
+                                  {file2 && (
+                                    <div>
+                                      <audio controls style={{ marginTop: "10px" }}>
+                                        <source src={URL.createObjectURL(file2)} type="audio/*" />
+                                        Your browser does not support the audio tag.
+                                      </audio>
+                                      <p>Audio Preview:</p>
+                                      <audio controls src={URL.createObjectURL(file2)} />
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </Dropzone>
+
                           </div>
                         </div>
                         <div className="form-group mb-0  ">
@@ -182,7 +285,7 @@ const CreateAssignment = () => {
                             className="btn btn-success "
                             style={{ marginLeft: "23px", marginTop: "10px", borderRadius: '50px', padding: `8px 25px` }}
                           >
-                             Create
+                            Create
                           </button>
                         </div>
                       </form>

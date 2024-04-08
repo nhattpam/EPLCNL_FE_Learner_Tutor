@@ -336,9 +336,44 @@ const CreateClassTopicQuiz = () => {
                                                     </div>
                                                     <div className='col-6'>
                                                         <label htmlFor="gradeToPass">Grade to pass * :</label>
-                                                        <input type="number" className="form-control" name="gradeToPass"
-                                                            id="gradeToPass" required value={quiz.gradeToPass} onChange={(e) => handleQuizChange(e)}
-                                                            style={{ width: '100%', borderRadius: '50px', padding: `8px 25px` }} />
+                                                        <select
+                                                            value={quiz.gradeToPass}
+                                                            onChange={(e) => setQuiz({ ...quiz, gradeToPass: e.target.value })} className="form-control"
+                                                            required
+                                                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+
+                                                        >
+                                                            <option value={1}>
+                                                                1
+                                                            </option>
+                                                            <option value={2}>
+                                                                2
+                                                            </option>
+                                                            <option value={3}>
+                                                                3
+                                                            </option>
+                                                            <option value={4}>
+                                                                4
+                                                            </option>
+                                                            <option value={5}>
+                                                                5
+                                                            </option>
+                                                            <option value={6}>
+                                                                6
+                                                            </option>
+                                                            <option value={7}>
+                                                                7
+                                                            </option>
+                                                            <option value={8}>
+                                                                8
+                                                            </option>
+                                                            <option value={9}>
+                                                                9
+                                                            </option>
+                                                            <option value={10}>
+                                                                10
+                                                            </option>
+                                                        </select>
                                                     </div>
                                                     <div className='col-6'>
                                                         <label htmlFor="video">Time * :</label>
@@ -505,7 +540,7 @@ const CreateClassTopicQuiz = () => {
                                                                             required
                                                                             value={answer.answerText}
                                                                             onChange={(e) => handleAnswerChange(index, e)}
-                                                                            style={{  borderRadius: '20px', padding: `8px 25px` }}
+                                                                            style={{ borderRadius: '20px', padding: `8px 25px` }}
 
                                                                         />
 
