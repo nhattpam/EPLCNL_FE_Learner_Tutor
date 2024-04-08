@@ -12,6 +12,7 @@ import quizService from '../../../services/quiz.service';
 import questionService from '../../../services/question.service';
 import topicService from '../../../services/topic.service';
 import quizAttemptService from '../../../services/quiz-attempt.service';
+import Dropzone from 'react-dropzone';
 
 const StudyClass = () => {
   const { courseId } = useParams();
@@ -293,19 +294,19 @@ const StudyClass = () => {
         const selectedAssignment = res.data;
         setSelectedAssignment(selectedAssignment);
         console.log("ASSS: " + JSON.stringify(selectedAssignment));
-  
+
         setShowTimer2(true);
         setShowForm(true);
-  
+
         // Set the deadline time (in seconds) from now
         const deadlineInSeconds = Date.now() + selectedAssignment.deadline * 60 * 1000;
-  
+
         // Update time remaining every second
         const interval = setInterval(() => {
           const currentTime = Date.now();
           const remaining = Math.max(0, deadlineInSeconds - currentTime);
           setTimeRemaining2(remaining);
-  
+
           // If time runs out, clear the interval
           if (remaining === 0) {
             clearInterval(interval);
@@ -316,12 +317,13 @@ const StudyClass = () => {
         console.log(error);
       });
   };
-  
+
 
   const [assignmentAttempt, setAssignmentAttempt] = useState({
     assignmentId: selectedAssignment?.id,
     learnerId: learnerId,
     answerText: "",
+    answerAudioUrl: ""
   });
 
   const handleChangeAnswerText = (value) => {
@@ -338,13 +340,41 @@ const StudyClass = () => {
     }));
   }, [selectedAssignment?.id]);
 
+  const [file2, setFile2] = useState(null);
+
+  const handleFileDrop2 = (acceptedFiles) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      const currentFile2 = acceptedFiles[0];
+
+      // Log the audio file details
+      console.log("Audio File: ", currentFile2);
+
+      setFile2(currentFile2);
+
+      // Set the audio preview URL
+      setAssignmentAttempt({ ...assignmentAttempt, answerAudioUrl: URL.createObjectURL(currentFile2) });
+    }
+  };
+
+
   const submitAssignmentAttempt = async (e) => {
     e.preventDefault();
 
+    let answerAudioUrl = assignmentAttempt.answerAudioUrl;
+
+    if (file2) {
+        const audioData = new FormData();
+        audioData.append('file', file2);
+        const audioResponse = await questionService.uploadAudio(audioData);
+        answerAudioUrl = audioResponse.data;
+    }
+
+    const assignmentAttemptData = { ...assignmentAttempt, answerAudioUrl };
+    console.log(JSON.stringify(assignmentAttemptData));
+
     try {
       // Save assignmentAttempt
-      console.log("This is assignment attempt: " + JSON.stringify(assignmentAttempt))
-      const assignmentAttemptResponse = await assignmentAttemptService.saveAssignmentAttempt(assignmentAttempt);
+      const assignmentAttemptResponse = await assignmentAttemptService.saveAssignmentAttempt(assignmentAttemptData);
 
       // console.log(courseResponse.data);
       const assignmentAttemptJson = JSON.stringify(assignmentAttemptResponse.data);
@@ -713,14 +743,20 @@ const StudyClass = () => {
                               }
                               {showForm && (
                                 <>
-                                
+
                                   < form className='card' onSubmit={(e) => submitAssignmentAttempt(e)}>
-                                  <i className="fas fa-clock" ></i>
-                                  <span>  Time Remaining: {formatTime(timeRemaining2)}
-                                  </span>
+                                    <i className="fas fa-clock" ></i>
+                                    <span>  Time Remaining: {formatTime(timeRemaining2)}
+                                    </span>
                                     <div className="tab-pane show active " id="tab-content-1" style={{ backgroundColor: '#fff' }} >
                                       <section id="courses" className="courses ">
-                                        <div className='ml-1 ' style={{textAlign: 'left'}} dangerouslySetInnerHTML={{ __html: selectedAssignment?.questionText }}></div>
+                                        <div className='ml-1 ' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: selectedAssignment?.questionText }}></div>
+                                        <div className='ml-1 ' style={{ textAlign: 'left' }}>
+                                          <audio controls>
+                                            <source src={selectedAssignment.questionAudioUrl} type="audio/mpeg" />
+                                            Your browser does not support the audio element.
+                                          </audio>
+                                        </div>
 
                                         <div className=" ml-1">
 
@@ -747,6 +783,34 @@ const StudyClass = () => {
                                               theme="snow"
                                             />
                                           </div>
+
+                                          <label className='mt-5' htmlFor="audio" >Upload Audio *:</label>
+                                          <Dropzone
+                                            onDrop={handleFileDrop2}
+                                            accept="audio/*"
+                                            multiple={false}
+                                            maxSize={5000000}
+                                          >
+                                            {({ getRootProps, getInputProps }) => (
+                                              <div {...getRootProps()} className="fallback">
+                                                <input {...getInputProps()} />
+                                                <div className="dz-message needsclick">
+                                                  <i className="h1 text-muted dripicons-cloud-upload" />
+                                                </div>
+                                                {file2 && (
+                                                  <div>
+                                                    <audio controls style={{ marginTop: "10px" }}>
+                                                      <source src={URL.createObjectURL(file2)} type="audio/*" />
+                                                      Your browser does not support the audio tag.
+                                                    </audio>
+                                                    <p>Audio Preview:</p>
+                                                    <audio controls src={URL.createObjectURL(file2)} />
+                                                  </div>
+                                                )}
+                                              </div>
+                                            )}
+                                          </Dropzone>
+
                                         </div>
                                       </section>
                                     </div>

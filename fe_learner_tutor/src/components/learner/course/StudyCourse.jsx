@@ -13,6 +13,7 @@ import quizService from '../../../services/quiz.service';
 import questionService from '../../../services/question.service';
 import learnerService from '../../../services/learner.service';
 import peerReviewService from '../../../services/peer-review.service';
+import Dropzone from 'react-dropzone';
 
 const StudyCourse = () => {
     const { courseId } = useParams();
@@ -340,6 +341,7 @@ const StudyCourse = () => {
         assignmentId: selectedAssignmentId,
         learnerId: learnerId,
         answerText: "",
+        answerAudioUrl: ""
     });
 
 
@@ -371,13 +373,41 @@ const StudyCourse = () => {
         }));
     }, [selectedAssignmentId]);
 
+    const [file2, setFile2] = useState(null);
+
+    const handleFileDrop2 = (acceptedFiles) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            const currentFile2 = acceptedFiles[0];
+
+            // Log the audio file details
+            console.log("Audio File: ", currentFile2);
+
+            setFile2(currentFile2);
+
+            // Set the audio preview URL
+            setAssignmentAttempt({ ...assignmentAttempt, answerAudioUrl: URL.createObjectURL(currentFile2) });
+        }
+    };
+
     const submitAssignmentAttempt = async (e) => {
         e.preventDefault();
 
+        let answerAudioUrl = assignmentAttempt.answerAudioUrl;
+
+        if (file2) {
+            const audioData = new FormData();
+            audioData.append('file', file2);
+            const audioResponse = await questionService.uploadAudio(audioData);
+            answerAudioUrl = audioResponse.data;
+        }
+
+        const assignmentAttemptData = { ...assignmentAttempt, answerAudioUrl };
+        console.log(JSON.stringify(assignmentAttemptData));
+
+
         try {
             // Save assignmentAttempt
-            console.log("This is assignment attempt: " + JSON.stringify(assignmentAttempt))
-            const assignmentAttemptResponse = await assignmentAttemptService.saveAssignmentAttempt(assignmentAttempt);
+            const assignmentAttemptResponse = await assignmentAttemptService.saveAssignmentAttempt(assignmentAttemptData);
 
             // console.log(courseResponse.data);
             const assignmentAttemptJson = JSON.stringify(assignmentAttemptResponse.data);
@@ -404,13 +434,14 @@ const StudyCourse = () => {
         assignmentId: "",
         learnerId: "",
         answerText: "",
+        answerAudioUrl: ""
     });
     useEffect(() => {
         assignmentService.getAllAssignmentAttemptByAssignmentId(selectedAssignmentId)
             .then((res) => {
 
                 const list = res.data.filter(attempt => attempt.learnerId !== learnerId).slice(0, 5);
-                const list2 = res.data.filter(attempt => attempt.learnerId === learnerId);
+                const list2 = res.data.filter(attempt => attempt.learnerId === learnerId).slice(0, 5);
                 setAttemptList(list);
                 setAttemptList2(list2);
                 if (list2.length > 0) {
@@ -811,6 +842,17 @@ const StudyCourse = () => {
                                                         <div dangerouslySetInnerHTML={{ __html: selectedAssignment.questionText }}></div>
                                                     </div>
                                                 </div>
+                                                {
+                                                    selectedAssignment.questionAudioUrl !== null  &&   selectedAssignment.questionAudioUrl !== '' && (
+                                                        <div className="card ml-1">
+                                                            <audio controls>
+                                                                <source src={selectedAssignment.questionAudioUrl} type="audio/mpeg" />
+                                                                Your browser does not support the audio element.
+                                                            </audio>
+                                                        </div>
+                                                    )
+                                                }
+
                                             </section>
                                         </div>
                                         {
@@ -824,8 +866,20 @@ const StudyCourse = () => {
                                                     </div>
                                                     <div className='container ml-1'>
                                                         <div className='card' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
+                                                        {
+                                                            myAssignmentAttempt.answerAudioUrl !== '' && myAssignmentAttempt.answerAudioUrl !== null &&(
+                                                                <div className='card' >
+                                                                    <audio controls>
+                                                                        <source src={myAssignmentAttempt.answerAudioUrl} type="audio/mpeg" />
+                                                                        Your browser does not support the audio element.
+                                                                    </audio>
+                                                                </div>
+                                                            )
+                                                        }
 
                                                     </div>
+
+
                                                 </>
                                             )
                                         }
@@ -923,6 +977,32 @@ const StudyCourse = () => {
                                                                                 }}
                                                                                 theme="snow"
                                                                             />
+                                                                            <label className='mt-5' htmlFor="audio">Upload Audio *:</label>
+                                                                            <Dropzone
+                                                                                onDrop={handleFileDrop2}
+                                                                                accept="audio/*"
+                                                                                multiple={false}
+                                                                                maxSize={5000000}
+                                                                            >
+                                                                                {({ getRootProps, getInputProps }) => (
+                                                                                    <div {...getRootProps()} className="fallback">
+                                                                                        <input {...getInputProps()} />
+                                                                                        <div className="dz-message needsclick">
+                                                                                            <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                                        </div>
+                                                                                        {file2 && (
+                                                                                            <div>
+                                                                                                <audio controls style={{ marginTop: "10px" }}>
+                                                                                                    <source src={URL.createObjectURL(file2)} type="audio/*" />
+                                                                                                    Your browser does not support the audio tag.
+                                                                                                </audio>
+                                                                                                <p>Audio Preview:</p>
+                                                                                                <audio controls src={URL.createObjectURL(file2)} />
+                                                                                            </div>
+                                                                                        )}
+                                                                                    </div>
+                                                                                )}
+                                                                            </Dropzone>
                                                                         </div>
                                                                     </div>
                                                                 </section>
