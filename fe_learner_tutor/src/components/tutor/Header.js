@@ -252,17 +252,17 @@ const Header = () => {
     const validateForm = () => {
         let isValid = true;
         const errors = {};
-    
+
         if (!account || !account.fullName || account.fullName.trim() === '') {
             errors.fullName = 'Name is required';
             isValid = false;
         }
-    
+
         if (!account || !account.address || account.address.trim() === '') {
             errors.address = 'Address is required';
             isValid = false;
         }
-    
+
         if (!account || !account.phoneNumber || account.phoneNumber.trim() === '') {
             errors.phoneNumber = 'Phone Number is required';
             isValid = false;
@@ -270,12 +270,12 @@ const Header = () => {
             errors.phoneNumber = 'Phone Number must be exactly 10 digits';
             isValid = false;
         }
-    
+
         setErrors(errors);
         return isValid;
     };
-    
-    
+
+
 
     const submitAccount = async (e) => {
         e.preventDefault();
@@ -290,10 +290,10 @@ const Header = () => {
                     const imageData = new FormData();
                     imageData.append("file", fileImage);
                     const imageResponse = await accountService.uploadImage(imageData);
-    
+
                     // Update the imageUrl with the link obtained from the API
                     imageUrl = imageResponse.data;
-    
+
                     // Log the imageUrl after updating
                     console.log("Updated image URL:", imageUrl);
                 } catch (error) {
@@ -692,7 +692,11 @@ const Header = () => {
                                                 </tbody>
                                             </table>
                                         </div>
-
+                                        {
+                                            walletHistoryList.length === 0 && (
+                                                <p className='text-center mt-2'>No transactions found.</p>
+                                            )
+                                        }
                                     </div>
                                 </div>
                                 <div className="modal-footer">

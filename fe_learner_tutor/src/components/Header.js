@@ -722,7 +722,7 @@ const Header = () => {
                                         walletHistoryList.length === 0 && (
                                             <>
                                                 <i class="fas fa-hand-holding-usd fa-2x mt-4"></i>
-                                                <p>No histories found.</p>
+                                                <p>No transactions found.</p>
                                             </>
 
                                         )

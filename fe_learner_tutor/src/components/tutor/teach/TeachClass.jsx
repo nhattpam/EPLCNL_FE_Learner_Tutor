@@ -23,49 +23,39 @@ const TeachClass = () => {
         classModuleService.getModuleById(classModuleId)
             .then((res) => {
                 setClassModule(res.data);
-                console.log("This is module: " + res.data.courseId)
+                courseService
+                    .getAllEnrollmentsByCourse(res.data.courseId)
+                    .then((res) => {
+                        const notRefundEnrollments = res.data.filter(enrollment => enrollment.refundStatus === false);
+
+                        console.log(res.data);
+                        setEnrollmentList(notRefundEnrollments);
+
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                attendanceService.getAllLearnerAttendanceByAttendance(res.data.attendance?.id)
+                    .then((res) => {
+                        // console.log(res.data);
+                        setLearnerAttendanceList(res.data);
+
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                classLessonService
+                    .getAllClassTopicsByClassLesson(res.data.classLesson?.id)
+                    .then((res) => {
+                        // console.log(res.data);
+                        setClassTopicList(res.data);
+
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             })
     }, [classModuleId]);
-
-    useEffect(() => {
-        courseService
-            .getAllEnrollmentsByCourse(classModule.courseId)
-            .then((res) => {
-                const notRefundEnrollments = res.data.filter(enrollment => enrollment.refundStatus === false);
-
-                console.log(res.data);
-                setEnrollmentList(notRefundEnrollments);
-
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, [classModule.courseId]);
-
-    useEffect(() => {
-        classLessonService
-            .getAllClassTopicsByClassLesson(classModule.classLesson?.id)
-            .then((res) => {
-                // console.log(res.data);
-                setClassTopicList(res.data);
-
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, [classModule.classLesson?.id]);
-
-    useEffect(() => {
-        attendanceService.getAllLearnerAttendanceByAttendance(classModule.attendance?.id)
-            .then((res) => {
-                // console.log(res.data);
-                setLearnerAttendanceList(res.data);
-
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, [classModule.attendance?.id]);
 
 
 
@@ -91,29 +81,35 @@ const TeachClass = () => {
     const submitLearnerAttendance = async (e) => {
         e.preventDefault();
         try {
-            // Log learner attendance data before sending
-            console.log("Learner Attendance Data:", learnerAttendance);
-
-            // Filter out attendees with changed attendance
-            const attendeesWithChangedAttendance = enrollmentList
-                .filter(enrollment => enrollment.attended !== learnerAttendance[enrollment.transaction?.learnerId]?.attended)
-                .map(enrollment => ({
+            // Create an array to store all attendance records
+            const allAttendances = [];
+    
+            // Iterate over all learners in the enrollment list
+            enrollmentList.forEach(enrollment => {
+                const learnerId = enrollment.transaction?.learnerId;
+                const attended = learnerAttendance[learnerId]?.attended || false; // Default to false if attended is not set
+                // Create an attendance record for the learner
+                const attendance = {
                     attendanceId: classModule.attendance?.id,
-                    learnerId: enrollment.transaction?.learnerId,
-                    attended: learnerAttendance[enrollment.transaction?.learnerId]?.attended
-                }));
-
-            // Log filtered attendees
-            console.log("Attendees with Changed Attendance:", attendeesWithChangedAttendance);
-
-            // Save learner attendance
-            await Promise.all(attendeesWithChangedAttendance.map(attendance =>
+                    learnerId: learnerId,
+                    attended: attended
+                };
+                // Push the attendance record to the array
+                allAttendances.push(attendance);
+            });
+    
+            // Log all attendance records before sending
+            console.log("All Attendances:", allAttendances);
+    
+            // Save all learner attendances
+            await Promise.all(allAttendances.map(attendance =>
                 learnerAttendanceService.saveLearnerAttendance(attendance)
             ));
         } catch (error) {
             console.log(error);
         }
     };
+    
 
 
 
@@ -143,7 +139,7 @@ const TeachClass = () => {
                                                 <div className="col-12 text-sm-center form-inline">
                                                     <h5>CHECK ATTENDANCE DATE: <span className='text-success'> {classModule.startDate?.substring(0, 10)}</span></h5>
 
-                                                    {classModule.startDate && new Date() < new Date(classModule.startDate) && (
+                                                    {classModule.startDate && new Date().toISOString().substring(0, 10) === classModule.startDate.substring(0, 10) && (
                                                         <div className="table-responsive text-center">
                                                             <form
                                                                 method="post"
@@ -192,6 +188,7 @@ const TeachClass = () => {
                                                                                         checked={learnerAttendance[enrollment.transaction?.learnerId]?.attended || false}
                                                                                         onChange={(e) => handleChange(e, enrollment.transaction?.learnerId)}
                                                                                     />
+
                                                                                 </td>
                                                                             </tr>
                                                                         ))}
@@ -205,7 +202,66 @@ const TeachClass = () => {
                                                             </form>
                                                         </div>
                                                     )}
-                                                    {classModule.startDate && new Date() > new Date(classModule.startDate) && (
+                                                    {classModule.startDate && new Date().toISOString().substring(0, 10) < classModule.startDate.substring(0, 10) && (
+                                                        <div className="table-responsive text-center">
+                                                            <form
+                                                                method="post"
+                                                                data-parsley-validate
+                                                                onSubmit={(e) => submitLearnerAttendance(e)}
+                                                            >
+                                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                                    <thead className="thead-light">
+                                                                        <tr>
+                                                                            <th data-toggle="true">No.</th>
+                                                                            <th data-toggle="true">Image</th>
+                                                                            <th data-toggle="true">Full Name</th>
+                                                                            <th data-toggle="true">Phone</th>
+                                                                            <th data-hide="phone">Gender</th>
+                                                                            <th data-hide="phone, tablet">DOB</th>
+                                                                            {/* <th>Action</th> */}
+                                                                            <th>Attended</th>
+                                                                        </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                        {enrollmentList.length > 0 && enrollmentList.map((enrollment, index) => (
+                                                                            <tr key={enrollment.id}>
+                                                                                <td>{index + 1}</td>
+                                                                                <td>
+                                                                                    <img src={enrollment.transaction?.learner?.account?.imageUrl} style={{ height: '70px', width: '50px' }} alt="learner-img" />
+                                                                                </td>
+                                                                                <td>{enrollment.transaction?.learner?.account && enrollment.transaction?.learner?.account?.fullName ? enrollment.transaction?.learner?.account?.fullName : 'Unknown Name'}</td>
+                                                                                <td>{enrollment.transaction?.learner?.account && enrollment.transaction?.learner?.account?.phoneNumber ? enrollment.transaction?.learner?.account?.phoneNumber : 'Unknown Phone Number'}</td>
+                                                                                <td>{enrollment.transaction?.learner?.account && enrollment.transaction?.learner?.account?.gender !== undefined ? (enrollment.transaction?.learner?.account?.gender ? 'Male' : 'Female') : 'Unknown Gender'}</td>
+                                                                                <td>
+                                                                                    {enrollment.transaction?.learner?.account?.dateOfBirth && typeof enrollment.transaction?.learner?.account?.dateOfBirth === 'string' ?
+                                                                                        enrollment.transaction?.learner?.account?.dateOfBirth.substring(0, 10) :
+                                                                                        'Unknown DOB'}
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input
+                                                                                        type="hidden"
+                                                                                        value={enrollment.transaction?.learnerId}
+                                                                                        name="learnerId"
+                                                                                        onChange={(e) => handleChange(e)}
+                                                                                    />
+                                                                                    <input
+                                                                                        type="checkbox"
+                                                                                        name="attended"
+                                                                                        checked={learnerAttendance[enrollment.transaction?.learnerId]?.attended || false}
+                                                                                        onChange={(e) => handleChange(e, enrollment.transaction?.learnerId)}
+                                                                                        disabled
+                                                                                    />
+                                                                                </td>
+                                                                            </tr>
+                                                                        ))}
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </form>
+                                                        </div>
+                                                    )}
+                                                    {classModule.startDate && new Date().toISOString().substring(0, 10) > classModule.startDate.substring(0, 10) && (
                                                         <div className="table-responsive text-center">
                                                             <form
                                                                 method="post"
