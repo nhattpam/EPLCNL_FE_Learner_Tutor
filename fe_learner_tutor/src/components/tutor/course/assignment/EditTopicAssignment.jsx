@@ -85,26 +85,26 @@ const EditTopicAssignment = () => {
 
     const submitAssignment = async (e) => {
         e.preventDefault();
-
+    
         if (validateForm()) {
-            try {
-                // Save account
-                console.log(JSON.stringify(assignment))
-                const assignmentResponse = await assignmentService.saveAssignment(assignment);
-                console.log(assignmentResponse.data);
-
-                setMsg('Assignment Added Successfully');
-
-                const assignmentJson = JSON.stringify(assignmentResponse.data);
-
-                const assignmentJsonParse = JSON.parse(assignmentJson);
-
-
-            } catch (error) {
-                console.log(error);
-            }
+          try {
+            // Save account
+            console.log(JSON.stringify(assignment))
+            const assignmentResponse = await assignmentService.updateAssignment(assignment.id, assignment);
+            console.log(assignmentResponse.data);
+    
+            const assignmentJson = JSON.stringify(assignmentResponse.data);
+    
+            const assignmentJsonParse = JSON.parse(assignmentJson);
+    
+            window.alert("Update Assignment Successfully!");
+            window.location.reload();
+    
+          } catch (error) {
+            console.log(error);
+          }
         }
-    };
+      };
 
 
     const handleMinutesChange = (e) => {

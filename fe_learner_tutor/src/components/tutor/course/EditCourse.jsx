@@ -334,6 +334,12 @@ const EditCourse = () => {
                                                             <span className="badge label-table badge-warning">{course.tags}</span>
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <th>Description:</th>
+                                                        <td>
+                                                           {course.description}
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -665,7 +671,7 @@ const EditCourse = () => {
                                                                     <table className="table table-hover mt-3">
                                                                         <tbody>
                                                                             <tr>
-                                                                                <th style={{ width: '30%' }}>Course Name:</th>
+                                                                                <th style={{ width: '30%' }}>Name:</th>
                                                                                 <td>
                                                                                     <input type="text" className="form-control" name="name" value={course.name} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                                                                     {errors.name && <p className="text-danger">{errors.name}</p>}
@@ -690,6 +696,13 @@ const EditCourse = () => {
                                                                                 <td>
                                                                                     <input type="text" className="form-control" name="tags" value={course.tags} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                                                                     {errors.tags && <p className="text-danger">{errors.tags}</p>}
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th>Description:</th>
+                                                                                <td>
+                                                                                    <textarea type="text" className="form-control" name="description" value={course.description} onChange={(e) => handleChange(e)} style={{ borderRadius: '20px', padding: `8px 25px`, height: '150px' }} ></textarea>
+                                                                                    {errors.description && <p className="text-danger">{errors.description}</p>}
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>

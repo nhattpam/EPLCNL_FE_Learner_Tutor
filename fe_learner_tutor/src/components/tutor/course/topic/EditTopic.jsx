@@ -82,10 +82,7 @@ const EditTopic = () => {
     navigate(`/tutor/courses/create/create-class-course/list-topic/${classTopic.classLessonId}`);
   };
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setClassTopic({ ...classTopic, [e.target.name]: value });
-  }
+
 
   const listTopicsByClassLessonId = async (storedClassLessonId) => {
     try {
@@ -203,7 +200,7 @@ const EditTopic = () => {
 
     try {
       // Save account
-      const classTopicResponse = await topicService.saveClassTopic(classTopic);
+      const classTopicResponse = await topicService.updateClassTopic(classTopic.id, classTopic);
 
       // console.log(JSON.stringify(courseResponse));
       // console.log(courseResponse.data);
@@ -211,9 +208,9 @@ const EditTopic = () => {
 
       const classTopicJsonParse = JSON.parse(classTopicJson);
 
-      console.log(classTopicJsonParse)
+      window.alert("Update Topic Successfully!");
+      window.location.reload();
 
-      await listTopicsByClassLessonId(classTopic.classLessonId);
 
     } catch (error) {
       console.log(error);
@@ -226,6 +223,46 @@ const EditTopic = () => {
       listTopicsByClassLessonId(classTopic.classLessonId);
     }
   }, [classTopic.classLessonId]);
+
+
+
+  //EDIT TOPIC
+  const [showEditTopicModal, setShowEditTopicModal] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const openEditTopicModal = () => {
+    setShowEditTopicModal(true);
+  };
+
+  const closeEditTopicModal = () => {
+    setShowEditTopicModal(false);
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setClassTopic({ ...classTopic, [e.target.name]: value });
+  }
+
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {};
+
+    if (classTopic.name.trim() === '') {
+      errors.name = 'Name is required';
+      isValid = false;
+    }
+
+    if (classTopic.description.trim() === '') {
+      errors.code = 'Description is required';
+      isValid = false;
+    }
+
+
+    setErrors(errors);
+    return isValid;
+  };
+
+
   return (
     <>
       <div id="wrapper">
@@ -264,7 +301,7 @@ const EditTopic = () => {
                         </div>
 
                         <div className="form-group">
-                          <h4 htmlFor="topic">Topic Information &nbsp;<i class="fa-solid fa-pen-to-square"></i></h4>
+                          <h4 htmlFor="topic">Topic Information &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditTopicModal}></i></h4>
 
                         </div>
                         <div className="form-group">
@@ -526,6 +563,56 @@ const EditTopic = () => {
                 </div>
               </div>
             </div>
+            {showEditTopicModal && (
+              <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">Edit Topic</h5>
+                      <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeEditTopicModal}>
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    {/* Conditional rendering based on edit mode */}
+                    <>
+                      <form onSubmit={(e) => submitClassTopic(e)}>
+                        <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Added style for scrolling */}
+
+                          <div className="table-responsive">
+                            <table className="table table-hover mt-3">
+                              <tbody>
+                                <tr>
+                                  <th style={{ width: '30%' }}>Name:</th>
+                                  <td>
+                                    <input type="text" className="form-control" name="name" value={classTopic.name} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }} />
+                                    {errors.name && <p className="text-danger">{errors.name}</p>}
+                                  </td>
+                                </tr>
+
+                                <tr>
+                                  <th>Description:</th>
+                                  <td>
+                                    <textarea type="text" className="form-control" name="description" value={classTopic.description} onChange={(e) => handleChange(e)} style={{ borderRadius: '20px', padding: `8px 25px`, height: '150px' }}></textarea>
+                                    {errors.description && <p className="text-danger">{errors.description}</p>}
+                                  </td>
+                                </tr>
+
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div className="modal-footer">
+                          <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>Save Changes</button>
+                          <button type="button" className="btn btn-dark" onClick={closeEditTopicModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
+                        </div>
+                      </form>
+                    </>
+
+
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
