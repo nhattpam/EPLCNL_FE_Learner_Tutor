@@ -92,15 +92,15 @@ const EditAssignment = () => {
       try {
         // Save account
         console.log(JSON.stringify(assignment))
-        const assignmentResponse = await assignmentService.saveAssignment(assignment);
+        const assignmentResponse = await assignmentService.updateAssignment(assignment.id, assignment);
         console.log(assignmentResponse.data);
-
-        setMsg('Assignment Added Successfully');
 
         const assignmentJson = JSON.stringify(assignmentResponse.data);
 
         const assignmentJsonParse = JSON.parse(assignmentJson);
 
+        window.alert("Update Assignment Successfully!");
+        window.location.reload();
 
       } catch (error) {
         console.log(error);
