@@ -44,5 +44,13 @@ class RefundRequestService {
       }
     });
   }
+
+  getAllRefundSurveyByRefundRequestId(id) {
+    return axios.get(API_URL + `/refund-requests/${id}/refund-surveys` , {
+      headers: {
+        Authorization: `Bearer ${this.token}` // Include the bearer token in the headers
+      }
+    });
+  }
 }
 export default new RefundRequestService;
