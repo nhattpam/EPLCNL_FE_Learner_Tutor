@@ -154,6 +154,52 @@ const EditModule = () => {
     //paginate
 
 
+    //EDIT MODULE
+    const [showEditModuleModal, setShowEditModuleModal] = useState(false);
+    const openEditModuleModal = () => {
+        setShowEditModuleModal(true);
+    };
+
+    const closeEditModuleModal = () => {
+        setShowEditModuleModal(false);
+    };
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setModule({ ...module, [e.target.name]: value });
+    };
+
+    const validateForm = () => {
+        let isValid = true;
+        const errors = {};
+
+        if (module.name.trim() === '') {
+            errors.name = 'Name is required';
+            isValid = false;
+        }
+
+        setErrors(errors);
+        return isValid;
+    };
+
+    const submitModule = async (e) => {
+        e.preventDefault();
+
+        if (validateForm()) {
+            moduleService
+                .updateModule(module.id, module)
+                .then((res) => {
+                    window.alert("Update Module Successfully");
+                    window.location.reload();
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+        }
+    };
+
 
     return (
         <>
@@ -166,7 +212,7 @@ const EditModule = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="card-box">
-                                    <h4 className="header-title">COURSE - <span className='text-success'>{module.course?.name}</span> | MODULE INFORMATION</h4>
+                                    <h4 className="header-title">COURSE - <span className='text-success'>{module.course?.name}</span> | MODULE INFORMATION  &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditModuleModal}></i></h4>
 
 
                                     <div className="mb-3 mt-3">
@@ -401,6 +447,46 @@ const EditModule = () => {
                                     <i class="fas fa-long-arrow-alt-left"></i> Back to Course Infomation
                                 </Link>
                             </div> {/* end col*/}
+                            {showEditModuleModal && (
+                                <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                                    <div className="modal-dialog" role="document">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h5 className="modal-title">Edit Module</h5>
+                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeEditModuleModal}>
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            {/* Conditional rendering based on edit mode */}
+                                            <>
+                                                <form onSubmit={(e) => submitModule(e)}>
+                                                    <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Added style for scrolling */}
+                                                        <div className="table-responsive">
+                                                            <table className="table table-hover">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th style={{ width: '30%' }}>Name:</th>
+                                                                        <td>
+                                                                            <input type="text" className="form-control" name="name" value={module.name} onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }} />
+                                                                            {errors.name && <p className="text-danger">{errors.name}</p>}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>Save Changes</button>
+                                                        <button type="button" className="btn btn-dark" onClick={closeEditModuleModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
+                                                    </div>
+                                                </form>
+                                            </>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                         </div>
                         {/* end row*/}

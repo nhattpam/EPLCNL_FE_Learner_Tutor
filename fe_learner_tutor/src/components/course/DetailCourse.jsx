@@ -400,6 +400,10 @@ const DetailCourse = () => {
                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Enrolled Students</h5>
                                     <p>{learnersCount[course.id]}</p>
                                 </div>
+                                <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
+                                    <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Last Modified</h5>
+                                    <p>{course.updatedDate ? course.updatedDate.substring(0, 7) : course.createdDate}</p>
+                                </div>
                                 {/* Notification */}
                                 {showNotification && (
                                     <div className="notification fixed-top w-100  text-center" style={{ backgroundColor: '#f58d04' }}>

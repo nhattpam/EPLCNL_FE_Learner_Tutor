@@ -326,7 +326,7 @@ const EditCourse = () => {
                                                     </tr>
                                                     <tr>
                                                         <th>Price:</th>
-                                                        <td>{course.stockPrice}$</td>
+                                                        <td>${course.stockPrice}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Tags:</th>

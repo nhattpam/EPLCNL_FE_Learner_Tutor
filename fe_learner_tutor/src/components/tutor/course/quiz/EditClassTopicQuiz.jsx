@@ -165,7 +165,7 @@ const EditClassTopicQuiz = () => {
 
                       <Link
                         type="button"
-                        className="btn btn-success mr-2"
+                        className="btn btn-success mr-2" style={{borderRadius: '50px', padding: `8px 25px` }}
                         to={`/tutor/courses/create/create-class-course/create-topic-question/${quiz.id}`}
                       >
                         Create new question
