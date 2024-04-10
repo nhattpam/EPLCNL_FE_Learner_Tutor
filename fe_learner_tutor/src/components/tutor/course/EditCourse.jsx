@@ -251,7 +251,7 @@ const EditCourse = () => {
             courseService
                 .updateCourse(course.id, courseData)
                 .then((res) => {
-                    window.alert("Update Course Successfully");
+                    window.alert("Update Course Successfully!");
                     window.location.reload();
 
                 })

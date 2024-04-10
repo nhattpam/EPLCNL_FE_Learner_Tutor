@@ -6,13 +6,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import moduleService from '../../../../services/module.service';
 import classModuleService from '../../../../services/class-module.service';
 import classLessonService from '../../../../services/class-lesson.service';
+import DatePicker from 'react-datepicker';
 
 const EditClassModule = () => {
+
     const [module, setModule] = useState({
-        startDate: "",
-        classHours: "",
-        classLesson: ""
     });
+
 
     const [errors, setErrors] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
@@ -69,6 +69,72 @@ const EditClassModule = () => {
     const offset = currentPage * classTopicsPerPage;
     const currentClassTopics = filteredClassTopics.slice(offset, offset + classTopicsPerPage);
 
+
+    //EDIT CLASS MODULE
+    const [showEditClassModuleModal, setShowEditClassModuleModal] = useState(false);
+    const openEditClassModuleModal = () => {
+        setShowEditClassModuleModal(true);
+    };
+
+    const closeEditCourseModal = () => {
+        setShowEditClassModuleModal(false);
+    };
+
+    //class lesson
+    const [classLesson, setClassLesson] = useState({
+        classHours: '',
+        classUrl: '',
+        classModuleId: module.id,
+    });
+
+    useEffect(() => {
+        if (module.classLesson?.id) {
+            classLessonService
+                .getClassLessonById(module.classLesson?.id)
+                .then((res) => {
+                    setClassLesson(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [module.classLesson?.id]);
+
+    const handleClassLessonChange = (e) => {
+        const { value } = e.target;
+        setClassLesson({ ...classLesson, classUrl: value });
+    };
+
+    const validateForm = () => {
+        let isValid = true;
+        const errors = {};
+
+        if (classLesson.classUrl.trim() === '') {
+            errors.classUrl = 'Room Link is required';
+            isValid = false;
+        }
+
+        setErrors(errors);
+        return isValid;
+    };
+
+
+    const submitClassLesson = async (e) => {
+        e.preventDefault();
+
+
+        classLessonService
+            .updateClassLesson(classLesson.id, classLesson)
+            .then((res) => {
+                window.alert("Update Class Successfully!");
+                window.location.reload();
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    };
     return (
         <>
             <div id="wrapper">
@@ -82,11 +148,11 @@ const EditClassModule = () => {
                                 <div className="card-box">
                                     <h4 className="header-title">COURSE -
                                         <span className='text-success'> {module.course?.name} </span>
-                                        | CLASS INFORMATION &nbsp;<i class="fa-solid fa-pen-to-square"></i></h4>
+                                        | CLASS INFORMATION &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditClassModuleModal}></i></h4>
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="form-group">
-                                            <h5 htmlFor="name">Class Date:</h5>
+                                            <h5 htmlFor="name">Start Date:</h5>
                                             <ul>
                                                 {module.startDate ? new Date(module.startDate).toLocaleDateString('en-US') : "No start date"}
                                             </ul>
@@ -153,7 +219,7 @@ const EditClassModule = () => {
                                         <div className="form-group mb-0">
                                             <Link
                                                 to={`/tutor/courses/create/create-class-course/create-topic/${module.classLesson?.id}`}
-                                                className="btn btn-success" style={{borderRadius: '50px', padding: `8px 25px` }}
+                                                className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}
                                             >
                                                 Create new topic
                                             </Link>
@@ -171,6 +237,56 @@ const EditClassModule = () => {
                         </div>
                         {/* end row*/}
                     </div> {/* container */}
+                    {showEditClassModuleModal && (
+                        <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                            <div className="modal-dialog" role="document">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Edit Module</h5>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeEditCourseModal}>
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    {/* Conditional rendering based on edit mode */}
+                                    <>
+                                        <form onSubmit={(e) => submitClassLesson(e)}>
+                                            <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Added style for scrolling */}
+
+                                                <div className="table-responsive">
+                                                    <table className="table table-hover mt-3">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th style={{ width: '30%' }}>Room Link * :</th>
+                                                                <td>
+                                                                    <input
+                                                                        type="text"
+                                                                        className="form-control"
+                                                                        name="classUrl"
+                                                                        id="classUrl"
+                                                                        value={classLesson.classUrl}
+                                                                        onChange={handleClassLessonChange} // Pass the function directly
+                                                                        required
+                                                                        style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                                                    />
+                                                                </td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>Save Changes</button>
+                                                <button type="button" className="btn btn-dark" onClick={closeEditCourseModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
+                                            </div>
+                                        </form>
+                                    </>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
             <style>
