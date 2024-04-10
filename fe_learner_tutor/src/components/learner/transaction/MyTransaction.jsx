@@ -105,8 +105,23 @@ const MyTransaction = () => {
                 </div>
                 <section id="courses" className="courses mt-2">
                     <div className="container" data-aos="fade-up">
+                        {/* Nav Tabs */}
+                        <ul className="nav nav-tabs" id="myLearningTabs">
+                            <li className="nav-item">
+                                <a className="nav-link active" id="tab1" data-bs-toggle="tab" href="#tab-content-1">
+                                    Transaction
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" id="tab2" data-bs-toggle="tab" href="#tab-content-2">
+                                    Refund
+                                </a>
+                            </li>
+
+                        </ul>
+                        {/* Tab Content */}
                         <div className="tab-content" id="myLearningTabsContent">
-                            <div className="tab-pane fade show active" id="tab-content-1" style={{ marginTop: '-80px' }}>
+                            <div className="tab-pane fade show active" id="tab-content-1" style={{ marginTop: '-70px' }}>
                                 <div className="container-fluid" data-aos="fade-up">
                                     <div className="list-container" data-aos="zoom-in" data-aos-delay={100}>
                                         <table className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>

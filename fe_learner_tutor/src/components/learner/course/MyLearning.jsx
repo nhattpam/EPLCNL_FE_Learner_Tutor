@@ -449,268 +449,228 @@ const MyLearning = () => {
                         </ul>
                         {/* Tab Content */}
                         <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-70px' }}>
+                            {
+                                enrollmentList.length > 0 && enrollmentList.map((enrollment, index) => (
+                                    <>
+                                        <div className="tab-pane fade show active" id="tab-content-1">
+                                            <section id="courses" className="courses">
+                                                <div className="container" data-aos="fade-up">
+                                                    <div className="row " data-aos="zoom-in" data-aos-delay={100}>
 
-                            <div className="tab-pane fade show active" id="tab-content-1">
-                                <section id="courses" className="courses">
-                                    <div className="container" data-aos="fade-up">
-                                        <div className="row " data-aos="zoom-in" data-aos-delay={100}>
-                                            {
-                                                enrollmentList.length > 0 && enrollmentList.map((enrollment, index) => (
-                                                    <div key={enrollment.transaction?.courseId} className="col-lg-4 col-md-6 d-flex align-items-stretch">
-                                                        <div className="course-item "  id='iitem'>
-                                                            <img src={enrollment.transaction?.course?.imageUrl} className="img-fluid" alt="..." />
-                                                            <div className="course-content" >
-                                                                <div className="d-flex justify-content-between align-items-center mb-3">
-                                                                    <h4>{enrollment.transaction.course?.category?.name}</h4>
-                                                                    <p className="price">{parseFloat(enrollment.transaction?.course?.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
-                                                                    <p className="price">{`$${enrollment.transaction?.course?.stockPrice}`}</p>
-                                                                </div>
-                                                                {enrollment.transaction?.course?.isOnlineClass && (
-                                                                    <h3><Link to={`/study-class/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
-
-                                                                )}
-                                                                {!enrollment.transaction.course.isOnlineClass && (
-                                                                    <h3><Link to={`/study-course/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
-
-                                                                )}
-                                                                <p>{enrollment.transaction?.course?.description}</p>
-                                                                <div className="trainer d-flex justify-content-between align-items-center">
-                                                                    <div className="trainer-profile d-flex align-items-center">
-                                                                        <img src={enrollment.transaction?.course?.tutor?.account?.imageUrl} className="img-fluid" alt="" />
-                                                                        <span>{enrollment.transaction?.course?.tutor?.account?.fullName}</span>
+                                                        <div key={enrollment.transaction?.courseId} className="col-lg-4 col-md-6 d-flex align-items-stretch">
+                                                            <div className="course-item " id='iitem'>
+                                                                <img src={enrollment.transaction?.course?.imageUrl} className="img-fluid" alt="..." />
+                                                                <div className="course-content" >
+                                                                    <div className="d-flex justify-content-between align-items-center mb-3">
+                                                                        <h4>{enrollment.transaction.course?.category?.name}</h4>
+                                                                        <p className="price">{parseFloat(enrollment.transaction?.course?.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
+                                                                        <p className="price">{`$${enrollment.transaction?.course?.stockPrice}`}</p>
                                                                     </div>
+                                                                    {enrollment.transaction?.course?.isOnlineClass && (
+                                                                        <h3><Link to={`/study-class/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
 
-                                                                    <div className="trainer-rank d-flex align-items-center">
-                                                                        <i className="bx bx-user" />&nbsp;{learnersCount[enrollment.transaction?.course?.id]}
-                                                                        &nbsp;&nbsp;
-                                                                        <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.transaction?.courseId, learnerId)}></i>
-                                                                        &nbsp;&nbsp;&nbsp;
-                                                                        <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction?.courseId, learnerId)}></i>
-                                                                    </div>
-                                                                </div>
-                                                                {/* Display courseScore and learningScore */}
-                                                                {!enrollment.transaction?.course?.isOnlineClass && enrollmentScores[enrollment.id] && (
-                                                                    <div className="progress-container mt-3">
-                                                                        <div className="left-title" style={{ fontWeight: 'bold' }}>{enrollmentScores[enrollment.id]?.learningScore}</div>
-                                                                        <div className="progress-wrapper">
-                                                                            <progress className="orange-progress-bar" value={enrollmentScores[enrollment.id]?.learningScore} max={enrollmentScores[enrollment.id]?.courseScore}></progress>
+                                                                    )}
+                                                                    {!enrollment.transaction.course.isOnlineClass && (
+                                                                        <h3><Link to={`/study-course/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
+
+                                                                    )}
+                                                                    <p>{enrollment.transaction?.course?.description}</p>
+                                                                    <div className="trainer d-flex justify-content-between align-items-center">
+                                                                        <div className="trainer-profile d-flex align-items-center">
+                                                                            <img src={enrollment.transaction?.course?.tutor?.account?.imageUrl} className="img-fluid" alt="" />
+                                                                            <span>{enrollment.transaction?.course?.tutor?.account?.fullName}</span>
                                                                         </div>
-                                                                        <div className="right-title" style={{ fontWeight: 'bold' }}> {enrollmentScores[enrollment.id]?.courseScore}</div>
+
+                                                                        <div className="trainer-rank d-flex align-items-center">
+                                                                            <i className="bx bx-user" />&nbsp;{learnersCount[enrollment.transaction?.course?.id]}
+                                                                            &nbsp;&nbsp;
+                                                                            <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.transaction?.courseId, learnerId)}></i>
+                                                                            &nbsp;&nbsp;&nbsp;
+                                                                            <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction?.courseId, learnerId)}></i>
+                                                                        </div>
                                                                     </div>
-                                                                )}
-                                                                {isTransactionDateValid(enrollment.enrolledDate) && (
-                                                                    <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`  }} onClick={() => handleRefundClick(enrollment.id)}>
-                                                                        I want return
-                                                                    </a>
-                                                                )}
+                                                                    {/* Display courseScore and learningScore */}
+                                                                    {!enrollment.transaction?.course?.isOnlineClass && enrollmentScores[enrollment.id] && (
+                                                                        <div className="progress-container mt-3">
+                                                                            <div className="left-title" style={{ fontWeight: 'bold' }}>{enrollmentScores[enrollment.id]?.learningScore}</div>
+                                                                            <div className="progress-wrapper">
+                                                                                <progress className="orange-progress-bar" value={enrollmentScores[enrollment.id]?.learningScore} max={enrollmentScores[enrollment.id]?.courseScore}></progress>
+                                                                            </div>
+                                                                            <div className="right-title" style={{ fontWeight: 'bold' }}> {enrollmentScores[enrollment.id]?.courseScore}</div>
+                                                                        </div>
+                                                                    )}
+                                                                    {isTransactionDateValid(enrollment.enrolledDate) && (
+                                                                        <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={() => handleRefundClick(enrollment.id)}>
+                                                                            I want return
+                                                                        </a>
+                                                                    )}
 
-                                                                {showFeedbackModal && (
-                                                                    <form id="demo-form" data-parsley-validate onSubmit={(e) => submitFeedback(e)}>
-                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                                                            <div className="modal-dialog  modal-dialog-scrollable">
-                                                                                <div className="modal-content">
-                                                                                    <div className="modal-header">
-                                                                                        <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
-                                                                                        <button type="button" className="close" onClick={() => setShowFeedbackModal(false)}>
-                                                                                            <span aria-hidden="true">&times;</span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div className="modal-body">
-                                                                                        <StarRating onChange={handleRatingChange} />
+                                                                    
 
-                                                                                        <ReactQuill
-                                                                                            value={feedback.feedbackContent}
-                                                                                            onChange={handleContentChange}
-                                                                                            modules={{
-                                                                                                toolbar: [
-                                                                                                    [{ header: [1, 2, false] }],
-                                                                                                    [{ 'direction': 'rtl' }],
-                                                                                                    [{ 'align': [] }],
-                                                                                                    ['code-block'],
-                                                                                                    [{ 'color': [] }, { 'background': [] }],
-                                                                                                    ['clean']
-                                                                                                ]
-                                                                                            }}
-                                                                                            theme="snow"
-                                                                                            preserveWhitespace={true} // Add this line to preserve whitespace
-                                                                                            style={{ height: '400px' }}
-                                                                                        />
-                                                                                    </div>
-                                                                                    <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowFeedbackModal(false)}>Close</button>
-                                                                                        <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04',  borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitFeedback(e)}>Send</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </section>{/* End Courses Section */}
+                                        </div>
+                                        {showFeedbackModal && (
+                                                                        <form id="demo-form" data-parsley-validate onSubmit={(e) => submitFeedback(e)}>
+                                                                            <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                                                                                <div className="modal-dialog  modal-dialog-scrollable">
+                                                                                    <div className="modal-content">
+                                                                                        <div className="modal-header">
+                                                                                            <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
+                                                                                            <button type="button" className="close" onClick={() => setShowFeedbackModal(false)}>
+                                                                                                <span aria-hidden="true">&times;</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div className="modal-body">
+                                                                                            <StarRating onChange={handleRatingChange} />
+
+                                                                                            <ReactQuill
+                                                                                                value={feedback.feedbackContent}
+                                                                                                onChange={handleContentChange}
+                                                                                                modules={{
+                                                                                                    toolbar: [
+                                                                                                        [{ header: [1, 2, false] }],
+                                                                                                        [{ 'direction': 'rtl' }],
+                                                                                                        [{ 'align': [] }],
+                                                                                                        ['code-block'],
+                                                                                                        [{ 'color': [] }, { 'background': [] }],
+                                                                                                        ['clean']
+                                                                                                    ]
+                                                                                                }}
+                                                                                                theme="snow"
+                                                                                                preserveWhitespace={true} // Add this line to preserve whitespace
+                                                                                                style={{ height: '400px' }}
+                                                                                            />
+                                                                                        </div>
+                                                                                        <div className="modal-footer">
+                                                                                            <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowFeedbackModal(false)}>Close</button>
+                                                                                            <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitFeedback(e)}>Send</button>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </form>
+                                                                        </form>
 
 
-                                                                )}
-                                                                {showReportModal && (
-                                                                    <form method="post"
-                                                                        className="dropzone"
-                                                                        id="myAwesomeDropzone"
-                                                                        data-plugin="dropzone"
-                                                                        data-previews-container="#file-previews"
-                                                                        data-upload-preview-template="#uploadPreviewTemplate"
-                                                                        data-parsley-validate onSubmit={(e) => submitReport(e)}>
-                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                                                            <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
-                                                                                <div className="modal-content">
-                                                                                    <div className="modal-header">
-                                                                                        <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
-                                                                                        <button type="button" className="close" onClick={() => setShowReportModal(false)}>
-                                                                                            <span aria-hidden="true">&times;</span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Set maxHeight and overflowY */}
+                                                                    )}
+                                                                    {showReportModal && (
+                                                                        <form method="post"
+                                                                            className="dropzone"
+                                                                            id="myAwesomeDropzone"
+                                                                            data-plugin="dropzone"
+                                                                            data-previews-container="#file-previews"
+                                                                            data-upload-preview-template="#uploadPreviewTemplate"
+                                                                            data-parsley-validate onSubmit={(e) => submitReport(e)}>
+                                                                            <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                                                                                <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
+                                                                                    <div className="modal-content">
+                                                                                        <div className="modal-header">
+                                                                                            <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
+                                                                                            <button type="button" className="close" onClick={() => setShowReportModal(false)}>
+                                                                                                <span aria-hidden="true">&times;</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Set maxHeight and overflowY */}
 
-                                                                                        <ReactQuill
-                                                                                            value={report.reason}
-                                                                                            onChange={handleReasonChange}
-                                                                                            modules={{
-                                                                                                toolbar: [
-                                                                                                    [{ header: [1, 2, false] }],
-                                                                                                    [{ 'direction': 'rtl' }],
-                                                                                                    [{ 'align': [] }],
-                                                                                                    ['code-block'],
-                                                                                                    [{ 'color': [] }, { 'background': [] }],
-                                                                                                    ['clean']
-                                                                                                ]
-                                                                                            }}
-                                                                                            theme="snow"
-                                                                                            preserveWhitespace={true}
-                                                                                            style={{ height: '300px', marginBottom: '20px' }}
-                                                                                        />
-                                                                                        <Dropzone
-                                                                                            onDrop={handleFileDrop}
-                                                                                            accept="image/*"
-                                                                                            multiple={false}
-                                                                                            maxSize={5000000}
-                                                                                        >
-                                                                                            {({ getRootProps, getInputProps }) => (
-                                                                                                <div {...getRootProps()} className="fallback">
-                                                                                                    <input {...getInputProps()} />
-                                                                                                    <div className="dz-message needsclick">
-                                                                                                        <i className="h1 text-muted dripicons-cloud-upload" />
-                                                                                                        <h3>Drop files here or click to upload.</h3>
-                                                                                                    </div>
-                                                                                                    {imagePreview && (
-                                                                                                        <img
-                                                                                                            src={imagePreview}
-                                                                                                            alt="Preview"
-                                                                                                            style={{
-                                                                                                                maxWidth: "100%",
-                                                                                                                maxHeight: "200px",
-                                                                                                                marginTop: "10px",
-                                                                                                            }}
-                                                                                                        />
-                                                                                                    )}
-                                                                                                </div>
-                                                                                            )}
-                                                                                        </Dropzone>
-
-                                                                                        <div
-                                                                                            className="dropzone-previews mt-3"
-                                                                                            id="file-previews"
-                                                                                        />
-                                                                                    </div>
-                                                                                    <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowReportModal(false)}>Close</button>
-                                                                                        <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04',  borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitReport(e)}>Send</button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </form>
-                                                                )}
-                                                                {showRefundModal && (
-                                                                    <form
-                                                                        method="post"
-                                                                        className="dropzone"
-                                                                        id="myAwesomeDropzone"
-                                                                        data-plugin="dropzone"
-                                                                        data-previews-container="#file-previews"
-                                                                        data-upload-preview-template="#uploadPreviewTemplate"
-                                                                        data-parsley-validate
-                                                                        onSubmit={(e) => submitRefund(e)}
-                                                                    >
-                                                                        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)', }}>
-                                                                            <div className="modal-dialog modal-dialog-scrollable">
-                                                                                <div className="modal-content">
-                                                                                    <div className="modal-header">
-                                                                                        <h5 className="modal-title">
-                                                                                            Refund course - <span style={{ color: '#f58d04' }}>{course.name}</span>
-                                                                                        </h5>
-                                                                                        <button type="button" className="close" onClick={() => setShowRefundModal(false)}>
-                                                                                            <span aria-hidden="true">&times;</span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
-                                                                                        {course?.isOnlineClass && (
-                                                                                            <div className="container" data-aos="fade-up">
-                                                                                                {classModuleList.length > 0 && classModuleList.map((classModule, index) => (
-                                                                                                    <>
-                                                                                                        <div className="row" key={index}>
-                                                                                                            <div className="col-lg-3">
-                                                                                                                <ul className="nav nav-tabs flex-column">
-                                                                                                                    <li className="nav-item get-button">
-                                                                                                                        <a onClick={(event) => handleTabClick2(event, classModule.id)}>
-                                                                                                                            On Date: <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
-                                                                                                                        </a>
-                                                                                                                    </li>
-                                                                                                                </ul>
-                                                                                                                <ul className="nav nav-tabs flex-column">
-                                                                                                                    <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
-                                                                                                                    </li>
-                                                                                                                </ul>
-                                                                                                            </div>
-                                                                                                            <div className="col-lg-9 mt-4 mt-lg-0">
-                                                                                                                <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
-                                                                                                                    <div className={`tab-pane ${activeClassModuleId === classModule.id ? 'active show' : ''}`} id={`tab-${classModule.id}`}>
-                                                                                                                        <div>
-                                                                                                                            <div>
-                                                                                                                                <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
-                                                                                                                                {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
-                                                                                                                                    <div>
-                                                                                                                                        <span key={topicIndex} style={{ justifyContent: 'left' }}><span style={{ fontWeight: 'bold' }}>Topic: </span>{classTopic.name}</span>
-                                                                                                                                    </div>
-                                                                                                                                ))}
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
+                                                                                            <ReactQuill
+                                                                                                value={report.reason}
+                                                                                                onChange={handleReasonChange}
+                                                                                                modules={{
+                                                                                                    toolbar: [
+                                                                                                        [{ header: [1, 2, false] }],
+                                                                                                        [{ 'direction': 'rtl' }],
+                                                                                                        [{ 'align': [] }],
+                                                                                                        ['code-block'],
+                                                                                                        [{ 'color': [] }, { 'background': [] }],
+                                                                                                        ['clean']
+                                                                                                    ]
+                                                                                                }}
+                                                                                                theme="snow"
+                                                                                                preserveWhitespace={true}
+                                                                                                style={{ height: '300px', marginBottom: '20px' }}
+                                                                                            />
+                                                                                            <Dropzone
+                                                                                                onDrop={handleFileDrop}
+                                                                                                accept="image/*"
+                                                                                                multiple={false}
+                                                                                                maxSize={5000000}
+                                                                                            >
+                                                                                                {({ getRootProps, getInputProps }) => (
+                                                                                                    <div {...getRootProps()} className="fallback">
+                                                                                                        <input {...getInputProps()} />
+                                                                                                        <div className="dz-message needsclick">
+                                                                                                            <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                                                            <h3>Drop files here or click to upload.</h3>
                                                                                                         </div>
-                                                                                                        <input
-                                                                                                            name={`reason-${index}`}
-                                                                                                            type='text'
-                                                                                                            placeholder='Write your reason...'
-                                                                                                            className='form-control'
-                                                                                                            required
-                                                                                                            onChange={(e) => handleReasonRefundChange(index, `Date ${classModule.startDate} has reason ${e.target.value}`)}
-                                                                                                            style={{ borderRadius: '50px', padding: `8px 25px` }}
-                                                                                                        />
-                                                                                                    </>
-
-                                                                                                ))}
-                                                                                                {classModuleList.length === 0 && (
-                                                                                                    <p>No modules for this course.</p>
+                                                                                                        {imagePreview && (
+                                                                                                            <img
+                                                                                                                src={imagePreview}
+                                                                                                                alt="Preview"
+                                                                                                                style={{
+                                                                                                                    maxWidth: "100%",
+                                                                                                                    maxHeight: "200px",
+                                                                                                                    marginTop: "10px",
+                                                                                                                }}
+                                                                                                            />
+                                                                                                        )}
+                                                                                                    </div>
                                                                                                 )}
-                                                                                            </div>
-                                                                                        )}
+                                                                                            </Dropzone>
 
-                                                                                        {!course?.isOnlineClass && (
-                                                                                            <div className="container" data-aos="fade-up">
-                                                                                                {moduleList.length > 0 &&
-                                                                                                    moduleList.map((module, index) => (
+                                                                                            <div
+                                                                                                className="dropzone-previews mt-3"
+                                                                                                id="file-previews"
+                                                                                            />
+                                                                                        </div>
+                                                                                        <div className="modal-footer">
+                                                                                            <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowReportModal(false)}>Close</button>
+                                                                                            <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitReport(e)}>Send</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    )}
+                                                                    {showRefundModal && (
+                                                                        <form
+                                                                            method="post"
+                                                                            className="dropzone"
+                                                                            id="myAwesomeDropzone"
+                                                                            data-plugin="dropzone"
+                                                                            data-previews-container="#file-previews"
+                                                                            data-upload-preview-template="#uploadPreviewTemplate"
+                                                                            data-parsley-validate
+                                                                            onSubmit={(e) => submitRefund(e)}
+                                                                        >
+                                                                            <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)', }}>
+                                                                                <div className="modal-dialog modal-dialog-scrollable">
+                                                                                    <div className="modal-content">
+                                                                                        <div className="modal-header">
+                                                                                            <h5 className="modal-title">
+                                                                                                Refund course - <span style={{ color: '#f58d04' }}>{course.name}</span>
+                                                                                            </h5>
+                                                                                            <button type="button" className="close" onClick={() => setShowRefundModal(false)}>
+                                                                                                <span aria-hidden="true">&times;</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+                                                                                            {course?.isOnlineClass && (
+                                                                                                <div className="container" data-aos="fade-up">
+                                                                                                    {classModuleList.length > 0 && classModuleList.map((classModule, index) => (
                                                                                                         <>
-                                                                                                            <div className="row" key={module.id}>
+                                                                                                            <div className="row" key={index}>
                                                                                                                 <div className="col-lg-3">
                                                                                                                     <ul className="nav nav-tabs flex-column">
                                                                                                                         <li className="nav-item get-button">
-                                                                                                                            <a onClick={(event) => handleTabClick(event, module.id)}>{module.name}</a>
+                                                                                                                            <a onClick={(event) => handleTabClick2(event, classModule.id)}>
+                                                                                                                                On Date: <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
+                                                                                                                            </a>
                                                                                                                         </li>
                                                                                                                     </ul>
                                                                                                                     <ul className="nav nav-tabs flex-column">
@@ -718,109 +678,153 @@ const MyLearning = () => {
                                                                                                                         </li>
                                                                                                                     </ul>
                                                                                                                 </div>
-
-
-
-
                                                                                                                 <div className="col-lg-9 mt-4 mt-lg-0">
-                                                                                                                    {filteredCombinedList.length > 0 &&
-                                                                                                                        filteredCombinedList.map((item, combinedIndex) => {
-                                                                                                                            // Check if the item belongs to the clicked module
-                                                                                                                            if (item.moduleId === module.id) {
-                                                                                                                                return (
-                                                                                                                                    <div className="combined-item" key={combinedIndex}>
-                                                                                                                                        {item.type === 'lesson' && (
-                                                                                                                                            <div className="lesson">
-                                                                                                                                                <p style={{ textAlign: 'justify' }}>
-                                                                                                                                                    <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
-                                                                                                                                                        {combinedIndex + 1}.
-                                                                                                                                                    </span>{' '}
-                                                                                                                                                    Lesson: {item.name}
-                                                                                                                                                </p>
-                                                                                                                                            </div>
-                                                                                                                                        )}
-                                                                                                                                        {item.type === 'assignment' && (
-                                                                                                                                            <div className="assignment">
-                                                                                                                                                <p style={{ textAlign: 'justify' }}>
-                                                                                                                                                    <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
-                                                                                                                                                        {combinedIndex + 1}.
-                                                                                                                                                    </span>{' '}
-                                                                                                                                                    Assignment - Deadline: {item.deadline} minutes
-                                                                                                                                                </p>
-                                                                                                                                            </div>
-                                                                                                                                        )}
-                                                                                                                                        {item.type === 'quiz' && (
-                                                                                                                                            <div className="quiz">
-                                                                                                                                                <p style={{ textAlign: 'justify' }}>
-                                                                                                                                                    <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
-                                                                                                                                                        {combinedIndex + 1}.
-                                                                                                                                                    </span>{' '}
-                                                                                                                                                    Quiz - {item.name}
-                                                                                                                                                </p>
-                                                                                                                                            </div>
-                                                                                                                                        )}
-                                                                                                                                    </div>
-                                                                                                                                );
-                                                                                                                            }
-                                                                                                                            return null; // Don't render if it doesn't belong to the clicked module
-                                                                                                                        })}
+                                                                                                                    <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
+                                                                                                                        <div className={`tab-pane ${activeClassModuleId === classModule.id ? 'active show' : ''}`} id={`tab-${classModule.id}`}>
+                                                                                                                            <div>
+                                                                                                                                <div>
+                                                                                                                                    <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
+                                                                                                                                    {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
+                                                                                                                                        <div>
+                                                                                                                                            <span key={topicIndex} style={{ justifyContent: 'left' }}><span style={{ fontWeight: 'bold' }}>Topic: </span>{classTopic.name}</span>
+                                                                                                                                        </div>
+                                                                                                                                    ))}
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                             <input
                                                                                                                 name={`reason-${index}`}
                                                                                                                 type='text'
                                                                                                                 placeholder='Write your reason...'
-                                                                                                                className={`form-control`}
+                                                                                                                className='form-control'
                                                                                                                 required
-                                                                                                                onChange={(e) => handleReasonRefundChange(index, `Module ${module.name} has reason: ${e.target.value}`)}
+                                                                                                                onChange={(e) => handleReasonRefundChange(index, `Date ${classModule.startDate} has reason ${e.target.value}`)}
                                                                                                                 style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                                                                             />
                                                                                                         </>
 
                                                                                                     ))}
-                                                                                            </div>
-                                                                                        )}
-                                                                                    </div>
-                                                                                    <div className="modal-footer">
-                                                                                        <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowRefundModal(false)}>
-                                                                                            Close
-                                                                                        </button>
-                                                                                        <button
-                                                                                            type="button"
-                                                                                            className="btn btn-primary"
-                                                                                            style={{ backgroundColor: '#f58d04' ,  borderRadius: '50px', padding: `8px 25px`}}
-                                                                                            onClick={(e) => submitRefund(e)}
-                                                                                        >
-                                                                                            Send
-                                                                                        </button>
+                                                                                                    {classModuleList.length === 0 && (
+                                                                                                        <p>No modules for this course.</p>
+                                                                                                    )}
+                                                                                                </div>
+                                                                                            )}
+
+                                                                                            {!course?.isOnlineClass && (
+                                                                                                <div className="container" data-aos="fade-up">
+                                                                                                    {moduleList.length > 0 &&
+                                                                                                        moduleList.map((module, index) => (
+                                                                                                            <>
+                                                                                                                <div className="row" key={module.id}>
+                                                                                                                    <div className="col-lg-3">
+                                                                                                                        <ul className="nav nav-tabs flex-column">
+                                                                                                                            <li className="nav-item get-button">
+                                                                                                                                <a onClick={(event) => handleTabClick(event, module.id)}>{module.name}</a>
+                                                                                                                            </li>
+                                                                                                                        </ul>
+                                                                                                                        <ul className="nav nav-tabs flex-column">
+                                                                                                                            <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
+                                                                                                                            </li>
+                                                                                                                        </ul>
+                                                                                                                    </div>
+
+
+
+
+                                                                                                                    <div className="col-lg-9 mt-4 mt-lg-0">
+                                                                                                                        {filteredCombinedList.length > 0 &&
+                                                                                                                            filteredCombinedList.map((item, combinedIndex) => {
+                                                                                                                                // Check if the item belongs to the clicked module
+                                                                                                                                if (item.moduleId === module.id) {
+                                                                                                                                    return (
+                                                                                                                                        <div className="combined-item" key={combinedIndex}>
+                                                                                                                                            {item.type === 'lesson' && (
+                                                                                                                                                <div className="lesson">
+                                                                                                                                                    <p style={{ textAlign: 'justify' }}>
+                                                                                                                                                        <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                                                                                            {combinedIndex + 1}.
+                                                                                                                                                        </span>{' '}
+                                                                                                                                                        Lesson: {item.name}
+                                                                                                                                                    </p>
+                                                                                                                                                </div>
+                                                                                                                                            )}
+                                                                                                                                            {item.type === 'assignment' && (
+                                                                                                                                                <div className="assignment">
+                                                                                                                                                    <p style={{ textAlign: 'justify' }}>
+                                                                                                                                                        <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                                                                                            {combinedIndex + 1}.
+                                                                                                                                                        </span>{' '}
+                                                                                                                                                        Assignment - Deadline: {item.deadline} minutes
+                                                                                                                                                    </p>
+                                                                                                                                                </div>
+                                                                                                                                            )}
+                                                                                                                                            {item.type === 'quiz' && (
+                                                                                                                                                <div className="quiz">
+                                                                                                                                                    <p style={{ textAlign: 'justify' }}>
+                                                                                                                                                        <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                                                                                            {combinedIndex + 1}.
+                                                                                                                                                        </span>{' '}
+                                                                                                                                                        Quiz - {item.name}
+                                                                                                                                                    </p>
+                                                                                                                                                </div>
+                                                                                                                                            )}
+                                                                                                                                        </div>
+                                                                                                                                    );
+                                                                                                                                }
+                                                                                                                                return null; // Don't render if it doesn't belong to the clicked module
+                                                                                                                            })}
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <input
+                                                                                                                    name={`reason-${index}`}
+                                                                                                                    type='text'
+                                                                                                                    placeholder='Write your reason...'
+                                                                                                                    className={`form-control`}
+                                                                                                                    required
+                                                                                                                    onChange={(e) => handleReasonRefundChange(index, `Module ${module.name} has reason: ${e.target.value}`)}
+                                                                                                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                                                                                                />
+                                                                                                            </>
+
+                                                                                                        ))}
+                                                                                                </div>
+                                                                                            )}
+                                                                                        </div>
+                                                                                        <div className="modal-footer">
+                                                                                            <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowRefundModal(false)}>
+                                                                                                Close
+                                                                                            </button>
+                                                                                            <button
+                                                                                                type="button"
+                                                                                                className="btn btn-primary"
+                                                                                                style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                                                                onClick={(e) => submitRefund(e)}
+                                                                                            >
+                                                                                                Send
+                                                                                            </button>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </form>
-                                                                )}
+                                                                        </form>
+                                                                    )}
 
+                                    </>
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            }
-                                            {
-                                                enrollmentList.length === 0 && (
-                                                    <>
-                                                        <i class="fas fa-university fa-2x mt-2"></i>
-                                                        <h5>You haven't joined any course yet.</h5>
+                                ))
+                            }
+                            {
+                                enrollmentList.length === 0 && (
+                                    <>
+                                        <i class="fas fa-university fa-2x mt-2"></i>
+                                        <h5>You haven't joined any course yet.</h5>
 
-                                                    </>
-                                                )
-                                            }
-
-                                        </div>
-                                    </div>
-                                </section>{/* End Courses Section */}
-                            </div>
-
+                                    </>
+                                )
+                            }
 
                             <div className="tab-pane fade" id="tab-content-2">
                                 {/* Course Content for Tab 2 */}
