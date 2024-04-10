@@ -7,6 +7,7 @@ import Sidebar from '../../Sidebar';
 import Footer from '../../Footer';
 import moduleService from '../../../../services/module.service';
 import lessonService from '../../../../services/lesson.service';
+import Dropzone from "react-dropzone";
 
 const EditLesson = () => {
   const navigate = useNavigate();
@@ -47,6 +48,20 @@ const EditLesson = () => {
     }
   }, [lesson.moduleId]);
 
+  const [file, setFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+
+  const handleFileDrop = (acceptedFiles) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+
+      // Set the image preview URL
+      const previewUrl = URL.createObjectURL(acceptedFiles[0]);
+      setImagePreview(previewUrl);
+    }
+  };
+
+
   const [module, setModule] = useState({
     name: "",
   });
@@ -70,25 +85,43 @@ const EditLesson = () => {
   const submitLesson = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      try {
-        // Save account
-        console.log(JSON.stringify(lesson))
-        const lessonResponse = await lessonService.savelesson(lesson);
-        console.log(lessonResponse.data);
+    try {
+      // Save account
+      let videoUrl = lesson.videoUrl; // Keep the existing imageUrl if available
 
-        setMsg('Lesson Added Successfully');
+      if (file) {
+        // Upload image and get the link
+        const videoData = new FormData();
+        videoData.append("file", file);
+        const videoResponse = await lessonService.uploadVideo(videoData);
 
-        const lessonJson = JSON.stringify(lessonResponse.data);
+        // Update the imageUrl with the link obtained from the API
+        videoUrl = videoResponse.data;
 
-        const lessonJsonParse = JSON.parse(lessonJson);
-
-
-      } catch (error) {
-        console.log(error);
+        // Log the imageUrl after updating
+        console.log("this is url: " + videoUrl);
       }
+
+      console.log(lesson);
+      const lessonData = { ...lesson, videoUrl }; // Create a new object with updated imageUrl
+
+      // Save account
+      const lessonResponse = await lessonService.updateLesson(lesson.id, lessonData);
+
+      // console.log(JSON.stringify(courseResponse));
+      // console.log(courseResponse.data);
+      const lessonJson = JSON.stringify(lessonResponse.data);
+
+      const lessonJsonParse = JSON.parse(lessonJson);
+
+      console.log(lessonJsonParse);
+      window.alert("Update Lesson Successfully!")
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
     }
   };
+
 
   const [materialList, setMaterialList] = useState([]);
 
@@ -145,12 +178,44 @@ const EditLesson = () => {
                               </video>
                             )}
                           </div>
+                          <Dropzone
+                            onDrop={handleFileDrop}
+                            accept="image/*"
+                            multiple={false}
+                            maxSize={5000000} // Maximum file size (5MB)
+                          >
+                            {({ getRootProps, getInputProps }) => (
+                              <div {...getRootProps()} className="fallback ml-3">
+                                <input {...getInputProps()} />
+                                <div className="dz-message needsclick">
+                                  <i className="h1 text-muted dripicons-cloud-upload" />
+                                </div>
+                                {imagePreview && (
+                                  <div>
+                                    {/* Video Preview */}
+                                    <video controls width="100%" height="200">
+                                      <source
+                                        src={imagePreview}
+                                        type="video/mp4"
+                                      />
+                                      Your browser does not support the video tag.
+                                    </video>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </Dropzone>
+                          <div
+                            className="dropzone-previews mt-3"
+                            id="file-previews"
+                          />
 
                           <div className='card-body'>
                             <label htmlFor="video">Reading * :</label>
                             <ReactQuill
                               name="reading"
                               value={lesson.reading}
+                              onChange={handleReadingChange}
                               modules={{
                                 toolbar: [
                                   [{ header: [1, 2, false] }],
@@ -172,7 +237,7 @@ const EditLesson = () => {
                             <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
                               Update
                             </button>
-                           
+
                             <Link
                               to={`/tutor/courses/edit-module/${lesson.moduleId}`}
                               className="btn btn-black mr-2 mt-2"
