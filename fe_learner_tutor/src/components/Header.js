@@ -29,7 +29,7 @@ const Header = () => {
         fullName: "",
         phoneNumber: "",
         imageUrl: "",
-        gender: "",
+        gender: false,
         wallet: []
     });
 

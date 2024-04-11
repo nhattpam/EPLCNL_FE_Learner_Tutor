@@ -263,7 +263,7 @@ const EditModule = () => {
                                                 </table>
                                                 {
                                                     currentLessons.length === 0 && (
-                                                        <p className='text-center'>No lessons yet.</p>
+                                                        <p className='text-center mt-3'>No lessons yet.</p>
                                                     )
                                                 }
                                             </div> {/* end .table-responsive*/}
@@ -333,7 +333,7 @@ const EditModule = () => {
                                                 </table>
                                                 {
                                                     currentAssignments.length === 0 && (
-                                                        <p className='text-center'>No assignments yet.</p>
+                                                        <p className='text-center mt-3'>No assignments yet.</p>
                                                     )
                                                 }
                                             </div> {/* end .table-responsive*/}
@@ -405,7 +405,7 @@ const EditModule = () => {
                                                 </table>
                                                 {
                                                     currentQuizs.length === 0 && (
-                                                        <p className='text-center'>No quizzes yet.</p>
+                                                        <p className='text-center mt-3'>No quizzes yet.</p>
                                                     )
                                                 }
                                             </div> {/* end .table-responsive*/}
@@ -449,7 +449,7 @@ const EditModule = () => {
                             </div> {/* end col*/}
                             {showEditModuleModal && (
                                 <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                    <div className="modal-dialog" role="document">
+                                    <div className="modal-dialog modal-lg" role="document">
                                         <div className="modal-content">
                                             <div className="modal-header">
                                                 <h5 className="modal-title">Edit Module</h5>

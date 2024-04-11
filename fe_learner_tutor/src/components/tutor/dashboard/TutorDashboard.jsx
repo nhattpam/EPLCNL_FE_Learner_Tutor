@@ -425,7 +425,7 @@ const TutorDashboard = () => {
                                     </div>
                                     <div className="modal-footer">
 
-                                        <button type="button" className="btn btn-dark" onClick={closeModal}>Close</button>
+                                        <button type="button" className="btn btn-dark" onClick={closeModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                                     </div>
                                 </div>
                             </div>
