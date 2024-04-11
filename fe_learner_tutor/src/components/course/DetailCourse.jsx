@@ -537,7 +537,7 @@ const DetailCourse = () => {
                             {
                                 showPayBalanceModal && (
                                     <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                        <div className="modal-dialog" role="document">
+                                        <div className="modal-dialog modal-lg" role="document">
                                             <div className="modal-content">
                                                 <div className="modal-header">
                                                     <h5 className="modal-title">Do you want to use your balance - <span style={{ fontWeight: 'bold', color: '#f58d04' }}>${account.wallet?.balance}</span></h5>
@@ -553,6 +553,7 @@ const DetailCourse = () => {
                                                                     <th>Image</th>
                                                                     <th>Name</th>
                                                                     <th>Price</th>
+                                                                    <th>Description</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -562,6 +563,7 @@ const DetailCourse = () => {
                                                                     </td>
                                                                     <td>{course.name}</td>
                                                                     <td><span style={{ fontWeight: 'bold' }}>$</span>{course.stockPrice}</td>
+                                                                    <td style={{textAlign: 'left'}}>{course.description}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>

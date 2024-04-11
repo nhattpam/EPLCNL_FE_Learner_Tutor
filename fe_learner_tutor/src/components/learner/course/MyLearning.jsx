@@ -519,7 +519,7 @@ const MyLearning = () => {
                                         {showFeedbackModal && (
                                             <form id="demo-form" data-parsley-validate onSubmit={(e) => submitFeedback(e)}>
                                                 <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                                    <div className="modal-dialog  modal-dialog-scrollable">
+                                                    <div className="modal-dialog  modal-dialog-scrollable modal-lg">
                                                         <div className="modal-content">
                                                             <div className="modal-header">
                                                                 <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
@@ -568,7 +568,7 @@ const MyLearning = () => {
                                                 data-upload-preview-template="#uploadPreviewTemplate"
                                                 data-parsley-validate onSubmit={(e) => submitReport(e)}>
                                                 <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                                    <div className="modal-dialog modal-dialog-scrollable"> {/* Add 'modal-dialog-scrollable' class */}
+                                                    <div className="modal-dialog modal-dialog-scrollable modal-lg"> {/* Add 'modal-dialog-scrollable' class */}
                                                         <div className="modal-content">
                                                             <div className="modal-header">
                                                                 <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
@@ -593,7 +593,7 @@ const MyLearning = () => {
                                                                     }}
                                                                     theme="snow"
                                                                     preserveWhitespace={true}
-                                                                    style={{ height: '300px', marginBottom: '20px' }}
+                                                                    style={{ height: '300px', marginBottom: '50px' }}
                                                                 />
                                                                 <Dropzone
                                                                     onDrop={handleFileDrop}
@@ -649,7 +649,7 @@ const MyLearning = () => {
                                                 onSubmit={(e) => submitRefund(e)}
                                             >
                                                 <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)', }}>
-                                                    <div className="modal-dialog modal-dialog-scrollable">
+                                                    <div className="modal-dialog modal-dialog-scrollable modal-lg">
                                                         <div className="modal-content">
                                                             <div className="modal-header">
                                                                 <h5 className="modal-title">

@@ -22,7 +22,7 @@ const Header = () => {
         fullName: "",
         phoneNumber: "",
         imageUrl: "",
-        gender: "",
+        gender: false,
         wallet: []
     });
 
@@ -303,27 +303,26 @@ const Header = () => {
                 }
             }
 
-            // Update account
-            const accountData = { ...account, imageUrl, gender: e.target.value === "male" }; // Create a new object with updated imageUrl and gender
-
-            // Convert gender string to number if needed
-            if (accountData.gender === "male") {
-                accountData.gender = true;
-            } if (accountData.gender === "female") {
-                accountData.gender = false;
+            // Convert gender string to boolean if needed
+            if (account.gender === "male") {
+                account.gender = true;
+            } else if (account.gender === "female") {
+                account.gender = false;
             }
-            console.log(JSON.stringify(accountData))
 
-            accountService
-                .updateAccount(account.id, accountData)
-                .then((res) => {
-                    window.alert("Update Account Successfully");
-                    window.location.reload();
+            // Update account data
+            const accountData = { ...account, imageUrl };
 
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            try {
+                const res = await accountService.updateAccount(account.id, accountData);
+                console.log("Update Account Successfully:", res.data);
+                window.alert("Update Account Successfully");
+                // Assuming you have a state management system, update account details in the state here instead of reloading the page
+                window.location.reload();
+            } catch (error) {
+                console.error("Error updating account:", error);
+                // Handle account update error here, show appropriate feedback to the user
+            }
 
         }
     };
@@ -358,7 +357,7 @@ const Header = () => {
                                 {/* item*/}
                                 <div className="dropdown-header noti-title">
                                     <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
-                                    <p>Balance: {account.wallet?.balance} <i class="far fa-eye" onClick={openWalletHistoryModal}></i></p>
+                                    <p>Balance: ${account.wallet?.balance} <i class="far fa-eye" onClick={openWalletHistoryModal}></i></p>
                                 </div>
                                 {/* item*/}
                                 <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={openModal} style={{ marginTop: '-30px' }}>
@@ -656,7 +655,7 @@ const Header = () => {
             {
                 showWalletHistoryModal && (
                     <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                        <div className="modal-dialog modal-dialog-scrollable" role="document">
+                        <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">Wallet History</h5>

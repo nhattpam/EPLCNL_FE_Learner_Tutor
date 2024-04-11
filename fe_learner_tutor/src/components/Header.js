@@ -472,7 +472,7 @@ const Header = () => {
                                             {isLearner && (
                                                 <>
                                                     <h6 className="text-overflow m-0">Welcome {account.fullName}!</h6>
-                                                    <p>Balance: {account.wallet?.balance}
+                                                    <p>Balance: ${account.wallet?.balance}
                                                         <i class="far fa-eye text-dark ml-1" onClick={openWalletHistoryModal}></i>
                                                         <i class="fas fa-funnel-dollar text-success" onClick={openDepositModal}></i>
                                                         <i class="fas fa-funnel-dollar text-danger"></i></p>
@@ -679,7 +679,7 @@ const Header = () => {
             {
                 showWalletHistoryModal && (
                     <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                        <div className="modal-dialog modal-dialog-scrollable" role="document">
+                        <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">Wallet History</h5>
@@ -742,7 +742,7 @@ const Header = () => {
             {
                 showDepositModal && (
                     <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                        <div className="modal-dialog modal-dialog-scrollable" role="document">
+                        <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">Deposit</h5>
@@ -758,14 +758,14 @@ const Header = () => {
                                             {/* Input fields for editing */}
                                             <h3>Enter the amount you want to deposit:</h3>
                                             <input className='form-control' placeholder='USD accepted' type='number' name='amount' style={{ borderRadius: '50px', padding: `8px 25px` }} />
-                                            <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%', marginTop: '20px' }} />
+                                            <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '10%', marginTop: '20px' }} />
                                             </p>
 
                                         </div>
 
                                     </div>
 
-                                    <div className="modal-footer" style={{ marginTop: '325px' }}>
+                                    <div className="modal-footer" style={{ marginTop: '250px' }}>
                                         {/* Conditional rendering of buttons based on edit mode */}
                                         <button
                                             type="submit"
