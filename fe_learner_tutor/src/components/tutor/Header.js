@@ -161,6 +161,8 @@ const Header = () => {
             // Save account
             const paperWorklResponse = await paperWorkService.savePaperWork(paperWorkData);
 
+            window.alert("Upload Successfully!");
+
             // Fetch the updated list of paperwork
             tutorService.getAllPaperWorksByTutor(storedTutorId)
                 .then((res) => {
@@ -591,7 +593,7 @@ const Header = () => {
                                             </table>
                                             {
                                                 paperWorkList.length === 0 && (
-                                                    <p className='text-center'>No paper works.</p>
+                                                    <p className='text-center mt-3'>No qualifications yet.</p>
                                                 )
                                             }
                                             {/* Input fields for editing */}

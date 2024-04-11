@@ -83,7 +83,7 @@ const TeachClass = () => {
         try {
             // Create an array to store all attendance records
             const allAttendances = [];
-    
+
             // Iterate over all learners in the enrollment list
             enrollmentList.forEach(enrollment => {
                 const learnerId = enrollment.transaction?.learnerId;
@@ -97,10 +97,10 @@ const TeachClass = () => {
                 // Push the attendance record to the array
                 allAttendances.push(attendance);
             });
-    
+
             // Log all attendance records before sending
             console.log("All Attendances:", allAttendances);
-    
+
             // Save all learner attendances
             await Promise.all(allAttendances.map(attendance =>
                 learnerAttendanceService.saveLearnerAttendance(attendance)
@@ -109,7 +109,7 @@ const TeachClass = () => {
             console.log(error);
         }
     };
-    
+
 
 
 
@@ -194,14 +194,19 @@ const TeachClass = () => {
                                                                         ))}
                                                                     </tbody>
                                                                 </table>
+                                                               
+
                                                                 <div className="form-group mb-0 mt-2">
                                                                     <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                                         Save
                                                                     </button>
                                                                 </div>
+                                                                
                                                             </form>
                                                         </div>
+                                                        
                                                     )}
+                                                    
                                                     {classModule.startDate && new Date().toISOString().substring(0, 10) < classModule.startDate.substring(0, 10) && (
                                                         <div className="table-responsive text-center">
                                                             <form
@@ -313,9 +318,11 @@ const TeachClass = () => {
 
                                                             </form>
                                                         </div>
+
                                                     )}
 
-                                                    <h5>TOPICS:</h5>
+
+                                                    <h5 className='mt-3'>TOPICS:</h5>
                                                     <div className="table-responsive">
                                                         <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                                                             <thead className="thead-light">
@@ -353,9 +360,7 @@ const TeachClass = () => {
                                                         </table>
                                                     </div> {/* end .table-responsive*/}
                                                 </div>
-                                                {enrollmentList.length === 0 && (
-                                                    <p className='text-center'>No enrollments yet.</p>
-                                                )}
+
                                             </div>
                                         </div>
                                     </div>

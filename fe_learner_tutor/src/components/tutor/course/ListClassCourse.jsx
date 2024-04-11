@@ -47,10 +47,10 @@ const ListClassCourse = () => {
     const filteredCourses = courseList
         .filter((course) => {
             return (
-                course.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
-                course.code.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
+                course.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                course.code.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
                 course.stockPrice.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-                course.category?.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) 
+                course.category?.name.toString().toLowerCase().includes(searchTerm.toLowerCase())
             );
         });
 
@@ -98,15 +98,15 @@ const ListClassCourse = () => {
                                                     {/* Create Tutor Button */}
                                                     <Link to="/tutor/courses/create">
                                                         <button className="btn btn-success mr-2" style={{ borderRadius: '50px', padding: `8px 25px` }}
->
-                                                             Create
+                                                        >
+                                                            Create
                                                         </button>
                                                     </Link>
 
                                                     <div className="form-group">
                                                         <input id="demo-foo-search" type="text" placeholder="Search" className="form-control form-control-sm" autoComplete="on"
                                                             value={searchTerm}
-                                                            onChange={handleSearch} style={{ borderRadius: '50px', padding: `18px 25px` }}/>
+                                                            onChange={handleSearch} style={{ borderRadius: '50px', padding: `18px 25px` }} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -122,6 +122,7 @@ const ListClassCourse = () => {
                                                         <th data-toggle="true">Stock Price</th>
                                                         <th data-toggle="true">Category</th>
                                                         <th data-hide="phone, ">Type</th>
+                                                        <th data-hide="phone, ">Rating</th>
                                                         <th data-hide="phone, tablet">Status</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -145,6 +146,7 @@ const ListClassCourse = () => {
                                                                         <span className="badge label-table badge-danger">Video</span>
                                                                     )}
                                                                 </td>
+                                                                <td>{course.rating} <i class="fa-solid fa-star text-warning"></i></td>
                                                                 <td>
                                                                     {course.isActive ? (
                                                                         <span className="badge label-table badge-success">Active</span>
@@ -165,12 +167,13 @@ const ListClassCourse = () => {
 
                                             </table>
                                         </div> {/* end .table-responsive*/}
+                                        {
+                                            currentCourses.length === 0 && (
+                                                <p className='text-center mt-3'>No courses found.</p>
+                                            )
+                                        }
                                     </div> {/* end card-box */}
-                                    {
-                                        currentCourses.length === 0 && (
-                                            <p>No courses found.</p>
-                                        )
-                                    }
+
                                 </div> {/* end col */}
                             </div>
                             {/* end row */}

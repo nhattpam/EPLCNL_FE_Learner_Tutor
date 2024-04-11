@@ -624,7 +624,7 @@ const EditCourse = () => {
 
                                     {showEditCourseModal && (
                                         <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                            <div className="modal-dialog" role="document">
+                                            <div className="modal-dialog modal-lg" role="document">
                                                 <div className="modal-content">
                                                     <div className="modal-header">
                                                         <h5 className="modal-title">Edit Course</h5>

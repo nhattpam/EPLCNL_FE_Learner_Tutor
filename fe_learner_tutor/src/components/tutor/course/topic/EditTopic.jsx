@@ -314,15 +314,7 @@ const EditTopic = () => {
 
                         </div>
 
-                        <div className="form-group mb-0">
-                          <Link
-                            to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
-                            className="btn btn-black" style={{ borderRadius: '50px', padding: `8px 25px` }}
-
-                          >
-                            <i class="fas fa-long-arrow-alt-left"></i> Back to Class Information
-                          </Link>
-                        </div>
+                        
                       </form>
 
                       {/* Display created topics */}
@@ -379,7 +371,7 @@ const EditTopic = () => {
                       </div>
                       {
                         currentQuizs.length === 0 && (
-                          <p className='text-center'>No quizzes found.</p>
+                          <p className='text-center mt-3'>No quizzes found.</p>
                         )
                       }
                       <div className='container-fluid'>
@@ -453,7 +445,7 @@ const EditTopic = () => {
                       </div>
                       {
                         currentAssignments.length === 0 && (
-                          <p className='text-center'>No assignments found.</p>
+                          <p className='text-center mt-3'>No assignments found.</p>
                         )
                       }
                       <div className='container-fluid'>
@@ -531,7 +523,7 @@ const EditTopic = () => {
                         </div> {/* end .table-responsive*/}
                         {
                           currentLessonMaterials.length === 0 && (
-                            <p className='text-center'>No materials found.</p>
+                            <p className='text-center mt-3'>No materials found.</p>
                           )
                         }
                       </div>
@@ -560,12 +552,24 @@ const EditTopic = () => {
                       </div>
                     </div>
                   </div>
+                  <div className="form-group mb-0">
+                          <Link
+                            to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
+                            className="btn btn-black" style={{ borderRadius: '50px', padding: `8px 25px` }}
+
+                          >
+                            <i class="fas fa-long-arrow-alt-left"></i> Back to Class Information
+                          </Link>
+                        </div>
                 </div>
+                
               </div>
+              
             </div>
+            
             {showEditTopicModal && (
               <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                <div className="modal-dialog" role="document">
+                <div className="modal-dialog modal-lg" role="document">
                   <div className="modal-content">
                     <div className="modal-header">
                       <h5 className="modal-title">Edit Topic</h5>
