@@ -197,7 +197,17 @@ const MyLearning = () => {
             .saveReport(reportData)
             .then((res) => {
                 window.alert("You Report sent! Thank you");
-                setShowReportModal(false)
+                setShowReportModal(false);
+
+                // Reset data after submission
+                setReport({
+                    reason: "",
+                    learnerId: "",
+                    courseId: "",
+                    imageUrl: ""
+                });
+                setFile(null);
+                setImagePreview("");
             })
             .catch((error) => {
                 console.log(error);
