@@ -11,6 +11,8 @@ import Sidebar from '../Sidebar';
 const ListAssignmentAttemptByTopic = () => {
 
     const tutorId = localStorage.getItem('tutorId');
+    const { classTopicId } = useParams();
+
     const [assignmentAttemptList, setAssignmentAttemptList] = useState([]);
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -32,13 +34,13 @@ const ListAssignmentAttemptByTopic = () => {
         tutorService
             .getAllAssignmentAttemptsByTutor(tutorId)
             .then((res) => {
-                const filteredAssignmentAttemptList = res.data;
+                const filteredAssignmentAttemptList = res.data.filter(a => a.assignment?.topicId === classTopicId);
                 // Sort refundList by requestedDate
                 const sortedAssignmentAttemptList = [...filteredAssignmentAttemptList].sort((a, b) => {
                     // Assuming requestedDate is a string in ISO 8601 format
                     return new Date(b.attemptedDate) - new Date(a.attemptedDate);
                 });
-                
+
                 setAssignmentAttemptList(sortedAssignmentAttemptList);
 
             })
@@ -50,10 +52,10 @@ const ListAssignmentAttemptByTopic = () => {
     const filteredAssignmentAttempts = assignmentAttemptList
         .filter((assignmentAttempt) => {
             return (
-                assignmentAttempt.answerText.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
+                assignmentAttempt.answerText.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
                 assignmentAttempt.assignment?.questionText.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-                assignmentAttempt.learner?.account?.fullName.toString().toLowerCase().includes(searchTerm.toLowerCase()) || 
-                assignmentAttempt.totalGrade.toString().toLowerCase().includes(searchTerm.toLowerCase()) 
+                assignmentAttempt.learner?.account?.fullName.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                assignmentAttempt.totalGrade.toString().toLowerCase().includes(searchTerm.toLowerCase())
             );
         });
 
@@ -113,9 +115,9 @@ const ListAssignmentAttemptByTopic = () => {
                                                     <div className="form-group">
                                                     </div>
                                                     <div className="form-group">
-                                                        <input id="demo-foo-search" onChange={handleSearch} type="text" 
-                                                        placeholder="Search" className="form-control form-control-sm" autoComplete="on" 
-                                                        style={{ borderRadius: '50px', padding: `18px 25px` }}
+                                                        <input id="demo-foo-search" onChange={handleSearch} type="text"
+                                                            placeholder="Search" className="form-control form-control-sm" autoComplete="on"
+                                                            style={{ borderRadius: '50px', padding: `18px 25px` }}
                                                         />
                                                     </div>
                                                 </div>
@@ -157,12 +159,13 @@ const ListAssignmentAttemptByTopic = () => {
 
                                             </table>
                                         </div> {/* end .table-responsive*/}
+                                        {
+                                            currentAssignmentAttempts.length === 0 && (
+                                                <p className='text-center mt-3'>No attempts found.</p>
+                                            )
+                                        }
                                     </div> {/* end card-box */}
-                                    {
-                                        currentAssignmentAttempts.length === 0 && (
-                                            <p>No attempts found.</p>
-                                        )
-                                    }
+
                                 </div> {/* end col */}
                             </div>
                             {/* end row */}
