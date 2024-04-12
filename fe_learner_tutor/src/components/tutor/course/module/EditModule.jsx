@@ -305,7 +305,7 @@ const EditModule = () => {
                                                         <tr>
                                                             <th>No.</th>
                                                             <th>Time</th>
-                                                            <th>Question</th>
+                                                            <th>Grade To Pass</th>
                                                             <th data-hide="phone">Created Date</th>
                                                             <th data-hide="phone, tablet">Updated Date</th>
                                                             <th>Action</th>
@@ -317,7 +317,7 @@ const EditModule = () => {
                                                                 <tr key={assignment.id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>{assignment.deadline}</td>
-                                                                    <td className="truncate-text" dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
+                                                                    <td>{assignment.gradeToPass}</td>
                                                                     <td>{assignment.createdDate}</td>
                                                                     <td>{assignment.updatedDate}</td>
                                                                     <td>
@@ -388,7 +388,7 @@ const EditModule = () => {
                                                                     <td>{index + 1}</td>
                                                                     <td>{quiz.name}</td>
                                                                     <td>{quiz.gradeToPass}</td>
-                                                                    <td>{quiz.deadline}</td>
+                                                                    <td>{quiz.deadline} mins</td>
                                                                     <td>{quiz.createdDate}</td>
                                                                     <td>{quiz.updatedDate}</td>
                                                                     <td>

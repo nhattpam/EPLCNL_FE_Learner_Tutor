@@ -131,7 +131,7 @@ const EditForum = () => {
                                                 )
                                             }
 
-                                            <form class="msger-inputarea" onSubmit={submitAccountForum} style={{borderRadius: '50px', padding: `8px 25px` }}>
+                                            <form class="msger-inputarea" onSubmit={submitAccountForum} style={{backgroundColor: '#fff'}}>
                                                 <input
                                                     type="text"
                                                     class="msger-input"

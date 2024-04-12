@@ -314,7 +314,7 @@ const EditTopic = () => {
 
                         </div>
 
-                        
+
                       </form>
 
                       {/* Display created topics */}
@@ -350,7 +350,7 @@ const EditTopic = () => {
                                     <td>{index + 1}</td>
                                     <td>{quiz.name}</td>
                                     <td>
-                                      <span className="badge label-table badge-success">{quiz.gradeToPass} </span>
+                                      {quiz.gradeToPass}
                                     </td>
                                     <td>{quiz.deadline} mins</td>
                                     <td>{quiz.createdDate}</td>
@@ -415,7 +415,7 @@ const EditTopic = () => {
                               <tr>
                                 <th>No.</th>
                                 <th>Time</th>
-                                <th>Question</th>
+                                <th>Grade To Pass</th>
                                 <th data-hide="phone">Created Date</th>
                                 <th data-hide="phone, tablet">Updated Date</th>
                                 <th>Action</th>
@@ -427,7 +427,7 @@ const EditTopic = () => {
                                   <tr key={assignment.id}>
                                     <td>{index + 1}</td>
                                     <td>{assignment.deadline} mins</td>
-                                    <td className='truncate-text' dangerouslySetInnerHTML={{ __html: assignment.questionText }} />
+                                    <td>{assignment.gradeToPass} </td>
                                     <td>{assignment.createdDate}</td>
                                     <td>{assignment.updatedDate}</td>
                                     <td>
@@ -553,20 +553,20 @@ const EditTopic = () => {
                     </div>
                   </div>
                   <div className="form-group mb-0">
-                          <Link
-                            to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
-                            className="btn btn-black" style={{ borderRadius: '50px', padding: `8px 25px` }}
+                    <Link
+                      to={`/tutor/courses/edit-class-module/${classTopic.classLesson?.classModuleId}`}
+                      className="btn btn-black" style={{ borderRadius: '50px', padding: `8px 25px` }}
 
-                          >
-                            <i class="fas fa-long-arrow-alt-left"></i> Back to Class Information
-                          </Link>
-                        </div>
+                    >
+                      <i class="fas fa-long-arrow-alt-left"></i> Back to Class Information
+                    </Link>
+                  </div>
                 </div>
-                
+
               </div>
-              
+
             </div>
-            
+
             {showEditTopicModal && (
               <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                 <div className="modal-dialog modal-lg" role="document">

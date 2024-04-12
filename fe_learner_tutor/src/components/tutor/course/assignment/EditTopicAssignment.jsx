@@ -8,6 +8,8 @@ import Footer from '../../Footer';
 import moduleService from '../../../../services/module.service';
 import assignmentService from '../../../../services/assignment.service';
 import topicService from '../../../../services/topic.service';
+import questionService from '../../../../services/question.service';
+import Dropzone from 'react-dropzone';
 
 const EditTopicAssignment = () => {
     const navigate = useNavigate();
@@ -20,6 +22,7 @@ const EditTopicAssignment = () => {
     const [assignment, setAssignment] = useState({
         gradeToPass: "",
         questionText: "",
+        questionAudioUrl: "",
         deadline: "", // set a default value for minutes
         topicId: "",
         topic: []
@@ -65,6 +68,22 @@ const EditTopicAssignment = () => {
         setAssignment({ ...assignment, questionText: value });
     };
 
+    const [file2, setFile2] = useState(null);
+
+    const handleFileDrop2 = (acceptedFiles) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            const currentFile2 = acceptedFiles[0];
+
+            // Log the audio file details
+            console.log("Audio File: ", currentFile2);
+
+            setFile2(currentFile2);
+
+            // Set the audio preview URL
+            setAssignment({ ...assignment, questionAudioUrl: URL.createObjectURL(currentFile2) });
+        }
+    };
+
     const validateForm = () => {
         let isValid = true;
         const errors = {};
@@ -85,26 +104,37 @@ const EditTopicAssignment = () => {
 
     const submitAssignment = async (e) => {
         e.preventDefault();
-    
-        if (validateForm()) {
-          try {
-            // Save account
-            console.log(JSON.stringify(assignment))
-            const assignmentResponse = await assignmentService.updateAssignment(assignment.id, assignment);
-            console.log(assignmentResponse.data);
-    
-            const assignmentJson = JSON.stringify(assignmentResponse.data);
-    
-            const assignmentJsonParse = JSON.parse(assignmentJson);
-    
-            window.alert("Update Assignment Successfully!");
-            window.location.reload();
-    
-          } catch (error) {
-            console.log(error);
-          }
+
+        let questionAudioUrl = assignment.questionAudioUrl;
+
+        if (file2) {
+            const audioData = new FormData();
+            audioData.append('file', file2);
+            const audioResponse = await questionService.uploadAudio(audioData);
+            questionAudioUrl = audioResponse.data;
         }
-      };
+
+        const assignmentData = { ...assignment, questionAudioUrl };
+
+        if (validateForm()) {
+            try {
+                // Save account
+                console.log(JSON.stringify(assignmentData))
+                const assignmentResponse = await assignmentService.updateAssignment(assignment.id, assignmentData);
+                console.log(assignmentResponse.data);
+
+                const assignmentJson = JSON.stringify(assignmentResponse.data);
+
+                const assignmentJsonParse = JSON.parse(assignmentJson);
+
+                window.alert("Update Assignment Successfully!");
+                window.location.reload();
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
 
 
     const handleMinutesChange = (e) => {
@@ -196,7 +226,7 @@ const EditTopicAssignment = () => {
                                                     </div>
                                                     {assignment.questionText !== "" && (
                                                         <div className='card-body'>
-                                                            <label htmlFor="video">Question * :</label>
+                                                            <label htmlFor="video">Question Text :</label>
                                                             <ReactQuill
                                                                 value={assignment.questionText}
                                                                 onChange={handleChangeAssignment}
@@ -222,16 +252,66 @@ const EditTopicAssignment = () => {
 
                                                     {assignment.questionAudioUrl !== "" && (
                                                         <div className='card-body mt-3'>
-                                                            <label htmlFor="video">Question Audio* :</label>
+                                                            <label htmlFor="video">Question Audio :</label>
                                                             <div>
                                                                 <audio controls>
                                                                     <source src={assignment?.questionAudioUrl} type="audio/mpeg" />
                                                                     Your browser does not support the audio element.
                                                                 </audio>
+                                                                <Dropzone
+                                                                    onDrop={handleFileDrop2}
+                                                                    accept="audio/*"
+                                                                    multiple={false}
+                                                                    maxSize={5000000}
+                                                                >
+                                                                    {({ getRootProps, getInputProps }) => (
+                                                                        <div {...getRootProps()} className="fallback">
+                                                                            <input {...getInputProps()} />
+                                                                            <div className="dz-message needsclick">
+                                                                                <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                                <h3>Drop files here or click to upload.</h3>
+                                                                            </div>
+                                                                            {file2 && (
+                                                                                <div>
+                                                                                    <audio controls style={{ marginTop: "10px" }}>
+                                                                                        <source src={URL.createObjectURL(file2)} type="audio/*" />
+                                                                                        Your browser does not support the audio tag.
+                                                                                    </audio>
+                                                                                    <p>Audio Preview:</p>
+                                                                                    <audio controls src={URL.createObjectURL(file2)} />
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    )}
+                                                                </Dropzone>
                                                             </div>
 
                                                         </div>
                                                     )}
+                                                    {assignment.questionAudioUrl === "" && (
+                                                        <div className='card-body mt-3'>
+                                                            <label htmlFor="video">Question Audio :</label>
+                                                            <Dropzone
+                                                                onDrop={handleFileDrop2}
+                                                                accept="audio/*"
+                                                                multiple={false}
+                                                                maxSize={5000000}
+                                                            >
+                                                                {({ getRootProps, getInputProps }) => (
+                                                                    <div {...getRootProps()} className="fallback">
+                                                                        <input {...getInputProps()} />
+                                                                        <div className="dz-message needsclick">
+                                                                            <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                            <h3>Drop files here or click to upload.</h3>
+                                                                        </div>
+
+                                                                    </div>
+                                                                )}
+                                                            </Dropzone>
+                                                        </div>
+
+                                                    )}
+
 
                                                 </div>
                                                 <div className="form-group mb-0  ">

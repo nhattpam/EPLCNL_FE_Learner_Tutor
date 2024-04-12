@@ -107,8 +107,9 @@ const MyForum = () => {
                             <div
                               className={`chat-message ${accountForum.tutor ? 'right' : 'left'}`}
                               key={accountForum.id}
+                              
                             >
-                              <div className="message-sender">
+                              <div className="message-sender" >
                                 <img src={accountForum.tutor?.account?.imageUrl ?? accountForum.learner?.account?.imageUrl}
                                   style={{
                                     width: '30px',
