@@ -345,20 +345,6 @@ const StudyCourse = () => {
     });
 
 
-    // useEffect(() => {
-    //     if (selectedAssignmentId) {
-    //       assignmentService
-    //         .get(assignmentId)
-    //         .then((res) => {
-    //           setAssignment(res.data);
-    //         })
-    //         .catch((error) => {
-    //           console.log(error);
-    //         });
-    //     }
-    //   }, [selectedAssignmentId]);
-
-
     const handleChangeAnswerText = (value) => {
         setAssignmentAttempt(prevState => ({
             ...prevState,
@@ -684,28 +670,38 @@ const StudyCourse = () => {
 
     //PEER REVIEW
     const [peerReviews, setPeerReviews] = useState([]);
+    const [submitting, setSubmitting] = useState(false);
+
 
     const submitPeerReviews = async (e) => {
         e.preventDefault();
-
-        // Loop through all peer reviews and submit them
-        await Promise.all(peerReviews.map(async (review) => {
-            console.log("Before saving peer review:", JSON.stringify(review)); // First console.log
-            try {
-                await peerReviewService.savePeerReview(review);
-                console.log("After saving peer review:", JSON.stringify(review)); // Second console.log
-                window.alert("Thank you!");
-            } catch (error) {
-                console.error('Error saving peer review:', error);
-            }
-        }));
-
-        // Clear the peer reviews array
-        setPeerReviews([]);
-        // Reload the page or perform any other necessary actions
-        setShowAttempts(true);
-    }
-
+        setSubmitting(true); // Start submission process
+    
+        try {
+            await Promise.all(peerReviews.map(async (review) => {
+                console.log("Before saving peer review:", JSON.stringify(review)); // First console.log
+                try {
+                    await peerReviewService.savePeerReview(review);
+                    console.log("After saving peer review:", JSON.stringify(review)); // Second console.log
+                } catch (error) {
+                    console.error('Error saving peer review:', error);
+                }
+            }));
+    
+            // Clear the peer reviews array
+            setPeerReviews([]);
+            // Reload the page or perform any other necessary actions
+            setShowAttempts(true);
+            window.alert("Thank you!");
+            window.location.reload();
+        } catch (error) {
+            console.error('Error submitting peer reviews:', error);
+            window.alert("Error submitting peer reviews");
+        } finally {
+            setSubmitting(false); // Submission process completed
+        }
+    };
+    
     // Update peer reviews array instead of peer review state
     const handleGradeChange = (e, attemptId) => {
         const grade = e.target.value;
@@ -843,7 +839,7 @@ const StudyCourse = () => {
                                                     </div>
                                                 </div>
                                                 {
-                                                    selectedAssignment.questionAudioUrl !== null  &&   selectedAssignment.questionAudioUrl !== '' && (
+                                                    selectedAssignment.questionAudioUrl !== null && selectedAssignment.questionAudioUrl !== '' && (
                                                         <div className="card ml-1">
                                                             <audio controls>
                                                                 <source src={selectedAssignment.questionAudioUrl} type="audio/mpeg" />
@@ -867,7 +863,7 @@ const StudyCourse = () => {
                                                     <div className='container ml-1'>
                                                         <div className='card' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
                                                         {
-                                                            myAssignmentAttempt.answerAudioUrl !== '' && myAssignmentAttempt.answerAudioUrl !== null &&(
+                                                            myAssignmentAttempt.answerAudioUrl !== '' && myAssignmentAttempt.answerAudioUrl !== null && (
                                                                 <div className='card' >
                                                                     <audio controls>
                                                                         <source src={myAssignmentAttempt.answerAudioUrl} type="audio/mpeg" />
@@ -922,8 +918,11 @@ const StudyCourse = () => {
 
                                                     ))}
                                                     {notReviewYetList.length > 0 && (
-                                                        <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews}>Send</button>
+                                                        <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews} disabled={submitting}>
+                                                            {submitting ? "Submitting..." : "Send"}
+                                                        </button>
                                                     )}
+
                                                 </>
                                             )
                                         }
@@ -977,7 +976,7 @@ const StudyCourse = () => {
                                                                                 }}
                                                                                 theme="snow"
                                                                             />
-                                                                            <label className='mt-5' htmlFor="audio">Upload Audio *:</label>
+                                                                            <label className='mt-5' htmlFor="audio">Upload Audio :</label>
                                                                             <Dropzone
                                                                                 onDrop={handleFileDrop2}
                                                                                 accept="audio/*"
