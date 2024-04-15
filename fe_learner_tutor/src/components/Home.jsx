@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import courseService from '../services/course.service';
 import accountService from '../services/account.service';
 import tutorService from '../services/tutor.service';
+import centerService from '../services/center.service';
 
 const Home = () => {
 
@@ -19,7 +20,7 @@ const Home = () => {
         const res = await courseService.getAllcourse();
         const activeCourses = res.data.filter((course) => course.isActive === true);
         setCourseList(activeCourses);
-  
+
         // Fetch number of learners for each course
         const learnersCounts = {}; // Object to store number of learners for each course
         for (const course of activeCourses) {
@@ -37,10 +38,10 @@ const Home = () => {
         console.error('Error fetching courses:', error);
       }
     };
-  
+
     fetchCourses();
   }, []);
-  
+
 
   useEffect(() => {
     const fetchAccountInfo = async () => {
@@ -76,6 +77,53 @@ const Home = () => {
     fetchTutors();
   }, []);
 
+
+  //CENTER DETAIL
+  const [showCenterModal, setShowCenterModal] = useState(false);
+  const [centerCourseList, seCenterCourseList] = useState([]);
+
+  const [center, setCenter] = useState({
+    id: '',
+    name: "",
+    address: "",
+    description: "",
+    isActive: true,
+    staffId: "",
+    accountId: ""
+  });
+
+  const openCenterModal = (event, centerId) => {
+    event.preventDefault();
+    centerService
+      .getCenterById(centerId)
+      .then((res) => {
+        setCenter(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    centerService
+      .getAllCourseByCenterId(centerId)
+      .then((res) => {
+        const filteredCourseList = res.data.filter(x => x.isActive === true);
+        const sortedCourseList = [...filteredCourseList].sort((a, b) => {
+          // Assuming requestedDate is a string in ISO 8601 format
+          return new Date(b.createdDate) - new Date(a.createdDate);
+        });
+
+        seCenterCourseList(sortedCourseList);
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
+    setShowCenterModal(true);
+  };
+
+  const closeCenterModal = () => {
+    setShowCenterModal(false);
+  };
+
+
   return (
     <>
       <Header />
@@ -87,9 +135,9 @@ const Home = () => {
           <Link to={"/list-course"} className="btn-get-started">Get Started</Link>
         </div>
       </section>{/* End Hero */}
-      <main id="main" style={{backgroundColor: '#fff'}}>
+      <main id="main" style={{ backgroundColor: '#fff' }}>
         {/* ======= About Section ======= */}
-        <section id="about" className="about" style={{backgroundColor: '#fff'}}>
+        <section id="about" className="about" style={{ backgroundColor: '#fff' }}>
           <div className="container" data-aos="fade-up">
             <div className="row">
               <div className="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay={100}>
@@ -109,7 +157,7 @@ const Home = () => {
           </div>
         </section>{/* End About Section */}
         {/* ======= Counts Section ======= */}
-        <section id="counts" className="counts section-bg" style={{backgroundColor: '#fff'}}>
+        <section id="counts" className="counts section-bg" style={{ backgroundColor: '#fff' }}>
           <div className="container">
             <div className="row counters">
 
@@ -117,7 +165,7 @@ const Home = () => {
           </div>
         </section>{/* End Counts Section */}
         {/* ======= Why Us Section ======= */}
-        <section id="why-us" className="why-us" style={{backgroundColor: '#fff'}}>
+        <section id="why-us" className="why-us" style={{ backgroundColor: '#fff' }}>
           <div className="container" data-aos="fade-up">
             <div className="row">
               <div className="col-lg-4 d-flex align-items-stretch">
@@ -162,7 +210,7 @@ const Home = () => {
           </div>
         </section>{/* End Why Us Section */}
         {/* ======= Features Section ======= */}
-        <section id="features" className="features" style={{backgroundColor: '#fff'}}>
+        <section id="features" className="features" style={{ backgroundColor: '#fff' }}>
           <div className="container" data-aos="fade-up">
             <div className="row" data-aos="zoom-in" data-aos-delay={100}>
               <div className="col-lg-3 col-md-4">
@@ -266,6 +314,16 @@ const Home = () => {
                             <div key={accounts[index].id}>
                               <img src={accounts[index].imageUrl} className="img-fluid" alt="" />
                               <span>{accounts[index].fullName}</span>
+                              {
+                                !course.tutor?.isFreelancer && (
+                                  <>
+                                    <div>
+                                      <button style={{ backgroundColor: '#f58d04', color: '#fff', border: 'none' }} onClick={(event) => openCenterModal(event, course.tutor?.center?.id)}>{course.tutor?.center?.name}</button>
+                                    </div>
+                                  </>
+
+                                )
+                              }
                             </div>
                           )}
                         </div>
@@ -282,7 +340,61 @@ const Home = () => {
             </div>
           </div>
         </section>{/* End Popular Courses Section */}
+        {
+          showCenterModal && (
+            <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+              <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Center Information</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeCenterModal}>
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    {/* Conditional rendering based on edit mode */}
+                    <h3 style={{ fontWeight: 'bold' }}>{center.name}</h3>
+                    <h4>Address: {center.address}</h4>
+                    <section id="courses" className="courses">
+                      <div className="container" data-aos="fade-up">
+                        <div className="row" data-aos="zoom-in" data-aos-delay={100}>
+                          {
+                            centerCourseList.length > 0 && centerCourseList.map((course, index) => (
+                              <div key={course.id} className="col-lg-4 col-md-6 d-flex align-items-stretch">
+                                <div className="course-item mt-4" style={{ borderRadius: '50px', width: '600px' }}>
+                                  <img src={course.imageUrl} className="img-fluid" alt="..." />
+                                  <div className="course-content">
+                                    <div className="d-flex justify-content-between align-items-center mb-3">
+                                      <h4>{course.category?.name}</h4>
+                                    </div>
+                                    <h3><Link to={`/detail-course/${course.id}`}>{course.name}</Link></h3>
+                                    <p>{course.description}</p>
 
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          }
+                          {
+                            courseList.length === 0 && (
+                              <h5>No courses found.</h5>
+                            )
+                          }
+
+                        </div>
+                      </div>
+                    </section>{/* End Courses Section */}
+                  </div>
+
+                  <div className="modal-footer">
+                    {/* Conditional rendering of buttons based on edit mode */}
+                    <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={closeCenterModal}>Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        }
 
         {/* ======= Trainers Section ======= */}
         <section id="trainers" className="trainers">
