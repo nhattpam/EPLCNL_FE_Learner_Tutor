@@ -201,22 +201,32 @@ const Header = () => {
     const [walletHistoryList, setWalletHistoryList] = useState([]);
 
     useEffect(() => {
-        walletService
-            .getAllWalletHistoryByWallet(account.wallet?.id)
-            .then((res) => {
-                const filteredHistoryList = res.data;
-                // Sort refundList by requestedDate
-                const sortedHistoryList = [...filteredHistoryList].sort((a, b) => {
-                    // Assuming requestedDate is a string in ISO 8601 format
-                    return new Date(b.transactionDate) - new Date(a.transactionDate);
-                });
+        if (accountId) {
+            accountService
+                .getAccountById(accountId)
+                .then((res) => {
+                    setAccount(res.data);
+                    walletService
+                        .getAllWalletHistoryByWallet(res.data.wallet?.id)
+                        .then((res) => {
+                            const filteredHistoryList = res.data;
+                            // Sort refundList by requestedDate
+                            const sortedHistoryList = [...filteredHistoryList].sort((a, b) => {
+                                // Assuming requestedDate is a string in ISO 8601 format
+                                return new Date(b.transactionDate) - new Date(a.transactionDate);
+                            });
 
-                setWalletHistoryList(sortedHistoryList);
-            })
-            .catch((error) => {
-                // console.log(error);
-            });
-    }, [account.wallet?.id]);
+                            setWalletHistoryList(sortedHistoryList);
+                        })
+                        .catch((error) => {
+                            // console.log(error);
+                        });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [accountId]);
 
     const [showWalletHistoryModal, setShowWalletHistoryModal] = useState(false);
 

@@ -147,14 +147,17 @@ const TutorDashboard = () => {
     const [walletHistoryList, setWalletHistoryList] = useState([]);
 
     useEffect(() => {
-        walletService
-            .getAllWalletHistoryByWallet(account.wallet?.id)
-            .then((res) => {
-                setWalletHistoryList(res.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (account.wallet && account.wallet?.id) {
+            walletService
+                .getAllWalletHistoryByWallet(account.wallet?.id)
+                .then((res) => {
+                    setWalletHistoryList(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
     }, [account.wallet?.id]);
 
 
@@ -379,7 +382,7 @@ const TutorDashboard = () => {
                                             </div>
 
                                             <div className="table-responsive">
-                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                                <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                                                     <thead className="thead-light">
                                                         <tr>
                                                             <th>No.</th>

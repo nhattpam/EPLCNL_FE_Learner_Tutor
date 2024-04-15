@@ -28,7 +28,7 @@ const Home = () => {
             const learnersResponse = await courseService.getAllEnrollmentsByCourse(course.id);
             const learnersOfCourse = learnersResponse.data;
             learnersCounts[course.id] = learnersOfCourse.length; // Store learner count for the course
-            console.log(`Number of learners for course ${course.name}: ` + learnersOfCourse.length);
+            // console.log(`Number of learners for course ${course.name}: ` + learnersOfCourse.length);
           } catch (error) {
             console.error(`Error fetching learners for course ${course.name}:`, error);
           }
@@ -403,10 +403,10 @@ const Home = () => {
               {tutorList.map((tutor, index) => (
                 <div className="col-lg-4 col-md-6 d-flex align-items-stretch">
                   <div className="member  info-item" style={{ borderRadius: '50px', padding: `8px 20px` }}>
-                    <img src={tutor.account.imageUrl} className="img-fluid" alt />
+                    <img src={tutor.account?.imageUrl} className="img-fluid" alt />
                     <div className="member-content">
-                      <h4>{tutor.account.fullName}</h4>
-                      <span>{tutor.account.email}</span>
+                      <h4>{tutor.account?.fullName}</h4>
+                      <span>{tutor.account?.email}</span>
 
                       <div className="social">
                         <a href><i className="bi bi-twitter" /></a>

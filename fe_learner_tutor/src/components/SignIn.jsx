@@ -64,7 +64,7 @@ const handleSubmit = async (e) => {
         if (response.data.success) {
             const decodedToken = JSON.parse(atob(response.data.data.split('.')[1])); // Decoding the JWT token
 
-            console.log('this is role: ' + decodedToken.role);
+            // console.log('this is role: ' + decodedToken.role);
             if (decodedToken.role.toString() === "f3db0ef2-7f03-4728-a868-aacbe76891a8") {
                 console.log("learner")
                 // setIsLoggedIn(true);
@@ -72,7 +72,7 @@ const handleSubmit = async (e) => {
                 // Store the JWT token in localStorage
                 localStorage.setItem('token', response.data.data);
                 // Pass the token to the module
-                console.log('this is token: ' + response.data.data);
+                // console.log('this is token: ' + response.data.data);
 
                 localStorage.setItem('accountId', decodedToken.Id);
 
@@ -82,7 +82,7 @@ const handleSubmit = async (e) => {
                 localStorage.setItem('learnerId', respnse.data.id);
 
                 const storedLearnerId = localStorage.getItem('learnerId')
-                console.log("This is learnerId from localStorage:", storedLearnerId);
+                // console.log("This is learnerId from localStorage:", storedLearnerId);
 
                 sessionStorage.setItem('isLearner', true);
                 sessionStorage.setItem('isTutor', false);
@@ -96,15 +96,15 @@ const handleSubmit = async (e) => {
             if (decodedToken.role === "1dc7ed61-a13d-4cfc-9e3e-2159f61bad3b") {
                 console.log("tutor")
 
-                console.log("This is accountId: " + decodedToken.Id.toString())
+                // console.log("This is accountId: " + decodedToken.Id.toString())
 
-                console.log((await tutorsResponse).data);
+                // console.log((await tutorsResponse).data);
 
                 // Find the center with matching accountId
                 const matchedTutor = (await tutorsResponse).data.find(tutor => tutor.account.id === decodedToken.Id);
 
                 if (matchedTutor) {
-                    console.log("This is tutorId:", matchedTutor.id);
+                    // console.log("This is tutorId:", matchedTutor.id);
 
                     setIsLoggedIn(true);
 
@@ -118,8 +118,8 @@ const handleSubmit = async (e) => {
                     localStorage.setItem('accountId', decodedToken.Id);
                     const storedTutorId = localStorage.getItem('tutorId');
                     const storedAccountId = localStorage.getItem('accountId');
-                    console.log("This is tutorId from localStorage:", storedTutorId);
-                    console.log("This is accountId from localStorage:", storedAccountId);
+                    // console.log("This is tutorId from localStorage:", storedTutorId);
+                    // console.log("This is accountId from localStorage:", storedAccountId);
                 } else {
                     console.log("No matching center found for the given accountId");
                 }

@@ -39,6 +39,21 @@ const Header = () => {
                 .getAccountById(accountId)
                 .then((res) => {
                     setAccount(res.data);
+                    walletService
+                        .getAllWalletHistoryByWallet(res.data.wallet?.id)
+                        .then((res) => {
+                            const filteredHistoryList = res.data;
+                            // Sort refundList by requestedDate
+                            const sortedHistoryList = [...filteredHistoryList].sort((a, b) => {
+                                // Assuming requestedDate is a string in ISO 8601 format
+                                return new Date(b.transactionDate) - new Date(a.transactionDate);
+                            });
+
+                            setWalletHistoryList(sortedHistoryList);
+                        })
+                        .catch((error) => {
+                            // console.log(error);
+                        });
                 })
                 .catch((error) => {
                     console.log(error);
@@ -113,16 +128,19 @@ const Header = () => {
 
     const [forumList, setForumList] = useState([]);
     useEffect(() => {
-        const fetchForums = async () => {
-            try {
-                const res = await learnerService.getAllForumByLearnerId(learnerId);
-                setForumList(res.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
+        if (learnerId) {
+            const fetchForums = async () => {
+                try {
+                    const res = await learnerService.getAllForumByLearnerId(learnerId);
+                    setForumList(res.data);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
 
-        fetchForums();
+            fetchForums();
+        }
+
     }, [learnerId]);
 
 
@@ -190,23 +208,6 @@ const Header = () => {
     //WALLET HISTORY
     const [walletHistoryList, setWalletHistoryList] = useState([]);
 
-    useEffect(() => {
-        walletService
-            .getAllWalletHistoryByWallet(account.wallet.id)
-            .then((res) => {
-                const filteredHistoryList = res.data;
-                // Sort refundList by requestedDate
-                const sortedHistoryList = [...filteredHistoryList].sort((a, b) => {
-                    // Assuming requestedDate is a string in ISO 8601 format
-                    return new Date(b.transactionDate) - new Date(a.transactionDate);
-                });
-
-                setWalletHistoryList(sortedHistoryList);
-            })
-            .catch((error) => {
-                // console.log(error);
-            });
-    }, [account.wallet.id]);
 
 
 
@@ -235,17 +236,17 @@ const Header = () => {
     const validateForm = () => {
         let isValid = true;
         const errors = {};
-    
+
         if (!account || !account.fullName || account.fullName.trim() === '') {
             errors.fullName = 'Name is required';
             isValid = false;
         }
-    
+
         if (!account || !account.address || account.address.trim() === '') {
             errors.address = 'Address is required';
             isValid = false;
         }
-    
+
         if (!account || !account.phoneNumber || account.phoneNumber.trim() === '') {
             errors.phoneNumber = 'Phone Number is required';
             isValid = false;
@@ -253,7 +254,7 @@ const Header = () => {
             errors.phoneNumber = 'Phone Number must be exactly 10 digits';
             isValid = false;
         }
-    
+
         setErrors(errors);
         return isValid;
     };

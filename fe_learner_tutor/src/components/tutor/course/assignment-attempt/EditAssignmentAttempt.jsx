@@ -246,7 +246,11 @@ const EditAssignmentAttempt = () => {
                                                     </table>
 
                                                 </div> {/* end .table-responsive*/}
+                                                {peerReviewLish.length === 0 && (
+                                                    <p className='text-center mt-3'>No one grades yet.</p>
+                                                )}
                                             </div> {/* end card-box*/}
+
 
                                         </div> {/* end col*/}
 
