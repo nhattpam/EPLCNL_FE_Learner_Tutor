@@ -128,10 +128,14 @@ const ListCourse = () => {
                                             <img src={course.imageUrl} className="img-fluid" alt="..." />
                                             <div className="course-content">
                                                 <div className="d-flex justify-content-between align-items-center mb-3">
-                                                    <h4>{course.category?.name}</h4>
-                                                    <p className="price">{parseFloat(course.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
+                                                    <h4 className="mr-1">{course.category?.name}</h4>
+                                                    <div className="d-flex align-items-center mr-1"> {/* New div to contain the rating and star icon */}
+                                                        <p className="price">{parseFloat(course.rating).toFixed(0)}</p> {/* Added mr-1 class for small right margin */}
+                                                        <i className="fas fa-star text-warning "></i>
+                                                    </div>
                                                     <p className="price">{`$${course.stockPrice}`}</p>
                                                 </div>
+
                                                 <h3><Link to={`/detail-course/${course.id}`}>{course.name}</Link></h3>
                                                 <p>{course.description}</p>
                                                 <div className="trainer d-flex justify-content-between align-items-center">
@@ -176,7 +180,7 @@ const ListCourse = () => {
                 {
                     showCenterModal && (
                         <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                            <div className="modal-dialog modal-dialog-scrollable modal-lg"  role="document">
+                            <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
                                 <div className="modal-content">
                                     <div className="modal-header">
                                         <h5 className="modal-title">Center Information</h5>
@@ -186,14 +190,14 @@ const ListCourse = () => {
                                     </div>
                                     <div className="modal-body">
                                         {/* Conditional rendering based on edit mode */}
-                                        <h3 style={{fontWeight: 'bold'}}>{center.name}</h3>
+                                        <h3 style={{ fontWeight: 'bold' }}>{center.name}</h3>
                                         <h4>Address: {center.address}</h4>
                                         <section id="courses" className="courses">
                                             <div className="container" data-aos="fade-up">
                                                 <div className="row" data-aos="zoom-in" data-aos-delay={100}>
                                                     {
                                                         centerCourseList.length > 0 && centerCourseList.map((course, index) => (
-                                                            <div key={course.id} className="col-lg-4 col-md-6 d-flex align-items-stretch">
+                                                            <div key={course.id} className="col-lg-4 col-md-6 d-flex align-items-baseline">
                                                                 <div className="course-item mt-4" style={{ borderRadius: '50px', width: '600px' }}>
                                                                     <img src={course.imageUrl} className="img-fluid" alt="..." />
                                                                     <div className="course-content">

@@ -22,7 +22,11 @@ const CourseList = () => {
         tutorService
             .getAllCoursesByTutor(tutorId)
             .then((res) => {
-                setCourseList(res.data);
+                const sortedCourseList = [...res.data].sort((a, b) => {
+                  // Assuming requestedDate is a string in ISO 8601 format
+                  return new Date(b.createdDate) - new Date(a.createdDate);
+                });
+                setCourseList(sortedCourseList);
             })
             .catch((error) => {
                 console.log(error);

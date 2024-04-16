@@ -316,7 +316,7 @@ const EditModule = () => {
                                                             currentAssignments.length > 0 && currentAssignments.map((assignment, index) => (
                                                                 <tr key={assignment.id}>
                                                                     <td>{index + 1}</td>
-                                                                    <td>{assignment.deadline}</td>
+                                                                    <td>{assignment.deadline} mins</td>
                                                                     <td>{assignment.gradeToPass}</td>
                                                                     <td>{assignment.createdDate}</td>
                                                                     <td>{assignment.updatedDate}</td>

@@ -66,9 +66,10 @@ const Home = () => {
   useEffect(() => {
     const fetchTutors = async () => {
       try {
-        const res = await tutorService.getAllTutor(); // Add await here
-        const activeTutors = res.data.filter((tutor) => tutor.account.isActive === true);
-        setTutorList(activeTutors);
+        const res = await tutorService.getAllTutor();
+        const activeTutors = res.data.filter((tutor) => tutor.account?.isActive === true);
+        const limitedTutors = activeTutors.slice(0, 6); // Limit to 6 tutors
+        setTutorList(limitedTutors);
       } catch (error) {
         console.log(error);
       }
@@ -76,6 +77,7 @@ const Home = () => {
 
     fetchTutors();
   }, []);
+
 
 
   //CENTER DETAIL
@@ -297,15 +299,19 @@ const Home = () => {
             </div>
             <div className="row" data-aos="zoom-in" data-aos-delay={100}>
               {courseList.map((course, index) => (
-                <div key={course.id} className="col-lg-4 col-md-6 d-flex align-items-stretch">
-                  <div className="course-item" style={{ borderRadius: '50px', padding: `8px 25px` }}>
+                <div key={course.id} className="col-lg-4  d-flex align-items-baseline mt-3">
+                  <div className="course-item" style={{ borderRadius: '30px' }}>
                     <img src={course.imageUrl} className="img-fluid" alt="..." />
                     <div className="course-content">
                       <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h4>{course.category?.name}</h4>
-                        <p className="price">{parseFloat(course.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
+                        <h4 className="mr-1">{course.category?.name}</h4>
+                        <div className="d-flex align-items-center mr-1"> {/* New div to contain the rating and star icon */}
+                          <p className="price">{parseFloat(course.rating).toFixed(0)}</p> {/* Added mr-1 class for small right margin */}
+                          <i className="fas fa-star text-warning "></i>
+                        </div>
                         <p className="price">{`$${course.stockPrice}`}</p>
                       </div>
+
                       <h3><Link to={`/detail-course/${course.id}`}>{course.name}</Link></h3>
                       <p>{course.description}</p>
                       <div className="trainer d-flex justify-content-between align-items-center">
@@ -360,7 +366,7 @@ const Home = () => {
                         <div className="row" data-aos="zoom-in" data-aos-delay={100}>
                           {
                             centerCourseList.length > 0 && centerCourseList.map((course, index) => (
-                              <div key={course.id} className="col-lg-4 col-md-6 d-flex align-items-stretch">
+                              <div key={course.id} className="col-lg-4 col-md-6 d-flex align-items-baseline">
                                 <div className="course-item mt-4" style={{ borderRadius: '50px', width: '600px' }}>
                                   <img src={course.imageUrl} className="img-fluid" alt="..." />
                                   <div className="course-content">

@@ -27,9 +27,11 @@ const ListClassCourse = () => {
             .getAllCoursesByTutor(tutorId)
             .then((res) => {
                 const videoCourses = res.data.filter(course => course.isOnlineClass === true);
-
-                console.log(res.data);
-                setCourseList(videoCourses);
+                const sortedCourseList = [...videoCourses].sort((a, b) => {
+                    // Assuming requestedDate is a string in ISO 8601 format
+                    return new Date(b.createdDate) - new Date(a.createdDate);
+                  });
+                  setCourseList(sortedCourseList);
 
             })
             .catch((error) => {
