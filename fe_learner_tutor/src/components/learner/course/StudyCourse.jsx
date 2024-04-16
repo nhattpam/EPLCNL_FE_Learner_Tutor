@@ -423,21 +423,24 @@ const StudyCourse = () => {
         answerAudioUrl: ""
     });
     useEffect(() => {
-        assignmentService.getAllAssignmentAttemptByAssignmentId(selectedAssignmentId)
-            .then((res) => {
+        if (selectedAssignmentId) {
+            assignmentService.getAllAssignmentAttemptByAssignmentId(selectedAssignmentId)
+                .then((res) => {
 
-                const list = res.data.filter(attempt => attempt.learnerId !== learnerId).slice(0, 5);
-                const list2 = res.data.filter(attempt => attempt.learnerId === learnerId).slice(0, 5);
-                setAttemptList(list);
-                setAttemptList2(list2);
-                if (list2.length > 0) {
-                    setShowReviewYetList(true);
-                }
+                    const list = res.data.filter(attempt => attempt.learnerId !== learnerId).slice(0, 5);
+                    const list2 = res.data.filter(attempt => attempt.learnerId === learnerId).slice(0, 5);
+                    setAttemptList(list);
+                    setAttemptList2(list2);
+                    if (list2.length > 0) {
+                        setShowReviewYetList(true);
+                    }
 
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
     }, [selectedAssignmentId]);
 
     useEffect(() => {
@@ -455,25 +458,6 @@ const StudyCourse = () => {
         }
     }, [attemptList2, learnerId]);
 
-
-    //QUIZ
-    const [quiz, setQuiz] = useState({
-        moduleId: "",
-        topicId: "",
-        name: "",
-        gradeToPass: "",
-        deadline: "",
-        createdDate: "",
-        updatedDate: "",
-        module: []
-    });
-
-
-    const [quizAttempt, setQuizAttempt] = useState({
-        learnerId: "",
-        quizId: "",
-        totalGrade: ""
-    });
 
     // State for lesson
     const [selectedQuizId, setSelectedQuizId] = useState(null);
@@ -516,16 +500,19 @@ const StudyCourse = () => {
     };
 
     useEffect(() => {
-        quizService
-            .getAllQuestionsByQuiz(selectedQuizId)
-            .then((res) => {
-                // console.log(res.data);
-                setQuestionList(res.data);
+        if (selectedQuizId) {
+            quizService
+                .getAllQuestionsByQuiz(selectedQuizId)
+                .then((res) => {
+                    // console.log(res.data);
+                    setQuestionList(res.data);
 
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
     }, [selectedQuizId]);
 
 
@@ -605,7 +592,7 @@ const StudyCourse = () => {
 
 
     // Function to handle click on the "Next" button
-    const handleNextQuestion = (point) => {
+    const handleNextQuestion = async (point) => {
         // Increment the current question index
         setCurrentQuestionIndex(prevIndex => prevIndex + 1);
         setShowScore(false);
@@ -617,20 +604,25 @@ const StudyCourse = () => {
             setShowResult(true);
             setShowQuestions(false);
 
-            quizAttempt.learnerId = learnerId;
-            quizAttempt.quizId = selectedQuizId;
-            quizAttempt.totalGrade = point;
+            const quizAttempt = {
+                learnerId: learnerId,
+                quizId: selectedQuizId,
+                totalGrade: point
+            };
 
             console.log(JSON.stringify(quizAttempt))
+            if (quizAttempt) {
+               await quizAttemptService.saveQuizAttempt(quizAttempt)
+                    .then((res) => {
+                        console.log(res.data);
 
-            quizAttemptService.saveQuizAttempt(quizAttempt)
-                .then((res) => {
-                    console.log(res.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
 
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+
 
             //load lai trang 
             try {
@@ -678,7 +670,7 @@ const StudyCourse = () => {
     const submitPeerReviews = async (e) => {
         e.preventDefault();
         setSubmitting(true); // Start submission process
-    
+
         try {
             await Promise.all(peerReviews.map(async (review) => {
                 console.log("Before saving peer review:", JSON.stringify(review)); // First console.log
@@ -689,7 +681,7 @@ const StudyCourse = () => {
                     console.error('Error saving peer review:', error);
                 }
             }));
-    
+
             // Clear the peer reviews array
             setPeerReviews([]);
             // Reload the page or perform any other necessary actions
@@ -703,7 +695,7 @@ const StudyCourse = () => {
             setSubmitting(false); // Submission process completed
         }
     };
-    
+
     // Update peer reviews array instead of peer review state
     const handleGradeChange = (e, attemptId) => {
         const grade = e.target.value;

@@ -83,12 +83,6 @@ const MyLearning = () => {
 
 
     useEffect(() => {
-        enrollmentList.forEach(enrollment => {
-
-        });
-    }, []);
-
-    useEffect(() => {
         learnerService
             .getAllProfileCertificateByLearnerId(learnerId)
             .then((res) => {
