@@ -402,7 +402,7 @@ const DetailCourse = () => {
                                 </div>
                                 <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
                                     <h5 style={{ color: '#f58d04', fontWeight: 'bold' }}>Last Modified</h5>
-                                    <p>{course.updatedDate ? course.updatedDate.substring(0, 7) : course.createdDate}</p>
+                                    <p>{(course.updatedDate ? course.updatedDate : course.createdDate)?.substring(0, 7)}</p>
                                 </div>
                                 {/* Notification */}
                                 {showNotification && (

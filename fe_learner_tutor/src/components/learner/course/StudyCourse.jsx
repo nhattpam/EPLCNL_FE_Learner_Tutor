@@ -621,6 +621,8 @@ const StudyCourse = () => {
             quizAttempt.quizId = selectedQuizId;
             quizAttempt.totalGrade = point;
 
+            console.log(JSON.stringify(quizAttempt))
+
             quizAttemptService.saveQuizAttempt(quizAttempt)
                 .then((res) => {
                     console.log(res.data);
@@ -639,8 +641,8 @@ const StudyCourse = () => {
                         learnerService
                             .getAllQuizAttemptByLearnerId(learnerId)
                             .then((res) => {
-                                console.log("Response data:", res.data); // Log the entire response data to inspect its structure
-                                console.log("List quiz attempts:", res.data.length); // Log the length of the assignment attempts
+                                // console.log("Response data:", res.data); // Log the entire response data to inspect its structure
+                                // console.log("List quiz attempts:", res.data.length); // Log the length of the assignment attempts
                                 setQuizAttemptList(res.data);
 
 

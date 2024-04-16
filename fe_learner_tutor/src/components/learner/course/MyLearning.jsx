@@ -62,14 +62,14 @@ const MyLearning = () => {
                             learningScore: learningScoreResponse.data
                         };
 
-                        console.log("Course score for enrollment ID " + enrollment.id + ": " + courseScoreResponse.data);
+                        // console.log("Course score for enrollment ID " + enrollment.id + ": " + courseScoreResponse.data);
                     }
                 } catch (error) {
                     console.error(`Error fetching learners for course ${enrollment.course?.name}:`, error);
                 }
             }
 
-            console.log("every course:", res.data.map(enrollment => enrollment.transaction?.course?.name));
+            // console.log("every course:", res.data.map(enrollment => enrollment.transaction?.course?.name));
             setLearnersCount(prevState => ({ ...prevState, ...learnersCounts })); // Update state with learners count
             setEnrollmentScores(scores); // Update state with scores for each enrollment
         } catch (error) {
@@ -469,7 +469,7 @@ const MyLearning = () => {
                                                     <div className="row " data-aos="zoom-in" data-aos-delay={100}>
 
                                                         <div key={enrollment.transaction?.courseId} className="col-lg-12 col-12 " style={{ width: '1000px', }}>
-                                                            <div className="course-item " id='iitem'>
+                                                            <div className="course-item mt-4" id='iitem'>
                                                                 <img src={enrollment.transaction?.course?.imageUrl} className="img-fluid" alt="..." style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
                                                                 <div className="course-content" >
                                                                     <div className="d-flex justify-content-between align-items-center mb-3">
@@ -857,7 +857,6 @@ const MyLearning = () => {
                                                     <>
                                                         <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
                                                             <div className="course-item iitem">
-                                                                <img src={proCertificate.certificate?.course?.imageUrl} className="img-fluid" alt="..." />
                                                                 <div className="course-content">
                                                                     <div className="d-flex justify-content-between align-items-center mb-3">
                                                                         <h4>DONE</h4>
