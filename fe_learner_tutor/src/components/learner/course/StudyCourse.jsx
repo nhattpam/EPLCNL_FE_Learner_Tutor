@@ -612,7 +612,7 @@ const StudyCourse = () => {
 
             console.log(JSON.stringify(quizAttempt))
             if (quizAttempt) {
-               await quizAttemptService.saveQuizAttempt(quizAttempt)
+                await quizAttemptService.saveQuizAttempt(quizAttempt)
                     .then((res) => {
                         console.log(res.data);
 
@@ -1048,8 +1048,9 @@ const StudyCourse = () => {
                                                                 </>
 
                                                             ))}
-                                                            <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews}>Send</button>
-                                                        </>
+                                                            <button type='submit' className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }} onClick={submitPeerReviews} disabled={submitting}>
+                                                                {submitting ? "Submitting..." : "Send"}
+                                                            </button>                                                        </>
                                                     )}
                                                 </>
                                             )
