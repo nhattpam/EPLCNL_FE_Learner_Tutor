@@ -14,6 +14,7 @@ import questionService from '../../../services/question.service';
 import learnerService from '../../../services/learner.service';
 import peerReviewService from '../../../services/peer-review.service';
 import Dropzone from 'react-dropzone';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 
 const StudyCourse = () => {
     const { courseId } = useParams();
@@ -280,6 +281,7 @@ const StudyCourse = () => {
         setQuizStarted(false);
         setShowQuestions(false);
         setShowResult(false);
+        setShowTimer2(false);
 
         if (assignmentId) {
             try {
@@ -318,6 +320,9 @@ const StudyCourse = () => {
     const handleStartAssignment = () => {
         setShowTimer(true);
         setShowForm(true);
+        setShowTimer2(false);
+        setSelectedQuiz(null);
+        setSelectedQuizId(null);
 
         // Set the deadline time (in seconds) from now
         const deadlineInSeconds = Date.now() + selectedAssignment.deadline * 60 * 1000;
@@ -343,6 +348,7 @@ const StudyCourse = () => {
         const seconds = Math.floor((time % (60 * 1000)) / 1000);
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
+
 
     const [assignmentAttempt, setAssignmentAttempt] = useState({
         assignmentId: selectedAssignmentId,
@@ -411,6 +417,7 @@ const StudyCourse = () => {
             window.alert('Your assignment is submited!');
             setShowForm(false);
             setShowTimer(false);
+            setShowTimer2(false);
             setShowAttempts(true);
 
             // navigate(`/list-assignment-attempt/${tutorId}`);
@@ -506,6 +513,7 @@ const StudyCourse = () => {
         setSelectedAssignment(null);
         setShowForm(false);
         setShowTimer(false);
+        setShowTimer2(false);
     };
 
     useEffect(() => {
@@ -546,6 +554,7 @@ const StudyCourse = () => {
         // Set the quizStarted state to true when the quiz starts
         setQuizStarted(true);
         setShowTimer2(true);
+        setShowTimer(false);
         // Set the deadline time (in seconds) from now
         const deadlineInSeconds = Date.now() + selectedQuiz.deadline * 60 * 1000;
 
@@ -564,6 +573,8 @@ const StudyCourse = () => {
         setShowAnswerColor(false);
         setShowResult(false);
         setCurrentQuestionIndex(0); // Reset currentQuestionIndex to 0
+        setSelectedAssignment(null);
+        setSelectedAssignmentId(null);
     };
 
     const handleAnswerClick = (questionAnswer, index) => {
@@ -624,7 +635,7 @@ const StudyCourse = () => {
                 await quizAttemptService.saveQuizAttempt(quizAttempt)
                     .then((res) => {
                         console.log(res.data);
-
+                        setShowTimer2(false);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -731,7 +742,13 @@ const StudyCourse = () => {
 
 
 
+    //TIMER
+    const children = ({ remainingTime }) => {
+        const minutes = Math.floor(remainingTime / 60)
+        const seconds = remainingTime % 60
 
+        return `${minutes}:${seconds}`
+    }
 
     return (
         <>
@@ -935,10 +952,26 @@ const StudyCourse = () => {
                                                 <>
                                                     {/* Render the timer if showTimer state is true */}
                                                     {showTimer ? (
-                                                        <div className="d-flex align-items-center ml-1" style={{ marginTop: '-60px' }}>
-                                                            <i className="fas fa-clock" ></i>
-                                                            <span>  Time Remaining: {formatTime(timeRemaining)}
+                                                        <div className="d-flex align-items-center" style={{ marginTop: '-60px', justifyContent: 'center' }}>
+                                                            <span className=''>
+                                                                <div className="timer-wrapper">
+                                                                    <CountdownCircleTimer
+                                                                        isPlaying
+                                                                        duration={7}
+                                                                        colors="#f58d04"
+                                                                        size={80}
+                                                                    >
+                                                                        {({ remainingTime }) => {
+                                                                            if (remainingTime === 0) {
+                                                                                return <span>End!</span>; // or any other content you want to display when time is up
+                                                                            } else {
+                                                                                return remainingTime;
+                                                                            }
+                                                                        }}
+                                                                    </CountdownCircleTimer>
+                                                                </div>
                                                             </span>
+
                                                         </div>
                                                     ) : (
                                                         // Render the "Start Assignment" button if showTimer state is false
@@ -952,6 +985,7 @@ const StudyCourse = () => {
                                                             </button>
                                                         )
                                                     )}
+
                                                     {/* Render the form if showForm state is true */}
                                                     {showForm && (
                                                         <form onSubmit={(e) => submitAssignmentAttempt(e)}>
@@ -1107,9 +1141,26 @@ const StudyCourse = () => {
 
                                                                     </div>
                                                                     <div className="col-md-3">
-                                                                        <i className="fas fa-clock" ></i>
-                                                                        <span>  Time Remaining: {formatTime(timeRemaining2)}
-                                                                        </span>
+                                                                        <div className="d-flex align-items-center" style={{ marginTop: '-40px' }}>
+                                                                            <div className="timer-wrapper">
+                                                                                <CountdownCircleTimer
+                                                                                    isPlaying
+                                                                                    duration={7}
+                                                                                    colors="#f58d04"
+                                                                                    size={80} // Adjust the size here
+
+                                                                                >
+                                                                                    {({ remainingTime }) => {
+                                                                                        if (remainingTime === 0) {
+                                                                                            return <span>End!</span>; // or any other content you want to display when time is up
+                                                                                        } else {
+                                                                                            return remainingTime;
+                                                                                        }
+                                                                                    }}
+                                                                                </CountdownCircleTimer>
+                                                                            </div>
+
+                                                                        </div>
                                                                     </div>
                                                                     <div className="col-md-3">
 
@@ -1554,6 +1605,9 @@ input[type="radio"] {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+  
             `}
             </style>
         </>
