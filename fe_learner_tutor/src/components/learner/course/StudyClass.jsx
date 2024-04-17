@@ -13,6 +13,8 @@ import questionService from '../../../services/question.service';
 import topicService from '../../../services/topic.service';
 import quizAttemptService from '../../../services/quiz-attempt.service';
 import Dropzone from 'react-dropzone';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+
 
 const StudyClass = () => {
   const { courseId } = useParams();
@@ -137,8 +139,6 @@ const StudyClass = () => {
   const [showTimer2, setShowTimer2] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  const [timeRemaining, setTimeRemaining] = useState(0);
-  const [timeRemaining2, setTimeRemaining2] = useState(0);
   const [questionList, setQuestionList] = useState([]);
   // Retrieve the current question based on the current index
   const currentQuestion = questionList[currentQuestionIndex];
@@ -277,7 +277,7 @@ const StudyClass = () => {
     setShowAnswerColor(false);
     setShowResult(false);
     setCurrentQuestionIndex(0); // Reset currentQuestionIndex to 0
-
+    setShowForm(false);   
     // Set the deadline time (in seconds) from now
 
   };
@@ -288,6 +288,7 @@ const StudyClass = () => {
 
 
   const handleStartAssignment = (assignmentId) => {
+    setShowResult(false);
     assignmentService
       .getAssignmentById(assignmentId)
       .then((res) => {
@@ -298,20 +299,7 @@ const StudyClass = () => {
         setShowTimer2(true);
         setShowForm(true);
 
-        // Set the deadline time (in seconds) from now
-        const deadlineInSeconds = Date.now() + selectedAssignment.deadline * 60 * 1000;
 
-        // Update time remaining every second
-        const interval = setInterval(() => {
-          const currentTime = Date.now();
-          const remaining = Math.max(0, deadlineInSeconds - currentTime);
-          setTimeRemaining2(remaining);
-
-          // If time runs out, clear the interval
-          if (remaining === 0) {
-            clearInterval(interval);
-          }
-        }, 1000);
       })
       .catch((error) => {
         console.log(error);
@@ -363,10 +351,10 @@ const StudyClass = () => {
     let answerAudioUrl = assignmentAttempt.answerAudioUrl;
 
     if (file2) {
-        const audioData = new FormData();
-        audioData.append('file', file2);
-        const audioResponse = await questionService.uploadAudio(audioData);
-        answerAudioUrl = audioResponse.data;
+      const audioData = new FormData();
+      audioData.append('file', file2);
+      const audioResponse = await questionService.uploadAudio(audioData);
+      answerAudioUrl = audioResponse.data;
     }
 
     const assignmentAttemptData = { ...assignmentAttempt, answerAudioUrl };
@@ -392,38 +380,7 @@ const StudyClass = () => {
     }
   };
 
-  useEffect(() => {
-    let timerId;
 
-    const updateTimer = () => {
-      if (selectedQuiz) {
-        const deadlineInSeconds = selectedQuiz.deadline * 60; // Convert minutes to seconds
-        const endTime = Date.now() + deadlineInSeconds * 1000; // Convert seconds to milliseconds
-
-        const update = () => {
-          const currentTime = Date.now();
-          const remainingTime = Math.max(0, endTime - currentTime);
-          setTimeRemaining(remainingTime);
-
-          if (remainingTime === 0) {
-            clearInterval(timerId); // Clear interval when time is up
-          }
-        };
-
-        // Call update immediately to ensure immediate display of correct time
-        update();
-
-        // Set interval to update timer every second
-        timerId = setInterval(update, 1000);
-      }
-    };
-
-    updateTimer();
-
-    return () => {
-      clearInterval(timerId); // Clean up interval on component unmount
-    };
-  }, [selectedQuiz]);
 
   useEffect(() => {
     if (currentQuestion) { // Ensure currentQuestion is defined before accessing its id
@@ -501,6 +458,12 @@ const StudyClass = () => {
       }, 2000);
     }
   };
+
+
+  //TIMER
+  // State variable for countdown
+  const timeRemaining = selectedAssignment?.deadline * 60;
+  const timeRemaining2 = selectedQuiz?.deadline * 60;
   return (
     <>
       {/* <Header /> */}
@@ -574,15 +537,32 @@ const StudyClass = () => {
 
                                         </div>
                                         <div className="col-md-3">
-                                          <i className="fas fa-clock" ></i>
-                                          <span>  Time Remaining: {formatTime(timeRemaining)}
-                                          </span>
+                                          <div className="d-flex align-items-center mb-2" style={{ }}>
+                                            <div className="timer-wrapper">
+                                              <CountdownCircleTimer
+                                                isPlaying
+                                                duration={timeRemaining2}
+                                                colors="#f58d04"
+                                                size={80} // Adjust the size here
+
+                                              >
+                                                {({ remainingTime }) => {
+                                                  if (remainingTime === 0) {
+                                                    return <span>End!</span>; // or any other content you want to display when time is up
+                                                  } else {
+                                                    return remainingTime;
+                                                  }
+                                                }}
+                                              </CountdownCircleTimer>
+                                            </div>
+
+                                          </div>
                                         </div>
                                         <div className="col-md-3">
 
                                         </div>
-                                        <div className="col-md-5">
-                                          <span> <span style={{ fontWeight: 'bold' }}>Score</span>: {point}/<span style={{ color: 'rgb(245, 141, 4)' }}>10</span>
+                                        <div className="col-md-5 mt-3">
+                                          <span> <span style={{ fontWeight: 'bold', marginTop: '80px' }}>Score</span>: {point}/<span style={{ color: 'rgb(245, 141, 4)' }}>10</span>
                                           </span>
                                         </div>
                                       </div>
@@ -745,9 +725,27 @@ const StudyClass = () => {
                                 <>
 
                                   < form className='card' onSubmit={(e) => submitAssignmentAttempt(e)}>
-                                    <i className="fas fa-clock" ></i>
-                                    <span>  Time Remaining: {formatTime(timeRemaining2)}
-                                    </span>
+                                    <div className="d-flex align-items-center" style={{ justifyContent: 'center' }}>
+                                      <span className=''>
+                                        <div className="timer-wrapper">
+                                          <CountdownCircleTimer
+                                            isPlaying
+                                            duration={timeRemaining}
+                                            colors="#f58d04"
+                                            size={80}
+                                          >
+                                            {({ remainingTime }) => {
+                                              if (remainingTime === 0) {
+                                                return <span>End!</span>;
+                                              } else {
+                                                return remainingTime;
+                                              }
+                                            }}
+                                          </CountdownCircleTimer>
+                                        </div>
+                                      </span>
+
+                                    </div>
                                     <div className="tab-pane show active " id="tab-content-1" style={{ backgroundColor: '#fff' }} >
                                       <section id="courses" className="courses ">
                                         <div className='ml-1 ' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: selectedAssignment?.questionText }}></div>
