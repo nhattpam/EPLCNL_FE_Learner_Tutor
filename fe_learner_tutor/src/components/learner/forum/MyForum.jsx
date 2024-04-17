@@ -15,6 +15,9 @@ const MyForum = () => {
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
+  
+
+
   useEffect(() => {
     forumService
       .getAllClassForumsByForum(forumId)
@@ -80,7 +83,7 @@ const MyForum = () => {
     <>
       <div id="wrapper">
         <Header />
-        <div className="content-page" style={{ marginLeft: '-2px', backgroundColor: '#fff'}}>
+        <div className="content-page" style={{ marginLeft: '-2px', backgroundColor: '#fff' }}>
           <div className="content">
             <div className="container-fluid">
               <div className="row">
@@ -107,7 +110,7 @@ const MyForum = () => {
                             <div
                               className={`chat-message ${accountForum.tutor ? 'right' : 'left'}`}
                               key={accountForum.id}
-                              
+
                             >
                               <div className="message-sender" >
                                 <img src={accountForum.tutor?.account?.imageUrl ?? accountForum.learner?.account?.imageUrl}
@@ -122,7 +125,7 @@ const MyForum = () => {
                                 {accountForum.tutor?.account?.fullName ?? accountForum.learner?.account?.fullName}
                               </div>
 
-                              <div className="message-content" style={{width: '400px' }}>{accountForum.message}</div>
+                              <div className="message-content" style={{ width: '400px' }}>{accountForum.message}</div>
                               <div className="message-date">{accountForum.messagedDate}</div>
                             </div>
                           ))
@@ -133,7 +136,7 @@ const MyForum = () => {
                         )
                       }
 
-                      <form className="msger-inputarea" onSubmit={submitAccountForum} style={{ width: '100%', backgroundColor: '#fff'}}>
+                      <form className="msger-inputarea" onSubmit={submitAccountForum} style={{ width: '100%', backgroundColor: '#fff' }}>
                         <input
                           type="text"
                           className="msger-input"

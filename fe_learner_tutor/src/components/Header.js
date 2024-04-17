@@ -314,7 +314,15 @@ const Header = () => {
     const submitDeposit = (event) => {
         event.preventDefault();
         const learnerId = localStorage.getItem('learnerId');
-        const amount = parseFloat(event.target.amount.value); // Capture the amount from the input field
+        const selectedRadioButton = document.querySelector('input[name="amount"]:checked');
+
+        if (!selectedRadioButton) {
+            // If no radio button is checked, display an error message or handle the case as needed
+            console.log("Please select an amount.");
+            return;
+        }
+
+        const amount = parseFloat(selectedRadioButton.value); // Capture the selected radio button value
 
         if (!learnerId) {
             setShowNotification(true);
@@ -370,6 +378,7 @@ const Header = () => {
 
             });
     };
+
     //DEPOSIT
 
     //UPDATE ACCOUNT
@@ -761,28 +770,365 @@ const Header = () => {
                                             <input className='form-control' placeholder='USD accepted' type='number' name='amount' style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                             <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '10%', marginTop: '20px' }} />
                                             </p>
+                                            <div className="game-options-container">
+                                                <span className='span1'>
+                                                    <input
+                                                        type="radio"
+                                                        name="amount"
+                                                        className="radio"
+                                                        value="100"
+                                                        id="amount-100"
+                                                    />
+                                                    <label
+                                                        htmlFor="amount-100"
+                                                        className={`option ${document.querySelector('input[value="100"]:checked') ? "selected" : ""}`}
+                                                    >
+                                                        $100
+                                                    </label>
+                                                </span>
+                                                <span className='span1'>
+                                                    <input
+                                                        type="radio"
+                                                        name="amount"
+                                                        className="radio"
+                                                        value="200"
+                                                        id="amount-200"
+                                                    />
+                                                    <label
+                                                        htmlFor="amount-200"
+                                                        className={`option ${document.querySelector('input[value="200"]:checked') ? "selected" : ""}`}
+                                                    >
+                                                        $200
+                                                    </label>
+                                                </span>
+                                                <span className='span1'>
+                                                    <input
+                                                        type="radio"
+                                                        name="amount"
+                                                        className="radio"
+                                                        value="300"
+                                                        id="amount-300"
+                                                    />
+                                                    <label
+                                                        htmlFor="amount-300"
+                                                        className={`option ${document.querySelector('input[value="300"]:checked') ? "selected" : ""}`}
+                                                    >
+                                                        $300
+                                                    </label>
+                                                </span>
+                                                <span className='span1'>
+                                                    <input
+                                                        type="radio"
+                                                        name="amount"
+                                                        className="radio"
+                                                        value="400"
+                                                        id="amount-400"
+                                                    />
+                                                    <label
+                                                        htmlFor="amount-400"
+                                                        className={`option ${document.querySelector('input[value="400"]:checked') ? "selected" : ""}`}
+                                                    >
+                                                        $400
+                                                    </label>
+                                                </span>
+                                                <span className='span1'>
+                                                    <input
+                                                        type="radio"
+                                                        name="amount"
+                                                        className="radio"
+                                                        value="500"
+                                                        id="amount-500"
+                                                    />
+                                                    <label
+                                                        htmlFor="amount-500"
+                                                        className={`option ${document.querySelector('input[value="500"]:checked') ? "selected" : ""}`}
+                                                    >
+                                                        $500
+                                                    </label>
+                                                </span>
+
+
+
+                                            </div>
 
                                         </div>
 
                                     </div>
+                                    {
+                                        !loading ? (
+                                            <>
+                                                <div className="modal-footer" style={{ marginTop: '100px' }}>
+                                                    {/* Conditional rendering of buttons based on edit mode */}
+                                                    <button
+                                                        type="submit"
+                                                        className="btn btn-primary btn-lg btn-block"
+                                                        // onClick={handlePayClick}
+                                                        style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                    >
+                                                        Continue
+                                                    </button>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="modal-footer" style={{ marginTop: '100px' }}>
+                                                    {/* Conditional rendering of buttons based on edit mode */}
+                                                    <button
+                                                        type="submit"
+                                                        className="btn btn-primary btn-lg btn-block"
+                                                        // onClick={handlePayClick}
+                                                        style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                    >
+                                                        Loading ...
+                                                    </button>
+                                                </div>
+                                            </>
 
-                                    <div className="modal-footer" style={{ marginTop: '250px' }}>
-                                        {/* Conditional rendering of buttons based on edit mode */}
-                                        <button
-                                            type="submit"
-                                            className="btn btn-primary btn-lg btn-block"
-                                            // onClick={handlePayClick}
-                                            style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
-                                        >
-                                            Continue
-                                        </button>
-                                    </div>
+                                        )}
+
                                 </form>
                             </div>
                         </div>
                     </div>
                 )
             }
+            <style>
+                {`
+                
+                .module-title:hover {
+                    background-color: #333;
+                    color: #fff;
+                    cursor: pointer;
+                }
+                
+                .module-list li:hover {
+                    background-color: #f0f0f0;
+                    cursor: pointer;
+                }
+                
+                .card.module-title {
+    background-color: #FFF0D6; /* Darker background color */
+    color: #000; /* White text color */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+.card.module-title:hover {
+    background-color: #E7E3DC; /* Darker background color on hover */
+    color: #fff
+}
+.game-options-container{
+    width: 100%;
+    height: 12rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.game-options-container span{
+    width: 45%;
+    height: 3rem;
+    border: 2px solid darkgray;
+    border-radius: 20px;
+    overflow: hidden;
+}
+span label{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    font-weight: 600;
+    color: rgb(22, 22, 22);
+}
+
+
+.span1 label:hover{
+    -ms-transform: scale(1.12);
+    -webkit-transform: scale(1.12);
+    transform: scale(1.12);
+    color: #f58d04;
+    background-color: #FFF0D6
+}
+
+input[type="radio"] {
+    position: relative;
+    display: none;
+}
+
+
+
+.next-button-container{
+    width: 50%;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+}
+.next-button-container button{
+    width: 8rem;
+    height: 2rem;
+    border-radius: 10px;
+    background: none;
+    color: rgb(25, 25, 25);
+    font-weight: 600;
+    border: 2px solid gray;
+    cursor: pointer;
+    outline: none;
+}
+.next-button-container button:hover{
+    background-color: rgb(143, 93, 93);
+}
+
+.modal-container{
+    display: none;
+    position: fixed;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    -webkit-animation: fadeIn 1.2s ease-in-out;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+.modal-content-container{
+    height: 20rem;
+    width: 25rem;
+    background-color: rgb(43, 42, 42);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 25px;
+}
+
+.modal-content-container h1{
+    font-size: 1.3rem;
+    height: 3rem;
+    color: lightgray;
+    text-align: center;
+}
+
+.grade-details{
+    width: 15rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.grade-details p{
+    color: white;
+    text-align: center;
+}
+
+.modal-button-container{
+    height: 2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-button-container button{
+    width: 10rem;
+    height: 2rem;
+    background: none;
+    outline: none;
+    border: 1px solid rgb(252, 242, 241);
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 20px;
+}
+.modal-button-container button:hover{
+    background-color: rgb(83, 82, 82);
+}
+
+@media(min-width : 300px) and (max-width : 350px){
+    .game-quiz-container{
+        width: 90%;
+        height: 80vh;
+     }
+     .game-details-container h1{
+        font-size: 0.8rem;
+     }
+
+     .game-question-container{
+        height: 6rem;
+     }
+     .game-question-container h1{
+       font-size: 0.9rem;
+    }
+
+    .game-options-container span{
+        width: 90%;
+        height: 2.5rem;
+    }
+    .game-options-container span label{
+        font-size: 0.8rem;
+    }
+    .modal-content-container{
+        width: 90%;
+        height: 25rem;
+    }
+
+    .modal-content-container h1{
+        font-size: 1.2rem;
+    }
+}
+.correct-answer {
+    background-color: green;
+}
+
+.incorrect-answer {
+    background-color: red;
+}
+.fixed-course-name {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #333;
+    padding: 10px 0;
+}
+
+.iitem {
+    transition: transform 0.3s ease;
+}
+
+.iitem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.truncate-text {
+    max-width: 200px; /* Adjust max-width as needed */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.option.selected {
+    color: #f58d04; // Change the color to your desired color
+    background-color: #FFF0D6; // Change the background color to your desired color
+}
+
+.game-options-container span input[type="radio"]:checked + label {
+    background-color: #f58d04; /* Change to your desired color */
+    color: #fff; /* Change to your desired text color */
+}
+
+  
+            `}
+            </style>
         </>
 
 
