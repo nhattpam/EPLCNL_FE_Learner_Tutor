@@ -308,13 +308,11 @@ const StudyCourse = () => {
     // State to track whether the timer should be displayed or not
     const [showTimer, setShowTimer] = useState(false);
 
-    // State variable for countdown
-    const [timeRemaining, setTimeRemaining] = useState(0);
+   
 
     const [showTimer2, setShowTimer2] = useState(false);
 
-    // State variable for countdown
-    const [timeRemaining2, setTimeRemaining2] = useState(0);
+ 
 
     // Function to handle click on the "Start Assignment" button
     const handleStartAssignment = () => {
@@ -324,31 +322,11 @@ const StudyCourse = () => {
         setSelectedQuiz(null);
         setSelectedQuizId(null);
 
-        // Set the deadline time (in seconds) from now
-        const deadlineInSeconds = Date.now() + selectedAssignment.deadline * 60 * 1000;
-
-        // Update time remaining every second
-        const interval = setInterval(() => {
-            const currentTime = Date.now();
-            const remaining = Math.max(0, deadlineInSeconds - currentTime);
-            setTimeRemaining(remaining);
-
-            // If time runs out, clear the interval
-            if (remaining === 0) {
-                clearInterval(interval);
-            }
-
-
-        }, 1000);
     };
 
-    // Format time remaining into minutes and seconds
-    const formatTime = (time) => {
-        const minutes = Math.floor(time / (60 * 1000));
-        const seconds = Math.floor((time % (60 * 1000)) / 1000);
-        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    };
+   
 
+  
 
     const [assignmentAttempt, setAssignmentAttempt] = useState({
         assignmentId: selectedAssignmentId,
@@ -555,20 +533,6 @@ const StudyCourse = () => {
         setQuizStarted(true);
         setShowTimer2(true);
         setShowTimer(false);
-        // Set the deadline time (in seconds) from now
-        const deadlineInSeconds = Date.now() + selectedQuiz.deadline * 60 * 1000;
-
-        // Update time remaining every second
-        const interval = setInterval(() => {
-            const currentTime = Date.now();
-            const remaining = Math.max(0, deadlineInSeconds - currentTime);
-            setTimeRemaining2(remaining);
-
-            // If time runs out, clear the interval
-            if (remaining === 0) {
-                clearInterval(interval);
-            }
-        }, 1000);
 
         setShowAnswerColor(false);
         setShowResult(false);
@@ -743,11 +707,15 @@ const StudyCourse = () => {
 
 
     //TIMER
-    const children = ({ remainingTime }) => {
-        const minutes = Math.floor(remainingTime / 60)
-        const seconds = remainingTime % 60
+    // State variable for countdown
+    const timeRemaining = selectedAssignment?.deadline * 60;
+    const timeRemaining2 = selectedQuiz?.deadline * 60;
 
-        return `${minutes}:${seconds}`
+
+    const autoSubmitAssignmentAttempt =  (e) => {
+        e.preventDefault();
+        submitAssignmentAttempt(e);
+
     }
 
     return (
@@ -957,13 +925,13 @@ const StudyCourse = () => {
                                                                 <div className="timer-wrapper">
                                                                     <CountdownCircleTimer
                                                                         isPlaying
-                                                                        duration={7}
+                                                                        duration={timeRemaining}
                                                                         colors="#f58d04"
                                                                         size={80}
                                                                     >
                                                                         {({ remainingTime }) => {
                                                                             if (remainingTime === 0) {
-                                                                                return <span>End!</span>; // or any other content you want to display when time is up
+                                                                                return <span>End!</span>;
                                                                             } else {
                                                                                 return remainingTime;
                                                                             }
@@ -1145,7 +1113,7 @@ const StudyCourse = () => {
                                                                             <div className="timer-wrapper">
                                                                                 <CountdownCircleTimer
                                                                                     isPlaying
-                                                                                    duration={7}
+                                                                                    duration={timeRemaining2}
                                                                                     colors="#f58d04"
                                                                                     size={80} // Adjust the size here
 
