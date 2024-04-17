@@ -223,6 +223,10 @@ const StudyCourse = () => {
         setSelectedAssignment(null);
         setSelectedQuizId(null);
         setSelectedQuiz(null);
+        setShowForm(false);
+        setQuizStarted(false);
+        setShowQuestions(false);
+        setShowResult(false);
     };
 
     const [lessonMaterial, setLessonMaterial] = useState({
@@ -273,6 +277,9 @@ const StudyCourse = () => {
         setSelectedQuizId(null);
         setSelectedQuiz(null);
         setShowTimer(false);
+        setQuizStarted(false);
+        setShowQuestions(false);
+        setShowResult(false);
 
         if (assignmentId) {
             try {
@@ -497,6 +504,8 @@ const StudyCourse = () => {
         setSelectedLesson(null);
         setSelectedAssignmentId(null);
         setSelectedAssignment(null);
+        setShowForm(false);
+        setShowTimer(false);
     };
 
     useEffect(() => {
