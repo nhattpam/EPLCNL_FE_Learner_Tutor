@@ -386,7 +386,7 @@ const SignUp = () => {
                           ))}
                           {
                             paperWorkList.length === 0 && (
-                              <p className='text-center'>No paper works.</p>
+                              <p className='text-center'>No qualifications yet.</p>
                             )
                           }
 

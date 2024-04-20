@@ -110,7 +110,7 @@ const EditClassModule = () => {
         const errors = {};
 
         if (classLesson.classUrl.trim() === '') {
-            errors.classUrl = 'Room Link is required';
+            errors.classUrl = 'Class Url is required';
             isValid = false;
         }
 
@@ -256,7 +256,7 @@ const EditClassModule = () => {
                                                     <table className="table table-hover mt-3">
                                                         <tbody>
                                                             <tr>
-                                                                <th style={{ width: '30%' }}>Room Link * :</th>
+                                                                <th style={{ width: '30%' }}>Class Url * :</th>
                                                                 <td>
                                                                     <input
                                                                         type="text"

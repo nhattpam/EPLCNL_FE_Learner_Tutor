@@ -25,6 +25,7 @@ const EditAssignmentAttempt = () => {
         assignmentId: "",
         learnerId: "",
         answerText: "",
+        answerAudioUrl: "",
         attemptedDate: "",
         totalGrade: "",
         assignment: []
@@ -190,7 +191,20 @@ const EditAssignmentAttempt = () => {
                                                                         <th>Answer:</th>
 
                                                                         <td>
-                                                                            <div dangerouslySetInnerHTML={{ __html: assignmentAttempt.answerText }}></div>
+                                                                            {
+                                                                                assignmentAttempt.answerText && (
+                                                                                    <div dangerouslySetInnerHTML={{ __html: assignmentAttempt.answerText }}></div>
+
+                                                                                )
+                                                                            }
+                                                                            {
+                                                                                assignmentAttempt.answerAudioUrl && (
+                                                                                    <video controls style={{ width: '100%' }}>
+                                                                                        <source src={assignmentAttempt.answerAudioUrl} type="video/mp4" />
+                                                                                        Your browser does not support the video tag.
+                                                                                    </video>
+                                                                                )
+                                                                            }
 
                                                                         </td>
 

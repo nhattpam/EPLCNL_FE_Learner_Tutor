@@ -129,7 +129,6 @@ const ListAssignmentAttempt = () => {
                                                         <th>No.</th>
                                                         <th data-toggle="true">Assignment Question</th>
                                                         <th>Learner</th>
-                                                        <th>Learner Answer</th>
                                                         <th data-hide="phone">Attempted Date</th>
                                                         <th data-hide="phone, tablet">Grade</th>
                                                         <th>Action</th>
@@ -143,7 +142,6 @@ const ListAssignmentAttempt = () => {
                                                                 <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.assignment?.questionText) }}></td>
 
                                                                 <td>{assignmentAttempt.learner?.account?.fullName}</td>
-                                                                <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.answerText) }}></td>
                                                                 <td>{assignmentAttempt.attemptedDate}</td>
                                                                 <td><span className="badge label-table badge-danger">{assignmentAttempt.totalGrade}</span></td>
                                                                 <td>

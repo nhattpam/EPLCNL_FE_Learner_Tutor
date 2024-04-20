@@ -428,8 +428,44 @@ const CreateClassTopicQuiz = () => {
                                                 <div className="card" style={{ marginTop: '-20px' }}>
                                                     <div className='card-body'>
                                                         <label htmlFor="defaultGrade">Grade * :</label>
-                                                        <input type="number" className="form-control" name="defaultGrade" id="defaultGrade" required value={question.defaultGrade} onChange={(e) => handleQuestionChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}
-                                                        />
+                                                        <select
+                                                            value={question.defaultGrade}
+                                                            onChange={(e) => setQuestion({ ...question, defaultGrade: e.target.value })} className="form-control"
+                                                            required
+                                                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+
+                                                        >
+                                                            <option value={1}>
+                                                                1
+                                                            </option>
+                                                            <option value={2}>
+                                                                2
+                                                            </option>
+                                                            <option value={3}>
+                                                                3
+                                                            </option>
+                                                            <option value={4}>
+                                                                4
+                                                            </option>
+                                                            <option value={5}>
+                                                                5
+                                                            </option>
+                                                            <option value={6}>
+                                                                6
+                                                            </option>
+                                                            <option value={7}>
+                                                                7
+                                                            </option>
+                                                            <option value={8}>
+                                                                8
+                                                            </option>
+                                                            <option value={9}>
+                                                                9
+                                                            </option>
+                                                            <option value={10}>
+                                                                10
+                                                            </option>
+                                                        </select>
 
                                                     </div>
                                                     <div className='card-body '>

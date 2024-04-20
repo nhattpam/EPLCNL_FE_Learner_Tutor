@@ -91,12 +91,11 @@ const ListForum = () => {
                                             </div>
                                         </div> */}
                                         <div className="table-responsive">
-                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                                                 <thead className="thead-light">
                                                     <tr>
                                                         <th data-toggle="true">No.</th>
-                                                        <th data-toggle="true">Image</th>
-                                                        <th>Course</th>
+                                                        <th colSpan={2}>Course</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -105,9 +104,9 @@ const ListForum = () => {
                                                         currentForums.length > 0 && currentForums.map((forum, index) => (
                                                             <tr key={forum.id}>
                                                                 <td>{index + 1}</td>
-                                                                <td><img src={forum.course.imageUrl} style={{ height: '50px', width: '70px' }} alt={forum.course.name} /></td>
+                                                                <td><img src={forum.course?.imageUrl} style={{ height: '100px', width: '200px' }} alt={forum.course?.name} /></td>
 
-                                                                <td>{forum.course.name}</td>
+                                                                <td>{forum.course?.name}</td>
                                                                 <td>
                                                                     <Link to={`/edit-forum/${forum.id}`} className='text-secondary'>
                                                                         <i class="fas fa-comment-dots"></i>

@@ -91,7 +91,7 @@ const EditClassTopicQuestion = () => {
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="table-responsive" >
-                                            <table className="table table-bordered" >
+                                            <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
                                                 <tbody>
                                                     {question.questionText !== "" && (
                                                         <tr>
@@ -136,7 +136,7 @@ const EditClassTopicQuestion = () => {
                                             <ul className="list-group">
                                                 {
                                                     questionAnswerList.length > 0 && questionAnswerList.map((questionAnswer) => (
-                                                        <li key={questionAnswer.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                                        <li key={questionAnswer.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ border: 'none', borderBottom: '1px solid #dee2e6' }}>
                                                             {questionAnswer.answerText} {questionAnswer.isAnswer && (
                                                                 <span>This is answer</span>
                                                             )}
@@ -145,7 +145,7 @@ const EditClassTopicQuestion = () => {
                                                             >
                                                                 <i className="far fa-trash-alt text-danger"></i>
                                                             </Link>
-                                                            
+
                                                         </li>
                                                     ))
                                                 }
@@ -162,7 +162,7 @@ const EditClassTopicQuestion = () => {
                                                     type="button"
                                                     className="btn btn-success mr-2"
                                                     to={`/tutor/courses/create/create-class-course/create-topic-question-answer/${question.id}`}
-                                                    style={{borderRadius: '50px', padding: `8px 25px` }}
+                                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
 
                                                 >
                                                     Create new answer
@@ -172,7 +172,7 @@ const EditClassTopicQuestion = () => {
                                                 <button
                                                     type="submit"
                                                     className="btn btn-danger"
-                                                    style={{borderRadius: '50px', padding: `8px 25px` }}
+                                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                 >
                                                     Delete Question
                                                 </button>

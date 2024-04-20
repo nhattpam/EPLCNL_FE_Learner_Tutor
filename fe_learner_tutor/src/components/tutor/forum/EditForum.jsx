@@ -98,7 +98,7 @@ const EditForum = () => {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="card-box">
-                                        <div className="chat-container">
+                                        <div className="chat-container" style={{backgroundColor: '#fff'}}>
                                             {
                                                 accountForumList.length > 0 && accountForumList
                                                     .slice()
@@ -131,7 +131,7 @@ const EditForum = () => {
                                                 )
                                             }
 
-                                            <form class="msger-inputarea" onSubmit={submitAccountForum} style={{backgroundColor: '#fff'}}>
+                                            <form class="msger-inputarea" onSubmit={submitAccountForum} style={{backgroundColor: '#fff', marginLeft: '-20px'}}>
                                                 <input
                                                     type="text"
                                                     class="msger-input"
