@@ -497,77 +497,84 @@ const EditCourse = () => {
 
                                     )}
 
-                                    <div className="form-group mt-4">
-                                        <h5>Certificate:</h5>
+                                    {
+                                        !course.isOnlineClass && (
+                                            <>
+                                                <div className="form-group mt-4">
+                                                    <h5>Certificate:</h5>
 
-                                        {
-                                            course.certificate?.description != null && (
-                                                <embed src={course.certificate?.description} type="application/pdf" width="100%" height="500px" />
+                                                    {
+                                                        course.certificate?.description != null && (
+                                                            <embed src={course.certificate?.description} type="application/pdf" width="100%" height="500px" />
 
-                                            )
-                                        }
+                                                        )
+                                                    }
 
 
-                                        {
-                                            course.certificate == null && (
-                                                <>
-                                                    <form
-                                                        method="post"
-                                                        data-parsley-validate
-                                                        onSubmit={(e) => submitCertificate(e)}
-                                                    >
-                                                        <div className="card">
-                                                            <div className="card-body">
+                                                    {
+                                                        course.certificate == null && (
+                                                            <>
+                                                                <form
+                                                                    method="post"
+                                                                    data-parsley-validate
+                                                                    onSubmit={(e) => submitCertificate(e)}
+                                                                >
+                                                                    <div className="card">
+                                                                        <div className="card-body">
 
-                                                                <input type='hidden' value={`Thanks for your time, this is certificate for course ${course.name}`} name='name' />
-                                                                <input type='hidden' value={courseId} name='courseId' />
-                                                                <div className="form-group">
-                                                                    <Dropzone
-                                                                        onDrop={handleFileDrop}
-                                                                        accept="application/pdf" multiple={false}
-                                                                        maxSize={5000000} // Maximum file size (5MB)
-                                                                    >
-                                                                        {({ getRootProps, getInputProps }) => (
-                                                                            <div {...getRootProps()} className="fallback">
-                                                                                <input {...getInputProps()} />
-                                                                                <div className="dz-message needsclick">
-                                                                                    <i className="h1 text-muted dripicons-cloud-upload" />
-                                                                                    <h3>Drop files here or click to upload.</h3>
-                                                                                </div>
-                                                                                {pdfPreview && (
-                                                                                    <div>
-                                                                                        {/* PDF Preview */}
-                                                                                        <embed src={pdfPreview} type="application/pdf" width="100%" height="500px" />
-                                                                                    </div>
-                                                                                )}
+                                                                            <input type='hidden' value={`Thanks for your time, this is certificate for course ${course.name}`} name='name' />
+                                                                            <input type='hidden' value={courseId} name='courseId' />
+                                                                            <div className="form-group">
+                                                                                <Dropzone
+                                                                                    onDrop={handleFileDrop}
+                                                                                    accept="application/pdf" multiple={false}
+                                                                                    maxSize={5000000} // Maximum file size (5MB)
+                                                                                >
+                                                                                    {({ getRootProps, getInputProps }) => (
+                                                                                        <div {...getRootProps()} className="fallback">
+                                                                                            <input {...getInputProps()} />
+                                                                                            <div className="dz-message needsclick">
+                                                                                                <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                                                <h3>Drop files here or click to upload.</h3>
+                                                                                            </div>
+                                                                                            {pdfPreview && (
+                                                                                                <div>
+                                                                                                    {/* PDF Preview */}
+                                                                                                    <embed src={pdfPreview} type="application/pdf" width="100%" height="500px" />
+                                                                                                </div>
+                                                                                            )}
 
+                                                                                        </div>
+                                                                                    )}
+                                                                                </Dropzone>
+                                                                                <div className="dropzone-previews mt-3" id="file-previews" />
                                                                             </div>
-                                                                        )}
-                                                                    </Dropzone>
-                                                                    <div className="dropzone-previews mt-3" id="file-previews" />
-                                                                </div>
 
-                                                                <div className="form-group mb-0">
-                                                                    <button
-                                                                        type="submit"
-                                                                        className="btn btn-success"
-                                                                        style={{
-                                                                            marginLeft: "-2px",
-                                                                            marginTop: "50px",
-                                                                            borderRadius: '50px', padding: `8px 25px`
-                                                                        }}
-                                                                    >
-                                                                        Create
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </>
-                                            )
-                                        }
+                                                                            <div className="form-group mb-0">
+                                                                                <button
+                                                                                    type="submit"
+                                                                                    className="btn btn-success"
+                                                                                    style={{
+                                                                                        marginLeft: "-2px",
+                                                                                        marginTop: "50px",
+                                                                                        borderRadius: '50px', padding: `8px 25px`
+                                                                                    }}
+                                                                                >
+                                                                                    Create
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </>
+                                                        )
+                                                    }
 
-                                    </div>
+                                                </div>
+                                            </>
+                                        )
+                                    }
+
                                     <div className="form-group mt-4">
                                         <h5>Enrolled Learners:</h5>
 
