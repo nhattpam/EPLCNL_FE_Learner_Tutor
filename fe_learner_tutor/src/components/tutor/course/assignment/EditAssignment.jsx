@@ -23,7 +23,8 @@ const EditAssignment = () => {
     questionText: "",
     questionAudioUrl: "",
     deadline: "", // set a default value for minutes
-    moduleId: ""
+    moduleId: "",
+    isActive: false
   });
 
   useEffect(() => {
@@ -111,6 +112,7 @@ const EditAssignment = () => {
       questionAudioUrl = audioResponse.data;
     }
 
+    assignment.isActive = true;
     const assignmentData = { ...assignment, questionAudioUrl };
 
 
@@ -140,6 +142,21 @@ const EditAssignment = () => {
     setAssignment({ ...assignment, deadline: minutes });
   };
 
+  //DEACTIVATE
+  const handleDeactivate = async () => {
+    assignment.isActive = false;
+
+    const assignmentResponse = await assignmentService.updateAssignment(assignment.id, assignment);
+    console.log(assignmentResponse.data);
+
+    const assignmentJson = JSON.stringify(assignmentResponse.data);
+
+    const assignmentJsonParse = JSON.parse(assignmentJson);
+
+    window.alert("Deactivate Assignment Successfully!");
+    window.location.reload();
+  };
+
 
   return (
     <>
@@ -155,7 +172,13 @@ const EditAssignment = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <h4 className="header-title">COURSE - <span className='text-success'>{module.course?.name}</span> | MODULE - <span className='text-success'>{module.name}</span> </h4>
+                      <h4 className="header-title">COURSE - <span className='text-success'>{module.course?.name}</span> | MODULE - <span className='text-success'>{module.name}</span>
+                        {assignment.isActive ? (
+                          <span className="badge label-table badge-success" style={{ float: 'right' }}>Active</span>
+                        ) : (
+                          <span className="badge label-table badge-danger" style={{ float: 'right' }}>Inactive</span>
+                        )}
+                      </h4>
 
                       <form
                         method="post"
@@ -303,7 +326,7 @@ const EditAssignment = () => {
                                       <i className="h1 text-muted dripicons-cloud-upload" />
                                       <h3>Drop files here or click to upload.</h3>
                                     </div>
-                                    
+
                                   </div>
                                 )}
                               </Dropzone>
@@ -316,6 +339,13 @@ const EditAssignment = () => {
                         <div className="form-group mb-0  ">
                           <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
                             Update
+                          </button>
+                          <button
+                            type="button" onClick={handleDeactivate}
+                            className="btn btn-danger ml-2"
+                            style={{ borderRadius: '50px', padding: `8px 25px`, marginTop: '10px' }}
+                          >
+                            Deactivate
                           </button>
                           <Link
                             type="button"

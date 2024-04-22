@@ -15,7 +15,8 @@ const EditQuiz = () => {
     deadline: "",
     createdDate: "",
     updatedDate: "",
-    module: []
+    module: [],
+    isActive: false
   });
 
 
@@ -100,6 +101,7 @@ const EditQuiz = () => {
     if (validateQuizForm()) {
       try {
         // Save quiz
+        quiz.isActive = true;
         console.log(JSON.stringify(quiz))
         const quizResponse = await quizService.updateQuiz(quiz.id, quiz);
         console.log(quizResponse.data);
@@ -118,6 +120,20 @@ const EditQuiz = () => {
     }
   };
 
+  //DEACTIVATE
+  const handleDeactivate = async () => {
+    quiz.isActive = false;
+    const quizResponse = await quizService.updateQuiz(quiz.id, quiz);
+    console.log(quizResponse.data);
+
+    const quizJson = JSON.stringify(quizResponse.data);
+
+    const quizJsonParse = JSON.parse(quizJson);
+
+    window.alert("Deactivate Quiz Successfully!");
+    window.location.reload();
+  };
+
   return (
     <>
       <div id="wrapper">
@@ -129,7 +145,13 @@ const EditQuiz = () => {
             <div className="row">
               <div className="col-12">
                 <div className="card-box">
-                  <h4 className="header-title">QUIZ INFORMATION &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditQuizModal}></i></h4>
+                  <h4 className="header-title">QUIZ INFORMATION &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditQuizModal}></i>
+                    {quiz.isActive ? (
+                      <span className="badge label-table badge-success" style={{ float: 'right' }}>Active</span>
+                    ) : (
+                      <span className="badge label-table badge-danger" style={{ float: 'right' }}>Inactive</span>
+                    )}
+                  </h4>
                   <div className="table-responsive">
                     <table className="table table-borderless table-hover table-nowrap table-centered mb-0">
                       <tbody>
@@ -211,6 +233,13 @@ const EditQuiz = () => {
                       >
                         Create new question
                       </Link>
+                      <button
+                        type="button" onClick={handleDeactivate}
+                        className="btn btn-danger"
+                        style={{ borderRadius: '50px', padding: `8px 25px` }}
+                      >
+                        Deactivate
+                      </button>
                       <Link
                         type="button"
                         className="btn btn-black mr-2"

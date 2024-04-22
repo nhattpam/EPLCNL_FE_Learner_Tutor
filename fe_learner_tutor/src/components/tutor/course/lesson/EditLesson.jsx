@@ -19,7 +19,8 @@ const EditLesson = () => {
     name: "",
     moduleId: "",
     videoUrl: "",
-    reading: ""
+    reading: "",
+    isActive: false
   });
 
   useEffect(() => {
@@ -102,6 +103,7 @@ const EditLesson = () => {
         console.log("this is url: " + videoUrl);
       }
 
+      lesson.isActive = true;
       console.log(lesson);
       const lessonData = { ...lesson, videoUrl }; // Create a new object with updated imageUrl
 
@@ -139,6 +141,21 @@ const EditLesson = () => {
     }
   }, [lessonId]);
 
+
+  //DEACTIVATE
+  const handleDeactivate = async () => {
+    lesson.isActive = false;
+    // Save account
+    const lessonResponse = await lessonService.updateLesson(lesson.id, lesson);
+
+    const lessonJson = JSON.stringify(lessonResponse.data);
+
+    const lessonJsonParse = JSON.parse(lessonJson);
+
+    console.log(lessonJsonParse);
+    window.alert("Deactivate Lesson Successfully!")
+    window.location.reload();
+  };
   return (
     <>
       <div id="wrapper">
@@ -151,7 +168,13 @@ const EditLesson = () => {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <h4 className="header-title">EDITING LESSON - <span className='text-success'>{lesson?.name}</span></h4>
+                      <h4 className="header-title">EDITING LESSON - <span className='text-success'>{lesson?.name}</span>
+                        {lesson.isActive ? (
+                          <span className="badge label-table badge-success" style={{float: 'right'}}>Active</span>
+                        ) : (
+                          <span className="badge label-table badge-danger"  style={{float: 'right'}}>Inactive</span>
+                        )}
+                      </h4>
 
                       <form
                         method="post"
@@ -231,13 +254,20 @@ const EditLesson = () => {
                                 ]
                               }}
                               theme="snow"
+                              style={{ height: '300px', marginBottom: '20px' }}
                             />
                           </div>
                           <div className="form-group mb-0  ">
                             <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
                               Update
                             </button>
-
+                            <button
+                              type="button" onClick={handleDeactivate}
+                              className="btn btn-danger ml-2"
+                              style={{ borderRadius: '50px', padding: `8px 25px`, marginTop: '10px' }}
+                            >
+                              Deactivate
+                            </button>
                             <Link
                               to={`/tutor/courses/edit-module/${lesson.moduleId}`}
                               className="btn btn-black mr-2 mt-2"
