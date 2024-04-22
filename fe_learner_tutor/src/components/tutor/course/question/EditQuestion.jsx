@@ -102,7 +102,7 @@ const EditQuestion = () => {
         const lessonJsonParse = JSON.parse(lessonJson);
 
         console.log(lessonJsonParse);
-        window.alert("Active Question Successfully!")
+        window.alert("Activate Question Successfully!")
         window.location.reload();
     };
 
@@ -122,7 +122,8 @@ const EditQuestion = () => {
                                             <span className="badge label-table badge-success" style={{ float: 'right' }}>Active</span>
                                         ) : (
                                             <span className="badge label-table badge-danger" style={{ float: 'right' }}>Inactive</span>
-                                        )}</h4>
+                                        )}
+                                    </h4>
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="table-responsive">

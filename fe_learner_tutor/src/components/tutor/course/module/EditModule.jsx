@@ -201,6 +201,19 @@ const EditModule = () => {
         }
     };
 
+    //ACTIVATE
+    const handleActivate = async () => {
+        module.isActive = true;
+        // Save account
+        const moduleResponse = await moduleService.updateModule(module.id, module);
+
+        const moduleJson = JSON.stringify(moduleResponse.data);
+
+        const moduleJsonParse = JSON.parse(moduleJson);
+
+        window.alert("Activate Module Successfully!")
+        window.location.reload();
+    };
 
 
     //DEACTIVATE
@@ -462,7 +475,20 @@ const EditModule = () => {
 
                                     </div>
                                 </div> {/* end card-box*/}
-
+                                <button
+                                    type="button" onClick={handleActivate}
+                                    className="btn btn-success ml-2"
+                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                >
+                                    Activate
+                                </button>
+                                <button
+                                    type="button" onClick={handleDeactivate}
+                                    className="btn btn-danger ml-2"
+                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                >
+                                    Deactivate
+                                </button>
                                 <Link
                                     type="button"
                                     className="btn btn-black mr-2"
@@ -501,13 +527,7 @@ const EditModule = () => {
                                                     </div>
                                                     <div className="modal-footer">
                                                         <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>Save Changes</button>
-                                                        <button
-                                                            type="button" onClick={handleDeactivate}
-                                                            className="btn btn-danger ml-2"
-                                                            style={{ borderRadius: '50px', padding: `8px 25px` }}
-                                                        >
-                                                            Deactivate
-                                                        </button>
+
                                                         <button type="button" className="btn btn-dark" onClick={closeEditModuleModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                                                     </div>
                                                 </form>

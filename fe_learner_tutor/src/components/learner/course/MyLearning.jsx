@@ -855,7 +855,7 @@ const MyLearning = () => {
                                                                     <div className="d-flex justify-content-between align-items-center mb-3">
                                                                         <h4>DONE</h4>
                                                                     </div>
-                                                                    <h3><a href="course-details.html">{proCertificate.certificate?.name}</a></h3>
+                                                                    <h3><a >{proCertificate.certificate?.name}</a></h3>
                                                                     <p>{proCertificate.certificate?.description}</p>
 
                                                                 </div>

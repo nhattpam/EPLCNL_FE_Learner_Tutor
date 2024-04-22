@@ -6,6 +6,9 @@ import learnerService from '../../../services/learner.service';
 import transactionService from '../../../services/transaction.service';
 import refundRequestService from '../../../services/refund-request.service';
 import ReactQuill from 'react-quill';
+import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai"; // icons form react-icons
+import ReactPaginate from 'react-paginate';
+import { IconContext } from 'react-icons';
 
 const MyTransaction = () => {
     const learnerId = localStorage.getItem('learnerId');
@@ -14,6 +17,11 @@ const MyTransaction = () => {
     const contentRef = useRef(null);
     const [showRefundModal, setShowRefundModal] = useState(false); // State variable for modal visibility
     const [selectedCourseName, setSelectedCourseName] = useState(''); // State variable to store the name of the selected course
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(0);
+    const [transactionsPerPage] = useState(5);
+
 
 
     useEffect(() => {
@@ -78,6 +86,28 @@ const MyTransaction = () => {
 
     };
 
+
+    const filteredTransactions = transactionList.filter(transaction => {
+        const course = transaction.course;
+        return (
+            (!course ||  // Include transactions where course is null
+                course.name.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                course.code.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                course.stockPrice.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                course.category?.name.toString().toLowerCase().includes(searchTerm.toLowerCase())
+            )
+        );
+    });
+    
+    const pageCount = Math.ceil(filteredTransactions.length / transactionsPerPage);
+
+    const handlePageClick = (data) => {
+        setCurrentPage(data.selected);
+    };
+
+    const offset = currentPage * transactionsPerPage;
+    const currentTransactions = filteredTransactions.slice(offset, offset + transactionsPerPage);
+
     return (
         <>
             <Header />
@@ -109,7 +139,7 @@ const MyTransaction = () => {
                                 <section id="courses" className="courses">
                                     <div className="container-fluid" data-aos="fade-up">
                                         <div className="list-container" data-aos="zoom-in" data-aos-delay={100}>
-                                            <table className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
+                                            <table className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
                                                 <thead className="thead-light" >
                                                     <tr>
                                                         <th scope="col"></th>
@@ -123,7 +153,7 @@ const MyTransaction = () => {
                                                 <tbody>
                                                     {
                                                         transactionList.length > 0 && (
-                                                            transactionList.map((transaction, index) => (
+                                                            currentTransactions.map((transaction, index) => (
                                                                 <tr key={transaction.id}>
                                                                     <td>
                                                                         <i class="fa-solid fa-cart-shopping fa-2x"></i>                                                                    </td>
@@ -148,14 +178,8 @@ const MyTransaction = () => {
                                                                     <td>{transaction.paymentMethod?.name}</td>
                                                                     <td>${transaction.amount / 24000}</td>
                                                                     <td>{transaction.transactionDate}</td>
-                                                                    <td>{transaction.status}</td>
-                                                                    {/* <td>
-                                                                    {isTransactionDateValid(transaction.transactionDate) && (
-                                                                        <a className='btn btn-primary' style={{ backgroundColor: '#f58d04' }} onClick={() => handleRefundClick(transaction.id)}>
-                                                                            Request a refund
-                                                                        </a>
-                                                                    )}
-                                                                </td> */}
+                                                                    <td>{transaction.status === "PROCESSING" ? "FAILED" : transaction.status}</td>
+
                                                                 </tr>
 
                                                             ))
@@ -177,6 +201,39 @@ const MyTransaction = () => {
 
                                         </div>
                                     </div>
+                                    {/* Pagination */}
+                                    <div className='container-fluid mt-2'>
+                                        {/* Pagination */}
+                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <ReactPaginate
+                                                previousLabel={
+                                                    <IconContext.Provider value={{ color: "#000", size: "14px" }}>
+                                                        <AiFillCaretLeft />
+                                                    </IconContext.Provider>
+                                                }
+                                                nextLabel={
+                                                    <IconContext.Provider value={{ color: "#000", size: "14px" }}>
+                                                        <AiFillCaretRight />
+                                                    </IconContext.Provider>
+                                                } breakLabel={'...'}
+                                                breakClassName={'page-item'}
+                                                breakLinkClassName={'page-link'}
+                                                pageCount={pageCount}
+                                                marginPagesDisplayed={2}
+                                                pageRangeDisplayed={5}
+                                                onPageChange={handlePageClick}
+                                                containerClassName={'pagination'}
+                                                activeClassName={'active'}
+                                                previousClassName={'page-item'}
+                                                nextClassName={'page-item'}
+                                                pageClassName={'page-item'}
+                                                previousLinkClassName={'page-link'}
+                                                nextLinkClassName={'page-link'}
+                                                pageLinkClassName={'page-link'}
+                                            />
+                                        </div>
+
+                                    </div>
                                 </section>
 
 
@@ -188,7 +245,7 @@ const MyTransaction = () => {
                                     <div className="container" data-aos="fade-up">
                                         <div className="row " data-aos="zoom-in" data-aos-delay={100}>
                                             <table id="demo-foo-filtering"
-                                                className="table table-borderless table-hover table-nowrap table-centered mb-0"
+                                                className="table table-borderless table-hover table-wrap table-centered mb-0"
                                                 data-page-size={7}
                                             >
                                                 <thead className="thead-light">
@@ -330,6 +387,10 @@ const MyTransaction = () => {
                     color: #000;
                     text-decoration: none;
                     background-color: transparent;
+                }
+                .page-item.active .page-link{
+                    background-color: #f58d04;
+                    border-color: #f58d04;
                 }
             `}
             </style>

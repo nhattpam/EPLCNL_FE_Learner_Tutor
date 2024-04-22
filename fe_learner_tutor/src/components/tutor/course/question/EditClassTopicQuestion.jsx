@@ -101,7 +101,7 @@ const EditClassTopicQuestion = () => {
         const lessonJsonParse = JSON.parse(lessonJson);
 
         console.log(lessonJsonParse);
-        window.alert("Active Question Successfully!")
+        window.alert("Activate Question Successfully!")
         window.location.reload();
     };
 
