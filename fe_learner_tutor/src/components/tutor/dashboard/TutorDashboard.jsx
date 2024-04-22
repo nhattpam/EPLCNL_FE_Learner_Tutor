@@ -15,7 +15,7 @@ const TutorDashboard = () => {
     const [enrollmentList, setEnrollmentList] = useState([]);
     const [enrollmentLearnerList, setEnrollmentLearnerList] = useState([]);
     const [courseList, setCourseList] = useState([]);
-    const [courseTutorList, setCourseTutorList] = useState([]);
+    const [salaryList, setSalaryList] = useState([]);
     const [learnerList, setLearnerList] = useState([]);
     const [rating, setRating] = useState(0);
     const [learnersPerPage] = useState(5);
@@ -44,6 +44,14 @@ const TutorDashboard = () => {
                 .getAccountById(storedAccountId)
                 .then((res) => {
                     setAccount(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            accountService
+                .getAllSalariesByAccount(storedAccountId)
+                .then((res) => {
+                    setSalaryList(res.data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -177,6 +185,52 @@ const TutorDashboard = () => {
     const offset2 = currentPage2 * historiesPerPage;
     const currentHistories = filteredHistories.slice(offset2, offset2 + historiesPerPage);
 
+
+
+    //SALARY
+    const [showSalaryModal, setShowSalaryModal] = useState(false);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
+    const openSalaryModal = () => {
+        setShowSalaryModal(true);
+    };
+
+    const closeSalaryModal = () => {
+        setShowSalaryModal(false);
+    };
+
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const renderSalaryTable = () => {
+        // Filter salary list for the selected year
+        const filteredSalaries = salaryList.filter(salary => salary.year === selectedYear);
+
+        return (
+            <table id="demo-foo-filtering" className="table table-borderless table-hover table-wrap table-centered mb-0" data-page-size={7}>
+                <thead className="thead-light">
+                    <tr>
+                        {months.map((month, index) => (
+                            <th key={index}>{month}</th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {months.map((month, index) => {
+                            // Find the salary for the current month
+                            const salaryForMonth = filteredSalaries.find(salary => salary.month === index + 1);
+                            return (
+                                <td key={index}>
+                                    {salaryForMonth ? `$${salaryForMonth.amount.toFixed(2)}` : '-'}
+                                </td>
+                            );
+                        })}
+                    </tr>
+                </tbody>
+            </table>
+        );
+    };
+
     return (
 
 
@@ -204,7 +258,7 @@ const TutorDashboard = () => {
                             </div>
                             {/* end page title */}
                             <div className="row">
-                                <div className="col-md-6 col-xl-3">
+                                <div className="col-md-6 col-xl-3 salary" onClick={openSalaryModal}>
                                     <div className="widget-rounded-circle card-box">
                                         <div className="row">
                                             <div className="col-6">
@@ -212,7 +266,7 @@ const TutorDashboard = () => {
                                                     <i className="fe-heart font-22 avatar-title text-primary" />
                                                 </div>
                                             </div>
-                                            <div className="col-6">
+                                            <div className="col-6 ">
                                                 <div className="text-right">
                                                     <h3 className="mt-1">$<span data-plugin="counterup">{account.wallet?.balance}</span></h3>
                                                     <p className="text-muted mb-1 text-truncate">Total Revenue</p>
@@ -343,7 +397,7 @@ const TutorDashboard = () => {
                     {/* Footer Start */}
                     {showModal && (
                         <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                            <div className="modal-dialog modal-lg" role="document"> {/* Added modal-lg class here */}
+                            <div className="modal-dialog modal-xl" role="document"> {/* Added modal-lg class here */}
                                 <div className="modal-content">
                                     <div className="modal-header">
                                         <h5 className="modal-title">Learner Information</h5>
@@ -438,9 +492,53 @@ const TutorDashboard = () => {
                 {/* ============================================================== */}
                 {/* End Page content */}
                 {/* ============================================================== */}
-
+                {showSalaryModal && (
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                        <div className="modal-dialog modal-dialog-scrollable custom-modal-xl" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Salary History</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeSalaryModal}>
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    {/* Year selection dropdown */}
+                                    <div style={{ float: 'left', marginRight: '20px', marginBottom: '5px' }}>
+                                        {/* Year selection dropdown */}
+                                        <select class="form-select"  value={selectedYear} onChange={(e) => setSelectedYear(parseInt(e.target.value))}>
+                                            {[...Array(5).keys()].map((_, index) => (
+                                                <option key={index} value={new Date().getFullYear() - index}>{new Date().getFullYear() - index}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {/* Render salary table based on selected year */}
+                                    {renderSalaryTable()}
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-dark" onClick={closeSalaryModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
+            <style>
+                {`
+              
+              .salary:hover {
+                  transform: translateY(-5px);
+                  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+              }
+              /* Custom modal size */
+.custom-modal-xl {
+    max-width: 90%;
+    width: 90%;
+}
 
+              
+                `}
+            </style>
         </>
     )
 }
