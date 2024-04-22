@@ -25,7 +25,8 @@ const EditTopicAssignment = () => {
         questionAudioUrl: "",
         deadline: "", // set a default value for minutes
         topicId: "",
-        topic: []
+        topic: [],
+        isActive: false
     });
 
     useEffect(() => {
@@ -114,6 +115,7 @@ const EditTopicAssignment = () => {
             questionAudioUrl = audioResponse.data;
         }
 
+        assignment.isActive = true;
         const assignmentData = { ...assignment, questionAudioUrl };
 
         if (validateForm()) {
@@ -142,6 +144,16 @@ const EditTopicAssignment = () => {
         setAssignment({ ...assignment, deadline: minutes });
     };
 
+    //DEACTIVATE
+    const handleDeactivate = async () => {
+        assignment.isActive = false;
+        // Save account
+        const assignmentResponse = await assignmentService.updateAssignment(assignment.id, assignment);
+
+        window.alert("Deactivate Assignment Successfully!")
+        window.location.reload();
+    };
+
 
     return (
         <>
@@ -157,7 +169,13 @@ const EditTopicAssignment = () => {
                                 <div className="col-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="header-title">EDITTING ASSIGNMENT... </h4>
+                                            <h4 className="header-title">EDITTING ASSIGNMENT...
+                                                {assignment.isActive ? (
+                                                    <span className="badge label-table badge-success" style={{ float: 'right' }}>Active</span>
+                                                ) : (
+                                                    <span className="badge label-table badge-danger" style={{ float: 'right' }}>Inactive</span>
+                                                )}
+                                            </h4>
 
                                             <form
                                                 method="post"
@@ -317,6 +335,13 @@ const EditTopicAssignment = () => {
                                                 <div className="form-group mb-0  ">
                                                     <button type="submit" className="btn btn-success " style={{ marginLeft: '23px', marginTop: '10px', borderRadius: '50px', padding: `8px 25px` }} >
                                                         Update
+                                                    </button>
+                                                    <button
+                                                        type="button" onClick={handleDeactivate}
+                                                        className="btn btn-danger ml-2 mt-2"
+                                                        style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                                    >
+                                                        Deactivate
                                                     </button>
                                                     <Link
                                                         type="button"

@@ -11,6 +11,7 @@ import DatePicker from 'react-datepicker';
 const EditClassModule = () => {
 
     const [module, setModule] = useState({
+        isActive: false
     });
 
 
@@ -52,9 +53,7 @@ const EditClassModule = () => {
     }, [module.classLesson?.id]);
 
 
-    const goBack = () => {
-        navigate(-1); // Go back one step in history
-    };
+
 
     const filteredClassTopics = classTopicList
         .filter((classTopic) => {
@@ -122,19 +121,40 @@ const EditClassModule = () => {
     const submitClassLesson = async (e) => {
         e.preventDefault();
 
-
+        module.isActive = true;
         classLessonService
             .updateClassLesson(classLesson.id, classLesson)
             .then((res) => {
                 window.alert("Update Class Successfully!");
                 window.location.reload();
-
             })
             .catch((error) => {
                 console.log(error);
             });
-
+        classModuleService.updateModule(module.id, module)
+            .then((res) => {
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
+
+    //DEACTIVATE
+    const handleDeactivate = async () => {
+        module.isActive = false;
+        // Save account
+        const moduleResponse = await classModuleService.updateModule(module.id, module);
+
+        const moduleJson = JSON.stringify(moduleResponse.data);
+
+        const moduleJsonParse = JSON.parse(moduleJson);
+
+        window.alert("Deactivate Module Successfully!")
+        window.location.reload();
+    };
+
+
+
     return (
         <>
             <div id="wrapper">
@@ -148,7 +168,13 @@ const EditClassModule = () => {
                                 <div className="card-box">
                                     <h4 className="header-title">COURSE -
                                         <span className='text-success'> {module.course?.name} </span>
-                                        | CLASS INFORMATION &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditClassModuleModal}></i></h4>
+                                        | CLASS INFORMATION &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditClassModuleModal}></i>
+                                        {module.isActive ? (
+                                            <span className="badge label-table badge-success" style={{ float: 'right' }}>Active</span>
+                                        ) : (
+                                            <span className="badge label-table badge-danger" style={{ float: 'right' }}>Inactive</span>
+                                        )}
+                                    </h4>
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="form-group">
@@ -223,7 +249,13 @@ const EditClassModule = () => {
                                             >
                                                 Create new topic
                                             </Link>
-
+                                            <button
+                                                type="button" onClick={handleDeactivate}
+                                                className="btn btn-danger ml-2"
+                                                style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                            >
+                                                Deactivate
+                                            </button>
                                             <Link
                                                 to={`/tutor/courses/edit-course/${module.course?.id}`}
                                                 className="btn btn-black mr-2"
@@ -277,6 +309,7 @@ const EditClassModule = () => {
                                             </div>
                                             <div className="modal-footer">
                                                 <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>Save Changes</button>
+
                                                 <button type="button" className="btn btn-dark" onClick={closeEditCourseModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                                             </div>
                                         </form>

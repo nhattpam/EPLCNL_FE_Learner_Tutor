@@ -33,7 +33,8 @@ const EditTopic = () => {
     description: "",
     materialUrl: "",
     classLessonId: "",
-    classLesson: ""
+    classLesson: "",
+    isActive: false
   });
 
 
@@ -198,6 +199,7 @@ const EditTopic = () => {
   const submitClassTopic = async (e) => {
     e.preventDefault();
 
+    classTopic.isActive = true;
     try {
       // Save account
       const classTopicResponse = await topicService.updateClassTopic(classTopic.id, classTopic);
@@ -263,6 +265,19 @@ const EditTopic = () => {
   };
 
 
+  //DEACTIVATE
+  const handleDeactivate = async () => {
+    classTopic.isActive = false;
+    // Save account
+    const topicResponse = await topicService.updateClassTopic(classTopic.id, classTopic);
+
+    const topicJson = JSON.stringify(topicResponse.data);
+
+    window.alert("Deactivate Topic Successfully!")
+    window.location.reload();
+  };
+
+
   return (
     <>
       <div id="wrapper">
@@ -301,7 +316,13 @@ const EditTopic = () => {
                         </div>
 
                         <div className="form-group">
-                          <h4 htmlFor="topic">Topic Information &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditTopicModal}></i></h4>
+                          <h4 htmlFor="topic">Topic Information &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditTopicModal}></i>
+                            {classTopic.isActive ? (
+                              <span className="badge label-table badge-success" style={{ float: 'right' }}>Active</span>
+                            ) : (
+                              <span className="badge label-table badge-danger" style={{ float: 'right' }}>Inactive</span>
+                            )}
+                          </h4>
 
                         </div>
                         <div className="form-group">
@@ -607,6 +628,13 @@ const EditTopic = () => {
                         </div>
                         <div className="modal-footer">
                           <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>Save Changes</button>
+                          <button
+                            type="button" onClick={handleDeactivate}
+                            className="btn btn-danger ml-2"
+                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+                          >
+                            Deactivate
+                          </button>
                           <button type="button" className="btn btn-dark" onClick={closeEditTopicModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                         </div>
                       </form>

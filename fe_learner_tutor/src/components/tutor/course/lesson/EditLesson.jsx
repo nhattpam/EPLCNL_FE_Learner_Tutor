@@ -156,6 +156,7 @@ const EditLesson = () => {
     window.alert("Deactivate Lesson Successfully!")
     window.location.reload();
   };
+  
   return (
     <>
       <div id="wrapper">

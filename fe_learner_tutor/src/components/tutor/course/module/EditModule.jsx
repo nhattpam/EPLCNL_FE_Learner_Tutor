@@ -12,7 +12,8 @@ const EditModule = () => {
         name: "",
         assignments: [],
         lessons: [],
-        quizzes: []
+        quizzes: [],
+        isActive: false
     });
 
     const [errors, setErrors] = useState({});
@@ -184,7 +185,7 @@ const EditModule = () => {
 
     const submitModule = async (e) => {
         e.preventDefault();
-
+        module.isActive = true;
         if (validateForm()) {
             moduleService
                 .updateModule(module.id, module)
@@ -201,6 +202,23 @@ const EditModule = () => {
     };
 
 
+
+    //DEACTIVATE
+    const handleDeactivate = async () => {
+        module.isActive = false;
+        // Save account
+        const moduleResponse = await moduleService.updateModule(module.id, module);
+
+        const moduleJson = JSON.stringify(moduleResponse.data);
+
+        const moduleJsonParse = JSON.parse(moduleJson);
+
+        window.alert("Deactivate Module Successfully!")
+        window.location.reload();
+    };
+
+
+
     return (
         <>
             <div id="wrapper">
@@ -212,7 +230,13 @@ const EditModule = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="card-box">
-                                    <h4 className="header-title">COURSE - <span className='text-success'>{module.course?.name}</span> | MODULE INFORMATION  &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditModuleModal}></i></h4>
+                                    <h4 className="header-title">COURSE - <span className='text-success'>{module.course?.name}</span> | MODULE INFORMATION  &nbsp;<i class="fa-solid fa-pen-to-square" onClick={openEditModuleModal}></i>
+                                        {module.isActive ? (
+                                            <span className="badge label-table badge-success" style={{ float: 'right' }}>Active</span>
+                                        ) : (
+                                            <span className="badge label-table badge-danger" style={{ float: 'right' }}>Inactive</span>
+                                        )}
+                                    </h4>
 
 
                                     <div className="mb-3 mt-3">
@@ -477,6 +501,13 @@ const EditModule = () => {
                                                     </div>
                                                     <div className="modal-footer">
                                                         <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>Save Changes</button>
+                                                        <button
+                                                            type="button" onClick={handleDeactivate}
+                                                            className="btn btn-danger ml-2"
+                                                            style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                                        >
+                                                            Deactivate
+                                                        </button>
                                                         <button type="button" className="btn btn-dark" onClick={closeEditModuleModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
                                                     </div>
                                                 </form>

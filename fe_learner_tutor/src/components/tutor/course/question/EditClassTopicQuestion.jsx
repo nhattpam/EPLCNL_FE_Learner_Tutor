@@ -75,6 +75,35 @@ const EditClassTopicQuestion = () => {
         }
     };
 
+    //DEACTIVATE
+    const handleDeactivate = async () => {
+        question.isActive = false;
+        // Save account
+        const questionResponse = await questionService.updateQuestion(question.id, question);
+
+        const lessonJson = JSON.stringify(questionResponse.data);
+
+        const lessonJsonParse = JSON.parse(lessonJson);
+
+        console.log(lessonJsonParse);
+        window.alert("Deactivate Question Successfully!")
+        window.location.reload();
+    };
+
+    //ACTIVE
+    const handleActivate = async () => {
+        question.isActive = true;
+        // Save account
+        const questionResponse = await questionService.updateQuestion(question.id, question);
+
+        const lessonJson = JSON.stringify(questionResponse.data);
+
+        const lessonJsonParse = JSON.parse(lessonJson);
+
+        console.log(lessonJsonParse);
+        window.alert("Active Question Successfully!")
+        window.location.reload();
+    };
 
     return (
         <>
@@ -87,7 +116,13 @@ const EditClassTopicQuestion = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="card-box">
-                                    <h4 className="header-title">QUESTION INFORMATION</h4>
+                                    <h4 className="header-title">QUESTION INFORMATION
+                                        {question.isActive ? (
+                                            <span className="badge label-table badge-success" style={{ float: 'right' }}>Active</span>
+                                        ) : (
+                                            <span className="badge label-table badge-danger" style={{ float: 'right' }}>Inactive</span>
+                                        )}
+                                    </h4>
 
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="table-responsive" >
@@ -167,14 +202,20 @@ const EditClassTopicQuestion = () => {
                                                 >
                                                     Create new answer
                                                 </Link>
-
+                                                <button
+                                                    type="button" onClick={handleActivate}
+                                                    className="btn btn-success mr-2"
+                                                    style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                                >
+                                                    Activate
+                                                </button>
 
                                                 <button
-                                                    type="submit"
+                                                    type="button" onClick={handleDeactivate}
                                                     className="btn btn-danger"
                                                     style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                 >
-                                                    Delete Question
+                                                    Deactivate
                                                 </button>
                                                 <Link
                                                     type="button"
