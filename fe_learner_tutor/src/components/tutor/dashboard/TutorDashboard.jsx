@@ -243,7 +243,7 @@ const TutorDashboard = () => {
     useEffect(() => {
         // Call createAreaChart whenever selectedYear changes or modal is shown
         createAreaChart();
-    }, [selectedYear, showSalaryModal]);
+    }, [selectedYear, renderSalaryTable]);
 
 
 
