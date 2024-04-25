@@ -150,6 +150,7 @@ const Header = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredCourses, setFilteredCourses] = useState([]);
     const [filteredTutors, setFilteredTutors] = useState([]);
+    const [searchResultVisible, setSearchResultVisible] = useState(false);
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -193,6 +194,9 @@ const Header = () => {
             tutor.account.fullName.toLowerCase().includes(query.toLowerCase())
         );
         setFilteredTutors(filteredTutorResults || []);
+
+        setSearchResultVisible(true); // Show SearchResult when search is performed
+
     };
 
     // useEffect to update search results whenever searchQuery changes
@@ -201,6 +205,10 @@ const Header = () => {
     }, [searchQuery, courseList, tutorList]);
 
 
+    const handleCloseSearchResult = () => {
+        // Close the SearchResult by setting searchResultVisible to false
+        setSearchResultVisible(false);
+    };
 
     //end SEARCH
 
@@ -403,11 +411,16 @@ const Header = () => {
                         </div>
                         {/* Render filtered courses if there are search results */}
                         <div className='search-result'>
-                            <SearchResult
-                                searchQuery={searchQuery}
-                                filteredCourses={filteredCourses}
-                                filteredTutors={filteredTutors}
-                            />
+                            {searchResultVisible && (
+                                <SearchResult
+                                    searchQuery={searchQuery}
+                                    filteredCourses={filteredCourses}
+                                    filteredTutors={filteredTutors}
+                                    onClose={handleCloseSearchResult}
+
+                                />
+                            )}
+
                         </div>
                     </div>
 

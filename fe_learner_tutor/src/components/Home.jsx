@@ -407,7 +407,7 @@ const Home = () => {
           <div className="container" data-aos="fade-up">
             <div className="row" data-aos="zoom-in" data-aos-delay={100}>
               {tutorList.map((tutor, index) => (
-                <div className="col-lg-4 col-md-6 d-flex align-items-stretch">
+                <div key={tutor.id} className="col-lg-4 col-md-6 d-flex align-items-stretch">
                   <div className="member  info-item" style={{ borderRadius: '50px', padding: `8px 20px` }}>
                     <img src={tutor.account?.imageUrl} className="img-fluid" alt />
                     <div className="member-content">
