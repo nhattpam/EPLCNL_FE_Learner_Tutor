@@ -38,10 +38,34 @@ const SearchResult = ({ searchQuery, filteredCourses, filteredTutors, onClose })
             </div>
             <style>
                 {`
-                .modal-content {
+                .modal-container {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
                     display: flex;
-                    flex-direction: column;
+                    justify-content: center;
                     align-items: center;
+                    z-index: 1000; /* Ensure modal is on top of other content */
+                }
+                
+                .modal-background {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+                    z-index: 999; /* Ensure it covers everything but the modal */
+                }
+                
+                .modal-content {
+                    background-color: #fff; /* White background for modal */
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+                    z-index: 1000; /* Ensure modal content is on top */
                 }
                 
                 .grid-container {
