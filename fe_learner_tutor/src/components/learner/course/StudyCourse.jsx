@@ -48,12 +48,15 @@ const StudyCourse = () => {
         courseService
             .getAllModulesByCourse(courseId)
             .then((res) => {
-                setModuleList(res.data);
+                // Filter out modules where isActive is true
+                const activeModules = res.data.filter(module => module.isActive === true);
+                setModuleList(activeModules);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, [courseId]);
+
 
     const [selectedModule, setSelectedModule] = useState(null);
     const [moduleContent, setModuleContent] = useState({
@@ -78,32 +81,43 @@ const StudyCourse = () => {
 
     useEffect(() => {
         if (selectedModule) {
-            // Fetch lessons, assignments, and quizzes based on the selected module
-            moduleService.getAllLessonsByModule(selectedModule.id)
+            const moduleId = selectedModule.id;
+
+            const fetchLessons = moduleService.getAllLessonsByModule(moduleId)
                 .then((res) => {
-                    setModuleContent(prevState => ({ ...prevState, lessons: res.data }));
+                    const activeLessons = res.data.filter(lesson => lesson.isActive === true);
+                    setModuleContent(prevState => ({ ...prevState, lessons: activeLessons }));
                 })
                 .catch((error) => {
                     console.log(error);
                 });
 
-            moduleService.getAllAssignmentsByModule(selectedModule.id)
+            const fetchAssignments = moduleService.getAllAssignmentsByModule(moduleId)
                 .then((res) => {
-                    setModuleContent(prevState => ({ ...prevState, assignments: res.data }));
+                    const activeAssignments = res.data.filter(assignment => assignment.isActive === true);
+                    setModuleContent(prevState => ({ ...prevState, assignments: activeAssignments }));
                 })
                 .catch((error) => {
                     console.log(error);
                 });
 
-            moduleService.getAllQuizzesByModule(selectedModule.id)
+            const fetchQuizzes = moduleService.getAllQuizzesByModule(moduleId)
                 .then((res) => {
-                    setModuleContent(prevState => ({ ...prevState, quizzes: res.data }));
+                    const activeQuizzes = res.data.filter(quiz => quiz.isActive === true);
+                    setModuleContent(prevState => ({ ...prevState, quizzes: activeQuizzes }));
                 })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            // Combine promises to execute them concurrently
+            Promise.all([fetchLessons, fetchAssignments, fetchQuizzes])
                 .catch((error) => {
                     console.log(error);
                 });
         }
     }, [selectedModule]);
+
 
     useEffect(() => {
         try {
@@ -308,11 +322,11 @@ const StudyCourse = () => {
     // State to track whether the timer should be displayed or not
     const [showTimer, setShowTimer] = useState(false);
 
-   
+
 
     const [showTimer2, setShowTimer2] = useState(false);
 
- 
+
 
     // Function to handle click on the "Start Assignment" button
     const handleStartAssignment = () => {
@@ -324,9 +338,9 @@ const StudyCourse = () => {
 
     };
 
-   
 
-  
+
+
 
     const [assignmentAttempt, setAssignmentAttempt] = useState({
         assignmentId: selectedAssignmentId,
@@ -499,16 +513,15 @@ const StudyCourse = () => {
             quizService
                 .getAllQuestionsByQuiz(selectedQuizId)
                 .then((res) => {
-                    // console.log(res.data);
-                    setQuestionList(res.data);
-
+                    const activeQuestions = res.data.filter(question => question.isActive === true);
+                    setQuestionList(activeQuestions);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
-
     }, [selectedQuizId]);
+
 
 
     useEffect(() => {
@@ -712,7 +725,7 @@ const StudyCourse = () => {
     const timeRemaining2 = selectedQuiz?.deadline * 60;
 
 
-    const autoSubmitAssignmentAttempt =  (e) => {
+    const autoSubmitAssignmentAttempt = (e) => {
         e.preventDefault();
         submitAssignmentAttempt(e);
 

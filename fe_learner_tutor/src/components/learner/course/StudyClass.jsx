@@ -47,15 +47,18 @@ const StudyClass = () => {
     courseService
       .getAllClassModulesByCourse(courseId)
       .then((res) => {
-        // Sort the class modules by startDate
-        const sortedModules = res.data.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
-        console.log(sortedModules);
+        // Filter out class modules where isActive is true
+        const activeModules = res.data.filter(module => module.isActive === true);
+
+        // Sort the active class modules by startDate
+        const sortedModules = activeModules.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
         setClassModuleList(sortedModules);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [courseId]);
+
 
 
   const [selectedModule, setSelectedModule] = useState(null);
@@ -130,6 +133,7 @@ const StudyClass = () => {
   const [showMaterials, setShowMaterials] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [quizList, setQuizList] = useState([]);
+  const [assignmentList, setAssignmentList] = useState([]);
   const [materialList, setMaterialList] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
@@ -154,24 +158,28 @@ const StudyClass = () => {
     classLessonService
       .getAllClassTopicsByClassLesson(selectedLessonId)
       .then((res) => {
-        console.log(res.data);
-        setClassTopicList(res.data);
-
+        // Filter out class topics where isActive is true
+        const activeTopics = res.data.filter(topic => topic.isActive === true);
+        setClassTopicList(activeTopics);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [selectedLessonId]);
 
+
   const handleShowQuizzes = (classTopicId) => {
     topicService
       .getAllQuizzesByClassTopic(classTopicId)
       .then((res) => {
+        // Filter out quizzes where isActive is true
+        const activeQuizzes = res.data.filter(quiz => quiz.isActive === true);
+
         const updatedClassTopicList = classTopicList.map((classTopic) => {
           if (classTopic.id === classTopicId) {
             return {
               ...classTopic,
-              quizList: res.data, // Add quizList to the class topic
+              quizList: activeQuizzes, // Add active quizList to the class topic
               showQuizzes: true, // Set showQuizzes to true for the class topic
               showMaterials: false,
               showAssignments: false
@@ -180,23 +188,27 @@ const StudyClass = () => {
           return classTopic;
         });
         setClassTopicList(updatedClassTopicList); // Update classTopicList state
-        setQuizList(res.data); // Update quizList state
+        setQuizList(activeQuizzes); // Update quizList state
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+
   const handleShowAssignments = (classTopicId) => {
     topicService
       .getAllAssignmentsByClassTopic(classTopicId)
       .then((res) => {
+        // Filter out assignments where isActive is true
+        const activeAssignments = res.data.filter(assignment => assignment.isActive === true);
+
         const updatedClassTopicList = classTopicList.map((classTopic) => {
           if (classTopic.id === classTopicId) {
             return {
               ...classTopic,
-              assignmentList: res.data, // Add quizList to the class topic
-              showAssignments: true, // Set showQuizzes to true for the class topic
+              assignmentList: activeAssignments, // Add active assignmentList to the class topic
+              showAssignments: true, // Set showAssignments to true for the class topic
               showMaterials: false,
               showQuizzes: false
             };
@@ -204,12 +216,13 @@ const StudyClass = () => {
           return classTopic;
         });
         setClassTopicList(updatedClassTopicList); // Update classTopicList state
-        setQuizList(res.data); // Update quizList state
+        setAssignmentList(activeAssignments); // Update assignmentList state
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
 
 
   const handleShowMaterials = (classTopicId) => {
@@ -277,7 +290,7 @@ const StudyClass = () => {
     setShowAnswerColor(false);
     setShowResult(false);
     setCurrentQuestionIndex(0); // Reset currentQuestionIndex to 0
-    setShowForm(false);   
+    setShowForm(false);
     // Set the deadline time (in seconds) from now
 
   };
@@ -537,7 +550,7 @@ const StudyClass = () => {
 
                                         </div>
                                         <div className="col-md-3">
-                                          <div className="d-flex align-items-center mb-2" style={{ }}>
+                                          <div className="d-flex align-items-center mb-2" style={{}}>
                                             <div className="timer-wrapper">
                                               <CountdownCircleTimer
                                                 isPlaying
