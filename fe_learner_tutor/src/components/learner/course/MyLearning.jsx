@@ -35,7 +35,11 @@ const MyLearning = () => {
     const [learningScore, setLearningScore] = useState(0); // State variable to store the name of the selected course
     const [enrollmentScores, setEnrollmentScores] = useState({});
 
-    const contentRef = useRef(null);
+
+    //LOADING
+    const [loading, setLoading] = useState(true); // State to track loading
+
+    //LOADING
 
 
     // Define fetchData function before useEffect
@@ -43,6 +47,8 @@ const MyLearning = () => {
         try {
             const res = await learnerService.getAllEnrollmentByLearnerId(learnerId);
             setEnrollmentList(res.data);
+            setLoading(false); // Set loading to false after data is fetched
+
             const learnersCounts = {}; // Object to store number of learners for each course
             const scores = {}; // Object to store scores for each enrollment
 
@@ -56,16 +62,19 @@ const MyLearning = () => {
                     if (!enrollment.transaction?.course?.isOnlineClass) {
                         const courseScoreResponse = await enrollmentService.getCourseScoreByEnrollmentId(enrollment.id);
                         const learningScoreResponse = await enrollmentService.getLearningScoreByEnrollmentId(enrollment.id);
+                        setLoading(false); // Set loading to false after data is fetched
 
                         scores[enrollment.id] = {
                             courseScore: courseScoreResponse.data,
                             learningScore: learningScoreResponse.data
                         };
-
                         // console.log("Course score for enrollment ID " + enrollment.id + ": " + courseScoreResponse.data);
                     }
+
                 } catch (error) {
                     console.error(`Error fetching learners for course ${enrollment.course?.name}:`, error);
+                    setLoading(false); // Set loading to false after data is fetched
+
                 }
             }
 
@@ -74,6 +83,8 @@ const MyLearning = () => {
             setEnrollmentScores(scores); // Update state with scores for each enrollment
         } catch (error) {
             console.log(error);
+            setLoading(false); // Set loading to false after data is fetched
+
         }
     };
 
@@ -475,283 +486,228 @@ const MyLearning = () => {
                             <div className="tab-pane fade show active" id="tab-content-1">
                                 <section id="courses" className="courses">
                                     <div className="container" data-aos="fade-up">
-                                        {
-                                            enrollmentList.length > 0 && enrollmentList.map((enrollment, index) => (
-                                                <>
-                                                    <div className="row " data-aos="zoom-in" data-aos-delay={100}>
+                                        {loading && (
+                                            <div className="loading-overlay">
+                                                <div className="loading-spinner" />
+                                            </div>
+                                        )}
+                                        <>
+                                            {
+                                                enrollmentList.length > 0 && enrollmentList.map((enrollment, index) => (
+                                                    <>
+                                                        <div className="row " data-aos="zoom-in" data-aos-delay={100}>
 
-                                                        <div key={enrollment.transaction?.courseId} className="col-lg-12 col-12 " style={{ width: '1000px', }}>
-                                                            <div className="course-item mt-4" id='iitem'>
-                                                                <img src={enrollment.transaction?.course?.imageUrl} className="img-fluid" alt="..." style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
-                                                                <div className="course-content" >
-                                                                    <div className="d-flex justify-content-between align-items-center mb-3">
-                                                                        <h4>{enrollment.transaction?.course?.category?.name}</h4>
-                                                                        <p className="price">{parseFloat(enrollment.transaction?.course?.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
-                                                                        <p className="price">{`$${enrollment.transaction?.course?.stockPrice}`}</p>
-                                                                    </div>
-                                                                    {enrollment.transaction?.course?.isOnlineClass && (
-                                                                        <h3><Link to={`/study-class/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
-
-                                                                    )}
-                                                                    {!enrollment.transaction?.course?.isOnlineClass && (
-                                                                        <h3><Link to={`/study-course/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
-
-                                                                    )}
-                                                                    <p>{enrollment.transaction?.course?.description}</p>
-                                                                    <div className="trainer d-flex justify-content-between align-items-center">
-                                                                        <div className="trainer-profile d-flex align-items-center">
-                                                                            <img src={enrollment.transaction?.course?.tutor?.account?.imageUrl} className="img-fluid" alt="" />
-                                                                            <span>{enrollment.transaction?.course?.tutor?.account?.fullName}</span>
+                                                            <div key={enrollment.transaction?.courseId} className="col-lg-12 col-12 " style={{ width: '1000px', }}>
+                                                                <div className="course-item mt-4" id='iitem'>
+                                                                    <img src={enrollment.transaction?.course?.imageUrl} className="img-fluid" alt="..." style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
+                                                                    <div className="course-content" >
+                                                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                                                            <h4>{enrollment.transaction?.course?.category?.name}</h4>
+                                                                            <p className="price">{parseFloat(enrollment.transaction?.course?.rating).toFixed(0)} <i class="fas fa-star text-warning "></i></p>
+                                                                            <p className="price">{`$${enrollment.transaction?.course?.stockPrice}`}</p>
                                                                         </div>
+                                                                        {enrollment.transaction?.course?.isOnlineClass && (
+                                                                            <h3><Link to={`/study-class/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
 
-                                                                        <div className="trainer-rank d-flex align-items-center">
-                                                                            <i className="bx bx-user" />&nbsp;{learnersCount[enrollment.transaction?.course?.id]}
-                                                                            &nbsp;&nbsp;
-                                                                            <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.transaction?.courseId, learnerId)}></i>
-                                                                            &nbsp;&nbsp;&nbsp;
-                                                                            <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction?.courseId, learnerId)}></i>
-                                                                        </div>
-                                                                    </div>
-                                                                    {/* Display courseScore and learningScore */}
-                                                                    {!enrollment.transaction?.course?.isOnlineClass && enrollmentScores[enrollment.id] && (
-                                                                        <div className="progress-container mt-3">
-                                                                            <div className="left-title" style={{ fontWeight: 'bold' }}>{enrollmentScores[enrollment.id]?.learningScore}</div>
-                                                                            <div className="progress-wrapper">
-                                                                                <progress className="orange-progress-bar" value={enrollmentScores[enrollment.id]?.learningScore} max={enrollmentScores[enrollment.id]?.courseScore}></progress>
+                                                                        )}
+                                                                        {!enrollment.transaction?.course?.isOnlineClass && (
+                                                                            <h3><Link to={`/study-course/${enrollment.transaction?.courseId}`}>{enrollment.transaction?.course?.name}</Link></h3>
+
+                                                                        )}
+                                                                        <p>{enrollment.transaction?.course?.description}</p>
+                                                                        <div className="trainer d-flex justify-content-between align-items-center">
+                                                                            <div className="trainer-profile d-flex align-items-center">
+                                                                                <img src={enrollment.transaction?.course?.tutor?.account?.imageUrl} className="img-fluid" alt="" />
+                                                                                <span>{enrollment.transaction?.course?.tutor?.account?.fullName}</span>
                                                                             </div>
-                                                                            <div className="right-title" style={{ fontWeight: 'bold' }}> {enrollmentScores[enrollment.id]?.courseScore}</div>
+
+                                                                            <div className="trainer-rank d-flex align-items-center">
+                                                                                <i className="bx bx-user" />&nbsp;{learnersCount[enrollment.transaction?.course?.id]}
+                                                                                &nbsp;&nbsp;
+                                                                                <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.transaction?.courseId, learnerId)}></i>
+                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction?.courseId, learnerId)}></i>
+                                                                            </div>
                                                                         </div>
-                                                                    )}
-                                                                    {isTransactionDateValid(enrollment.enrolledDate) && (
-                                                                        <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={() => handleRefundClick(enrollment.id)}>
-                                                                            I want return
-                                                                        </a>
-                                                                    )}
-
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-                                                    {showFeedbackModal && (
-                                                        <form id="demo-form" data-parsley-validate onSubmit={(e) => submitFeedback(e)}>
-                                                            <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                                                <div className="modal-dialog  modal-dialog-scrollable modal-lg">
-                                                                    <div className="modal-content">
-                                                                        <div className="modal-header">
-                                                                            <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
-                                                                            <button type="button" className="close" onClick={() => setShowFeedbackModal(false)}>
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div className="modal-body">
-                                                                            <StarRating onChange={handleRatingChange} />
-
-                                                                            <ReactQuill
-                                                                                value={feedback.feedbackContent}
-                                                                                onChange={handleContentChange}
-                                                                                modules={{
-                                                                                    toolbar: [
-                                                                                        [{ header: [1, 2, false] }],
-                                                                                        [{ 'direction': 'rtl' }],
-                                                                                        [{ 'align': [] }],
-                                                                                        ['code-block'],
-                                                                                        [{ 'color': [] }, { 'background': [] }],
-                                                                                        ['clean']
-                                                                                    ]
-                                                                                }}
-                                                                                theme="snow"
-                                                                                preserveWhitespace={true} // Add this line to preserve whitespace
-                                                                                style={{ height: '400px' }}
-                                                                            />
-                                                                        </div>
-                                                                        <div className="modal-footer">
-                                                                            <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowFeedbackModal(false)}>Close</button>
-                                                                            <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitFeedback(e)}>Send</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-
-
-                                                    )}
-                                                    {showReportModal && (
-                                                        <form method="post"
-                                                            className="dropzone"
-                                                            id="myAwesomeDropzone"
-                                                            data-plugin="dropzone"
-                                                            data-previews-container="#file-previews"
-                                                            data-upload-preview-template="#uploadPreviewTemplate"
-                                                            data-parsley-validate onSubmit={(e) => submitReport(e)}>
-                                                            <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                                                <div className="modal-dialog modal-dialog-scrollable modal-lg"> {/* Add 'modal-dialog-scrollable' class */}
-                                                                    <div className="modal-content">
-                                                                        <div className="modal-header">
-                                                                            <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
-                                                                            <button type="button" className="close" onClick={() => setShowReportModal(false)}>
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Set maxHeight and overflowY */}
-
-                                                                            <ReactQuill
-                                                                                value={report.reason}
-                                                                                onChange={handleReasonChange}
-                                                                                modules={{
-                                                                                    toolbar: [
-                                                                                        [{ header: [1, 2, false] }],
-                                                                                        [{ 'direction': 'rtl' }],
-                                                                                        [{ 'align': [] }],
-                                                                                        ['code-block'],
-                                                                                        [{ 'color': [] }, { 'background': [] }],
-                                                                                        ['clean']
-                                                                                    ]
-                                                                                }}
-                                                                                theme="snow"
-                                                                                preserveWhitespace={true}
-                                                                                style={{ height: '300px', marginBottom: '50px' }}
-                                                                            />
-                                                                            <Dropzone
-                                                                                onDrop={handleFileDrop}
-                                                                                accept="image/*"
-                                                                                multiple={false}
-                                                                                maxSize={5000000}
-                                                                            >
-                                                                                {({ getRootProps, getInputProps }) => (
-                                                                                    <div {...getRootProps()} className="fallback">
-                                                                                        <input {...getInputProps()} />
-                                                                                        <div className="dz-message needsclick">
-                                                                                            <i className="h1 text-muted dripicons-cloud-upload" />
-                                                                                            <h3>Drop files here or click to upload.</h3>
-                                                                                        </div>
-                                                                                        {imagePreview && (
-                                                                                            <img
-                                                                                                src={imagePreview}
-                                                                                                alt="Preview"
-                                                                                                style={{
-                                                                                                    maxWidth: "100%",
-                                                                                                    maxHeight: "200px",
-                                                                                                    marginTop: "10px",
-                                                                                                }}
-                                                                                            />
-                                                                                        )}
-                                                                                    </div>
-                                                                                )}
-                                                                            </Dropzone>
-
-                                                                            <div
-                                                                                className="dropzone-previews mt-3"
-                                                                                id="file-previews"
-                                                                            />
-                                                                        </div>
-                                                                        <div className="modal-footer">
-                                                                            <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowReportModal(false)}>Close</button>
-                                                                            <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitReport(e)}>Send</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    )}
-                                                    {showRefundModal && (
-                                                        <form
-                                                            method="post"
-                                                            className="dropzone"
-                                                            id="myAwesomeDropzone"
-                                                            data-plugin="dropzone"
-                                                            data-previews-container="#file-previews"
-                                                            data-upload-preview-template="#uploadPreviewTemplate"
-                                                            data-parsley-validate
-                                                            onSubmit={(e) => submitRefund(e)}
-                                                        >
-                                                            <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)', }}>
-                                                                <div className="modal-dialog modal-dialog-scrollable modal-lg">
-                                                                    <div className="modal-content">
-                                                                        <div className="modal-header">
-                                                                            <h5 className="modal-title">
-                                                                                Refund course - <span style={{ color: '#f58d04' }}>{course.name}</span>
-                                                                            </h5>
-                                                                            <button type="button" className="close" onClick={() => setShowRefundModal(false)}>
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
-                                                                            {course?.isOnlineClass && (
-                                                                                <div className="container" data-aos="fade-up">
-                                                                                    {classModuleList.length > 0 && classModuleList.map((classModule, index) => (
-                                                                                        <>
-                                                                                            <div className="row" key={index}>
-                                                                                                <div className="col-lg-3">
-                                                                                                    <ul className="nav nav-tabs flex-column">
-                                                                                                        <li className="nav-item get-button">
-                                                                                                            <a onClick={(event) => handleTabClick2(event, classModule.id)}>
-                                                                                                                On Date: <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
-                                                                                                            </a>
-                                                                                                        </li>
-                                                                                                    </ul>
-                                                                                                    <ul className="nav nav-tabs flex-column">
-                                                                                                        <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
-                                                                                                        </li>
-                                                                                                    </ul>
-                                                                                                </div>
-                                                                                                <div className="col-lg-9 mt-4 mt-lg-0">
-                                                                                                    <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
-                                                                                                        <div className={`tab-pane ${activeClassModuleId === classModule.id ? 'active show' : ''}`} id={`tab-${classModule.id}`}>
-                                                                                                            <div>
-                                                                                                                <div>
-                                                                                                                    <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
-                                                                                                                    {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
-                                                                                                                        <div>
-                                                                                                                            <span key={topicIndex} style={{ justifyContent: 'left' }}><span style={{ fontWeight: 'bold' }}>Topic: </span>{classTopic.name}</span>
-                                                                                                                        </div>
-                                                                                                                    ))}
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <input
-                                                                                                name={`reason-${index}`}
-                                                                                                type='text'
-                                                                                                placeholder='Write your reason...'
-                                                                                                className='form-control'
-                                                                                                required
-                                                                                                onChange={(e) => {
-                                                                                                    let dateString = '';
-                                                                                                    if (classModule.startDate instanceof Date) {
-                                                                                                        dateString = classModule.startDate.toISOString().substring(0, 10);
-                                                                                                    } else if (typeof classModule.startDate === 'string') {
-                                                                                                        // Assuming startDate is already in the correct format
-                                                                                                        dateString = classModule.startDate.substring(0, 10);
-                                                                                                    }
-                                                                                                    handleReasonRefundChange(index, `Date ${dateString} has reason ${e.target.value}`);
-                                                                                                }}
-                                                                                                style={{ borderRadius: '50px', padding: `8px 25px` }}
-                                                                                            />
-                                                                                        </>
-
-                                                                                    ))}
-                                                                                    {classModuleList.length === 0 && (
-                                                                                        <p>No modules for this course.</p>
-                                                                                    )}
+                                                                        {/* Display courseScore and learningScore */}
+                                                                        {!enrollment.transaction?.course?.isOnlineClass && enrollmentScores[enrollment.id] && (
+                                                                            <div className="progress-container mt-3">
+                                                                                <div className="left-title" style={{ fontWeight: 'bold' }}>{enrollmentScores[enrollment.id]?.learningScore}</div>
+                                                                                <div className="progress-wrapper">
+                                                                                    <progress className="orange-progress-bar" value={enrollmentScores[enrollment.id]?.learningScore} max={enrollmentScores[enrollment.id]?.courseScore}></progress>
                                                                                 </div>
-                                                                            )}
+                                                                                <div className="right-title" style={{ fontWeight: 'bold' }}> {enrollmentScores[enrollment.id]?.courseScore}</div>
+                                                                            </div>
+                                                                        )}
+                                                                        {isTransactionDateValid(enrollment.enrolledDate) && (
+                                                                            <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={() => handleRefundClick(enrollment.id)}>
+                                                                                I want return
+                                                                            </a>
+                                                                        )}
 
-                                                                            {!course?.isOnlineClass && (
-                                                                                <div className="container" data-aos="fade-up">
-                                                                                    {moduleList.length > 0 &&
-                                                                                        moduleList.map((module, index) => (
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                        {showFeedbackModal && (
+                                                            <form id="demo-form" data-parsley-validate onSubmit={(e) => submitFeedback(e)}>
+                                                                <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                                                                    <div className="modal-dialog  modal-dialog-scrollable modal-lg">
+                                                                        <div className="modal-content">
+                                                                            <div className="modal-header">
+                                                                                <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
+                                                                                <button type="button" className="close" onClick={() => setShowFeedbackModal(false)}>
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div className="modal-body">
+                                                                                <StarRating onChange={handleRatingChange} />
+
+                                                                                <ReactQuill
+                                                                                    value={feedback.feedbackContent}
+                                                                                    onChange={handleContentChange}
+                                                                                    modules={{
+                                                                                        toolbar: [
+                                                                                            [{ header: [1, 2, false] }],
+                                                                                            [{ 'direction': 'rtl' }],
+                                                                                            [{ 'align': [] }],
+                                                                                            ['code-block'],
+                                                                                            [{ 'color': [] }, { 'background': [] }],
+                                                                                            ['clean']
+                                                                                        ]
+                                                                                    }}
+                                                                                    theme="snow"
+                                                                                    preserveWhitespace={true} // Add this line to preserve whitespace
+                                                                                    style={{ height: '400px' }}
+                                                                                />
+                                                                            </div>
+                                                                            <div className="modal-footer">
+                                                                                <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowFeedbackModal(false)}>Close</button>
+                                                                                <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitFeedback(e)}>Send</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+
+
+                                                        )}
+                                                        {showReportModal && (
+                                                            <form method="post"
+                                                                className="dropzone"
+                                                                id="myAwesomeDropzone"
+                                                                data-plugin="dropzone"
+                                                                data-previews-container="#file-previews"
+                                                                data-upload-preview-template="#uploadPreviewTemplate"
+                                                                data-parsley-validate onSubmit={(e) => submitReport(e)}>
+                                                                <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                                                                    <div className="modal-dialog modal-dialog-scrollable modal-lg"> {/* Add 'modal-dialog-scrollable' class */}
+                                                                        <div className="modal-content">
+                                                                            <div className="modal-header">
+                                                                                <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
+                                                                                <button type="button" className="close" onClick={() => setShowReportModal(false)}>
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}> {/* Set maxHeight and overflowY */}
+
+                                                                                <ReactQuill
+                                                                                    value={report.reason}
+                                                                                    onChange={handleReasonChange}
+                                                                                    modules={{
+                                                                                        toolbar: [
+                                                                                            [{ header: [1, 2, false] }],
+                                                                                            [{ 'direction': 'rtl' }],
+                                                                                            [{ 'align': [] }],
+                                                                                            ['code-block'],
+                                                                                            [{ 'color': [] }, { 'background': [] }],
+                                                                                            ['clean']
+                                                                                        ]
+                                                                                    }}
+                                                                                    theme="snow"
+                                                                                    preserveWhitespace={true}
+                                                                                    style={{ height: '300px', marginBottom: '50px' }}
+                                                                                />
+                                                                                <Dropzone
+                                                                                    onDrop={handleFileDrop}
+                                                                                    accept="image/*"
+                                                                                    multiple={false}
+                                                                                    maxSize={5000000}
+                                                                                >
+                                                                                    {({ getRootProps, getInputProps }) => (
+                                                                                        <div {...getRootProps()} className="fallback">
+                                                                                            <input {...getInputProps()} />
+                                                                                            <div className="dz-message needsclick">
+                                                                                                <i className="h1 text-muted dripicons-cloud-upload" />
+                                                                                                <h3>Drop files here or click to upload.</h3>
+                                                                                            </div>
+                                                                                            {imagePreview && (
+                                                                                                <img
+                                                                                                    src={imagePreview}
+                                                                                                    alt="Preview"
+                                                                                                    style={{
+                                                                                                        maxWidth: "100%",
+                                                                                                        maxHeight: "200px",
+                                                                                                        marginTop: "10px",
+                                                                                                    }}
+                                                                                                />
+                                                                                            )}
+                                                                                        </div>
+                                                                                    )}
+                                                                                </Dropzone>
+
+                                                                                <div
+                                                                                    className="dropzone-previews mt-3"
+                                                                                    id="file-previews"
+                                                                                />
+                                                                            </div>
+                                                                            <div className="modal-footer">
+                                                                                <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowReportModal(false)}>Close</button>
+                                                                                <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitReport(e)}>Send</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        )}
+                                                        {showRefundModal && (
+                                                            <form
+                                                                method="post"
+                                                                className="dropzone"
+                                                                id="myAwesomeDropzone"
+                                                                data-plugin="dropzone"
+                                                                data-previews-container="#file-previews"
+                                                                data-upload-preview-template="#uploadPreviewTemplate"
+                                                                data-parsley-validate
+                                                                onSubmit={(e) => submitRefund(e)}
+                                                            >
+                                                                <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)', }}>
+                                                                    <div className="modal-dialog modal-dialog-scrollable modal-lg">
+                                                                        <div className="modal-content">
+                                                                            <div className="modal-header">
+                                                                                <h5 className="modal-title">
+                                                                                    Refund course - <span style={{ color: '#f58d04' }}>{course.name}</span>
+                                                                                </h5>
+                                                                                <button type="button" className="close" onClick={() => setShowRefundModal(false)}>
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+                                                                                {course?.isOnlineClass && (
+                                                                                    <div className="container" data-aos="fade-up">
+                                                                                        {classModuleList.length > 0 && classModuleList.map((classModule, index) => (
                                                                                             <>
-                                                                                                <div className="row" key={module.id}>
+                                                                                                <div className="row" key={index}>
                                                                                                     <div className="col-lg-3">
                                                                                                         <ul className="nav nav-tabs flex-column">
                                                                                                             <li className="nav-item get-button">
-                                                                                                                <a onClick={(event) => handleTabClick(event, module.id)}>{module.name}</a>
+                                                                                                                <a onClick={(event) => handleTabClick2(event, classModule.id)}>
+                                                                                                                    On Date: <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
+                                                                                                                </a>
                                                                                                             </li>
                                                                                                         </ul>
                                                                                                         <ul className="nav nav-tabs flex-column">
@@ -759,92 +715,155 @@ const MyLearning = () => {
                                                                                                             </li>
                                                                                                         </ul>
                                                                                                     </div>
-
-
-
-
                                                                                                     <div className="col-lg-9 mt-4 mt-lg-0">
-                                                                                                        {filteredCombinedList.length > 0 &&
-                                                                                                            filteredCombinedList.map((item, combinedIndex) => {
-                                                                                                                // Check if the item belongs to the clicked module
-                                                                                                                if (item.moduleId === module.id) {
-                                                                                                                    return (
-                                                                                                                        <div className="combined-item" key={combinedIndex}>
-                                                                                                                            {item.type === 'lesson' && (
-                                                                                                                                <div className="lesson">
-                                                                                                                                    <p style={{ textAlign: 'justify' }}>
-                                                                                                                                        <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
-                                                                                                                                            {combinedIndex + 1}.
-                                                                                                                                        </span>{' '}
-                                                                                                                                        Lesson: {item.name}
-                                                                                                                                    </p>
-                                                                                                                                </div>
-                                                                                                                            )}
-                                                                                                                            {item.type === 'assignment' && (
-                                                                                                                                <div className="assignment">
-                                                                                                                                    <p style={{ textAlign: 'justify' }}>
-                                                                                                                                        <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
-                                                                                                                                            {combinedIndex + 1}.
-                                                                                                                                        </span>{' '}
-                                                                                                                                        Assignment - Deadline: {item.deadline} minutes
-                                                                                                                                    </p>
-                                                                                                                                </div>
-                                                                                                                            )}
-                                                                                                                            {item.type === 'quiz' && (
-                                                                                                                                <div className="quiz">
-                                                                                                                                    <p style={{ textAlign: 'justify' }}>
-                                                                                                                                        <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
-                                                                                                                                            {combinedIndex + 1}.
-                                                                                                                                        </span>{' '}
-                                                                                                                                        Quiz - {item.name}
-                                                                                                                                    </p>
-                                                                                                                                </div>
-                                                                                                                            )}
-                                                                                                                        </div>
-                                                                                                                    );
-                                                                                                                }
-                                                                                                                return null; // Don't render if it doesn't belong to the clicked module
-                                                                                                            })}
+                                                                                                        <div className="tab-content card get-button" style={{ alignItems: 'center' }}>
+                                                                                                            <div className={`tab-pane ${activeClassModuleId === classModule.id ? 'active show' : ''}`} id={`tab-${classModule.id}`}>
+                                                                                                                <div>
+                                                                                                                    <div>
+                                                                                                                        <p style={{ textAlign: 'justify' }}> <span style={{ color: '#f58d04', fontWeight: 'bold' }}>Class Time: </span> {classModule.classLesson.classHours}</p>
+                                                                                                                        {classTopicList[index] && classTopicList[index].map((classTopic, topicIndex) => (
+                                                                                                                            <div>
+                                                                                                                                <span key={topicIndex} style={{ justifyContent: 'left' }}><span style={{ fontWeight: 'bold' }}>Topic: </span>{classTopic.name}</span>
+                                                                                                                            </div>
+                                                                                                                        ))}
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <input
                                                                                                     name={`reason-${index}`}
                                                                                                     type='text'
                                                                                                     placeholder='Write your reason...'
-                                                                                                    className={`form-control`}
+                                                                                                    className='form-control'
                                                                                                     required
-                                                                                                    onChange={(e) => handleReasonRefundChange(index, `Module ${module.name} has reason: ${e.target.value}`)}
+                                                                                                    onChange={(e) => {
+                                                                                                        let dateString = '';
+                                                                                                        if (classModule.startDate instanceof Date) {
+                                                                                                            dateString = classModule.startDate.toISOString().substring(0, 10);
+                                                                                                        } else if (typeof classModule.startDate === 'string') {
+                                                                                                            // Assuming startDate is already in the correct format
+                                                                                                            dateString = classModule.startDate.substring(0, 10);
+                                                                                                        }
+                                                                                                        handleReasonRefundChange(index, `Date ${dateString} has reason ${e.target.value}`);
+                                                                                                    }}
                                                                                                     style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                                                                 />
                                                                                             </>
 
                                                                                         ))}
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                        <div className="modal-footer">
-                                                                            <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowRefundModal(false)}>
-                                                                                Close
-                                                                            </button>
-                                                                            <button
-                                                                                type="button"
-                                                                                className="btn btn-primary"
-                                                                                style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
-                                                                                onClick={(e) => submitRefund(e)}
-                                                                            >
-                                                                                Send
-                                                                            </button>
+                                                                                        {classModuleList.length === 0 && (
+                                                                                            <p>No modules for this course.</p>
+                                                                                        )}
+                                                                                    </div>
+                                                                                )}
+
+                                                                                {!course?.isOnlineClass && (
+                                                                                    <div className="container" data-aos="fade-up">
+                                                                                        {moduleList.length > 0 &&
+                                                                                            moduleList.map((module, index) => (
+                                                                                                <>
+                                                                                                    <div className="row" key={module.id}>
+                                                                                                        <div className="col-lg-3">
+                                                                                                            <ul className="nav nav-tabs flex-column">
+                                                                                                                <li className="nav-item get-button">
+                                                                                                                    <a onClick={(event) => handleTabClick(event, module.id)}>{module.name}</a>
+                                                                                                                </li>
+                                                                                                            </ul>
+                                                                                                            <ul className="nav nav-tabs flex-column">
+                                                                                                                <li className="nav-item get-button" style={{ whiteSpace: 'normal' }}>
+                                                                                                                </li>
+                                                                                                            </ul>
+                                                                                                        </div>
+
+
+
+
+                                                                                                        <div className="col-lg-9 mt-4 mt-lg-0">
+                                                                                                            {filteredCombinedList.length > 0 &&
+                                                                                                                filteredCombinedList.map((item, combinedIndex) => {
+                                                                                                                    // Check if the item belongs to the clicked module
+                                                                                                                    if (item.moduleId === module.id) {
+                                                                                                                        return (
+                                                                                                                            <div className="combined-item" key={combinedIndex}>
+                                                                                                                                {item.type === 'lesson' && (
+                                                                                                                                    <div className="lesson">
+                                                                                                                                        <p style={{ textAlign: 'justify' }}>
+                                                                                                                                            <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                                                                                {combinedIndex + 1}.
+                                                                                                                                            </span>{' '}
+                                                                                                                                            Lesson: {item.name}
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                )}
+                                                                                                                                {item.type === 'assignment' && (
+                                                                                                                                    <div className="assignment">
+                                                                                                                                        <p style={{ textAlign: 'justify' }}>
+                                                                                                                                            <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                                                                                {combinedIndex + 1}.
+                                                                                                                                            </span>{' '}
+                                                                                                                                            Assignment - Deadline: {item.deadline} minutes
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                )}
+                                                                                                                                {item.type === 'quiz' && (
+                                                                                                                                    <div className="quiz">
+                                                                                                                                        <p style={{ textAlign: 'justify' }}>
+                                                                                                                                            <span style={{ color: '#f58d04', fontWeight: 'bold' }}>
+                                                                                                                                                {combinedIndex + 1}.
+                                                                                                                                            </span>{' '}
+                                                                                                                                            Quiz - {item.name}
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                )}
+                                                                                                                            </div>
+                                                                                                                        );
+                                                                                                                    }
+                                                                                                                    return null; // Don't render if it doesn't belong to the clicked module
+                                                                                                                })}
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <input
+                                                                                                        name={`reason-${index}`}
+                                                                                                        type='text'
+                                                                                                        placeholder='Write your reason...'
+                                                                                                        className={`form-control`}
+                                                                                                        required
+                                                                                                        onChange={(e) => handleReasonRefundChange(index, `Module ${module.name} has reason: ${e.target.value}`)}
+                                                                                                        style={{ borderRadius: '50px', padding: `8px 25px` }}
+                                                                                                    />
+                                                                                                </>
+
+                                                                                            ))}
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                            <div className="modal-footer">
+                                                                                <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowRefundModal(false)}>
+                                                                                    Close
+                                                                                </button>
+                                                                                <button
+                                                                                    type="button"
+                                                                                    className="btn btn-primary"
+                                                                                    style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                                                    onClick={(e) => submitRefund(e)}
+                                                                                >
+                                                                                    Send
+                                                                                </button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </form>
-                                                    )}
+                                                            </form>
+                                                        )}
 
-                                                </>
+                                                    </>
 
-                                            ))
-                                        }
+                                                ))
+                                            }
+                                        </>
+
                                     </div>
 
                                 </section>{/* End Courses Section */}
@@ -998,6 +1017,38 @@ const MyLearning = () => {
                     
                     .orange-progress-bar::-webkit-progress-value {
                         background-color: orange; /* Color of the progress bar */
+                    }
+                    
+
+                    .loading-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+                        backdrop-filter: blur(10px); /* Apply blur effect */
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    
+                    .loading-spinner {
+                        border: 8px solid rgba(245, 141, 4, 0.1); /* Transparent border to create the circle */
+                        border-top: 8px solid #f58d04; /* Orange color */
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        animation: spin 1s linear infinite; /* Rotate animation */
+                    }
+                    
+                    @keyframes spin {
+                        0% {
+                            transform: rotate(0deg);
+                        }
+                        100% {
+                            transform: rotate(360deg);
+                        }
                     }
                     
                     

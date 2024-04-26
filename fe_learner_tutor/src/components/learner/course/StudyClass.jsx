@@ -28,7 +28,10 @@ const StudyClass = () => {
 
   const [classModuleList, setClassModuleList] = useState([]);
   //dua course name che lap header
+  //LOADING
+  const [loading, setLoading] = useState(true); // State to track loading
 
+  //LOADING
 
   useEffect(() => {
     if (courseId) {
@@ -53,9 +56,13 @@ const StudyClass = () => {
         // Sort the active class modules by startDate
         const sortedModules = activeModules.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
         setClassModuleList(sortedModules);
+        setLoading(false); // Set loading to false after data is fetched
+
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false); // Set loading to false after data is fetched
+
       });
   }, [courseId]);
 
@@ -973,7 +980,11 @@ const StudyClass = () => {
               <div style={{ background: '#f8f9fa', padding: '20px', border: '1px solid #ddd', textAlign: 'left' }}>
                 {/* Add your sidebar content here */}
                 <h4 style={{ fontWeight: 'bold' }}>Course content</h4>
-
+                {loading && (
+                  <div className="loading-overlay">
+                    <div className="loading-spinner" />
+                  </div>
+                )}
                 {classModuleList && classModuleList.length > 0 && classModuleList.map((module, index) => (
                   <div key={module.id} className="card-container" style={{ marginBottom: '5px' }}>
                     <div
@@ -1235,7 +1246,36 @@ input[type="radio"] {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  backdrop-filter: blur(10px); /* Apply blur effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.loading-spinner {
+  border: 8px solid rgba(245, 141, 4, 0.1); /* Transparent border to create the circle */
+  border-top: 8px solid #f58d04; /* Orange color */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite; /* Rotate animation */
+}
+
+@keyframes spin {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
             `}
       </style >
     </>

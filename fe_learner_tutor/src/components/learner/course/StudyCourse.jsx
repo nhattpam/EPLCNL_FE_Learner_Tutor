@@ -31,6 +31,11 @@ const StudyCourse = () => {
     const [fixedCourseName, setFixedCourseName] = useState(false);
 
 
+    //LOADING
+    const [loading, setLoading] = useState(true); // State to track loading
+
+    //LOADING
+
     useEffect(() => {
         if (courseId) {
             courseService
@@ -51,9 +56,12 @@ const StudyCourse = () => {
                 // Filter out modules where isActive is true
                 const activeModules = res.data.filter(module => module.isActive === true);
                 setModuleList(activeModules);
+                setLoading(false); // Set loading to false after data is fetched
+
             })
             .catch((error) => {
                 console.log(error);
+                setLoading(false); // Set loading to false after data is fetched
             });
     }, [courseId]);
 
@@ -824,7 +832,7 @@ const StudyCourse = () => {
 
 
                             )}
-                            {selectedAssignment  && (
+                            {selectedAssignment && (
                                 <>
 
                                     <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
@@ -1282,6 +1290,11 @@ const StudyCourse = () => {
                             <div style={{ background: '#f8f9fa', padding: '20px', border: '1px solid #ddd', textAlign: 'left' }}>
                                 {/* Add your sidebar content here */}
                                 <h4 style={{ fontWeight: 'bold' }}>Course content</h4>
+                                {loading && (
+                                    <div className="loading-overlay">
+                                        <div className="loading-spinner" />
+                                    </div>
+                                )}
                                 {moduleList && moduleList.length > 0 && moduleList.map((module, index) => (
                                     <div key={module.id} className="card-container" style={{ marginBottom: '5px' }}>
                                         <div
@@ -1597,7 +1610,36 @@ input[type="radio"] {
     text-overflow: ellipsis;
 }
 
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    backdrop-filter: blur(10px); /* Apply blur effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.loading-spinner {
+    border: 8px solid rgba(245, 141, 4, 0.1); /* Transparent border to create the circle */
+    border-top: 8px solid #f58d04; /* Orange color */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite; /* Rotate animation */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
   
             `}
             </style>
