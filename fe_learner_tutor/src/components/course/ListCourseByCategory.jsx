@@ -15,6 +15,11 @@ const ListCourseByCategory = () => {
     const [accounts, setAccounts] = useState([]);
     const [learnersCount, setLearnersCount] = useState({});
 
+     //LOADING
+     const [loading, setLoading] = useState(true); // State to track loading
+
+     //LOADING
+
     useEffect(() => {
         const fetchCourses = async () => {
             try {
@@ -34,8 +39,10 @@ const ListCourseByCategory = () => {
                     }
                 }
                 setLearnersCount(learnersCounts); // Update state with learners count
+                setLoading(false);
             } catch (error) {
                 console.log(error);
+                setLoading(false);
             }
         };
 
@@ -120,6 +127,11 @@ const ListCourseByCategory = () => {
                 </div>{/* End Breadcrumbs */}
                 {/* ======= Courses Section ======= */}
                 <section id="courses" className="courses">
+                    {loading && (
+                        <div className="loading-overlay">
+                            <div className="loading-spinner" />
+                        </div>
+                    )}
                     <div className="container" data-aos="fade-up">
                         <div className="row" data-aos="zoom-in" data-aos-delay={100}>
                             {

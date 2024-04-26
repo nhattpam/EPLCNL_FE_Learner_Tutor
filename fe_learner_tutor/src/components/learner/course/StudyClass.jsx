@@ -1252,11 +1252,13 @@ input[type="radio"] {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
   backdrop-filter: blur(10px); /* Apply blur effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999; /* Ensure it's on top of other content */
 }
 
 .loading-spinner {
@@ -1276,6 +1278,7 @@ input[type="radio"] {
       transform: rotate(360deg);
   }
 }
+
             `}
       </style >
     </>

@@ -47,7 +47,6 @@ const MyLearning = () => {
         try {
             const res = await learnerService.getAllEnrollmentByLearnerId(learnerId);
             setEnrollmentList(res.data);
-            setLoading(false); // Set loading to false after data is fetched
 
             const learnersCounts = {}; // Object to store number of learners for each course
             const scores = {}; // Object to store scores for each enrollment
@@ -62,7 +61,6 @@ const MyLearning = () => {
                     if (!enrollment.transaction?.course?.isOnlineClass) {
                         const courseScoreResponse = await enrollmentService.getCourseScoreByEnrollmentId(enrollment.id);
                         const learningScoreResponse = await enrollmentService.getLearningScoreByEnrollmentId(enrollment.id);
-                        setLoading(false); // Set loading to false after data is fetched
 
                         scores[enrollment.id] = {
                             courseScore: courseScoreResponse.data,
@@ -73,7 +71,6 @@ const MyLearning = () => {
 
                 } catch (error) {
                     console.error(`Error fetching learners for course ${enrollment.course?.name}:`, error);
-                    setLoading(false); // Set loading to false after data is fetched
 
                 }
             }
@@ -81,6 +78,7 @@ const MyLearning = () => {
             // console.log("every course:", res.data.map(enrollment => enrollment.transaction?.course?.name));
             setLearnersCount(prevState => ({ ...prevState, ...learnersCounts })); // Update state with learners count
             setEnrollmentScores(scores); // Update state with scores for each enrollment
+            setLoading(false); // Set loading to false after data is fetched
         } catch (error) {
             console.log(error);
             setLoading(false); // Set loading to false after data is fetched
@@ -482,15 +480,15 @@ const MyLearning = () => {
                         </ul>
                         {/* Tab Content */}
                         <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-70px' }}>
-
+                            {loading && (
+                                <div className="loading-overlay">
+                                    <div className="loading-spinner" />
+                                </div>
+                            )}
                             <div className="tab-pane fade show active" id="tab-content-1">
                                 <section id="courses" className="courses">
                                     <div className="container" data-aos="fade-up">
-                                        {loading && (
-                                            <div className="loading-overlay">
-                                                <div className="loading-spinner" />
-                                            </div>
-                                        )}
+
                                         <>
                                             {
                                                 enrollmentList.length > 0 && enrollmentList.map((enrollment, index) => (
@@ -1026,11 +1024,13 @@ const MyLearning = () => {
                         left: 0;
                         width: 100%;
                         height: 100%;
-                        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
                         backdrop-filter: blur(10px); /* Apply blur effect */
+                        -webkit-backdrop-filter: blur(10px); /* For Safari */
+                        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
                         display: flex;
                         justify-content: center;
                         align-items: center;
+                        z-index: 9999; /* Ensure it's on top of other content */
                     }
                     
                     .loading-spinner {
@@ -1050,6 +1050,8 @@ const MyLearning = () => {
                             transform: rotate(360deg);
                         }
                     }
+                    
+                    
                     
                     
                 `}

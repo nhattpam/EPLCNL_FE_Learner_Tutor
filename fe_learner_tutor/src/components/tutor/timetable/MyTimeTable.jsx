@@ -16,6 +16,13 @@ const MyTimeTable = () => {
     const [startDate, setStartDate] = useState(getStartOfWeek(new Date()));
     const navigate = useNavigate();
 
+
+    //LOADING
+    const [loading, setLoading] = useState(true); // State to track loading
+
+    //LOADING
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -39,8 +46,10 @@ const MyTimeTable = () => {
                 const classTopicsResponses = await Promise.all(classTopicsPromises);
                 const classTopics = classTopicsResponses.flatMap(response => response.data);
                 setClassTopicList(classTopics);
+                setLoading(false);
             } catch (error) {
                 console.log(error);
+                setLoading(false);
             }
         };
 
@@ -138,12 +147,16 @@ const MyTimeTable = () => {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="d-flex justify-content-between mb-3">
-                                                <button className="btn btn-success" onClick={handlePreviousWeek} style={{borderRadius: '50px', padding: `8px 25px` }}>Previous Week</button>
+                                                <button className="btn btn-success" onClick={handlePreviousWeek} style={{ borderRadius: '50px', padding: `8px 25px` }}>Previous Week</button>
                                                 <span style={{ fontWeight: 'bold', fontSize: 'larger' }}>{new Date(startDate).toLocaleDateString('en-US')}</span> {/* Display date without time */}
-                                                <button className="btn btn-success" onClick={handleNextWeek} style={{borderRadius: '50px', padding: `8px 25px` }}>Next Week</button>
+                                                <button className="btn btn-success" onClick={handleNextWeek} style={{ borderRadius: '50px', padding: `8px 25px` }}>Next Week</button>
                                             </div>
 
-
+                                            {loading && (
+                                                <div className="loading-overlay">
+                                                    <div className="loading-spinner" />
+                                                </div>
+                                            )}
                                             <div className="table-responsive">
                                                 <table className="table table-bordered table-striped mb-0">
                                                     <thead>
@@ -189,7 +202,7 @@ const MyTimeTable = () => {
                                                                                             {/* Check if class falls within the time range */}
                                                                                             {(new Date(`01/01/2024 ${classModule.classLesson?.classHours.split(' - ')[0]}`) <= new Date(`01/01/2024 ${time}`) &&
                                                                                                 new Date(`01/01/2024 ${classModule.classLesson?.classHours.split(' - ')[1]}`) >= new Date(`01/01/2024 ${time}`)) && (
-                                                                                                    <div  onClick={(event) => handleTeachClass(event, classModule.id)}>
+                                                                                                    <div onClick={(event) => handleTeachClass(event, classModule.id)}>
                                                                                                         <div>{classModule.classLesson?.classHours}</div>
                                                                                                         <div>
                                                                                                             <a href={classModule.classLesson?.classUrl} target="_blank" rel="noopener noreferrer">Join Class</a>
@@ -227,7 +240,40 @@ const MyTimeTable = () => {
             </div >
             <style>
                 {`
-                    /* Add custom styles as needed */
+                      .loading-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        backdrop-filter: blur(10px); /* Apply blur effect */
+                        -webkit-backdrop-filter: blur(10px); /* For Safari */
+                        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 9999; /* Ensure it's on top of other content */
+                    }
+                    
+                    .loading-spinner {
+                        border: 8px solid rgba(245, 141, 4, 0.1); /* Transparent border to create the circle */
+                        border-top: 8px solid #f58d04; /* Orange color */
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        animation: spin 1s linear infinite; /* Rotate animation */
+                    }
+                    
+                    @keyframes spin {
+                        0% {
+                            transform: rotate(0deg);
+                        }
+                        100% {
+                            transform: rotate(360deg);
+                        }
+                    }
+                    
+                    
                 `}
             </style>
         </>
