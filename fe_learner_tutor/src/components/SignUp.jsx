@@ -264,6 +264,14 @@ const SignUp = () => {
 
 
 
+  const [showTermModal, setShowTermModal] = useState(false);
+  const openTermModal = () => {
+    setShowTermModal(true);
+  };
+
+  const closeWTermModal = () => {
+    setShowTermModal(false);
+  };
 
 
 
@@ -321,6 +329,19 @@ const SignUp = () => {
                         <div className="circle"></div> Tutor
                       </label>
                     </div>
+                    <div className="form-check mt-4 form-check-inline">
+                      <label className=" ">
+                        <input type="checkbox" name="checkbox" />
+                        <span className="checkmark" />
+                        <div style={{ display: 'inline-block', marginLeft: '5px' }}>
+                          <p>
+                            I agree to the <a onClick={openTermModal} className="text" style={{ color: '#f58d04', textDecoration: 'underline' }}>Terms and Conditions</a>
+                          </p>
+                        </div>
+
+
+                      </label>
+                    </div>
                   </div>
 
                   <div className="d-grid">
@@ -329,6 +350,41 @@ const SignUp = () => {
                     </button>
                   </div>
                 </form>
+                {
+                  showTermModal && (
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                      <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title">Terms and Conditions</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeWTermModal}>
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div className="modal-body">
+                            {/* Conditional rendering based on edit mode */}
+
+                            <p>Welcome to MeowLish!</p>
+
+                            <p>These terms and conditions outline the rules and regulations for the use of MeowLish's Website, located at meowlish.com.</p>
+
+                            <p>By accessing this website we assume you accept these terms and conditions. Do not continue to use MeowLish if you do not agree to take all of the terms and conditions stated on this page.</p>
+
+                            <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client’s needs in respect of provision of the Company’s stated services, in accordance with and subject to, prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.</p>
+
+                            <p>You have 7 days from the date of purchase to submit a refund request. Please note, for orders close to the last day of the month, the number of days in which a refund request can be submitted will be calculated from the time of purchase to the last day of the month.</p>
+
+
+                          </div>
+                          <div className="modal-footer">
+                            {/* Conditional rendering of buttons based on edit mode */}
+                            <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={closeWTermModal}>Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }
                 {/* Notification */}
                 {showNotification && (
                   <div className="notification">

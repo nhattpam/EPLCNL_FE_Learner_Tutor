@@ -860,6 +860,15 @@ const MyLearning = () => {
 
                                                 ))
                                             }
+                                            {
+                                                enrollmentList.length === 0 && (
+                                                    <>
+                                                        <i class="fas fa-university fa-2x mt-2"></i>
+                                                        <h5>You haven't joined any course yet.</h5>
+
+                                                    </>
+                                                )
+                                            }
                                         </>
 
                                     </div>
@@ -867,15 +876,7 @@ const MyLearning = () => {
                                 </section>{/* End Courses Section */}
                             </div>
 
-                            {
-                                enrollmentList.length === 0 && (
-                                    <>
-                                        <i class="fas fa-university fa-2x mt-2"></i>
-                                        <h5>You haven't joined any course yet.</h5>
 
-                                    </>
-                                )
-                            }
 
                             <div className="tab-pane fade" id="tab-content-2">
                                 {/* Course Content for Tab 2 */}

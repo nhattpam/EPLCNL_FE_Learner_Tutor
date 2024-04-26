@@ -889,7 +889,7 @@ const Header = () => {
                                                     <button
                                                         type="submit"
                                                         className="btn btn-primary btn-lg btn-block"
-                                                        // onClick={handlePayClick}
+                                                        disabled
                                                         style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
                                                     >
                                                         Loading ...

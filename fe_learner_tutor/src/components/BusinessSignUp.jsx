@@ -83,6 +83,16 @@ const BusinessSignUp = () => {
         }
     }
 
+    const [showTermModal, setShowTermModal] = useState(false);
+    const openTermModal = () => {
+        setShowTermModal(true);
+    };
+
+    const closeWTermModal = () => {
+        setShowTermModal(false);
+    };
+
+
     return (
         <>
             <Header />
@@ -92,7 +102,7 @@ const BusinessSignUp = () => {
                         <div className="form-left">
                             <h2>INFORMATION</h2>
                             <p className="text-1">This is the first step to becoming a MeowLish partner!</p>
-                            <img src={"banner_business.png"} alt="Business Image" className="business-image" style={{width: '300px'}} />
+                            <img src={"banner_business.png"} alt="Business Image" className="business-image" style={{ width: '300px' }} />
                         </div>
                         <form className="form-detail" onSubmit={(e) => submitCenter(e)} id="myform">
                             <h2>REGISTER FORM</h2>
@@ -100,14 +110,14 @@ const BusinessSignUp = () => {
                                 <div className="form-row form-row-1">
                                     <label htmlFor="name">Center Name</label>
                                     <input type="text" name="name" value={center.name} onChange={(e) => handleChange(e)} className={`form-control ${errors.name ? 'is-invalid' : ''
-                                        }`} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
+                                        }`} style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                 </div>
                             </div>
                             <div className="form-row mt-1">
                                 <div className="form-row form-row-1">
                                     <label htmlFor="email">Email</label>
                                     <input type="text" name="email" value={center.email}
-                                     onChange={(e) => handleChange(e)} className="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"  style={{ borderRadius: '50px', padding: `8px 25px` }}/>
+                                        onChange={(e) => handleChange(e)} className="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                 </div>
                             </div>
                             <div className="form-row">
@@ -115,7 +125,7 @@ const BusinessSignUp = () => {
                                     <div className='col-md-6 form-row mr-2'>
                                         <label htmlFor="phoneNumber">Phone Number</label>
                                         <input type="number" name="phoneNumber" value={center.phoneNumber} onChange={(e) => handleChange(e)} className={`form-control ${errors.name ? 'is-invalid' : ''
-                                            }`} style={{ borderRadius: '50px', padding: `8px 25px` }}/>
+                                            }`} style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                     </div>
                                     <div className='col-md-6 form-row'>
                                         <label htmlFor="taxIdentificationNumber">Tax Number</label>
@@ -131,7 +141,7 @@ const BusinessSignUp = () => {
                                 <div className="form-row form-row-1 ">
                                     <label htmlFor="address">Address</label>
                                     <input type="text" name="address" value={center.address} onChange={(e) => handleChange(e)} className={`form-control ${errors.address ? 'is-invalid' : ''
-                                        }`} required style={{ borderRadius: '50px', padding: `8px 25px` }}/>
+                                        }`} required style={{ borderRadius: '50px', padding: `8px 25px` }} />
                                 </div>
                             </div>
                             <div className="form-row mt-1">
@@ -154,16 +164,51 @@ const BusinessSignUp = () => {
                             <div className="form-checkbox mt-1">
                                 <label className="container">
                                     <p>
-                                        I agree to the <a href="#" className="text">Terms and Conditions</a>
+                                        I agree to the <a onClick={openTermModal} className="text">Terms and Conditions</a>
                                     </p>
                                     <input type="checkbox" name="checkbox" />
                                     <span className="checkmark" />
                                 </label>
                             </div>
                             <div className="d-grid">
-                                <input type="submit" name="register" className="btn btn-primary" value="JOIN US" style={{ borderRadius: '50px', padding: `10px 25px`, backgroundColor: '#f58d04', color: '#fff', fontWeight: 'bold' }}/>
+                                <input type="submit" name="register" className="btn btn-primary" value="JOIN US" style={{ borderRadius: '50px', padding: `10px 25px`, backgroundColor: '#f58d04', color: '#fff', fontWeight: 'bold' }} />
                             </div>
                         </form>
+                        {
+                            showTermModal && (
+                                <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                                    <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h5 className="modal-title">Terms and Conditions</h5>
+                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeWTermModal}>
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div className="modal-body">
+                                                {/* Conditional rendering based on edit mode */}
+
+                                                <p>Welcome to MeowLish!</p>
+
+                                                <p>These terms and conditions outline the rules and regulations for the use of MeowLish's Website, located at meowlish.com.</p>
+
+                                                <p>By accessing this website we assume you accept these terms and conditions. Do not continue to use MeowLish if you do not agree to take all of the terms and conditions stated on this page.</p>
+
+                                                <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client’s needs in respect of provision of the Company’s stated services, in accordance with and subject to, prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.</p>
+
+                                                <p>You have 7 days from the date of purchase to submit a refund request. Please note, for orders close to the last day of the month, the number of days in which a refund request can be submitted will be calculated from the time of purchase to the last day of the month.</p>
+
+
+                                            </div>
+                                            <div className="modal-footer">
+                                                {/* Conditional rendering of buttons based on edit mode */}
+                                                <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={closeWTermModal}>Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }
                         {/* Notification */}
                         {showNotification && (
                             <div className="notification">
@@ -172,6 +217,7 @@ const BusinessSignUp = () => {
                         )}
                     </div>
                 </div >
+
             </div >
 
             <Footer />
