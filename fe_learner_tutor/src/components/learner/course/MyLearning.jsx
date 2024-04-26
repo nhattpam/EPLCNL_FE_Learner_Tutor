@@ -423,6 +423,24 @@ const MyLearning = () => {
 
     //CHECK PROGRESSING
 
+
+    //view certificate
+    const [showCertificateModal, setShowCertificateModal] = useState(false);
+    const [selectedCertificate, setSelectedCertificate] = useState(null);
+
+    const handleCertificate = async (description) => {
+        try {
+            setShowCertificateModal(true);
+            setSelectedCertificate(description);
+        } catch (error) {
+        }
+    };
+
+    const closeCertificateModal = () => {
+        setShowCertificateModal(false);
+    };
+
+
     return (
         <>
             <Header />
@@ -822,6 +840,7 @@ const MyLearning = () => {
                                                             </div>
                                                         </form>
                                                     )}
+
                                                 </>
 
                                             ))
@@ -856,7 +875,9 @@ const MyLearning = () => {
                                                                         <h4>DONE</h4>
                                                                     </div>
                                                                     <h3><a >{proCertificate.certificate?.name}</a></h3>
-                                                                    <p>{proCertificate.certificate?.description}</p>
+                                                                    {/* <p>{proCertificate.certificate?.description}</p> */}
+                                                                    <button className="view-button" style={{ color: '#fff', backgroundColor: '#f58d04', border: 'none', marginBottom: '20px' }} onClick={() => handleCertificate(proCertificate.certificate?.description)}>View</button>
+
 
                                                                 </div>
                                                             </div>
@@ -879,7 +900,33 @@ const MyLearning = () => {
                                     </div>
                                 </section>
                             </div>
+                            {
+                                showCertificateModal && (
+                                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                                        <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                                            <div className="modal-content">
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title">Certificate</h5>
+                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeCertificateModal}>
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div className="modal-body">
+                                                    {/* Conditional rendering based on edit mode */}
+                                                    <embed src={selectedCertificate} type="application/pdf" width="100%" height="500px" />
 
+
+                                                </div>
+
+                                                <div className="modal-footer">
+                                                    {/* Conditional rendering of buttons based on edit mode */}
+                                                    <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={closeCertificateModal}>Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </section>
