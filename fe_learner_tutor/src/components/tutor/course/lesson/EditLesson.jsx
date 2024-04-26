@@ -29,19 +29,22 @@ const EditLesson = () => {
   //LOADING
 
   useEffect(() => {
-    lessonService
-      .getLessonById(lessonId)
-      .then((res) => {
-        setLesson(res.data);
-        setLoading(false);
+    if (lessonId) {
+      lessonService
+        .getLessonById(lessonId)
+        .then((res) => {
+          setLesson(res.data);
+          setLoading(false);
 
 
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
 
-      });
+        });
+    }
+
   }, [lessonId]);
 
   useEffect(() => {
