@@ -18,43 +18,52 @@ const TeachClass = () => {
     const [classTopicList, setClassTopicList] = useState([]);
     const [learnerAttendanceList, setLearnerAttendanceList] = useState([]);
 
+    //LOADING
+    const [loading, setLoading] = useState(true); // State to track loading
+
+    //LOADING
+
     useEffect(() => {
+        if (classModuleId) {
+            classModuleService.getModuleById(classModuleId)
+                .then((res) => {
+                    setClassModule(res.data);
+                    courseService
+                        .getAllEnrollmentsByCourse(res.data.courseId)
+                        .then((res) => {
+                            const notRefundEnrollments = res.data.filter(enrollment => enrollment.refundStatus === false);
 
-        classModuleService.getModuleById(classModuleId)
-            .then((res) => {
-                setClassModule(res.data);
-                courseService
-                    .getAllEnrollmentsByCourse(res.data.courseId)
-                    .then((res) => {
-                        const notRefundEnrollments = res.data.filter(enrollment => enrollment.refundStatus === false);
+                            console.log(res.data);
+                            setEnrollmentList(notRefundEnrollments);
 
-                        console.log(res.data);
-                        setEnrollmentList(notRefundEnrollments);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                    attendanceService.getAllLearnerAttendanceByAttendance(res.data.attendance?.id)
+                        .then((res) => {
+                            // console.log(res.data);
+                            setLearnerAttendanceList(res.data);
 
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-                attendanceService.getAllLearnerAttendanceByAttendance(res.data.attendance?.id)
-                    .then((res) => {
-                        // console.log(res.data);
-                        setLearnerAttendanceList(res.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                    classLessonService
+                        .getAllClassTopicsByClassLesson(res.data.classLesson?.id)
+                        .then((res) => {
+                            // console.log(res.data);
+                            setClassTopicList(res.data);
 
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-                classLessonService
-                    .getAllClassTopicsByClassLesson(res.data.classLesson?.id)
-                    .then((res) => {
-                        // console.log(res.data);
-                        setClassTopicList(res.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                    setLoading(false);
 
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            })
+                })
+        }
+
     }, [classModuleId]);
 
 
@@ -139,6 +148,11 @@ const TeachClass = () => {
                                                 <div className="col-12 text-sm-center form-inline">
                                                     <h5>CHECK ATTENDANCE DATE: <span className='text-success'> {classModule.startDate?.substring(0, 10)}</span></h5>
 
+                                                    {loading && (
+                                                        <div className="loading-overlay">
+                                                            <div className="loading-spinner" />
+                                                        </div>
+                                                    )}
                                                     {classModule.startDate && new Date().toISOString().substring(0, 10) === classModule.startDate.substring(0, 10) && (
                                                         <div className="table-responsive text-center">
                                                             <form
@@ -194,19 +208,19 @@ const TeachClass = () => {
                                                                         ))}
                                                                     </tbody>
                                                                 </table>
-                                                               
+
 
                                                                 <div className="form-group mb-0 mt-2">
                                                                     <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                                         Save
                                                                     </button>
                                                                 </div>
-                                                                
+
                                                             </form>
                                                         </div>
-                                                        
+
                                                     )}
-                                                    
+
                                                     {classModule.startDate && new Date().toISOString().substring(0, 10) < classModule.startDate.substring(0, 10) && (
                                                         <div className="table-responsive text-center">
                                                             <form
@@ -372,7 +386,40 @@ const TeachClass = () => {
             </div >
             <style>
                 {`
-                    /* Add custom styles as needed */
+                      .loading-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        backdrop-filter: blur(10px); /* Apply blur effect */
+                        -webkit-backdrop-filter: blur(10px); /* For Safari */
+                        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 9999; /* Ensure it's on top of other content */
+                    }
+                    
+                    .loading-spinner {
+                        border: 8px solid rgba(245, 141, 4, 0.1); /* Transparent border to create the circle */
+                        border-top: 8px solid #f58d04; /* Orange color */
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        animation: spin 1s linear infinite; /* Rotate animation */
+                    }
+                    
+                    @keyframes spin {
+                        0% {
+                            transform: rotate(0deg);
+                        }
+                        100% {
+                            transform: rotate(360deg);
+                        }
+                    }
+                    
+                
                 `}
             </style>
         </>

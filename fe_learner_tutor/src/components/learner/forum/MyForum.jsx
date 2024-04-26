@@ -15,8 +15,11 @@ const MyForum = () => {
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
-  
 
+  //LOADING
+  const [loading, setLoading] = useState(true); // State to track loading
+
+  //LOADING
 
   useEffect(() => {
     forumService
@@ -35,9 +38,13 @@ const MyForum = () => {
         .getForumById(forumId)
         .then((res) => {
           setForum(res.data);
+          setLoading(false);
+
         })
         .catch((error) => {
           console.log(error);
+          setLoading(false);
+
         });
     }
   }, [forumId]);
@@ -98,6 +105,11 @@ const MyForum = () => {
                 </div>
               </div>
 
+              {loading && (
+                <div className="loading-overlay">
+                  <div className="loading-spinner" />
+                </div>
+              )}
               <div className="row">
                 <div className="col-12">
                   <div className="">
@@ -243,6 +255,41 @@ const MyForum = () => {
       bottom: 5px;
       right: 5px;
     }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(10px); /* Apply blur effect */
+      -webkit-backdrop-filter: blur(10px); /* For Safari */
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999; /* Ensure it's on top of other content */
+  }
+  
+  .loading-spinner {
+      border: 8px solid rgba(245, 141, 4, 0.1); /* Transparent border to create the circle */
+      border-top: 8px solid #f58d04; /* Orange color */
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite; /* Rotate animation */
+  }
+  
+  @keyframes spin {
+      0% {
+          transform: rotate(0deg);
+      }
+      100% {
+          transform: rotate(360deg);
+      }
+  }
+
+
   `}
       </style>
 

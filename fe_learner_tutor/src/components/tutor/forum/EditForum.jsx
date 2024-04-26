@@ -15,14 +15,24 @@ const EditForum = () => {
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
 
+
+    //LOADING
+    const [loading, setLoading] = useState(true); // State to track loading
+
+    //LOADING
+
     useEffect(() => {
         forumService
             .getAllClassForumsByForum(forumId)
             .then((res) => {
                 setAccountForumList(res.data);
+                setLoading(false);
+
             })
             .catch((error) => {
                 console.log(error);
+                setLoading(false);
+
             });
     }, [forumId]);
 
@@ -95,10 +105,16 @@ const EditForum = () => {
                                     </div>
                                 </div>
                             </div>
+
+                            {loading && (
+                                <div className="loading-overlay">
+                                    <div className="loading-spinner" />
+                                </div>
+                            )}
                             <div className="row">
                                 <div className="col-12">
                                     <div className="card-box">
-                                        <div className="chat-container" style={{backgroundColor: '#fff'}}>
+                                        <div className="chat-container" style={{ backgroundColor: '#fff' }}>
                                             {
                                                 accountForumList.length > 0 && accountForumList
                                                     .slice()
@@ -131,7 +147,7 @@ const EditForum = () => {
                                                 )
                                             }
 
-                                            <form class="msger-inputarea" onSubmit={submitAccountForum} style={{backgroundColor: '#fff', marginLeft: '-20px'}}>
+                                            <form class="msger-inputarea" onSubmit={submitAccountForum} style={{ backgroundColor: '#fff', marginLeft: '-20px' }}>
                                                 <input
                                                     type="text"
                                                     class="msger-input"
@@ -139,9 +155,9 @@ const EditForum = () => {
                                                     name="message"
                                                     id="message"
                                                     value={accountForum.message}
-                                                    onChange={(e) => handleChange(e)} style={{borderRadius: '50px', padding: `8px 25px` }}
+                                                    onChange={(e) => handleChange(e)} style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                 />
-                                                <button type="submit" class="msger-send-btn" style={{borderRadius: '50px', padding: `8px 25px` }}>
+                                                <button type="submit" class="msger-send-btn" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                                     Send
                                                 </button>
                                             </form>
@@ -238,6 +254,41 @@ const EditForum = () => {
                     
                     /* Adjust the styling according to your design preferences */
                     
+
+                    .loading-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        backdrop-filter: blur(10px); /* Apply blur effect */
+                        -webkit-backdrop-filter: blur(10px); /* For Safari */
+                        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 9999; /* Ensure it's on top of other content */
+                    }
+                    
+                    .loading-spinner {
+                        border: 8px solid rgba(245, 141, 4, 0.1); /* Transparent border to create the circle */
+                        border-top: 8px solid #f58d04; /* Orange color */
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        animation: spin 1s linear infinite; /* Rotate animation */
+                    }
+                    
+                    @keyframes spin {
+                        0% {
+                            transform: rotate(0deg);
+                        }
+                        100% {
+                            transform: rotate(360deg);
+                        }
+                    }
+                    
+                
                 `}
             </style>
         </>

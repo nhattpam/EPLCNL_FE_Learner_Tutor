@@ -592,8 +592,8 @@ const Header = () => {
 
                                                         <tr>
                                                             <th scope="row">{index + 1}</th>
-                                                            <td>{paperWork.paperWorkType.name}</td>
-                                                            <td className='text-truncate' style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Link to={paperWork.paperWorkUrl}>{paperWork.paperWorkUrl}</Link></td>
+                                                            <td>{paperWork.paperWorkType?.name}</td>
+                                                            <td><Link to={paperWork.paperWorkUrl} className='text-success' target="_blank" rel="noopener noreferrer">View</Link></td>
                                                             <th scope="row" onClick={() => deletePaperWork(paperWork.id)} ><i class="fas fa-trash text-danger"></i></th>
                                                         </tr>
                                                     ))}

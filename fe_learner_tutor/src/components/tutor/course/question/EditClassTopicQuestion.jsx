@@ -27,7 +27,10 @@ const EditClassTopicQuestion = () => {
 
     const { questionId } = useParams();
 
-    const wavesurferRef = useRef(null);
+    //LOADING
+    const [loading, setLoading] = useState(true); // State to track loading
+
+    //LOADING
 
 
     useEffect(() => {
@@ -36,9 +39,13 @@ const EditClassTopicQuestion = () => {
                 .getQuestionById(questionId)
                 .then((res) => {
                     setQuestion(res.data);
+                    setLoading(false);
+
                 })
                 .catch((error) => {
                     console.log(error);
+                    setLoading(false);
+
                 });
         }
     }, [questionId]);
@@ -124,24 +131,29 @@ const EditClassTopicQuestion = () => {
                                         )}
                                     </h4>
 
+                                    {loading && (
+                                        <div className="loading-overlay">
+                                            <div className="loading-spinner" />
+                                        </div>
+                                    )}
                                     <form id="demo-form" data-parsley-validate>
                                         <div className="table-responsive" >
                                             <table id="demo-foo-filtering" className="table table-borderless table-hover table-nowrap table-centered mb-0" data-page-size={7}>
                                                 <tbody>
-                                                    {question.questionText !== "" && (
+                                                    {question.questionText  && (
                                                         <tr>
                                                             <th>Question Text</th>
                                                             <td dangerouslySetInnerHTML={{ __html: question.questionText }} />
                                                         </tr>
                                                     )}
 
-                                                    {question.questionImageUrl != "" && (
+                                                    {question.questionImageUrl && (
                                                         <tr>
                                                             <th>Question Image</th>
                                                             <td><img src={question.questionImageUrl} style={{ width: '300px', height: '150px' }}></img></td>
                                                         </tr>
                                                     )}
-                                                    {question.questionAudioUrl !== "" && (
+                                                    {question.questionAudioUrl && (
                                                         <tr>
                                                             <th>Question Audio</th>
                                                             <td>
@@ -154,7 +166,7 @@ const EditClassTopicQuestion = () => {
                                                     )}
 
                                                     <tr>
-                                                        <th>Grade</th>
+                                                        <th>Grade To Pass</th>
                                                         <td><span className="badge label-table badge-danger">{question.defaultGrade}</span></td>
                                                     </tr>
                                                     <tr>
@@ -260,6 +272,41 @@ const EditClassTopicQuestion = () => {
                         width: 85%;
                         text-align: left;
                     }
+
+                    .loading-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        backdrop-filter: blur(10px); /* Apply blur effect */
+                        -webkit-backdrop-filter: blur(10px); /* For Safari */
+                        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 9999; /* Ensure it's on top of other content */
+                    }
+                    
+                    .loading-spinner {
+                        border: 8px solid rgba(245, 141, 4, 0.1); /* Transparent border to create the circle */
+                        border-top: 8px solid #f58d04; /* Orange color */
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        animation: spin 1s linear infinite; /* Rotate animation */
+                    }
+                    
+                    @keyframes spin {
+                        0% {
+                            transform: rotate(0deg);
+                        }
+                        100% {
+                            transform: rotate(360deg);
+                        }
+                    }
+                    
+                
                 `}
             </style>
         </>

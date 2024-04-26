@@ -18,11 +18,11 @@ const CourseList = () => {
     const [coursesPerPage] = useState(5);
     const { tutorId } = useParams();
 
-      //LOADING
-      const [loading, setLoading] = useState(true); // State to track loading
+    //LOADING
+    const [loading, setLoading] = useState(true); // State to track loading
 
-      //LOADING
-      
+    //LOADING
+
 
     useEffect(() => {
         tutorService
@@ -159,12 +159,13 @@ const CourseList = () => {
                                                 </tbody>
                                             </table>
                                         </div>
+                                        {
+                                            currentCourses.length === 0 && (
+                                                <p className='text-center mt-3'>No courses found.</p>
+                                            )
+                                        }
                                     </div>
-                                    {
-                                        currentCourses.length === 0 && (
-                                            <p>No courses found.</p>
-                                        )
-                                    }
+
                                 </div>
                             </div>
                             <div className='container-fluid'>

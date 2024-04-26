@@ -132,12 +132,13 @@ const ListForum = () => {
 
                                             </table>
                                         </div> {/* end .table-responsive*/}
-                                    </div> {/* end card-box */}
-                                    {
+                                        {
                                         currentForums.length === 0 && (
-                                            <p>No forums found.</p>
+                                            <p className='text-center mt-3'>No forums found.</p>
                                         )
                                     }
+                                    </div> {/* end card-box */}
+                                  
                                 </div> {/* end col */}
                             </div>
                             {/* end row */}

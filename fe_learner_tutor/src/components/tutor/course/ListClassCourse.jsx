@@ -151,7 +151,7 @@ const ListClassCourse = () => {
                                                                 </td>
                                                                 <td>{course.code}</td>
                                                                 <td>{course.name}</td>
-                                                                <td>{course.stockPrice}$</td>
+                                                                <td>${course.stockPrice}</td>
                                                                 <td>{course.category?.name}</td>
                                                                 <td>
                                                                     {course.isOnlineClass ? (
