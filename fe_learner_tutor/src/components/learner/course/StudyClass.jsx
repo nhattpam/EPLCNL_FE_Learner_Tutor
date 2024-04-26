@@ -155,16 +155,19 @@ const StudyClass = () => {
   //display result assignment attempt
   const [showResult, setShowResult] = useState(false);
   useEffect(() => {
-    classLessonService
-      .getAllClassTopicsByClassLesson(selectedLessonId)
-      .then((res) => {
-        // Filter out class topics where isActive is true
-        const activeTopics = res.data.filter(topic => topic.isActive === true);
-        setClassTopicList(activeTopics);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (selectedLessonId) {
+      classLessonService
+        .getAllClassTopicsByClassLesson(selectedLessonId)
+        .then((res) => {
+          // Filter out class topics where isActive is true
+          const activeTopics = res.data.filter(topic => topic.isActive === true);
+          setClassTopicList(activeTopics);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
   }, [selectedLessonId]);
 
 
@@ -387,6 +390,9 @@ const StudyClass = () => {
       setShowForm(false);
       setShowTimer2(false);
 
+      assignmentAttempt.answerText = "";
+      assignmentAttempt.answerAudioUrl = "";
+
       // navigate(`/list-assignment-attempt/${tutorId}`);
     } catch (error) {
       console.log(error);
@@ -477,6 +483,51 @@ const StudyClass = () => {
   // State variable for countdown
   const timeRemaining = selectedAssignment?.deadline * 60;
   const timeRemaining2 = selectedQuiz?.deadline * 60;
+
+
+  //check done assignment attempt
+  const [attemptList2, setAttemptList2] = useState([]);
+  //my assignment attempt
+  const [myAssignmentAttempt, setMyAssignmentAttempt] = useState({
+    assignmentId: "",
+    learnerId: "",
+    answerText: "",
+    answerAudioUrl: ""
+  });
+
+  useEffect(() => {
+    if (selectedAssignment?.id) {
+      assignmentService.getAllAssignmentAttemptByAssignmentId(selectedAssignment?.id)
+        .then((res) => {
+
+          const list2 = res.data.filter(attempt => attempt.learnerId === learnerId).slice(0, 5);
+          setAttemptList2(list2);
+
+
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+  }, [selectedAssignment?.id]);
+
+  useEffect(() => {
+    if (attemptList2.length === 0) return; // Do nothing if attemptList2 is empty
+
+    const learnerAttempt = attemptList2.find(attempt => attempt.learnerId === learnerId);
+    if (learnerAttempt) {
+      assignmentAttemptService.getAssignmentAttemptById(learnerAttempt.id)
+        .then((res) => {
+          setMyAssignmentAttempt(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [attemptList2, learnerId]);
+
+
   return (
     <>
       {/* <Header /> */}
@@ -734,107 +785,161 @@ const StudyClass = () => {
                                   </div>
                                 ))
                               }
-                              {showForm && (
-                                <>
-
-                                  < form className='card' onSubmit={(e) => submitAssignmentAttempt(e)}>
-                                    <div className="d-flex align-items-center" style={{ justifyContent: 'center' }}>
-                                      <span className=''>
-                                        <div className="timer-wrapper">
-                                          <CountdownCircleTimer
-                                            isPlaying
-                                            duration={timeRemaining}
-                                            colors="#f58d04"
-                                            size={80}
-                                          >
-                                            {({ remainingTime }) => {
-                                              if (remainingTime === 0) {
-                                                return <span>End!</span>;
-                                              } else {
-                                                return remainingTime;
-                                              }
-                                            }}
-                                          </CountdownCircleTimer>
-                                        </div>
-                                      </span>
-
+                              {
+                                attemptList2 && attemptList2.length > 0 && (
+                                  <>
+                                    <div>
+                                      Grade: <span style={{ fontWeight: 'bold', color: '#f58d04' }}>{myAssignmentAttempt.totalGrade}</span>
                                     </div>
-                                    <div className="tab-pane show active " id="tab-content-1" style={{ backgroundColor: '#fff' }} >
-                                      <section id="courses" className="courses ">
-                                        <div className='ml-1 ' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: selectedAssignment?.questionText }}></div>
-                                        <div className='ml-1 ' style={{ textAlign: 'left' }}>
-                                          <audio controls>
-                                            <source src={selectedAssignment.questionAudioUrl} type="audio/mpeg" />
-                                            Your browser does not support the audio element.
-                                          </audio>
-                                        </div>
+                                    <div className='container'>
+                                      <h4 style={{ textAlign: 'left' }}>My Answer:</h4>
+                                    </div>
+                                    <div className='container ml-1'>
+                                      {
+                                        myAssignmentAttempt.answerText && (
+                                          <div className='card' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
 
-                                        <div className=" ml-1">
-
-
-                                          <div className="" style={{ textAlign: 'left' }}>
-                                            <ReactQuill
-                                              value={assignmentAttempt.answerText}
-                                              onChange={handleChangeAnswerText}
-                                              style={{ height: "300px" }}
-                                              modules={{
-                                                toolbar: [
-                                                  [{ header: [1, 2, false] }],
-                                                  ['bold', 'italic', 'underline', 'strike'],
-                                                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                                  [{ 'indent': '-1' }, { 'indent': '+1' }],
-                                                  [{ 'direction': 'rtl' }],
-                                                  [{ 'align': [] }],
-                                                  ['link', 'image', 'video'],
-                                                  ['code-block'],
-                                                  [{ 'color': [] }, { 'background': [] }],
-                                                  ['clean']
-                                                ]
-                                              }}
-                                              theme="snow"
-                                            />
+                                        )
+                                      }
+                                      {
+                                        myAssignmentAttempt.answerAudioUrl && (
+                                          <div className='card' >
+                                            <audio controls>
+                                              <source src={myAssignmentAttempt.answerAudioUrl} type="audio/mpeg" />
+                                              Your browser does not support the audio element.
+                                            </audio>
                                           </div>
+                                        )
+                                      }
 
-                                          <label className='mt-5' htmlFor="audio" >Upload Audio *:</label>
-                                          <Dropzone
-                                            onDrop={handleFileDrop2}
-                                            accept="audio/*"
-                                            multiple={false}
-                                            maxSize={5000000}
-                                          >
-                                            {({ getRootProps, getInputProps }) => (
-                                              <div {...getRootProps()} className="fallback">
-                                                <input {...getInputProps()} />
-                                                <div className="dz-message needsclick">
-                                                  <i className="h1 text-muted dripicons-cloud-upload" />
-                                                </div>
-                                                {file2 && (
-                                                  <div>
-                                                    <audio controls style={{ marginTop: "10px" }}>
-                                                      <source src={URL.createObjectURL(file2)} type="audio/*" />
-                                                      Your browser does not support the audio tag.
-                                                    </audio>
-                                                    <p>Audio Preview:</p>
-                                                    <audio controls src={URL.createObjectURL(file2)} />
-                                                  </div>
-                                                )}
-                                              </div>
-                                            )}
-                                          </Dropzone>
-
-                                        </div>
-                                      </section>
                                     </div>
-                                    <button
-                                      className="btn btn-primary"
-                                      style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
-                                    >
-                                      Submit
-                                    </button>
-                                  </form>
-                                </>
 
-                              )}
+
+                                  </>
+                                )
+                              }
+                              {
+                                attemptList2 && attemptList2.length === 0 && (
+                                  <>
+                                    {showForm && (
+                                      <>
+
+                                        < form className='card' onSubmit={(e) => submitAssignmentAttempt(e)}>
+                                          <div className="d-flex align-items-center" style={{ justifyContent: 'center' }}>
+                                            <span className=''>
+                                              <div className="timer-wrapper">
+                                                <CountdownCircleTimer
+                                                  isPlaying
+                                                  duration={timeRemaining}
+                                                  colors="#f58d04"
+                                                  size={80}
+                                                >
+                                                  {({ remainingTime }) => {
+                                                    if (remainingTime === 0) {
+                                                      return <span>End!</span>;
+                                                    } else {
+                                                      return remainingTime;
+                                                    }
+                                                  }}
+                                                </CountdownCircleTimer>
+                                              </div>
+                                            </span>
+
+                                          </div>
+                                          <div className="tab-pane show active " id="tab-content-1" style={{ backgroundColor: '#fff' }} >
+                                            <section id="courses" className="courses ">
+                                              {
+                                                selectedAssignment.questionText && (
+                                                  <>
+                                                    <div className='ml-1 ' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: selectedAssignment?.questionText }}></div>
+
+                                                  </>
+                                                )
+                                              }
+                                              {
+                                                selectedAssignment.questionAudioUrl && (
+                                                  <>
+                                                    <div className='ml-1 ' style={{ textAlign: 'left' }}>
+                                                      <audio controls>
+                                                        <source src={selectedAssignment.questionAudioUrl} type="audio/mpeg" />
+                                                        Your browser does not support the audio element.
+                                                      </audio>
+                                                    </div>
+                                                  </>
+                                                )
+                                              }
+
+
+                                              <div className=" ml-1">
+
+
+                                                <div className="" style={{ textAlign: 'left' }}>
+                                                  <ReactQuill
+                                                    value={assignmentAttempt.answerText}
+                                                    onChange={handleChangeAnswerText}
+                                                    style={{ height: "300px" }}
+                                                    modules={{
+                                                      toolbar: [
+                                                        [{ header: [1, 2, false] }],
+                                                        ['bold', 'italic', 'underline', 'strike'],
+                                                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                        [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                                        [{ 'direction': 'rtl' }],
+                                                        [{ 'align': [] }],
+                                                        ['link', 'image', 'video'],
+                                                        ['code-block'],
+                                                        [{ 'color': [] }, { 'background': [] }],
+                                                        ['clean']
+                                                      ]
+                                                    }}
+                                                    theme="snow"
+                                                  />
+                                                </div>
+
+                                                <label className='mt-5' htmlFor="audio" >Upload Audio *:</label>
+                                                <Dropzone
+                                                  onDrop={handleFileDrop2}
+                                                  accept="audio/*"
+                                                  multiple={false}
+                                                  maxSize={5000000}
+                                                >
+                                                  {({ getRootProps, getInputProps }) => (
+                                                    <div {...getRootProps()} className="fallback">
+                                                      <input {...getInputProps()} />
+                                                      <div className="dz-message needsclick">
+                                                        <i className="h1 text-muted dripicons-cloud-upload" />
+                                                      </div>
+                                                      {file2 && (
+                                                        <div>
+                                                          <audio controls style={{ marginTop: "10px" }}>
+                                                            <source src={URL.createObjectURL(file2)} type="audio/*" />
+                                                            Your browser does not support the audio tag.
+                                                          </audio>
+                                                          <p>Audio Preview:</p>
+                                                          <audio controls src={URL.createObjectURL(file2)} />
+                                                        </div>
+                                                      )}
+                                                    </div>
+                                                  )}
+                                                </Dropzone>
+
+                                              </div>
+                                            </section>
+                                          </div>
+                                          <button
+                                            className="btn btn-primary"
+                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
+                                          >
+                                            Submit
+                                          </button>
+                                        </form>
+                                      </>
+
+                                    )}
+                                  </>
+                                )
+                              }
+
                               {
                                 classTopicList.length === 0 && (
                                   <>

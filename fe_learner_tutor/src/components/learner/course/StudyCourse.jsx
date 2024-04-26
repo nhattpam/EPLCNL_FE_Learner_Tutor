@@ -824,7 +824,7 @@ const StudyCourse = () => {
 
 
                             )}
-                            {selectedAssignment && selectedAssignment.questionText && (
+                            {selectedAssignment  && (
                                 <>
 
                                     <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-50px' }}>
@@ -834,13 +834,18 @@ const StudyCourse = () => {
                                                     <h4 style={{ textAlign: 'left' }}>Question:</h4>
 
                                                 </div>
-                                                <div className="card ml-1">
-                                                    <div className="container" style={{ textAlign: 'left' }}>
-                                                        <div dangerouslySetInnerHTML={{ __html: selectedAssignment.questionText }}></div>
-                                                    </div>
-                                                </div>
                                                 {
-                                                    selectedAssignment.questionAudioUrl !== null && selectedAssignment.questionAudioUrl !== '' && (
+                                                    selectedAssignment.questionText && (
+                                                        <div className="card ml-1">
+                                                            <div className="container" style={{ textAlign: 'left' }}>
+                                                                <div dangerouslySetInnerHTML={{ __html: selectedAssignment.questionText }}></div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+
+                                                {
+                                                    selectedAssignment.questionAudioUrl && (
                                                         <div className="card ml-1">
                                                             <audio controls>
                                                                 <source src={selectedAssignment.questionAudioUrl} type="audio/mpeg" />
@@ -862,9 +867,14 @@ const StudyCourse = () => {
                                                         <h4 style={{ textAlign: 'left' }}>My Answer:</h4>
                                                     </div>
                                                     <div className='container ml-1'>
-                                                        <div className='card' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
                                                         {
-                                                            myAssignmentAttempt.answerAudioUrl !== '' && myAssignmentAttempt.answerAudioUrl !== null && (
+                                                            myAssignmentAttempt.answerText && (
+                                                                <div className='card' style={{ textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: myAssignmentAttempt.answerText }}></div>
+
+                                                            )
+                                                        }
+                                                        {
+                                                            myAssignmentAttempt.answerAudioUrl && (
                                                                 <div className='card' >
                                                                     <audio controls>
                                                                         <source src={myAssignmentAttempt.answerAudioUrl} type="audio/mpeg" />
