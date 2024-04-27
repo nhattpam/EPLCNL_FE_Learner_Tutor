@@ -366,10 +366,13 @@ const StudyCourse = () => {
     };
 
     useEffect(() => {
-        setAssignmentAttempt(prevState => ({
-            ...prevState,
-            assignmentId: selectedAssignmentId
-        }));
+        if (selectedAssignmentId) {
+            setAssignmentAttempt(prevState => ({
+                ...prevState,
+                assignmentId: selectedAssignmentId
+            }));
+        }
+
     }, [selectedAssignmentId]);
 
     const [file2, setFile2] = useState(null);
@@ -761,12 +764,17 @@ const StudyCourse = () => {
                     <div className='row'>
                         <div className="col-md-8">
                             {/* Course Content */}
-                            {selectedLesson && selectedLesson.videoUrl && (
+                            {selectedLesson && (
                                 <>
-                                    <video controls style={{ width: '100%' }}>
-                                        <source src={selectedLesson.videoUrl} type="video/mp4" />
-                                        Your browser does not support the video tag.
-                                    </video>
+                                    {
+                                        selectedLesson.videoUrl && (
+                                            <video controls style={{ width: '100%' }}>
+                                                <source src={selectedLesson.videoUrl} type="video/mp4" />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        )
+                                    }
+
                                     <ul className="nav nav-tabs" id="myLearningTabs">
                                         <li className="nav-item">
                                             <a className="nav-link active" id="tab1" data-bs-toggle="tab" href="#tab-content-1">
@@ -785,11 +793,16 @@ const StudyCourse = () => {
                                         <div className="tab-pane  show active" id="tab-content-1">
                                             <section id="courses" className="courses">
                                                 <div className="container">
-                                                    <div className="card" style={{ textAlign: 'left' }}>
-                                                        <div key={selectedLesson.id}>
-                                                            <div dangerouslySetInnerHTML={{ __html: selectedLesson.reading }}></div>
-                                                        </div>
-                                                    </div>
+                                                    {
+                                                        selectedLesson.reading && (
+                                                            <div className="card" style={{ textAlign: 'left' }}>
+                                                                <div key={selectedLesson.id}>
+                                                                    <div dangerouslySetInnerHTML={{ __html: selectedLesson.reading }}></div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
+
                                                 </div>
                                             </section>{/* End Courses Section */}
                                         </div>
