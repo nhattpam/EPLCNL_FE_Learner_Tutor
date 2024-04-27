@@ -250,6 +250,12 @@ const StudyCourse = () => {
         setQuizStarted(false);
         setShowQuestions(false);
         setShowResult(false);
+
+        // Scroll to the top of the page
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth" // Optional: smooth scrolling animation
+        });
     };
 
     const [lessonMaterial, setLessonMaterial] = useState({
@@ -304,6 +310,12 @@ const StudyCourse = () => {
         setShowQuestions(false);
         setShowResult(false);
         setShowTimer2(false);
+
+        // Scroll to the top of the page
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth" // Optional: smooth scrolling animation
+        });
 
         if (assignmentId) {
             try {
@@ -517,6 +529,12 @@ const StudyCourse = () => {
         setShowForm(false);
         setShowTimer(false);
         setShowTimer2(false);
+
+        // Scroll to the top of the page
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth" // Optional: smooth scrolling animation
+        });
     };
 
     useEffect(() => {
