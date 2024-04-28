@@ -100,7 +100,9 @@ const Header = () => {
         sessionStorage.removeItem('isLearner');
         sessionStorage.removeItem('isTutor');
         localStorage.removeItem('learnerId'); // Assuming you store authentication token in localStorage
-
+        localStorage.removeItem('tutorId'); // Assuming you store authentication token in localStorage
+        localStorage.removeItem('token'); // Assuming you store authentication token in localStorage
+        localStorage.removeItem('isLoggedIn');
         // Redirect to the login page or any other page after logout
         navigate('/login');
     };
