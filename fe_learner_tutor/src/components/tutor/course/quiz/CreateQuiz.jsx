@@ -308,7 +308,7 @@ const CreateQuiz = () => {
 
             console.log("Question Answers Added Successfully", questionAnswersResponse);
 
-            navigate(`/tutor/courses/edit-module/${quiz.moduleId}`);
+            navigate(`/tutor/courses/edit-quiz/${storedQuizId}`);
 
             setMsg('Question Answers Added Successfully');
         } catch (error) {
