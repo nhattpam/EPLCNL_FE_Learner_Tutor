@@ -284,36 +284,39 @@ const StudyClass = () => {
   });
 
   const handleStartQuiz = (quizId) => {
-    quizService
-      .getQuizById(quizId)
-      .then((res) => {
-        setSelectedQuiz(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (quizId) {
+      quizService
+        .getQuizById(quizId)
+        .then((res) => {
+          setSelectedQuiz(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-    quizService
-      .getAllQuestionsByQuiz(quizId)
-      .then((res) => {
-        console.log(res.data);
-        setQuestionList(res.data);
+      quizService
+        .getAllQuestionsByQuiz(quizId)
+        .then((res) => {
+          console.log(res.data);
+          setQuestionList(res.data);
 
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-    setPoint(0);
-    setShowQuestions(true);
-    // Set the quizStarted state to true when the quiz starts
-    setQuizStarted(true);
-    setShowTimer(true);
-    setShowAnswerColor(false);
-    setShowResult(false);
-    setCurrentQuestionIndex(0); // Reset currentQuestionIndex to 0
-    setShowForm(false);
-    // Set the deadline time (in seconds) from now
+      setPoint(0);
+      setShowQuestions(true);
+      // Set the quizStarted state to true when the quiz starts
+      setQuizStarted(true);
+      setShowTimer(true);
+      setShowAnswerColor(false);
+      setShowResult(false);
+      setCurrentQuestionIndex(0); // Reset currentQuestionIndex to 0
+      setShowForm(false);
+      // Set the deadline time (in seconds) from now
+    }
+
 
   };
 
@@ -645,8 +648,8 @@ const StudyClass = () => {
 
                                         </div>
                                         <div className="col-md-5 mt-3">
-                                          <span> <span style={{ fontWeight: 'bold', marginTop: '80px' }}>Score</span>: {point}/<span style={{ color: 'rgb(245, 141, 4)' }}>10</span>
-                                          </span>
+                                        <span style={{ fontWeight: 'bold', marginTop: '80px' }}>Score</span>: {point}/<span style={{ color: 'rgb(245, 141, 4)' }}>{selectedQuiz && selectedQuiz.gradeToPass ? selectedQuiz.gradeToPass : 0}</span>
+
                                         </div>
                                       </div>
 
@@ -744,7 +747,7 @@ const StudyClass = () => {
                                 <section id="courses" className="courses ml-4 mr-2">
                                   <div className="card" >
                                     Your Result
-                                    <span>{point}/<span style={{ color: '#f58d04' }}>10</span></span>
+                                    <span>{point}/<span style={{ color: '#f58d04' }}>{selectedQuiz && selectedQuiz.gradeToPass ? selectedQuiz.gradeToPass : 0}</span></span>
                                   </div>
                                 </section>
                               </div>

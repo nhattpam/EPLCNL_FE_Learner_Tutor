@@ -1214,7 +1214,7 @@ const StudyCourse = () => {
 
                                                                     </div>
                                                                     <div className="col-md-5">
-                                                                        <span> <span style={{ fontWeight: 'bold' }}>Score</span>: {point}/<span style={{ color: 'rgb(245, 141, 4)' }}>10</span>
+                                                                        <span> <span style={{ fontWeight: 'bold' }}>Score</span>: {point}/<span style={{ color: 'rgb(245, 141, 4)' }}>{selectedQuiz && selectedQuiz.gradeToPass ? selectedQuiz.gradeToPass : 0}</span>
                                                                         </span>
                                                                     </div>
                                                                 </div>
@@ -1312,7 +1312,7 @@ const StudyCourse = () => {
                                                     <section id="courses" className="courses ml-4 mr-2">
                                                         <div className="card" >
                                                             Your Result
-                                                            <span>{point}/<span style={{ color: '#f58d04' }}>10</span></span>
+                                                            <span>{point}/<span style={{ color: '#f58d04' }}>{selectedQuiz && selectedQuiz.gradeToPass ? selectedQuiz.gradeToPass : 0}</span></span>
                                                         </div>
                                                     </section>
                                                 </div>
