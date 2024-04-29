@@ -8,12 +8,7 @@ const UnKnownPage = () => {
         <h1>4<span><i class="fas fa-ghost"></i></span>4</h1>
         <h2>Error: 404 page not found</h2>
         <p>Sorry, the page you're looking for cannot be accessed</p>
-        <Link
-          className="btn btn-primary" to={`/home`}
-          style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` , border: 'none'}}
-        >
-          Go Back
-        </Link>
+       
       </main>
       <style>
         {`

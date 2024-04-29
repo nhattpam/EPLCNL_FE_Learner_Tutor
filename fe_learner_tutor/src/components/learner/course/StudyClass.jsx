@@ -19,11 +19,11 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 const StudyClass = () => {
   const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
 
-    const navigate = useNavigate();
-    if (!storedLoginStatus) {
-        navigate(`/login`)
-    }
-    
+  const navigate = useNavigate();
+  if (!storedLoginStatus) {
+    navigate(`/login`)
+  }
+
   const { courseId } = useParams();
   const learnerId = sessionStorage.getItem('learnerId');
 
@@ -142,7 +142,7 @@ const StudyClass = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth" // Optional: smooth scrolling animation
-  });
+    });
 
   };
 
@@ -947,7 +947,7 @@ const StudyClass = () => {
                                           </div>
                                           <button
                                             className="btn btn-primary"
-                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` , border: 'none'}}
+                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                           >
                                             Submit
                                           </button>
@@ -997,35 +997,52 @@ const StudyClass = () => {
                     <div className="loading-spinner" />
                   </div>
                 )}
-                {classModuleList && classModuleList.length > 0 && classModuleList.map((module, index) => (
-                  <div key={module.id} className="card-container" style={{ marginBottom: '5px' }}>
-                    <div
-                      className={`card module-title ${expandedModules.includes(module.id) ? 'expanded' : ''}`}
-                      onClick={() => handleModuleCardClick(module.id)} style={{ marginBottom: '5px' }}
-                    >
-                      <div className="card-body" style={{ padding: '10px' }}>
-                        <h4 className="card-title" >Day {index + 1}: {new Date(module.startDate).toLocaleDateString('en-US')}</h4>
-                        <span>{expandedModules.includes(module.id) ? '-' : '+'}</span>
-                      </div>
-                    </div>
-                    {selectedModule && selectedModule.id === module.id && expandedModules.includes(module.id) && (
-                      <div className="card-content" onClick={() => handleLessonClick(selectedModule.classLesson?.id)}>
-                        <div key={`lesson_${index}`} className="card" style={{ marginBottom: '5px' }}>
-                          <div className="card-body"> <span style={{ fontWeight: 'bold', color: '#f58d04' }}>Time:</span> {selectedModule.classLesson?.classHours}</div>
-                          <div className="card-body" style={{ marginTop: '-40px' }}>
-                            <span className="badge label-table badge-success mr-2"
-                            > <i className="fas fa-file-video"></i> Join Class</span>
-                            <span className="badge label-table badge-primary">  <i class="fab fa-discourse"></i> Topics</span>
+                {classModuleList && classModuleList.length > 0 && classModuleList.map((module, index) => {
+                  // Parse the module's start date from the database
+                  const moduleStartDate = new Date(module.startDate);
 
-                          </div>
+                  // Normalize to the same timezone as your JavaScript environment
+                  moduleStartDate.setMinutes(moduleStartDate.getMinutes() + moduleStartDate.getTimezoneOffset());
+
+                  // Get the current date
+                  const currentDate = new Date();
+
+                  // Compare dates
+                  const isFutureModule = moduleStartDate > currentDate;
+
+                  return (
+                    <div key={module.id} className="card-container" style={{ marginBottom: '5px', pointerEvents: isFutureModule ? 'none' : 'auto', opacity: isFutureModule ? 0.5 : 1 }}>
+                      <div
+                        className={`card module-title ${expandedModules.includes(module.id) ? 'expanded' : ''}`}
+                        onClick={() => handleModuleCardClick(module.id)}
+                        style={{ marginBottom: '5px', cursor: isFutureModule ? 'not-allowed' : 'pointer' }}
+                      >
+                        <div className="card-body" style={{ padding: '10px' }}>
+                          <h4 className="card-title">Day {index + 1}: {moduleStartDate.toLocaleDateString('en-US')}</h4>
+                          <span>{expandedModules.includes(module.id) ? '-' : '+'}</span>
                         </div>
                       </div>
-                    )}
+                      {selectedModule && selectedModule.id === module.id && expandedModules.includes(module.id) && (
+                        <div className="card-content" onClick={() => handleLessonClick(selectedModule.classLesson?.id)}>
+                          <div key={`lesson_${index}`} className="card" style={{ marginBottom: '5px' }}>
+                            <div className="card-body">
+                              <span style={{ fontWeight: 'bold', color: '#f58d04' }}>Time:</span> {selectedModule.classLesson?.classHours}
+                            </div>
+                            <div className="card-body" style={{ marginTop: '-40px' }}>
+                              <span className="badge label-table badge-success mr-2">
+                                <i className="fas fa-file-video"></i> Join Class
+                              </span>
+                              <span className="badge label-table badge-primary">
+                                <i className="fab fa-discourse"></i> Topics
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
 
-
-
-                  </div>
-                ))}
                 {
                   classModuleList.length === 0 && (
                     <p>No modules found.</p>
