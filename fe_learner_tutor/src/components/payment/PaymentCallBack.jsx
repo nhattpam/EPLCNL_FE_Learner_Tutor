@@ -21,12 +21,7 @@ const PaymentCallBack = () => {
     learner: []
   });
 
-  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
-
-  if (!storedLoginStatus) {
-      navigate(`/login`)
-  }
-
+  
 
 
 
