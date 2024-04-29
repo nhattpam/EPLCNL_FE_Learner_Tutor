@@ -18,6 +18,12 @@ const EditTopicAssignment = () => {
     // const { storedModuleId } = useParams();
     const { assignmentId } = useParams();
 
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+   
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
     //LOADING
     const [loading, setLoading] = useState(true); // State to track loading

@@ -7,13 +7,20 @@ import accountForumService from '../../../services/account-forum.service';
 import forumService from '../../../services/forum.service';
 
 const MyForum = () => {
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+  const navigate = useNavigate();
+  if (!storedLoginStatus) {
+    navigate(`/login`)
+  }
+  
   const { forumId } = useParams();
   const [accountForumList, setAccountForumList] = useState([]);
   const [forum, setForum] = useState([]);
-  const learnerId = localStorage.getItem('learnerId');
+  const learnerId = sessionStorage.getItem('learnerId');
   const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState('');
-  const navigate = useNavigate();
+
 
 
   //LOADING

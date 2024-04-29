@@ -17,7 +17,7 @@ const TutorDashboard = () => {
     const areaChartRef = useRef(null);
 
     const { tutorId } = useParams();
-    const storedAccountId = localStorage.getItem('accountId');
+    const storedAccountId = sessionStorage.getItem('accountId');
     const [enrollmentList, setEnrollmentList] = useState([]);
     const [enrollmentLearnerList, setEnrollmentLearnerList] = useState([]);
     const [courseList, setCourseList] = useState([]);
@@ -28,7 +28,12 @@ const TutorDashboard = () => {
     const [historiesPerPage] = useState(5);
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
     const [currentPage2, setCurrentPage2] = useState(0);

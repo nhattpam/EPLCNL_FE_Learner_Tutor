@@ -12,7 +12,12 @@ import topicService from '../../../../services/topic.service';
 
 const CreateClassTopicMaterial = () => {
 
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
   const navigate = useNavigate();
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
 
   const [classTopic, setClassTopic] = useState({
     name: '',

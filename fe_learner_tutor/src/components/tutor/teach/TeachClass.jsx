@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react'
 import Header from '../Header';
 import Sidebar from '../Sidebar';
 import courseService from '../../../services/course.service';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import classModuleService from '../../../services/class-module.service';
 import classLessonService from '../../../services/class-lesson.service';
 import learnerAttendanceService from '../../../services/learner-attendance.service';
 import attendanceService from '../../../services/attendance.service';
 
 const TeachClass = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
+
 
     const { classModuleId } = useParams();
     const [classModule, setClassModule] = useState({

@@ -10,12 +10,17 @@ import assignmentService from '../../../../services/assignment.service';
 import ReactQuill from 'react-quill';
 
 const EditAssignmentAttempt = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
 
-    const tutorId = localStorage.getItem("tutorId");
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
+
+    const tutorId = sessionStorage.getItem("tutorId");
 
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
-    const navigate = useNavigate();
 
 
     const { assignmentAttemptId } = useParams();

@@ -11,7 +11,13 @@ import lessonMaterialService from '../../../../services/material.service';
 
 const CreateClassMaterial = () => {
 
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
   const navigate = useNavigate();
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
+
 
   const [lesson, setLesson] = useState({
     name: "",

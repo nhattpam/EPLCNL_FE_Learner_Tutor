@@ -88,6 +88,7 @@ import TeachClass from './components/tutor/teach/TeachClass';
 import ListAssignmentAttemptByTopic from './components/tutor/teach/ListAssignmentAttemptByTopic';
 import CreateTopicAssignment from './components/tutor/course/assignment/CreateTopicAssignment';
 import EditTopicAssignment from './components/tutor/course/assignment/EditTopicAssignment';
+import UnKnownPage from './components/UnKnownPage';
 
 function App() {
 
@@ -95,11 +96,11 @@ function App() {
 
   useEffect(() => {
     // Check if the user is already logged in by retrieving the login status from local storage
-    const storedLoginStatus = localStorage.getItem('isLoggedIn');
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
     setIsLoggedIn(storedLoginStatus === 'true');
 
     // Retrieve the token from local storage and set it as the authentication token
-    const storedToken = localStorage.getItem('token');
+    const storedToken = sessionStorage.getItem('token');
     if (storedToken) {
       accountForumService.setToken(storedToken);
       accountService.setToken(storedToken);
@@ -211,10 +212,10 @@ function App() {
         {/* learner */}
         <Route path="/study-course/:courseId" element={<StudyCourse />} />
         <Route path="/study-class/:courseId" element={<StudyClass />} />
-        <Route path="/my-learning/:learnerId" element={<MyLearning />} />
+        <Route path="/my-learning/" element={<MyLearning />} />
 
         {/* transaction */}
-        <Route path="/my-transaction/:learnerId" element={<MyTransaction />} />
+        <Route path="/my-transaction/" element={<MyTransaction />} />
 
         {/* search */}
 
@@ -227,6 +228,10 @@ function App() {
         {/* ABOUT*/}
         <Route path="/about" element={<About />} />
 
+        <Route path="/404" element={<UnKnownPage />} />
+
+        {/* Catch-all route */}
+        <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </div>
   );

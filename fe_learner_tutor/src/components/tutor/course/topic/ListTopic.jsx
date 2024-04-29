@@ -9,6 +9,12 @@ import ReactPaginate from 'react-paginate';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 
 const ListTopic = () => {
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+  const navigate = useNavigate();
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
 
   const { storedClassLessonId } = useParams();
   const [classTopicList, setClassTopicList] = useState([]);

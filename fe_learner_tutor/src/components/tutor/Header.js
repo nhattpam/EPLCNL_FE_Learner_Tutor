@@ -9,11 +9,11 @@ import walletService from '../../services/wallet.service';
 
 const Header = () => {
 
-    const accountId = localStorage.getItem('accountId');
+    const accountId = sessionStorage.getItem('accountId');
     const [showModal, setShowModal] = useState(false);
     const [showQualificationModal, setShowQualificationModal] = useState(false);
     const navigate = useNavigate();
-    const storedTutorId = localStorage.getItem('tutorId');
+    const storedTutorId = sessionStorage.getItem('tutorId');
 
 
     const [account, setAccount] = useState({
@@ -43,8 +43,14 @@ const Header = () => {
     const handleLogout = () => {
         // Clear user session or perform any necessary logout actions
         // For example, you can use localStorage or sessionStorage to store authentication status
-        localStorage.removeItem('authToken'); // Assuming you store authentication token in localStorage
-
+        sessionStorage.removeItem('authToken'); // Assuming you store authentication token in localStorage
+        sessionStorage.removeItem('accountId');
+        sessionStorage.removeItem('isLearner');
+        sessionStorage.removeItem('isTutor');
+        sessionStorage.removeItem('learnerId'); // Assuming you store authentication token in localStorage
+        sessionStorage.removeItem('tutorId'); // Assuming you store authentication token in localStorage
+        sessionStorage.removeItem('token'); // Assuming you store authentication token in localStorage
+        sessionStorage.removeItem('isLoggedIn');
         // Redirect to the login page or any other page after logout
         navigate('/login');
     };

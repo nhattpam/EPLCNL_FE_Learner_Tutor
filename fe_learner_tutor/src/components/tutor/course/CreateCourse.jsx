@@ -6,7 +6,12 @@ import Sidebar from '../Sidebar';
 
 const CreateCourse = () => {
     const [courseType, setCourseType] = useState('');
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
     const handleCourseTypeChange = (type) => {
         setCourseType(type);

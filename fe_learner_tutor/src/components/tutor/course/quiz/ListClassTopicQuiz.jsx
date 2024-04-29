@@ -10,6 +10,12 @@ import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 import topicService from '../../../../services/topic.service';
 
 const ListClassTopicQuiz = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
     const { storedClassTopicId } = useParams();
     const [quizList, setQuizList] = useState([]);

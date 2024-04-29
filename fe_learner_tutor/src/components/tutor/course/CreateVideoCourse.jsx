@@ -9,8 +9,13 @@ import forumService from "../../../services/forum.service";
 import Dropzone from "react-dropzone";
 
 const CreateVideoCourse = () => {
-  const tutorId = localStorage.getItem("tutorId");
+  const tutorId = sessionStorage.getItem("tutorId");
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
   const navigate = useNavigate();
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
 
   const [course, setCourse] = useState({
     name: "",

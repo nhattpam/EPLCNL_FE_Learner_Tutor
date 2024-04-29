@@ -260,6 +260,39 @@ const ListCourseByCategory = () => {
                     transform: translateY(-5px);
                     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
                 }
+
+                .loading-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    backdrop-filter: blur(10px); /* Apply blur effect */
+                    -webkit-backdrop-filter: blur(10px); /* For Safari */
+                    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999; /* Ensure it's on top of other content */
+                }
+                
+                .loading-spinner {
+                    border: 8px solid rgba(245, 141, 4, 0.1); /* Transparent border to create the circle */
+                    border-top: 8px solid #f58d04; /* Orange color */
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    animation: spin 1s linear infinite; /* Rotate animation */
+                }
+                
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
                 
                 `}
             </style>

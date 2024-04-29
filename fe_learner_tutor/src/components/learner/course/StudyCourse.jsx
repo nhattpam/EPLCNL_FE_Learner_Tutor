@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../Header';
 import Footer from '../../Footer';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import courseService from '../../../services/course.service';
 import moduleService from '../../../services/module.service'; // Import module service
 import lessonService from '../../../services/lesson.service';
@@ -17,8 +17,15 @@ import Dropzone from 'react-dropzone';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 
 const StudyCourse = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
+
     const { courseId } = useParams();
-    const learnerId = localStorage.getItem('learnerId');
+    const learnerId = sessionStorage.getItem('learnerId');
 
 
     const [course, setCourse] = useState({
@@ -529,7 +536,7 @@ const StudyCourse = () => {
         setShowForm(false);
         setShowTimer(false);
         setShowTimer2(false);
-
+        setShowQuestions(false);
         // Scroll to the top of the page
         window.scrollTo({
             top: 0,
@@ -772,7 +779,7 @@ const StudyCourse = () => {
                         <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{course.name}</h4>
                     </div>
                     <div>
-                        <Link to={`/my-learning/${learnerId}`} style={{ color: 'white' }}><i className="fas fa-sign-out-alt"></i></Link>
+                        <Link to={`/my-learning/`} style={{ color: 'white' }}><i className="fas fa-sign-out-alt"></i></Link>
                     </div>
                 </div>
 
@@ -801,7 +808,7 @@ const StudyCourse = () => {
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" id="tab2" data-bs-toggle="tab" href="#tab-content-2">
-                                                Lesson Materials
+                                                Materials
                                             </a>
                                         </li>
 
@@ -846,7 +853,18 @@ const StudyCourse = () => {
                                                             }
                                                             {
                                                                 materialList.length === 0 && (
-                                                                    <p>No materials found.</p>
+                                                                    <>
+                                                                        <div className="container">
+                                                                            <div className="icon text-center">
+                                                                                <i className="fa-solid fa-file-circle-xmark fa-2x "></i>
+                                                                            </div>
+                                                                            <div className="text">
+                                                                                <p>No materials found.</p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </>
+
                                                                 )
                                                             }
 
@@ -1008,7 +1026,7 @@ const StudyCourse = () => {
                                                         !showAttempts && (
                                                             <button
                                                                 className="btn btn-primary"
-                                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
+                                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                                 onClick={handleStartAssignment}
                                                             >
                                                                 Start Assignment
@@ -1149,7 +1167,7 @@ const StudyCourse = () => {
                                         {!quizStarted && (
                                             <button
                                                 className="btn btn-primary"
-                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
+                                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                 onClick={handleStartQuiz}
                                             >
                                                 Start Quiz
@@ -1300,7 +1318,7 @@ const StudyCourse = () => {
                                                 </div>
                                                 <button
                                                     className="btn btn-primary" onClick={() => handleStartQuiz(selectedQuiz.id)}
-                                                    style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
+                                                    style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                 >
                                                     Re-Attempt Quiz
                                                 </button>

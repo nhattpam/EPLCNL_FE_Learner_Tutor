@@ -9,8 +9,13 @@ import ReactPaginate from "react-paginate";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 
 const CreateVideoCourseModule = () => {
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
+const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState("");
   const [createButtonClicked, setCreateButtonClicked] = useState(false); // State variable to track button click
 

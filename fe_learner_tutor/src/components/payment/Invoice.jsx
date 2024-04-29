@@ -6,6 +6,12 @@ import accountService from '../../services/account.service';
 import learnerService from '../../services/learner.service';
 
 const Invoice = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
     const { transactionId } = useParams();
 

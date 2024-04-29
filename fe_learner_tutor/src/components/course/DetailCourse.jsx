@@ -15,11 +15,11 @@ const DetailCourse = () => {
 
     const { courseId } = useParams();
 
-    const learnerId = localStorage.getItem('learnerId');
+    const learnerId = sessionStorage.getItem('learnerId');
     const [showNotification, setShowNotification] = useState(false);
     const [loading, setLoading] = useState(false); // State to track loading status
     const [isEnrolled, setIsEnrolled] = useState(false);
-    const accountId = localStorage.getItem('accountId');
+    const accountId = sessionStorage.getItem('accountId');
 
 
     const [course, setCourse] = useState({
@@ -195,7 +195,7 @@ const DetailCourse = () => {
     // Function to handle tab pay
     const handlePayClick = (event) => {
         event.preventDefault();
-        const learnerId = localStorage.getItem('learnerId');
+        const learnerId = sessionStorage.getItem('learnerId');
         if (!learnerId) {
             setShowNotification(true);
             setTimeout(() => {
@@ -419,7 +419,7 @@ const DetailCourse = () => {
                                                         type="button"
                                                         className="btn btn-primary btn-lg btn-block"
                                                         onClick={handlePayClick}
-                                                        style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                        style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                     >
                                                         Get - ${course.stockPrice}
                                                     </button>
@@ -434,7 +434,7 @@ const DetailCourse = () => {
                                                                     type="button"
                                                                     className="btn btn-primary btn-lg btn-block"
                                                                     onClick={handlePayBalance}
-                                                                    style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px` }}
+                                                                    style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px`, borderColor: '#f58d04' }}
                                                                 >
                                                                     Or use your balance - ${course.stockPrice}
                                                                 </button>
@@ -454,7 +454,7 @@ const DetailCourse = () => {
                                                             type="button"
                                                             className="btn btn-primary btn-lg btn-block get-button"
                                                             to={`/study-class/${courseId}`}
-                                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
+                                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                         >
                                                             Study Now
                                                         </Link>
@@ -463,7 +463,7 @@ const DetailCourse = () => {
                                                             type="button"
                                                             className="btn btn-primary btn-lg btn-block get-button"
                                                             to={`/study-course/${courseId}`}
-                                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
+                                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` , border: 'none'}}
                                                         >
                                                             Study Now
                                                         </Link>
@@ -476,7 +476,7 @@ const DetailCourse = () => {
                                                                     type="button"
                                                                     className="btn btn-primary btn-lg btn-block get-button"
                                                                     onClick={handlePayClick}
-                                                                    style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                                    style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                                 >
                                                                     Get - ${course.stockPrice}
                                                                 </button>
@@ -494,7 +494,7 @@ const DetailCourse = () => {
                                                                             type="button"
                                                                             className="btn btn-primary btn-lg btn-block"
                                                                             onClick={handlePayBalance}
-                                                                            style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px` }}
+                                                                            style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                                         >
                                                                             Or use your balance - ${course.stockPrice}
                                                                         </button>
@@ -521,7 +521,7 @@ const DetailCourse = () => {
                                                 type="button"
                                                 className="btn btn-primary btn-lg btn-block"
                                                 disabled
-                                                style={{ backgroundColor: '#f58d04', cursor: 'not-allowed', borderRadius: '50px', padding: `8px 25px` }}
+                                                style={{ backgroundColor: '#f58d04', cursor: 'not-allowed', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                             >
                                                 Loading...
                                             </button>

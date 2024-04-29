@@ -10,10 +10,15 @@ const EditForum = () => {
     const { forumId } = useParams();
     const [accountForumList, setAccountForumList] = useState([]);
     const [forum, setForum] = useState([]);
-    const tutorId = localStorage.getItem('tutorId');
+    const tutorId = sessionStorage.getItem('tutorId');
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
 
     //LOADING

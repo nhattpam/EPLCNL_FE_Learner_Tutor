@@ -70,25 +70,25 @@ const SignIn = ({ setIsLoggedIn }) => {
                     // setIsLoggedIn(true);
 
                     // Store the JWT token in localStorage
-                    localStorage.setItem('token', response.data.data);
+                    sessionStorage.setItem('token', response.data.data);
                     // Pass the token to the module
                     // console.log('this is token: ' + response.data.data);
 
-                    localStorage.setItem('accountId', decodedToken.Id);
+                    sessionStorage.setItem('accountId', decodedToken.Id);
 
                     //get learner by accountId
                     const respnse = await accountService.getLearnerByAccountId(decodedToken.Id);
 
-                    localStorage.setItem('learnerId', respnse.data.id);
+                    sessionStorage.setItem('learnerId', respnse.data.id);
 
-                    const storedLearnerId = localStorage.getItem('learnerId')
+                    const storedLearnerId = sessionStorage.getItem('learnerId')
                     // console.log("This is learnerId from localStorage:", storedLearnerId);
 
                     sessionStorage.setItem('isLearner', true);
                     sessionStorage.setItem('isTutor', false);
 
                     setIsLoggedIn(true);
-                    localStorage.setItem('isLoggedIn', true); // Add this line to set isLoggedIn to true
+                    sessionStorage.setItem('isLoggedIn', true); // Add this line to set isLoggedIn to true
 
 
 
@@ -109,18 +109,18 @@ const SignIn = ({ setIsLoggedIn }) => {
                         // console.log("This is tutorId:", matchedTutor.id);
 
                         setIsLoggedIn(true);
-                        localStorage.setItem('isLoggedIn', true); // Add this line to set isLoggedIn to true
+                        sessionStorage.setItem('isLoggedIn', true); // Add this line to set isLoggedIn to true
 
                         sessionStorage.setItem('isTutor', true);
                         sessionStorage.setItem('isLearner', false);
 
 
                         // Access centerId from localStorage
-                        localStorage.setItem('tutorId', matchedTutor.id);
+                        sessionStorage.setItem('tutorId', matchedTutor.id);
                         //luu accountId
-                        localStorage.setItem('accountId', decodedToken.Id);
-                        const storedTutorId = localStorage.getItem('tutorId');
-                        const storedAccountId = localStorage.getItem('accountId');
+                        sessionStorage.setItem('accountId', decodedToken.Id);
+                        const storedTutorId = sessionStorage.getItem('tutorId');
+                        const storedAccountId = sessionStorage.getItem('accountId');
                         // console.log("This is tutorId from localStorage:", storedTutorId);
                         // console.log("This is accountId from localStorage:", storedAccountId);
                     } else {
@@ -128,13 +128,13 @@ const SignIn = ({ setIsLoggedIn }) => {
                     }
 
 
-                    const storedTutorId = localStorage.getItem('tutorId');
+                    const storedTutorId = sessionStorage.getItem('tutorId');
                     navigate(`/tutor-dashboard/${storedTutorId}`);
 
                     // setAccount(accountData);
                     // Access centerId from localStorage
-                    // localStorage.setItem('centerId', accountData.center.id);
-                    // const storedCenterId = localStorage.getItem('centerId');
+                    // sessionStorage.setItem('centerId', accountData.center.id);
+                    // const storedCenterId = sessionStorage.getItem('centerId');
                     // console.log("This is centerId from localStorage:", storedCenterId);
                     showErrorMessage('Login failed. Please try again.');
 

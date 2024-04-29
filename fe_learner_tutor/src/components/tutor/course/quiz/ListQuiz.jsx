@@ -9,6 +9,13 @@ import ReactPaginate from 'react-paginate';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 
 const ListQuiz = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
+
 
     const { storedModuleId } = useParams();
     const [quizList, setQuizList] = useState([]);

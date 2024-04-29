@@ -6,7 +6,12 @@ import Footer from "../../Footer";
 import moduleService from "../../../../services/module.service";
 
 const ModulePart = () => {
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
   const navigate = useNavigate();
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
 
   const [module, setModule] = useState({
     name: "",

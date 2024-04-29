@@ -10,7 +10,7 @@ import Sidebar from '../Sidebar';
 
 const ListAssignmentAttemptByTopic = () => {
 
-    const tutorId = localStorage.getItem('tutorId');
+    const tutorId = sessionStorage.getItem('tutorId');
     const { classTopicId } = useParams();
 
     const [assignmentAttemptList, setAssignmentAttemptList] = useState([]);
@@ -19,6 +19,12 @@ const ListAssignmentAttemptByTopic = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [assignmentAttemptPerPage] = useState(5);
 
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
     const [module, setModule] = useState({
         name: '',

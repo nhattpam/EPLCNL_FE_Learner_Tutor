@@ -10,6 +10,12 @@ import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 
 
 const ListAssignment = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
     const { storedModuleId } = useParams();
     const [assignmentList, setAssignmentList] = useState([]);

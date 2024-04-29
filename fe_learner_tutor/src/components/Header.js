@@ -12,8 +12,8 @@ import transactionService from '../services/transaction.service';
 
 const Header = () => {
 
-    const accountId = localStorage.getItem('accountId');
-    const learnerId = localStorage.getItem('learnerId');
+    const accountId = sessionStorage.getItem('accountId');
+    const learnerId = sessionStorage.getItem('learnerId');
     const isTutor = sessionStorage.getItem('isTutor') === 'true';
     const isLearner = sessionStorage.getItem('isLearner') === 'true';
 
@@ -96,13 +96,13 @@ const Header = () => {
     const handleLogout = () => {
         // Clear user session or perform any necessary logout actions
         // For example, you can use localStorage or sessionStorage to store authentication status
-        localStorage.removeItem('accountId');
+        sessionStorage.removeItem('accountId');
         sessionStorage.removeItem('isLearner');
         sessionStorage.removeItem('isTutor');
-        localStorage.removeItem('learnerId'); // Assuming you store authentication token in localStorage
-        localStorage.removeItem('tutorId'); // Assuming you store authentication token in localStorage
-        localStorage.removeItem('token'); // Assuming you store authentication token in localStorage
-        localStorage.removeItem('isLoggedIn');
+        sessionStorage.removeItem('learnerId'); // Assuming you store authentication token in localStorage
+        sessionStorage.removeItem('tutorId'); // Assuming you store authentication token in localStorage
+        sessionStorage.removeItem('token'); // Assuming you store authentication token in localStorage
+        sessionStorage.removeItem('isLoggedIn');
         // Redirect to the login page or any other page after logout
         navigate('/login');
     };
@@ -323,7 +323,7 @@ const Header = () => {
 
     const submitDeposit = (event) => {
         event.preventDefault();
-        const learnerId = localStorage.getItem('learnerId');
+        const learnerId = sessionStorage.getItem('learnerId');
         const selectedRadioButton = document.querySelector('input[name="amount"]:checked');
 
         if (!selectedRadioButton) {
@@ -437,7 +437,7 @@ const Header = () => {
                                 <Link to="/about">About</Link>
                             </li>
                             <li className="dropdown" >
-                                <a href="#">
+                                <a >
                                     <span>Course</span> <i className="bi bi-chevron-down" />
                                 </a>
                                 <ul style={{ borderRadius: '50px', padding: `8px 25px` }}>
@@ -459,7 +459,7 @@ const Header = () => {
 
                             {isLearner && (
                                 <li className="dropdown">
-                                    <a href="#">
+                                    <a >
                                         <span>Forums</span> <i className="bi bi-chevron-down" />
                                     </a>
                                     <ul style={{ borderRadius: '50px', padding: `8px 25px` }}>
@@ -511,12 +511,12 @@ const Header = () => {
                                             <span>My Account</span>
                                         </a>
                                         {/* item*/}
-                                        <Link href="javascript:void(0);" className="dropdown-item notify-item" to={`/my-learning/${learnerId}`}>
+                                        <Link href="javascript:void(0);" className="dropdown-item notify-item" to={`/my-learning`}>
                                             <i class="fas fa-journal-whills"></i>
                                             <span>My Learning</span>
                                         </Link>
                                         {/* item*/}
-                                        <Link href="javascript:void(0);" className="dropdown-item notify-item" to={`/my-transaction/${learnerId}`}>
+                                        <Link href="javascript:void(0);" className="dropdown-item notify-item" to={`/my-transaction`}>
                                             <i class="fas fa-money-bill-wave"></i>
                                             <span>Transaction</span>
                                         </Link>

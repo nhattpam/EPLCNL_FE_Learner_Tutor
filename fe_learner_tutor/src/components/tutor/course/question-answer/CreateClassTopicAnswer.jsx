@@ -11,8 +11,13 @@ import DateTimePicker from 'react-datetime-picker';
 import Dropzone from 'react-dropzone';
 
 const CreateClassTopicAnswer = () => {
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
+const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState('');
   const { storedQuestionId } = useParams();
 

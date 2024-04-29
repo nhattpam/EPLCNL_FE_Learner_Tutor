@@ -22,7 +22,12 @@ const EditQuiz = () => {
 
   const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState('');
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
   const navigate = useNavigate();
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
 
   const [questionList, setQuestionList] = useState([]);
 

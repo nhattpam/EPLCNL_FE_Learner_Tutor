@@ -10,8 +10,13 @@ import topicService from '../../../../services/topic.service';
 import classModuleService from '../../../../services/class-module.service';
 
 const CreateTopic = () => {
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
   const navigate = useNavigate();
-  const { storedClassLessonId } = useParams();
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
+const { storedClassLessonId } = useParams();
   const [createdTopics, setCreatedTopics] = useState([]);
 
   const [classLesson, setClassLesson] = useState({

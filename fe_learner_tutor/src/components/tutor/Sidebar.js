@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
 
-    const tutorId = localStorage.getItem('tutorId');
+    const tutorId = sessionStorage.getItem('tutorId');
 
 
     return (

@@ -21,7 +21,12 @@ const EditClassModule = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [classTopicsPerPage] = useState(2);
     const [msg, setMsg] = useState('');
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
     const { moduleId } = useParams();
 
     //LOADING

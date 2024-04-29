@@ -15,6 +15,13 @@ const EditLesson = () => {
   const [msg, setMsg] = useState('');
   const { lessonId } = useParams();
 
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
+
+
   const [lesson, setLesson] = useState({
     name: "",
     moduleId: "",

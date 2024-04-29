@@ -14,7 +14,12 @@ import questionAnswerService from '../../../../services/question-answer.service'
 import Dropzone from 'react-dropzone';
 
 const CreateClassTopicQuiz = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
     const { storedClassTopicId } = useParams();

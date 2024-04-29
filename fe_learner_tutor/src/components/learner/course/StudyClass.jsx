@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../Header';
 import Footer from '../../Footer';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import courseService from '../../../services/course.service';
 import moduleService from '../../../services/module.service'; // Import module service
 import classLessonService from '../../../services/class-lesson.service';
@@ -17,8 +17,15 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 
 
 const StudyClass = () => {
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
+    
   const { courseId } = useParams();
-  const learnerId = localStorage.getItem('learnerId');
+  const learnerId = sessionStorage.getItem('learnerId');
 
 
   const [course, setCourse] = useState({
@@ -131,6 +138,11 @@ const StudyClass = () => {
   // Function to handle click on a lesson card to show details
   const handleLessonClick = (lessonId) => {
     setSelectedLessonId(lessonId);
+    // Scroll to the top of the page
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth" // Optional: smooth scrolling animation
+  });
 
   };
 
@@ -547,7 +559,7 @@ const StudyClass = () => {
             <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 'bold', margin: 0 }}>{course.name}</h4>
           </div>
           <div>
-            <Link to={`/my-learning/${learnerId}`} style={{ color: 'white' }}><i className="fas fa-sign-out-alt"></i></Link>
+            <Link to={`/my-learning/`} style={{ color: 'white' }}><i className="fas fa-sign-out-alt"></i></Link>
           </div>
         </div>
 
@@ -579,7 +591,7 @@ const StudyClass = () => {
                         <div className="container" style={{ backgroundColor: '#fff' }} >
                           <div key={selectedLesson.id}>
                             {/* <div dangerouslySetInnerHTML={{ __html: selectedLesson.reading }}></div> */}
-                            <a href={selectedLesson.classUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}>Join the class</a>
+                            <a href={selectedLesson.classUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}>Join the class</a>
                           </div>
                           <img src={process.env.PUBLIC_URL + '/google_meet.jpg'} alt="google meet" style={{ width: '100%', paddingTop: '10px' }} />
 
@@ -738,7 +750,7 @@ const StudyClass = () => {
                               </div>
                               <button
                                 className="btn btn-primary" onClick={() => handleStartQuiz(selectedQuiz.id)}
-                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
+                                style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                               >
                                 Re-Attempt Quiz
                               </button>
@@ -935,7 +947,7 @@ const StudyClass = () => {
                                           </div>
                                           <button
                                             className="btn btn-primary"
-                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` }}
+                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` , border: 'none'}}
                                           >
                                             Submit
                                           </button>

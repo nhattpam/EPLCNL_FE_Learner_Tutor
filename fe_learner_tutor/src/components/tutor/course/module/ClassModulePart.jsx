@@ -7,7 +7,12 @@ import Footer from '../../Footer';
 
 const ClassModulePart = () => {
 
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
 
     const [formData, setFormData] = useState({

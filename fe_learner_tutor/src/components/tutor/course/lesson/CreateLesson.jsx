@@ -9,9 +9,14 @@ import ReactQuill from "react-quill";
 import Dropzone from "react-dropzone";
 
 const CreateLesson = () => {
-  const tutorId = localStorage.getItem("tutorId");
+  const tutorId = sessionStorage.getItem("tutorId");
+
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
 
   const navigate = useNavigate();
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
 
   const [module, setModule] = useState({
     name: "",

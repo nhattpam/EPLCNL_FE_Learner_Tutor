@@ -18,6 +18,13 @@ const CreateAssignment = () => {
   const [msg, setMsg] = useState("");
   const { storedModuleId } = useParams();
 
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+   
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
+
   useEffect(() => {
     if (storedModuleId) {
       moduleService

@@ -20,8 +20,14 @@ import refundSurveyService from '../../../services/refund-survey.service';
 
 
 const MyLearning = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+    console.log("STatus: " + storedLoginStatus)
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
-    const learnerId = localStorage.getItem('learnerId');
+    const learnerId = sessionStorage.getItem('learnerId');
 
 
     const [enrollmentList, setEnrollmentList] = useState([]);
@@ -460,6 +466,11 @@ const MyLearning = () => {
                         <h2 style={{ color: '#fff' }}>My learning</h2>
                     </div>
                 </div>
+                {loading && (
+                    <div className="loading-overlay">
+                        <div className="loading-spinner" />
+                    </div>
+                )}
                 {/* End Breadcrumbs */}
                 {/* ======= Courses Section ======= */}
                 <section id="courses" className="courses" style={{ marginTop: '-30px' }}>
@@ -480,11 +491,7 @@ const MyLearning = () => {
                         </ul>
                         {/* Tab Content */}
                         <div className="tab-content" id="myLearningTabsContent" style={{ marginTop: '-70px' }}>
-                            {loading && (
-                                <div className="loading-overlay">
-                                    <div className="loading-spinner" />
-                                </div>
-                            )}
+
                             <div className="tab-pane fade show active" id="tab-content-1">
                                 <section id="courses" className="courses">
                                     <div className="container" data-aos="fade-up">
@@ -538,7 +545,7 @@ const MyLearning = () => {
                                                                             </div>
                                                                         )}
                                                                         {isTransactionDateValid(enrollment.enrolledDate) && (
-                                                                            <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={() => handleRefundClick(enrollment.id)}>
+                                                                            <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none', color: '#fff' }} onClick={() => handleRefundClick(enrollment.id)}>
                                                                                 I want return
                                                                             </a>
                                                                         )}
@@ -585,7 +592,7 @@ const MyLearning = () => {
                                                                             </div>
                                                                             <div className="modal-footer">
                                                                                 <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowFeedbackModal(false)}>Close</button>
-                                                                                <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitFeedback(e)}>Send</button>
+                                                                                <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none' }} onClick={(e) => submitFeedback(e)}>Send</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -665,7 +672,7 @@ const MyLearning = () => {
                                                                             </div>
                                                                             <div className="modal-footer">
                                                                                 <button type="button" className="btn btn-dark" style={{ borderRadius: '50px', padding: `8px 25px` }} onClick={() => setShowReportModal(false)}>Close</button>
-                                                                                <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }} onClick={(e) => submitReport(e)}>Send</button>
+                                                                                <button type="button" className="btn btn-primary" style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none' }} onClick={(e) => submitReport(e)}>Send</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -844,7 +851,7 @@ const MyLearning = () => {
                                                                                 <button
                                                                                     type="button"
                                                                                     className="btn btn-primary"
-                                                                                    style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                                                    style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                                                     onClick={(e) => submitRefund(e)}
                                                                                 >
                                                                                     Send

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../Header';
 import Footer from '../../Footer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import learnerService from '../../../services/learner.service';
 import transactionService from '../../../services/transaction.service';
 import refundRequestService from '../../../services/refund-request.service';
@@ -11,7 +11,14 @@ import ReactPaginate from 'react-paginate';
 import { IconContext } from 'react-icons';
 
 const MyTransaction = () => {
-    const learnerId = localStorage.getItem('learnerId');
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
+    
+    const learnerId = sessionStorage.getItem('learnerId');
     const [transactionList, setTransactionList] = useState([]);
     const [refundRequestList, setRefundRequestList] = useState([]);
     const contentRef = useRef(null);

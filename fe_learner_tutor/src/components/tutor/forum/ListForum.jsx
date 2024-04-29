@@ -15,6 +15,12 @@ const ListForum = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [forumsPerPage] = useState(5);
 
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
 
     const handleSearch = (event) => {

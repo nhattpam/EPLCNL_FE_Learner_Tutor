@@ -18,6 +18,12 @@ const ListAssignmentAttempt = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [assignmentAttemptPerPage] = useState(5);
 
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
     const [module, setModule] = useState({
         name: '',

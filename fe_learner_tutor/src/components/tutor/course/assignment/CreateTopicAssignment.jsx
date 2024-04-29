@@ -15,10 +15,18 @@ import Dropzone from 'react-dropzone';
 import questionService from "../../../../services/question.service";
 
 const CreateTopicAssignment = () => {
-  const navigate = useNavigate();
+  
   const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState("");
   const { storedClassTopicId } = useParams();
+
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+    const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
+
 
   useEffect(() => {
     if (storedClassTopicId) {

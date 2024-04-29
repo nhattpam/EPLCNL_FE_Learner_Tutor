@@ -16,7 +16,7 @@ import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 
 const EditCourse = () => {
 
-    const tutorId = localStorage.getItem('tutorId');
+    const tutorId = sessionStorage.getItem('tutorId');
 
     const [course, setCourse] = useState({
         name: "",
@@ -37,7 +37,12 @@ const EditCourse = () => {
 
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
     const [moduleList, setModuleList] = useState([]);
     const [classModuleList, setClassModuleList] = useState([]);
@@ -84,8 +89,9 @@ const EditCourse = () => {
         courseService
             .getAllClassModulesByCourse(courseId)
             .then((res) => {
-                // console.log(res.data);
-                setClassModuleList(res.data);
+                const sortedModules = res.data.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+                setClassModuleList(sortedModules);
 
             })
             .catch((error) => {

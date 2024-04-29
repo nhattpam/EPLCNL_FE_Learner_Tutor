@@ -20,7 +20,12 @@ const EditClassTopicQuestion = () => {
 
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
     const [questionAnswerList, setQuestionAnswerList] = useState([]);
 

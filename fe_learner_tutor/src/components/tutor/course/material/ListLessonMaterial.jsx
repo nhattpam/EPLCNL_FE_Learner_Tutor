@@ -17,6 +17,12 @@ const ListLessonMaterial = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [materialsPerPage] = useState(5);
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+  const navigate = useNavigate();
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
 
 
   const [lessonMaterial, setLessonMaterial] = useState({

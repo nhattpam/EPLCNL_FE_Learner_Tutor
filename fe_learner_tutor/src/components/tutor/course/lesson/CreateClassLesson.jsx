@@ -11,6 +11,11 @@ import classLessonService from '../../../../services/class-lesson.service';
 const CreateClassLesson = () => {
   const navigate = useNavigate();
   const { storedModuleId } = useParams();
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
 
 
   const [classLesson, setClassLesson] = useState({

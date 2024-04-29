@@ -14,7 +14,12 @@ const MyTimeTable = () => {
     const [classModuleList, setClassModuleList] = useState([]);
     const [classTopicList, setClassTopicList] = useState([]);
     const [startDate, setStartDate] = useState(getStartOfWeek(new Date()));
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
 
 
     //LOADING

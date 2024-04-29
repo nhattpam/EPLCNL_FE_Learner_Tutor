@@ -12,7 +12,12 @@ import DateTimePicker from 'react-datetime-picker';
 import Dropzone from 'react-dropzone';
 
 const CreateQuestion = () => {
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
     const navigate = useNavigate();
+    if (!storedLoginStatus) {
+        navigate(`/login`)
+    }
     const [errors, setErrors] = useState({});
     const [msg, setMsg] = useState('');
     const { storedQuizId } = useParams();

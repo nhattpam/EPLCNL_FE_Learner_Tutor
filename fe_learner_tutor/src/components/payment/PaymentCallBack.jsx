@@ -6,6 +6,7 @@ import walletService from '../../services/wallet.service';
 import walletHistoryService from '../../services/wallet-history.service';
 
 const PaymentCallBack = () => {
+  
   const location = useLocation();
   const navigate = useNavigate();
   const [paymentDetails, setPaymentDetails] = useState({});
@@ -20,7 +21,11 @@ const PaymentCallBack = () => {
     learner: []
   });
 
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
 
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
 
 
 

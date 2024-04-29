@@ -10,8 +10,13 @@ import classModuleService from '../../../../services/class-module.service';
 import classLessonService from '../../../../services/class-lesson.service';
 
 const CreateClassCourseModule = () => {
+  const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
+
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
+  if (!storedLoginStatus) {
+      navigate(`/login`)
+  }
+const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState('');
   const [createButtonClicked, setCreateButtonClicked] = useState(false); // State variable to track button click
 
