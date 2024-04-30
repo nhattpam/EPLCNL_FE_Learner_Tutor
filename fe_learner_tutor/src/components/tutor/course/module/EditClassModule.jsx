@@ -240,8 +240,19 @@ const EditClassModule = () => {
                                                                     <td>{index + 1}</td>
                                                                     <td>{classTopic.name}</td>
                                                                     <td>{classTopic.description}</td>
-                                                                    <td>{classTopic.createdDate}</td>
-                                                                    <td>{classTopic.updatedDate}</td>
+                                                                    <td>{new Date(classTopic.createdDate).toLocaleString('en-US')}</td>
+                                                                    {
+                                                                        classTopic.updatedDate && (
+                                                                            <td>{new Date(classTopic.updatedDate).toLocaleString('en-US')}</td>
+
+                                                                        )
+                                                                    }
+                                                                    {
+                                                                        !classTopic.updatedDate && (
+                                                                            <td><i class="fa-solid fa-ban"></i></td>
+
+                                                                        )
+                                                                    }
                                                                     <td>
                                                                         <Link to={`/tutor/courses/edit-topic/${classTopic.id}`} className='text-secondary'>
                                                                             <i class="fa-regular fa-eye"></i>

@@ -16,7 +16,7 @@ const EditTopic = () => {
 
   const navigate = useNavigate();
   if (!storedLoginStatus) {
-      navigate(`/login`)
+    navigate(`/login`)
   }
 
   const { storedClassTopicId } = useParams();
@@ -391,8 +391,19 @@ const EditTopic = () => {
                                       {quiz.gradeToPass}
                                     </td>
                                     <td>{quiz.deadline} mins</td>
-                                    <td>{quiz.createdDate}</td>
-                                    <td>{quiz.updatedDate}</td>
+                                    <td>{new Date(quiz.createdDate).toLocaleString('en-US')}</td>
+                                    {
+                                      quiz.updatedDate && (
+                                        <td>{new Date(quiz.updatedDate).toLocaleString('en-US')}</td>
+
+                                      )
+                                    }
+                                    {
+                                      !quiz.updatedDate && (
+                                        <td><i class="fa-solid fa-ban"></i></td>
+
+                                      )
+                                    }
                                     <td>
                                       <Link to={`/tutor/courses/edit-topic-quiz/${quiz.id}`} className='text-secondary'>
                                         <i class="fa-regular fa-eye"></i>
@@ -466,8 +477,19 @@ const EditTopic = () => {
                                     <td>{index + 1}</td>
                                     <td>{assignment.deadline} mins</td>
                                     <td>{assignment.gradeToPass} </td>
-                                    <td>{assignment.createdDate}</td>
-                                    <td>{assignment.updatedDate}</td>
+                                    <td>{new Date(assignment.createdDate).toLocaleString('en-US')}</td>
+                                    {
+                                      assignment.updatedDate && (
+                                        <td>{new Date(assignment.updatedDate).toLocaleString('en-US')}</td>
+
+                                      )
+                                    }
+                                    {
+                                      !assignment.updatedDate && (
+                                        <td><i class="fa-solid fa-ban"></i></td>
+
+                                      )
+                                    }
                                     <td>
                                       <Link to={`/tutor/courses/edit-topic-assignment/${assignment.id}`} className='text-secondary'>
                                         <i class="fa-regular fa-eye"></i>
@@ -528,7 +550,6 @@ const EditTopic = () => {
                                 <th data-toggle="true">Material Name</th>
                                 {/* <th>Url</th> */}
                                 <th data-hide="phone">Created Date</th>
-                                <th data-hide="phone, tablet">Updated Date</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
@@ -538,8 +559,7 @@ const EditTopic = () => {
                                   <tr key={material.id}>
                                     <td><Link to={material.materialUrl} target="_blank" rel="noopener noreferrer" className='text-success'>{material.name}</Link></td>
                                     {/* <td>{material.materialUrl}</td> */}
-                                    <td>{material.createdDate}</td>
-                                    <td>{material.updatedDate}</td>
+                                    <td>{new Date(material.createdDate).toLocaleString('en-US')}</td>
                                     <td>
                                       <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
                                         <i class="fas fa-trash-alt"></i>
