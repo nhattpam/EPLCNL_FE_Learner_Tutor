@@ -119,6 +119,8 @@ const MyLearning = () => {
         rating: ""
     });
 
+    const [courseName, setCourseName] = useState("");
+
     const handleContentChange = (value) => {
         setFeedback({ ...feedback, feedbackContent: value });
     };
@@ -126,11 +128,12 @@ const MyLearning = () => {
     const handleRatingChange = (value) => {
         setFeedback({ ...feedback, rating: value }); // Update the rating state
     };
-    const handleFeedbackClick = (courseId, learnerId) => {
+    const handleFeedbackClick = (courseId, learnerId, courseName) => {
         setShowFeedbackModal(true);
         setShowReportModal(false);
         feedback.courseId = courseId;
         feedback.learnerId = learnerId;
+        setCourseName(courseName);
     };
 
     const submitFeedback = (e) => {
@@ -172,11 +175,12 @@ const MyLearning = () => {
         }
     };
 
-    const handleReportClick = (courseId, learnerId) => {
+    const handleReportClick = (courseId, learnerId, courseName) => {
         setShowReportModal(true);
         setShowFeedbackModal(false);
         report.courseId = courseId;
         report.learnerId = learnerId;
+        setCourseName(courseName);
     };
 
     const handleReasonChange = (value) => {
@@ -529,9 +533,9 @@ const MyLearning = () => {
                                                                             <div className="trainer-rank d-flex align-items-center">
                                                                                 <i className="bx bx-user" />&nbsp;{learnersCount[enrollment.transaction?.course?.id]}
                                                                                 &nbsp;&nbsp;
-                                                                                <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.transaction?.courseId, learnerId)}></i>
+                                                                                <i class="far fa-grin-stars" onClick={() => handleFeedbackClick(enrollment.transaction?.courseId, learnerId, enrollment.transaction?.course?.name)}></i>
                                                                                 &nbsp;&nbsp;&nbsp;
-                                                                                <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction?.courseId, learnerId)}></i>
+                                                                                <i class="fas fa-flag" onClick={() => handleReportClick(enrollment.transaction?.courseId, learnerId, enrollment.transaction?.course?.name)}></i>
                                                                             </div>
                                                                         </div>
                                                                         {/* Display courseScore and learningScore */}
@@ -564,7 +568,7 @@ const MyLearning = () => {
                                                                     <div className="modal-dialog  modal-dialog-scrollable modal-lg">
                                                                         <div className="modal-content">
                                                                             <div className="modal-header">
-                                                                                <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
+                                                                                <h5 className="modal-title">Feedback for course - <span style={{ color: '#f58d04' }}>{courseName}</span> </h5>
                                                                                 <button type="button" className="close" onClick={() => setShowFeedbackModal(false)}>
                                                                                     <span aria-hidden="true">&times;</span>
                                                                                 </button>
@@ -613,7 +617,7 @@ const MyLearning = () => {
                                                                     <div className="modal-dialog modal-dialog-scrollable modal-lg"> {/* Add 'modal-dialog-scrollable' class */}
                                                                         <div className="modal-content">
                                                                             <div className="modal-header">
-                                                                                <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{enrollment.transaction?.course?.name}</span> </h5>
+                                                                                <h5 className="modal-title">Report course - <span style={{ color: '#f58d04' }}>{courseName}</span> </h5>
                                                                                 <button type="button" className="close" onClick={() => setShowReportModal(false)}>
                                                                                     <span aria-hidden="true">&times;</span>
                                                                                 </button>
