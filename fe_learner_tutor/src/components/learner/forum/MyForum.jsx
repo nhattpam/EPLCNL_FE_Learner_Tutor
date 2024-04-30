@@ -145,7 +145,7 @@ const MyForum = () => {
                               </div>
 
                               <div className="message-content" style={{ width: '400px' }}>{accountForum.message}</div>
-                              <div className="message-date">{accountForum.messagedDate}</div>
+                              <div className="message-date">{new Date(accountForum.messagedDate).toLocaleString('en-US')}</div>
                             </div>
                           ))
                       }

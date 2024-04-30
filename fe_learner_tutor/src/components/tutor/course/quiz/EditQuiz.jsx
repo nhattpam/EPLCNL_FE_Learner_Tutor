@@ -26,7 +26,7 @@ const EditQuiz = () => {
 
   const navigate = useNavigate();
   if (!storedLoginStatus) {
-      navigate(`/login`)
+    navigate(`/login`)
   }
 
   const [questionList, setQuestionList] = useState([]);
@@ -189,7 +189,7 @@ const EditQuiz = () => {
                         </tr>
                         <tr>
                           <th>Created Date:</th>
-                          <td>{quiz.createdDate}</td>
+                          <td>{new Date(quiz.createdDate).toLocaleString('en-US')}</td>
                         </tr>
                       </tbody>
                     </table>

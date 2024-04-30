@@ -738,7 +738,7 @@ const DetailCourse = () => {
                                                             <div className="d-flex flex-row p-3"> <img src={feedback.learner?.account?.imageUrl} width={40} height={40} className="rounded-circle mr-3" />
                                                                 <div className="w-100">
                                                                     <div className="d-flex justify-content-between align-items-center">
-                                                                        <div className="d-flex flex-row align-items-center"> <span className="mr-2" style={{ fontWeight: 'bold' }}>{feedback.learner?.account?.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{feedback.createdDate}</small>
+                                                                        <div className="d-flex flex-row align-items-center"> <span className="mr-2" style={{ fontWeight: 'bold' }}>{feedback.learner?.account?.fullName}</span> <small className="c-badge">Top Comment</small> </div> <small>{new Date(feedback.createdDate).toLocaleString('en-US')}</small>
                                                                     </div>
                                                                     <p className="text-justify comment-text mb-0" dangerouslySetInnerHTML={{ __html: feedback.feedbackContent }}></p>
                                                                 </div>

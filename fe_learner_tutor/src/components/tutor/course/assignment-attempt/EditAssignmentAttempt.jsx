@@ -323,7 +323,7 @@ const EditAssignmentAttempt = () => {
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Attempted Date:</th>
-                                                                        <td>{assignmentAttempt.attemptedDate}</td>
+                                                                        <td>{new Date(assignmentAttempt.attemptedDate).toLocaleString('en-US')}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>

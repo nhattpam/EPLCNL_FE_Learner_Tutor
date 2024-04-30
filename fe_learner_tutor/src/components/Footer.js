@@ -21,10 +21,10 @@ const Footer = () => {
                             <div className="col-lg-2 col-md-6 footer-links">
                                 <h4>Useful Links</h4>
                                 <ul>
-                                    <li><i className="bx bx-chevron-right" /> <a href="#">Home</a></li>
-                                    <li><i className="bx bx-chevron-right" /> <a href="#">About us</a></li>
-                                    <li><i className="bx bx-chevron-right" /> <a href="#">Terms of service</a></li>
-                                    <li><i className="bx bx-chevron-right" /> <a href="#">Privacy policy</a></li>
+                                    <li><i className="bx bx-chevron-right" /> <a href="/home">Home</a></li>
+                                    <li><i className="bx bx-chevron-right" /> <a href="/about">About us</a></li>
+                                    <li><i className="bx bx-chevron-right" /> <a href="/about">Terms of service</a></li>
+                                    <li><i className="bx bx-chevron-right" /> <a href="/about">Privacy policy</a></li>
                                 </ul>
                             </div>
                            

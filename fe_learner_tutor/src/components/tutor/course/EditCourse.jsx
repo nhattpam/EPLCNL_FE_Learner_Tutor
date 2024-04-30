@@ -376,6 +376,12 @@ const EditCourse = () => {
                                                             <i class="fa-solid fa-note-sticky"></i>
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <th>Created Date:</th>
+                                                        <td>
+                                                            {new Date(course.createdDate).toLocaleString('en-US')}
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>

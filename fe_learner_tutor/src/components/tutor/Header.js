@@ -673,7 +673,7 @@ const Header = () => {
             {
                 showWalletHistoryModal && (
                     <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                        <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                        <div className="modal-dialog modal-dialog-scrollable modal-xl" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">Wallet History</h5>
@@ -700,7 +700,7 @@ const Header = () => {
                                                         walletHistoryList.length > 0 && walletHistoryList.map((walletHistory, index) => (
                                                             <tr key={walletHistory.id}>
                                                                 <td>{index + 1}</td>
-                                                                <td>{walletHistory.transactionDate}</td>
+                                                                <td>{new Date(walletHistory.transactionDate).toLocaleString('en-US')}</td>
                                                                 <td>{walletHistory.note}</td>
                                                             </tr>
                                                         ))
@@ -711,7 +711,11 @@ const Header = () => {
                                         </div>
                                         {
                                             walletHistoryList.length === 0 && (
-                                                <p className='text-center mt-2'>No transactions found.</p>
+                                                <>
+                                                    <i class="fa-solid fa-coins fa-2x mt-3"></i>
+                                                    <p className='text-center mt-2'>No transactions found.</p>
+
+                                                </>
                                             )
                                         }
                                     </div>

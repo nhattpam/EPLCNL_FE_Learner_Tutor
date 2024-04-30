@@ -142,7 +142,7 @@ const EditForum = () => {
                                                                 {accountForum.tutor?.account?.fullName ?? accountForum.learner?.account?.fullName}
                                                             </div>
                                                             <div className="message-content">{accountForum.message}</div>
-                                                            <div className="message-date">{accountForum.messagedDate}</div>
+                                                            <div className="message-date">{new Date(accountForum.messagedDate).toLocaleString('en-US')}</div>
                                                         </div>
                                                     ))
                                             }

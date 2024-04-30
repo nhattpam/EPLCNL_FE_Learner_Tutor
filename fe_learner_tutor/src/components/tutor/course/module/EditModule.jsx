@@ -300,9 +300,19 @@ const EditModule = () => {
                                                                     <td>{index + 1}</td>
                                                                     <td>{lesson.name}</td>
                                                                     {/* <td>{lesson.videoUrl}</td> */}
-                                                                    <td>{lesson.createdDate}</td>
-                                                                    <td>{lesson.updatedDate}</td>
-                                                                    <td>
+                                                                    <td>{new Date(lesson.createdDate).toLocaleString('en-US')}</td>
+                                                                    {
+                                                                        lesson.updatedDate && (
+                                                                            <td>{new Date(lesson.updatedDate).toLocaleString('en-US')}</td>
+
+                                                                        )
+                                                                    }
+                                                                    {
+                                                                        !lesson.updatedDate && (
+                                                                            <td><i class="fa-solid fa-ban"></i></td>
+
+                                                                        )
+                                                                    }                                                                    <td>
                                                                         <Link to={`/tutor/courses/edit-lesson/${lesson.id}`} className='text-dark'>
                                                                             <i class="fa-regular fa-eye"></i>
                                                                         </Link>
@@ -372,8 +382,19 @@ const EditModule = () => {
                                                                     <td>{index + 1}</td>
                                                                     <td>{assignment.deadline} mins</td>
                                                                     <td>{assignment.gradeToPass}</td>
-                                                                    <td>{assignment.createdDate}</td>
-                                                                    <td>{assignment.updatedDate}</td>
+                                                                    <td>{new Date(assignment.createdDate).toLocaleString('en-US')}</td>
+                                                                    {
+                                                                        assignment.updatedDate && (
+                                                                            <td>{new Date(assignment.updatedDate).toLocaleString('en-US')}</td>
+
+                                                                        )
+                                                                    }
+                                                                    {
+                                                                        !assignment.updatedDate && (
+                                                                            <td><i class="fa-solid fa-ban"></i></td>
+
+                                                                        )
+                                                                    }
                                                                     <td>
                                                                         <Link to={`/tutor/courses/edit-assignment/${assignment.id}`} className='text-secondary'>
                                                                             <i class="fa-regular fa-eye"></i>
@@ -443,8 +464,19 @@ const EditModule = () => {
                                                                     <td>{quiz.name}</td>
                                                                     <td>{quiz.gradeToPass}</td>
                                                                     <td>{quiz.deadline} mins</td>
-                                                                    <td>{quiz.createdDate}</td>
-                                                                    <td>{quiz.updatedDate}</td>
+                                                                    <td>{new Date(quiz.createdDate).toLocaleString('en-US')}</td>
+                                                                    {
+                                                                        quiz.updatedDate && (
+                                                                            <td>{new Date(quiz.updatedDate).toLocaleString('en-US')}</td>
+
+                                                                        )
+                                                                    }
+                                                                    {
+                                                                        !quiz.updatedDate && (
+                                                                            <td><i class="fa-solid fa-ban"></i></td>
+
+                                                                        )
+                                                                    }
                                                                     <td>
                                                                         <Link to={`/tutor/courses/edit-quiz/${quiz.id}`} className='text-secondary'>
                                                                             <i class="fa-regular fa-eye"></i>

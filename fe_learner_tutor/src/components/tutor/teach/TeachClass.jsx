@@ -351,8 +351,6 @@ const TeachClass = () => {
                                                                     <th data-toggle="true">No.</th>
                                                                     <th data-toggle="true">Topic Name</th>
                                                                     <th>Description</th>
-                                                                    <th data-hide="phone">Created Date</th>
-                                                                    <th data-hide="phone, tablet">Updated Date</th>
                                                                     <th>Action</th>
                                                                     {/* <th>Quizzes</th> */}
                                                                 </tr>
@@ -363,8 +361,6 @@ const TeachClass = () => {
                                                                         <td>{index + 1}</td>
                                                                         <td>{classTopic.name}</td>
                                                                         <td>{classTopic.description}</td>
-                                                                        <td>{classTopic.createdDate}</td>
-                                                                        <td>{classTopic.updatedDate}</td>
                                                                         <td>
                                                                             <Link to={`/list-assignment-attempt-by-topic/${classTopic.id}`} className='text-secondary'>
                                                                                 <i className="fa-regular fa-eye"></i>

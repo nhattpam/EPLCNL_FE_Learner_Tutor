@@ -17,9 +17,9 @@ const EditLesson = () => {
 
   const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
 
-    if (!storedLoginStatus) {
-        navigate(`/login`)
-    }
+  if (!storedLoginStatus) {
+    navigate(`/login`)
+  }
 
 
   const [lesson, setLesson] = useState({
@@ -319,7 +319,6 @@ const EditLesson = () => {
                               <th data-toggle="true">Material Name</th>
                               {/* <th>Url</th> */}
                               <th data-hide="phone">Created Date</th>
-                              <th data-hide="phone, tablet">Updated Date</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -329,8 +328,7 @@ const EditLesson = () => {
                                 <tr key={material.id}>
                                   <td><Link to={material.materialUrl} target="_blank" rel="noopener noreferrer" className='text-success'>{material.name}</Link></td>
                                   {/* <td>{material.materialUrl}</td> */}
-                                  <td>{material.createdDate}</td>
-                                  <td>{material.updatedDate}</td>
+                                  <td>{new Date(material.createdDate).toLocaleString('en-US')}</td>
                                   <td>
                                     <Link to={`/tutor/courses/edit-class-material/${material.id}`} className='text-danger'>
                                       <i class="fas fa-trash-alt"></i>

@@ -17,7 +17,7 @@ const MyTransaction = () => {
     if (!storedLoginStatus) {
         navigate(`/login`)
     }
-    
+
     const learnerId = sessionStorage.getItem('learnerId');
     const [transactionList, setTransactionList] = useState([]);
     const [refundRequestList, setRefundRequestList] = useState([]);
@@ -195,7 +195,7 @@ const MyTransaction = () => {
 
                                                                     <td>{transaction.paymentMethod?.name}</td>
                                                                     <td>${transaction.amount / 24000}</td>
-                                                                    <td>{transaction.transactionDate}</td>
+                                                                    <td>{new Date(transaction.transactionDate).toLocaleString('en-US')}</td>
                                                                     <td>{transaction.status === "PROCESSING" ? "FAILED" : transaction.status}</td>
 
                                                                 </tr>
@@ -313,7 +313,7 @@ const MyTransaction = () => {
                                                                     ${refund.enrollment?.transaction?.amount / 24000}
                                                                 </td>
                                                                 <td>
-                                                                    {refund.requestedDate}
+                                                                    {new Date(refund.requestedDate).toLocaleString('en-US')}
                                                                 </td>
                                                                 <td>
                                                                     <i class="fa-regular fa-hand" onClick={() => handleReasonClick(refund.id)}></i>
@@ -334,7 +334,7 @@ const MyTransaction = () => {
                             {showReasonModal && (
                                 <form id="demo-form" data-parsley-validate>
                                     <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
-                                        <div className="modal-dialog  modal-dialog-scrollable">
+                                        <div className="modal-dialog  modal-dialog-scrollable modal-lg">
                                             <div className="modal-content">
                                                 <div className="modal-header">
                                                     <h5 className="modal-title">Reasons </h5>

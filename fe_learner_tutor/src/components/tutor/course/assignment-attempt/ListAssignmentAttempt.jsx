@@ -160,7 +160,7 @@ const ListAssignmentAttempt = () => {
                                                                 <td dangerouslySetInnerHTML={{ __html: truncateText(assignmentAttempt.assignment?.questionText) }}></td>
 
                                                                 <td>{assignmentAttempt.learner?.account?.fullName}</td>
-                                                                <td>{assignmentAttempt.attemptedDate}</td>
+                                                                <td>{new Date(assignmentAttempt.attemptedDate).toLocaleString('en-US')}</td>
                                                                 <td><span className="badge label-table badge-danger">{assignmentAttempt.totalGrade}</span></td>
                                                                 <td>
                                                                     <Link to={`/edit-assignment-attempt/${assignmentAttempt.id}`} className='text-warning'>
