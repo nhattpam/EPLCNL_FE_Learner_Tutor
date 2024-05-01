@@ -60,13 +60,15 @@ const MyTransaction = () => {
         learnerService
             .getAllRefundRequestByLearnerId(learnerId)
             .then((res) => {
-                setRefundRequestList(res.data);
+                // Sort refund requests by requestedDate
+                const sortedRefundRequests = res.data.sort((a, b) => new Date(a.requestedDate) - new Date(b.requestedDate));
+                setRefundRequestList(sortedRefundRequests);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, [learnerId]);
-
+    
     const scroll = (scrollOffset) => {
         contentRef.current.scrollLeft += scrollOffset;
     };
