@@ -99,7 +99,11 @@ const DetailCourse = () => {
             .getAllClassModulesByCourse(courseId)
             .then((res) => {
                 // Ensure classModuleList is initialized with an empty array if res.data is undefined
-                setClassModuleList(res.data || []);
+                const modules = res.data || [];
+                // Sort modules by startDate
+                const sortedModules = modules.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+                // Set the sorted module list
+                setClassModuleList(sortedModules);
 
                 // Fetch class topics for each class lesson
                 const promises = res.data.map(classModule =>
@@ -407,41 +411,51 @@ const DetailCourse = () => {
                                 {/* Notification */}
                                 {showNotification && (
                                     <div className="notification fixed-top w-100  text-center" style={{ backgroundColor: '#f58d04' }}>
-                                        <p className="m-0 text-dark" style={{fontWeight: 'bold'}}>You need to login first!</p>
+                                        <p className="m-0 text-dark" style={{ fontWeight: 'bold' }}>You need to login first!</p>
                                     </div>
                                 )}
                                 {!loading ? (
                                     <>
                                         {enrollment === null ? (
                                             <>
-                                                <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-primary btn-lg btn-block"
-                                                        onClick={handlePayClick}
-                                                        style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
-                                                    >
-                                                        Get - ${course.stockPrice}
-                                                    </button>
-                                                </div>
-                                                <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
-                                                </p>
-                                                {
-                                                    learnerId !== null && (
-                                                        <>
-                                                            <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn btn-primary btn-lg btn-block"
-                                                                    onClick={handlePayBalance}
-                                                                    style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px`, borderColor: '#f58d04' }}
-                                                                >
-                                                                    Or use your balance - ${course.stockPrice}
-                                                                </button>
-                                                            </div>
-                                                        </>
-                                                    )
-                                                }
+                                                {classModuleList.some(classModule => new Date(classModule.startDate) < new Date()) ? (
+                                                    // If any class module has a start date in the past
+                                                    <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
+                                                        <p className='text-danger'>Class has already started. You cannot purchase now!.</p>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-primary btn-lg btn-block"
+                                                                onClick={handlePayClick}
+                                                                style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
+                                                            >
+                                                                Get - ${course.stockPrice}
+                                                            </button>
+                                                        </div>
+                                                        <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} />
+                                                        </p>
+                                                        {
+                                                            learnerId !== null && (
+                                                                <>
+                                                                    <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
+                                                                        <button
+                                                                            type="button"
+                                                                            className="btn btn-primary btn-lg btn-block"
+                                                                            onClick={handlePayBalance}
+                                                                            style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px`, borderColor: '#f58d04' }}
+                                                                        >
+                                                                            Or use your balance - ${course.stockPrice}
+                                                                        </button>
+                                                                    </div>
+                                                                </>
+                                                            )
+                                                        }
+                                                    </>
+                                                )}
+
 
                                             </>
 
@@ -463,45 +477,55 @@ const DetailCourse = () => {
                                                             type="button"
                                                             className="btn btn-primary btn-lg btn-block get-button"
                                                             to={`/study-course/${courseId}`}
-                                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px` , border: 'none'}}
+                                                            style={{ backgroundColor: '#f58d04', color: '#fff', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                         >
                                                             Study Now
                                                         </Link>
                                                     )
                                                 ) : (
                                                     <>
-                                                        <div>
-                                                            <div>
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn btn-primary btn-lg btn-block get-button"
-                                                                    onClick={handlePayClick}
-                                                                    style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
-                                                                >
-                                                                    Get - ${course.stockPrice}
-                                                                </button>
+                                                        {classModuleList.some(classModule => new Date(classModule.startDate) < new Date()) ? (
+                                                            // If any class module has a start date in the past
+                                                            <div className="course-info d-flex justify-content-between align-items-center" style={{ backgroundColor: '#fff' }}>
+                                                                <p className='text-danger'>Class has already started. You cannot purchase now!.</p>
                                                             </div>
-                                                            <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                                                                <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} /></p>
-                                                            </div>
-                                                        </div>
-
-                                                        {
-                                                            learnerId !== null && (
-                                                                <>
-                                                                    <div className="course-info d-flex justify-content-between align-items-center">
+                                                        ) : (
+                                                            <>
+                                                                <div>
+                                                                    <div>
                                                                         <button
                                                                             type="button"
-                                                                            className="btn btn-primary btn-lg btn-block"
-                                                                            onClick={handlePayBalance}
-                                                                            style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
+                                                                            className="btn btn-primary btn-lg btn-block get-button"
+                                                                            onClick={handlePayClick}
+                                                                            style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
                                                                         >
-                                                                            Or use your balance - ${course.stockPrice}
+                                                                            Get - ${course.stockPrice}
                                                                         </button>
                                                                     </div>
-                                                                </>
-                                                            )
-                                                        }
+                                                                    <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                                                                        <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '25%' }} /></p>
+                                                                    </div>
+                                                                </div>
+
+                                                                {
+                                                                    learnerId !== null && (
+                                                                        <>
+                                                                            <div className="course-info d-flex justify-content-between align-items-center">
+                                                                                <button
+                                                                                    type="button"
+                                                                                    className="btn btn-primary btn-lg btn-block"
+                                                                                    onClick={handlePayBalance}
+                                                                                    style={{ backgroundColor: '#fff', color: '#000', borderRadius: '50px', padding: `8px 25px`, border: 'none' }}
+                                                                                >
+                                                                                    Or use your balance - ${course.stockPrice}
+                                                                                </button>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                                }
+
+                                                            </>
+                                                        )}
 
 
                                                     </>
@@ -563,7 +587,7 @@ const DetailCourse = () => {
                                                                     </td>
                                                                     <td>{course.name}</td>
                                                                     <td><span style={{ fontWeight: 'bold' }}>$</span>{course.stockPrice}</td>
-                                                                    <td style={{textAlign: 'left'}}>{course.description}</td>
+                                                                    <td style={{ textAlign: 'left' }}>{course.description}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -604,7 +628,7 @@ const DetailCourse = () => {
                                                         onClick={(event) => handleTabClick(event, classModule.id)}
                                                         href={`#tab-${classModule.id}`} style={{ borderRadius: '50px', padding: `8px 25px` }}
                                                     > On Date:
-                                                        <span style={{ color: '#f58d04' }}>{new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
+                                                        <span style={{ color: '#f58d04' }}> {new Date(classModule.startDate).toLocaleDateString('en-US')}</span>
                                                     </a>
                                                 </li>
                                             </ul>
