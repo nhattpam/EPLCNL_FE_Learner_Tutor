@@ -318,7 +318,7 @@ const DetailCourse = () => {
                 .then((response) => {
                     transactionService.payByWallet(response.data.id);
                     window.alert("Pay successfully")
-                    navigate(`/my-learning/${learnerId}`)
+                    navigate(`/my-learning/`)
                 })
                 .catch((error) => {
                     console.error("Error while saving transaction:", error);
