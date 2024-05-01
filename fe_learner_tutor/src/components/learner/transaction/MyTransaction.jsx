@@ -61,7 +61,7 @@ const MyTransaction = () => {
             .getAllRefundRequestByLearnerId(learnerId)
             .then((res) => {
                 // Sort refund requests by requestedDate
-                const sortedRefundRequests = res.data.sort((a, b) => new Date(a.requestedDate) - new Date(b.requestedDate));
+                const sortedRefundRequests = res.data.sort((a, b) => new Date(b.requestedDate) - new Date(a.requestedDate));
                 setRefundRequestList(sortedRefundRequests);
             })
             .catch((error) => {
