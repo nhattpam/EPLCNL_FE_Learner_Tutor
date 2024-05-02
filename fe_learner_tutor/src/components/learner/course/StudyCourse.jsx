@@ -769,10 +769,16 @@ const StudyCourse = () => {
                                 <>
                                     {
                                         selectedLesson.videoUrl && (
-                                            <video controls style={{ width: '100%' }}>
-                                                <source src={selectedLesson.videoUrl} type="video/mp4" />
-                                                Your browser does not support the video tag.
-                                            </video>
+                                            <>
+                                                <div key={selectedLesson.id}>
+                                                    <video controls style={{ width: '100%' }}>
+                                                        <source src={selectedLesson.videoUrl} type="video/mp4" />
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </div>
+
+                                            </>
+
                                         )
                                     }
 
