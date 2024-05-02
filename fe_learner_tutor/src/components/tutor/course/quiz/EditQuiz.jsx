@@ -217,7 +217,7 @@ const EditQuiz = () => {
                                   Question {index + 1}
                                 </td>
                                 <td>{question.defaultGrade}</td>
-                                <td>{question.createdDate}</td>
+                                <td>{new Date(question.createdDate).toLocaleString('en-US')}</td>
                                 <td>
                                   <Link to={`/tutor/courses/edit-question/${question.id}`} className='text-secondary'>
                                     <i class="fa-regular fa-eye"></i>

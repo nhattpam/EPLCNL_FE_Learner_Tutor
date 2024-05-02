@@ -178,7 +178,7 @@ const EditQuestion = () => {
                                                     </tr>
                                                     <tr>
                                                         <th>Created Date</th>
-                                                        <td>{question.createdDate}</td>
+                                                        <td>{new Date(question.createdDate).toLocaleString('en-US')}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
