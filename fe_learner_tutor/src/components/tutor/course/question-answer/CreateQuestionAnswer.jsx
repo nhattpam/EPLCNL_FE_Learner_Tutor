@@ -95,12 +95,12 @@ const CreateQuestionAnswer = () => {
 
     const handleAnswerChange = (index, e) => {
         const { name, value, type, checked } = e.target;
-    
+
         const updatedQuestionAnswers = [...questionAnswers];
-    
+
         if (type === 'checkbox') {
             updatedQuestionAnswers[index] = { ...updatedQuestionAnswers[index], [name]: checked };
-    
+
             // Uncheck all other checkboxes
             updatedQuestionAnswers.forEach((answer, i) => {
                 if (i !== index) {
@@ -112,21 +112,29 @@ const CreateQuestionAnswer = () => {
             updatedQuestionAnswers.forEach((answer, i) => {
                 updatedQuestionAnswers[i] = { ...updatedQuestionAnswers[i], [name]: false };
             });
-    
+
             // Check the selected radio button
             updatedQuestionAnswers[index] = { ...updatedQuestionAnswers[index], [name]: checked };
         } else {
             updatedQuestionAnswers[index] = { ...updatedQuestionAnswers[index], [name]: value };
         }
-    
+
         setQuestionAnswers(updatedQuestionAnswers);
     };
-    
-    
+
+
 
 
     const submitQuestionAnswer = async (e) => {
         e.preventDefault();
+
+        // Check if at least one answer is marked as correct
+        const hasCorrectAnswer = questionAnswers.some(answer => answer.isAnswer);
+
+        if (!hasCorrectAnswer) {
+            alert('Please choose at least one correct answer.');
+            return;
+        }
 
         try {
             const questionAnswersData = questionAnswers.map(answer => ({

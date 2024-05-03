@@ -320,6 +320,15 @@ const CreateQuiz = () => {
     const submitQuestionAnswer = async (e) => {
         e.preventDefault();
 
+        // Check if at least one answer is marked as correct
+        const hasCorrectAnswer = questionAnswers.some(answer => answer.isAnswer);
+
+        if (!hasCorrectAnswer) {
+            alert('Please choose at least one correct answer.');
+            return;
+        }
+
+        
         try {
             const questionAnswersData = questionAnswers.map(answer => ({
                 ...answer,
