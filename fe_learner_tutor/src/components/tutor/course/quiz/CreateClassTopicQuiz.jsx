@@ -277,10 +277,29 @@ const CreateClassTopicQuiz = () => {
 
     const handleAnswerChange = (index, e) => {
         const { name, value, type, checked } = e.target;
-        const inputValue = type === 'checkbox' ? checked : value;
 
         const updatedQuestionAnswers = [...questionAnswers];
-        updatedQuestionAnswers[index] = { ...updatedQuestionAnswers[index], [name]: inputValue };
+
+        if (type === 'checkbox') {
+            updatedQuestionAnswers[index] = { ...updatedQuestionAnswers[index], [name]: checked };
+
+            // Uncheck all other checkboxes
+            updatedQuestionAnswers.forEach((answer, i) => {
+                if (i !== index) {
+                    updatedQuestionAnswers[i] = { ...updatedQuestionAnswers[i], [name]: false };
+                }
+            });
+        } else if (type === 'radio') {
+            // Uncheck all other radio buttons
+            updatedQuestionAnswers.forEach((answer, i) => {
+                updatedQuestionAnswers[i] = { ...updatedQuestionAnswers[i], [name]: false };
+            });
+
+            // Check the selected radio button
+            updatedQuestionAnswers[index] = { ...updatedQuestionAnswers[index], [name]: checked };
+        } else {
+            updatedQuestionAnswers[index] = { ...updatedQuestionAnswers[index], [name]: value };
+        }
 
         setQuestionAnswers(updatedQuestionAnswers);
     };
@@ -578,22 +597,20 @@ const CreateClassTopicQuiz = () => {
                                                                             className="form-control"
                                                                             name="answerText"
                                                                             id={`answerText${index}`}
-                                                                            required
                                                                             value={answer.answerText}
-                                                                            onChange={(e) => handleAnswerChange(index, e)}
+                                                                            onChange={(e) => handleAnswerChange(index, e)} // Pass both index and event (e)
                                                                             style={{ borderRadius: '20px', padding: `8px 25px` }}
-
                                                                         />
 
-                                                                        <div className="input-group-append ml-2">
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                name="isAnswer"
-                                                                                id={`isAnswer${index}`}
-                                                                                value={answer.isAnswer}
-                                                                                onChange={(e) => handleAnswerChange(index, e)}
-                                                                            />
-                                                                        </div>
+
+                                                                        <input
+                                                                            className='ml-2'
+                                                                            type="radio"
+                                                                            name={`isAnswer`}
+                                                                            id={`isAnswer${index}`}
+                                                                            checked={answer.isAnswer}
+                                                                            onChange={(e) => handleAnswerChange(index, e)} // Pass both index and event (e)
+                                                                        />
                                                                     </div>
                                                                 </div>
                                                             ))
