@@ -62,36 +62,42 @@ const CreateClassCourseModule = () => {
   });
 
   const handleChange = (date) => {
-    // Check if the selected date is in the past
+    // Get the current date without time
     const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Set the selected date to start of day
+    date.setHours(0, 0, 0, 0);
+
+    // Check if the selected date is today or in the future
     if (date < currentDate) {
       window.alert("Please select a date in the future.");
       return;
     }
-  
+
     // Check if the selected date coincides with existing startDate values
     const startDateExists = classModuleList.some(module => {
       // Convert database startDate to Date object
       const moduleStartDate = new Date(module.startDate);
       // Check if the selected date matches any existing startDate
       return moduleStartDate.getFullYear() === date.getFullYear() &&
-             moduleStartDate.getMonth() === date.getMonth() &&
-             moduleStartDate.getDate() === date.getDate();
+        moduleStartDate.getMonth() === date.getMonth() &&
+        moduleStartDate.getDate() === date.getDate();
     });
-  
+
     if (startDateExists) {
       window.alert("Please select a date that does not coincide with existing class dates.");
       return;
     }
-  
+
     // Update the module with the selected date
     setModule(prevModule => ({
       ...prevModule,
       startDate: date
     }));
   };
-  
-  
+
+
 
 
   // const handleSubmit = (storedModuleId) => {
