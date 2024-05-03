@@ -14,9 +14,9 @@ const CreateClassCourseModule = () => {
 
   const navigate = useNavigate();
   if (!storedLoginStatus) {
-      navigate(`/login`)
+    navigate(`/login`)
   }
-const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
   const [msg, setMsg] = useState('');
   const [createButtonClicked, setCreateButtonClicked] = useState(false); // State variable to track button click
 
@@ -24,6 +24,9 @@ const [errors, setErrors] = useState({});
   const [course, setCourse] = useState({
     name: "",
   });
+
+  const [classModuleList, setClassModuleList] = useState([]);
+
 
   const { storedCourseId } = useParams();
   const [storedModuleId, setStoredModuleId] = useState("");
@@ -35,6 +38,14 @@ const [errors, setErrors] = useState({});
         .getCourseById(storedCourseId)
         .then((res) => {
           setCourse(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      courseService
+        .getAllClassModulesByCourse(storedCourseId)
+        .then((res) => {
+          setClassModuleList(res.data);
         })
         .catch((error) => {
           console.log(error);
@@ -51,8 +62,37 @@ const [errors, setErrors] = useState({});
   });
 
   const handleChange = (date) => {
-    setModule({ ...module, startDate: date });
+    // Check if the selected date is in the past
+    const currentDate = new Date();
+    if (date < currentDate) {
+      window.alert("Please select a date in the future.");
+      return;
+    }
+  
+    // Check if the selected date coincides with existing startDate values
+    const startDateExists = classModuleList.some(module => {
+      // Convert database startDate to Date object
+      const moduleStartDate = new Date(module.startDate);
+      // Check if the selected date matches any existing startDate
+      return moduleStartDate.getFullYear() === date.getFullYear() &&
+             moduleStartDate.getMonth() === date.getMonth() &&
+             moduleStartDate.getDate() === date.getDate();
+    });
+  
+    if (startDateExists) {
+      window.alert("Please select a date that does not coincide with existing class dates.");
+      return;
+    }
+  
+    // Update the module with the selected date
+    setModule(prevModule => ({
+      ...prevModule,
+      startDate: date
+    }));
   };
+  
+  
+
 
   // const handleSubmit = (storedModuleId) => {
   //   // Handle your form submission logic here
@@ -213,7 +253,7 @@ const [errors, setErrors] = useState({});
                             </div>
                             {!createButtonClicked && (
                               <div className="col-md-2" style={{ marginLeft: '-200px' }}>
-                                <button type="submit" className="btn btn-success"  style={{ borderRadius: '50px', padding: `8px 25px` }}>
+                                <button type="submit" className="btn btn-success" style={{ borderRadius: '50px', padding: `8px 25px` }}>
                                   Select
                                 </button>
                               </div>
@@ -237,7 +277,7 @@ const [errors, setErrors] = useState({});
                             dateFormat="h:mm aa"
                             timeIntervals={15}
                             className="form-control custom-datepicker"
-                            
+
                           />
                         </div>
 
