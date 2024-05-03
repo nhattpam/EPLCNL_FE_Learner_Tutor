@@ -176,25 +176,31 @@ const StudyCourse = () => {
     useEffect(() => {
         try {
             if (moduleContent && moduleContent.quizzes) {
-                moduleContent.quizzes.forEach(quiz => {
-                    learnerService.getAllQuizAttemptByLearnerId(learnerId)
-                        .then((res) => {
-                            const quizAttempts = res.data.filter(quizAttempt => quizAttempt.quizId === quiz.id);
-                            const completionStatus = quizAttempts.length > 0 && quizAttempts[0].totalGrade >= quiz.gradeToPass;
-                            setQuizCompletionStatus(prevState => ({
-                                ...prevState,
-                                [quiz.id]: completionStatus
-                            }));
-                        })
-                        .catch((error) => {
-                            console.log("Error fetching quiz attempts:", error);
-                        });
-                });
+                Promise.all(moduleContent.quizzes.map(async quiz => {
+                    try {
+                        const res = await learnerService.getAllQuizAttemptByLearnerId(learnerId);
+                        const quizAttempts = res.data.filter(quizAttempt => quizAttempt.quizId === quiz.id);
+                        const highestGradeAttempt = quizAttempts.reduce((highestGradeAttempt, currentAttempt) => {
+                            return currentAttempt.totalGrade > highestGradeAttempt.totalGrade ? currentAttempt : highestGradeAttempt;
+                        }, { totalGrade: -Infinity }); // Initialize with a very low grade
+
+                        const completionStatus = highestGradeAttempt.totalGrade >= quiz.gradeToPass;
+
+                        setQuizCompletionStatus(prevState => ({
+                            ...prevState,
+                            [quiz.id]: completionStatus
+                        }));
+                    } catch (error) {
+                        console.log("Error fetching quiz attempts:", error);
+                    }
+                }));
             }
         } catch (error) {
             console.log("Error fetching data:", error);
         }
     }, [moduleContent, learnerId]);
+
+
 
 
     // Function to handle click on a module card to toggle expansion
@@ -649,20 +655,24 @@ const StudyCourse = () => {
             //load lai trang 
             try {
                 if (moduleContent && moduleContent.quizzes) {
-                    moduleContent.quizzes.forEach(quiz => {
-                        learnerService.getAllQuizAttemptByLearnerId(learnerId)
-                            .then((res) => {
-                                const quizAttempts = res.data.filter(quizAttempt => quizAttempt.quizId === quiz.id);
-                                const completionStatus = quizAttempts.length > 0 && quizAttempts[0].totalGrade >= quiz.gradeToPass;
-                                setQuizCompletionStatus(prevState => ({
-                                    ...prevState,
-                                    [quiz.id]: completionStatus
-                                }));
-                            })
-                            .catch((error) => {
-                                console.log("Error fetching quiz attempts:", error);
-                            });
-                    });
+                    Promise.all(moduleContent.quizzes.map(async quiz => {
+                        try {
+                            const res = await learnerService.getAllQuizAttemptByLearnerId(learnerId);
+                            const quizAttempts = res.data.filter(quizAttempt => quizAttempt.quizId === quiz.id);
+                            const highestGradeAttempt = quizAttempts.reduce((highestGradeAttempt, currentAttempt) => {
+                                return currentAttempt.totalGrade > highestGradeAttempt.totalGrade ? currentAttempt : highestGradeAttempt;
+                            }, { totalGrade: -Infinity }); // Initialize with a very low grade
+
+                            const completionStatus = highestGradeAttempt.totalGrade >= quiz.gradeToPass;
+
+                            setQuizCompletionStatus(prevState => ({
+                                ...prevState,
+                                [quiz.id]: completionStatus
+                            }));
+                        } catch (error) {
+                            console.log("Error fetching quiz attempts:", error);
+                        }
+                    }));
                 }
             } catch (error) {
                 console.log("Error fetching data:", error);
@@ -876,7 +886,7 @@ const StudyCourse = () => {
                                                 {
                                                     selectedAssignment.questionText && (
                                                         <div className="card ml-1">
-                                                            <div className="container" style={{ textAlign: 'left' }}>
+                                                            <div className="container" style={{ textAlign: 'left' }} key={selectedAssignment.id}>
                                                                 <div dangerouslySetInnerHTML={{ __html: selectedAssignment.questionText }}></div>
                                                             </div>
                                                         </div>
@@ -885,7 +895,7 @@ const StudyCourse = () => {
 
                                                 {
                                                     selectedAssignment.questionAudioUrl && (
-                                                        <div className="card ml-1">
+                                                        <div className="card ml-1" key={selectedAssignment.id}>
                                                             <audio controls>
                                                                 <source src={selectedAssignment.questionAudioUrl} type="audio/mpeg" />
                                                                 Your browser does not support the audio element.
@@ -1140,7 +1150,7 @@ const StudyCourse = () => {
 
                                         <div className="tab-pane  show active" id="tab-content-1" >
                                             <section id="courses" className="courses">
-                                                <div className="container">
+                                                <div className="container" key={selectedQuiz.id}>
                                                     <h1><span style={{ color: '#f58d04' }}>Quiz: </span>{selectedQuiz.name}</h1>
                                                 </div>
                                             </section>{/* End Courses Section */}
