@@ -64,38 +64,39 @@ const CreateClassCourseModule = () => {
   const handleChange = (date) => {
     // Get the current date without time
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
+    currentDate.setUTCHours(0, 0, 0, 0);
 
-    // Set the selected date to start of day
-    date.setHours(0, 0, 0, 0);
+    // Set the selected date to start of day in UTC
+    date.setUTCHours(0, 0, 0, 0);
 
     // Check if the selected date is today or in the future
     if (date < currentDate) {
-      window.alert("Please select a date in the future.");
-      return;
+        window.alert("Please select a date in the future.");
+        return;
     }
 
     // Check if the selected date coincides with existing startDate values
     const startDateExists = classModuleList.some(module => {
-      // Convert database startDate to Date object
-      const moduleStartDate = new Date(module.startDate);
-      // Check if the selected date matches any existing startDate
-      return moduleStartDate.getFullYear() === date.getFullYear() &&
-        moduleStartDate.getMonth() === date.getMonth() &&
-        moduleStartDate.getDate() === date.getDate();
+        // Convert database startDate to Date object
+        const moduleStartDate = new Date(module.startDate);
+        // Check if the selected date matches any existing startDate
+        return moduleStartDate.getFullYear() === date.getFullYear() &&
+            moduleStartDate.getMonth() === date.getMonth() &&
+            moduleStartDate.getDate() === date.getDate();
     });
 
     if (startDateExists) {
-      window.alert("Please select a date that does not coincide with existing class dates.");
-      return;
+        window.alert("Please select a date that does not coincide with existing class dates.");
+        return;
     }
 
     // Update the module with the selected date
     setModule(prevModule => ({
-      ...prevModule,
-      startDate: date
+        ...prevModule,
+        startDate: date
     }));
-  };
+};
+
 
 
 
@@ -163,10 +164,36 @@ const CreateClassCourseModule = () => {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const handleChangeStartTime = (date) => {
+    // Check if the selected startTime is after the endTime
+    if (date > endTime) {
+      window.alert("Start time cannot be after end time.");
+      return;
+    }
+    // Check if the selected startTime is the same as the endTime
+    if (date.getTime() === endTime.getTime()) {
+      window.alert("Start time cannot be equal to end time.");
+      return;
+    }
+
+    // Update the startTime
     setStartTime(date);
   };
 
+
   const handleChangeEndTime = (date) => {
+    // Check if the selected endTime is before the startTime
+    if (date < startTime) {
+      window.alert("End time cannot be before start time.");
+      return;
+    }
+
+    // Check if the selected endTime is the same as the startTime
+    if (date.getTime() === startTime.getTime()) {
+      window.alert("End time cannot be equal to start time.");
+      return;
+    }
+
+    // Update the endTime
     setEndTime(date);
   };
 
