@@ -329,28 +329,44 @@ const EditAssignmentAttempt = () => {
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    <div className="mb-5" style={{ textAlign: 'left' }}>
-                                                        <ReactQuill
-                                                            value={assignmentAttempt.answerText}
-                                                            onChange={handleChangeAnswerText}
-                                                            style={{ height: "300px" }}
-                                                            modules={{
-                                                                toolbar: [
-                                                                    [{ header: [1, 2, false] }],
-                                                                    ['bold', 'italic', 'underline', 'strike'],
-                                                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
-                                                                    [{ 'direction': 'rtl' }],
-                                                                    [{ 'align': [] }],
-                                                                    ['link', 'image', 'video'],
-                                                                    ['code-block'],
-                                                                    [{ 'color': [] }, { 'background': [] }],
-                                                                    ['clean']
-                                                                ]
-                                                            }}
-                                                            theme="snow"
-                                                        />
-                                                    </div>
+                                                    {
+                                                        assignmentAttempt.answerText && (
+                                                            <div className="mb-5" style={{ textAlign: 'left' }}>
+                                                                <ReactQuill
+                                                                    value={assignmentAttempt.answerText}
+                                                                    onChange={handleChangeAnswerText}
+                                                                    style={{ height: "300px" }}
+                                                                    modules={{
+                                                                        toolbar: [
+                                                                            [{ header: [1, 2, false] }],
+                                                                            ['bold', 'italic', 'underline', 'strike'],
+                                                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                                            [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                                                            [{ 'direction': 'rtl' }],
+                                                                            [{ 'align': [] }],
+                                                                            ['link', 'image', 'video'],
+                                                                            ['code-block'],
+                                                                            [{ 'color': [] }, { 'background': [] }],
+                                                                            ['clean']
+                                                                        ]
+                                                                    }}
+                                                                    theme="snow"
+                                                                />
+                                                            </div>
+                                                        )
+                                                    }
+                                                    {
+                                                        assignmentAttempt.answerAudioUrl && (
+                                                            <div className="mb-5" style={{ textAlign: 'left' }}>
+                                                                <audio controls>
+                                                                    <source src={assignmentAttempt.answerAudioUrl} type="audio/mpeg" />
+                                                                    Your browser does not support the audio element.
+                                                                </audio>
+                                                            </div>
+                                                        )
+                                                    }
+
+
                                                     <div className="form-group ">
                                                         <h5>Grade:</h5>
                                                         <input
