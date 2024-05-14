@@ -401,6 +401,17 @@ const Header = () => {
     };
 
     //DEPOSIT
+    const [selectedAmount, setSelectedAmount] = useState(null);
+    const handleAmountChange = (event) => {
+        const value = parseFloat(event.target.value);
+        if (value <= account.wallet?.balance) {
+            setSelectedAmount(value);
+        } else {
+            window.alert(`The selected amount exceeds your wallet balance of $${account.wallet?.balance}`);
+        }
+    };
+    
+
     const [currentDateTime, setCurrentDateTime] = useState(new Date());
     useEffect(() => {
         // Function to update currentDateTime every second
@@ -411,30 +422,18 @@ const Header = () => {
         // Clean-up function to clear the interval when the component unmounts
         return () => clearInterval(interval);
     }, []);
-    //WITHDRAW
+
     const submitWithdraw = async (event) => {
         event.preventDefault();
-        const learnerId = sessionStorage.getItem('learnerId');
-        const selectedRadioButton = document.querySelector('input[name="amount"]:checked');
 
-        if (!selectedRadioButton) {
-            // If no radio button is checked, display an error message or handle the case as needed
+        if (!selectedAmount) {
             console.log("Please select an amount.");
             return;
         }
 
-        const amount = parseFloat(selectedRadioButton.value); // Capture the selected radio button value
-
-        if (!learnerId) {
-            setShowNotification(true);
-            setTimeout(() => {
-                setShowNotification(false);
-            }, 3000);
-            return;
-        }
+        const amount = parseFloat(selectedAmount); // Capture the selected amount
 
         try {
-
             const withdrawWallet = {
                 id: account.wallet?.id,
                 balance: account.wallet?.balance - amount,
@@ -447,23 +446,18 @@ const Header = () => {
             const walletHistoryWithdraw = {
                 transactionDate: currentDateTime,
                 walletId: withdrawWallet.id,
-                note: `- ${amount}$ for withrawing balance at ${currentDateTime}`
-
+                note: `- ${amount}$ for withdrawing balance at ${currentDateTime}`
             };
             await walletHistoryService.saveWalletHistory(walletHistoryWithdraw);
 
-            
             window.alert("Withdraw successfully!");
 
             // Reload the page
             window.location.reload();
-
         } catch (error) {
             console.log(error);
         }
-       
     };
-
 
     return (
         <>
@@ -855,7 +849,7 @@ const Header = () => {
                                         <div>
                                             {/* Input fields for editing */}
                                             <h3>Enter the amount you want to deposit:</h3>
-                                            <input className='form-control' placeholder='USD accepted' type='number' name='amount' style={{ borderRadius: '50px', padding: `8px 25px` }} />
+                                            {/* <input className='form-control' placeholder='USD accepted' type='number' name='amount' style={{ borderRadius: '50px', padding: `8px 25px` }} /> */}
                                             <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '10%', marginTop: '20px' }} />
                                             </p>
                                             <div className="game-options-container">
@@ -981,7 +975,7 @@ const Header = () => {
                 )
             }
 
-            {
+{
                 showWithdrawModal && (
                     <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                         <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
@@ -993,112 +987,54 @@ const Header = () => {
                                     </button>
                                 </div>
                                 <form onSubmit={submitWithdraw}>
-                                    <div className="modal-body" >
-                                        {/* Conditional rendering based on edit mode */}
-
+                                    <div className="modal-body">
                                         <div>
-                                            {/* Input fields for editing */}
                                             <h3>Enter the amount you want to withdraw:</h3>
-                                            <input className='form-control' placeholder='USD accepted' type='number' name='amount' style={{ borderRadius: '50px', padding: `8px 25px` }} />
-                                            <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '10%', marginTop: '20px' }} />
-                                            </p>
+                                            <input className='form-control' placeholder='USD accepted' type='number' name='amount' style={{ borderRadius: '50px', padding: `8px 25px` }} onChange={handleAmountChange}/>
+                                            <p>Powered by <img src={process.env.PUBLIC_URL + '/logo-vnpay.png'} alt="VnPay Logo" style={{ width: '10%', marginTop: '20px' }} /></p>
                                             <div className="game-options-container">
-                                                <span className='span1'>
-                                                    <input
-                                                        type="radio"
-                                                        name="amount"
-                                                        className="radio"
-                                                        value="100"
-                                                        id="amount-100"
-                                                    />
-                                                    <label
-                                                        htmlFor="amount-100"
-                                                        className={`option ${document.querySelector('input[value="100"]:checked') ? "selected" : ""}`}
-                                                    >
-                                                        $100
-                                                    </label>
-                                                </span>
-                                                <span className='span1'>
-                                                    <input
-                                                        type="radio"
-                                                        name="amount"
-                                                        className="radio"
-                                                        value="200"
-                                                        id="amount-200"
-                                                    />
-                                                    <label
-                                                        htmlFor="amount-200"
-                                                        className={`option ${document.querySelector('input[value="200"]:checked') ? "selected" : ""}`}
-                                                    >
-                                                        $200
-                                                    </label>
-                                                </span>
-                                                <span className='span1'>
-                                                    <input
-                                                        type="radio"
-                                                        name="amount"
-                                                        className="radio"
-                                                        value="300"
-                                                        id="amount-300"
-                                                    />
-                                                    <label
-                                                        htmlFor="amount-300"
-                                                        className={`option ${document.querySelector('input[value="300"]:checked') ? "selected" : ""}`}
-                                                    >
-                                                        $300
-                                                    </label>
-                                                </span>
-                                                <span className='span1'>
-                                                    <input
-                                                        type="radio"
-                                                        name="amount"
-                                                        className="radio"
-                                                        value="400"
-                                                        id="amount-400"
-                                                    />
-                                                    <label
-                                                        htmlFor="amount-400"
-                                                        className={`option ${document.querySelector('input[value="400"]:checked') ? "selected" : ""}`}
-                                                    >
-                                                        $400
-                                                    </label>
-                                                </span>
-                                                <span className='span1'>
-                                                    <input
-                                                        type="radio"
-                                                        name="amount"
-                                                        className="radio"
-                                                        value="500"
-                                                        id="amount-500"
-                                                    />
-                                                    <label
-                                                        htmlFor="amount-500"
-                                                        className={`option ${document.querySelector('input[value="500"]:checked') ? "selected" : ""}`}
-                                                    >
-                                                        $500
-                                                    </label>
-                                                </span>
-
-
-
+                                                {[100, 200, 300, 400, 500].map((amount) => (
+                                                    <span className='span1' key={amount}>
+                                                        <input
+                                                            type="radio"
+                                                            name="amount"
+                                                            className="radio"
+                                                            value={amount}
+                                                            id={`amount-${amount}`}
+                                                            onChange={handleAmountChange}
+                                                        />
+                                                        <label
+                                                            htmlFor={`amount-${amount}`}
+                                                            className={`option ${selectedAmount == amount ? "selected" : ""}`}
+                                                        >
+                                                            ${amount}
+                                                        </label>
+                                                    </span>
+                                                ))}
                                             </div>
-
                                         </div>
-
                                     </div>
                                     <div className="modal-footer" style={{ marginTop: '100px' }}>
-                                        {/* Conditional rendering of buttons based on edit mode */}
-                                        <button
-                                            type="submit"
-                                            className="btn btn-primary btn-lg btn-block"
-                                            // onClick={handlePayClick}
-                                            style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
-                                        >
-                                            Continue
-                                        </button>
+                                        {
+                                            account.wallet?.balance > 0 ? (
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary btn-lg btn-block"
+                                                    style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                >
+                                                    Continue
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    disabled
+                                                    className="btn btn-primary btn-lg btn-block"
+                                                    style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px` }}
+                                                >
+                                                    Your balance is not enough to withdraw right now!
+                                                </button>
+                                            )
+                                        }
                                     </div>
-
-
                                 </form>
                             </div>
                         </div>
