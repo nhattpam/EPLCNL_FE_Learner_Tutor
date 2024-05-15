@@ -176,17 +176,21 @@ const TutorDashboard = () => {
 
     useEffect(() => {
         if (account.wallet && account.wallet?.id) {
-            walletService
-                .getAllWalletHistoryByWallet(account.wallet?.id)
+            walletService.getAllWalletHistoryByWallet(account.wallet?.id)
                 .then((res) => {
-                    setWalletHistoryList(res.data);
+                    const history = res.data;
+    
+                    // Sort history by transactionDate
+                    history.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+    
+                    setWalletHistoryList(history);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.error(error);
                 });
         }
-
     }, [account.wallet?.id]);
+    
 
 
     const filteredHistories = walletHistoryList
