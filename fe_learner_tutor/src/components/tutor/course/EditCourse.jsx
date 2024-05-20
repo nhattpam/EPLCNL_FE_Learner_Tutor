@@ -289,8 +289,12 @@ const EditCourse = () => {
             .then((res) => {
                 const notRefundEnrollments = res.data.filter(enrollment => enrollment.refundStatus === false);
 
-                console.log(res.data);
-                setEnrollmentList(notRefundEnrollments);
+                // Sort the filtered enrollments by enrolledDate
+                const sortedEnrollments = notRefundEnrollments.sort((a, b) => {
+                    return new Date(b.enrolledDate) - new Date(a.enrolledDate);
+                });
+
+                setEnrollmentList(sortedEnrollments);
 
             })
             .catch((error) => {
@@ -615,7 +619,7 @@ const EditCourse = () => {
                                                         <th data-toggle="true">Phone</th>
                                                         <th data-hide="phone">Gender</th>
                                                         <th data-hide="phone, tablet">DOB</th>
-                                                        <th data-hide="phone, tablet">Status</th>
+                                                        <th data-hide="phone, tablet">Enrolled Date</th>
                                                         {/* <th>Action</th> */}
                                                         {/* <th>Courses</th> */}
                                                     </tr>
@@ -639,11 +643,7 @@ const EditCourse = () => {
                                                                         'Unknown DOB'}
                                                                 </td>
                                                                 <td>
-                                                                    {enrollment.transaction?.learner?.account?.isActive ? (
-                                                                        <span className="badge label-table badge-success">Active</span>
-                                                                    ) : (
-                                                                        <span className="badge label-table badge-danger">Inactive</span>
-                                                                    )}
+                                                                    {new Date(enrollment.enrolledDate).toLocaleString('en-US')}
                                                                 </td>
                                                                 {/* <td>
                                                                     <Link to={`/edit-learner/${enrollment.transaction?.learner?.account?.id}`} className='text-secondary'>
