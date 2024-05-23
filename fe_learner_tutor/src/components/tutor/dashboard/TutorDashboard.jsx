@@ -378,8 +378,7 @@ const TutorDashboard = () => {
         try {
             const res = await tutorService.getAllEnrollmentsByTutor(tutorId);
             const activeEnrollments = res.data.filter((enrollment) => enrollment.refundStatus === false);
-            const filteredTransactions = activeEnrollments.filter(enrollment => enrollment.transaction?.courseId !== null && enrollment.transaction?.status === "DONE");
-            const enrollments = filteredTransactions;
+            const enrollments = activeEnrollments;
 
             const currentYear = new Date().getFullYear();
 
@@ -517,12 +516,11 @@ const TutorDashboard = () => {
             const activeEnrollments = res.data.filter((enrollment) => enrollment.refundStatus === false);
 
             // Filter transactions where transaction.courseId is not null
-            const filteredTransactions = activeEnrollments.filter(enrollment => enrollment.transaction?.courseId !== null && enrollment.transaction?.status === "DONE");
 
             // Sort filtered transactions by transactionDate
-            filteredTransactions.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+            activeEnrollments.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
 
-            setTransactionList4(filteredTransactions);
+            setTransactionList4(activeEnrollments);
         } catch (error) {
             console.error("Error fetching transactions where courseId != null:", error);
         }
