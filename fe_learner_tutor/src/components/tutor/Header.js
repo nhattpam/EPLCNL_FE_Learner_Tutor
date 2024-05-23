@@ -7,6 +7,7 @@ import Dropzone from 'react-dropzone';
 import paperWorkService from '../../services/paper-work.service';
 import walletService from '../../services/wallet.service';
 import walletHistoryService from '../../services/wallet-history.service';
+import centerService from '../../services/center.service';
 
 const Header = () => {
 
@@ -26,6 +27,24 @@ const Header = () => {
         gender: false,
         wallet: []
     });
+
+    const [tutor, setTutor] = useState({
+        id: "",
+        isFreelancer: false,
+        centerId: ""
+    });
+
+    useEffect(() => {
+        tutorService
+            .getTutorById(storedTutorId)
+            .then((res) => {
+                setTutor(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [storedTutorId]);
+
 
     useEffect(() => {
         if (accountId) {
@@ -383,7 +402,7 @@ const Header = () => {
 
         const amount = parseFloat(selectedRadioButton.value); // Capture the selected radio button value
 
-       
+
         try {
 
             const withdrawWallet = {
@@ -403,7 +422,7 @@ const Header = () => {
             };
             await walletHistoryService.saveWalletHistory(walletHistoryWithdraw);
 
-            
+
             window.alert("Withdraw successfully!");
 
             // Reload the page
@@ -412,8 +431,40 @@ const Header = () => {
         } catch (error) {
             console.log(error);
         }
-       
+
     };
+
+
+    //CENTER INFORMATION
+    const [showCenterModal, setShowCenterModal] = useState(false);
+
+    const [center, setCenter] = useState({
+        email: "",
+        name: "",
+        phoneNumber: "",
+        taxIdentificationNumber: "",
+        description: ""
+    });
+
+
+    const handleCenterInfo = (centerId) => {
+        if (centerId) {
+            centerService
+                .getCenterById(centerId)
+                .then((res) => {
+                    setCenter(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+        setShowCenterModal(true);
+    };
+
+    const closeCenterModal = () => {
+        setShowCenterModal(false);
+    };
+
 
 
     return (
@@ -457,7 +508,19 @@ const Header = () => {
                                     <span>Qualification</span>
                                 </a>
                                 {/* item*/}
+                                <a href="javascript:void(0);" className="dropdown-item notify-item text-center" >
+                                    {
+                                        tutor.isFreelancer && (
+                                            <span className="badge label-table badge-success">Freelancer</span>
+                                        )
+                                    }
 
+                                    {
+                                        !tutor.isFreelancer && (
+                                            <span className="badge label-table badge-danger" onClick={() => handleCenterInfo(tutor.centerId)}>Center</span>
+                                        )
+                                    }
+                                </a>
                                 <div className="dropdown-divider" />
                                 {/* item*/}
                                 <a href="javascript:void(0);" className="dropdown-item notify-item" onClick={handleLogout}>
@@ -480,6 +543,60 @@ const Header = () => {
                     <div className="clearfix" />
                 </div>
             </div>
+            {
+                showCenterModal && (
+                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
+                        <div className="modal-dialog modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Center Information</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeCenterModal}>
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <>
+                                    <div className="modal-body">
+                                        <div>
+                                            <table className="table table-responsive table-hover ">
+                                                <tbody>
+                                                    <tr>
+                                                        <th style={{ width: '30%' }}>Name:</th>
+                                                        <td>{center.name}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Email:</th>
+                                                        <td>{center.email}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Phone Number:</th>
+                                                        <td>{center && center.phoneNumber ? center.phoneNumber : 'Unknown Phone Number'}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Address:</th>
+                                                        <td>{center && center.address ? center.address : 'Unknown Address'}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Tax Code:</th>
+                                                        <td>{center && center.taxIdentificationNumber ? center.taxIdentificationNumber : 'Unknown Tax Code'}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Description:</th>
+                                                        <td style={{ textAlign: 'left' }}>{center && center.description ? center.description : 'Unknown Description'}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-dark" onClick={closeCenterModal} style={{ borderRadius: '50px', padding: `8px 25px` }}>Close</button>
+                                    </div>
+                                </>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
             {/* end Topbar */}
             {/* My Account Modal */}
             {showModal && (
@@ -799,7 +916,7 @@ const Header = () => {
                 )
             }
 
-{
+            {
                 showWithdrawModal && (
                     <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(29, 29, 29, 0.75)' }}>
                         <div className="modal-dialog modal-dialog-scrollable modal-lg" role="document">
@@ -924,7 +1041,7 @@ const Header = () => {
                 )
             }
 
-<style>
+            <style>
                 {`
                 
                 .module-title:hover {
