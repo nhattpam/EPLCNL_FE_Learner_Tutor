@@ -518,7 +518,7 @@ const TutorDashboard = () => {
             // Filter transactions where transaction.courseId is not null
 
             // Sort filtered transactions by transactionDate
-            activeEnrollments.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+            activeEnrollments.sort((a, b) => new Date(b.transaction?.transactionDate) - new Date(a.transaction?.transactionDate));
 
             setTransactionList4(activeEnrollments);
         } catch (error) {
