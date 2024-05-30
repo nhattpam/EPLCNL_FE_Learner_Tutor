@@ -432,13 +432,57 @@ const MyLearning = () => {
 
 
     // Function to check if the transaction date exceeds 2 days
+    // const isTransactionDateValid = (transactionDate) => {
+    //     const currentDate = new Date();
+    //     const diffInMilliseconds = currentDate - new Date(transactionDate);
+    //     const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
+    //     return diffInDays <= 7;
+    // };
+
+    //for video course after 2 minutes lock refund button
     const isTransactionDateValid = (transactionDate) => {
         const currentDate = new Date();
         const diffInMilliseconds = currentDate - new Date(transactionDate);
-        const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
-        return diffInDays <= 7;
+        const diffInMinutes = diffInMilliseconds / (1000 * 60);
+        return diffInMinutes <= 2;
     };
 
+
+    //for class course after 7 days from first start date lock refund button
+    const [classModuleDates, setClassModuleDates] = useState({});
+
+    useEffect(() => {
+        const fetchAndSetClassModuleDates = async () => {
+            const dates = {};
+            for (const enrollment of enrollmentList) {
+                if (enrollment.transaction?.course?.isOnlineClass) {
+                    const res = await courseService.getAllClassModulesByCourse(enrollment.transaction?.courseId);
+                    const modules = res.data;
+                    console.log(`Fetched modules for course ${enrollment.transaction?.courseId}:`, modules);
+
+                    if (modules.length > 0) {
+                        const startDates = modules.map(module => new Date(module.startDate));
+                        console.log(`Start dates for course ${enrollment.transaction.courseId}:`, startDates);
+                        const earliestStartDate = new Date(Math.min(...startDates));
+                        console.log(`Earliest start date for course ${enrollment.transaction.courseId}:`, earliestStartDate);
+
+                        const currentDate = new Date();
+                        console.log(`Current date: ${currentDate}`);
+                        const differenceInDays = (earliestStartDate - currentDate) / (1000 * 60 * 60 * 24);
+                        console.log(`Difference in days: ${differenceInDays}`);
+                        dates[enrollment.transaction.courseId] = differenceInDays <= -7;
+
+                    } else {
+                        dates[enrollment.transaction.courseId] = false;
+                    }
+                }
+            }
+            setClassModuleDates(dates);
+            console.log('Class module dates:', dates);
+        };
+
+        fetchAndSetClassModuleDates();
+    }, [enrollmentList]);
 
     //CHECK PROGRESSING
 
@@ -548,12 +592,18 @@ const MyLearning = () => {
                                                                                 <div className="right-title" style={{ fontWeight: 'bold' }}> {enrollmentScores[enrollment.id]?.courseScore}</div>
                                                                             </div>
                                                                         )}
-                                                                        {isTransactionDateValid(enrollment.enrolledDate) && (
-                                                                            <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none', color: '#fff' }} onClick={() => handleRefundClick(enrollment.id)}>
+                                                                        {
+                                                                            !enrollment.transaction?.course?.isOnlineClass && isTransactionDateValid(enrollment.enrolledDate) && (
+                                                                                <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: `8px 25px`, border: 'none', color: '#fff' }} onClick={() => handleRefundClick(enrollment.id)}>
+                                                                                    I want return
+                                                                                </a>
+                                                                            )
+                                                                        }
+                                                                        {enrollment.transaction?.course?.isOnlineClass && classModuleDates[enrollment.transaction.courseId] === false && (
+                                                                            <a className='btn btn-primary' style={{ backgroundColor: '#f58d04', borderRadius: '50px', padding: '8px 25px', border: 'none', color: '#fff' }} onClick={() => handleRefundClick(enrollment.id)}>
                                                                                 I want return
                                                                             </a>
                                                                         )}
-
 
 
                                                                     </div>
