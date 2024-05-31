@@ -142,6 +142,7 @@ const CreateClassTopicAnswer = () => {
         questionId: storedQuestionId // Assuming storedQuestionId is the same for all answers
       }));
 
+     
       const questionAnswersResponse = await Promise.all(questionAnswersData.map(answer =>
         questionAnswerService.saveQuestionAnswer(answer)
       ));
@@ -254,6 +255,12 @@ const CreateClassTopicAnswer = () => {
                     flex: 1;
                     width: 85%;
                     text-align: left;
+                }
+
+                /* Reset for inputs and form controls */
+                input[type="radio"], textarea {
+                    display: inline-block;
+                    margin: 5px;
                 }
             `}
       </style>

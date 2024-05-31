@@ -689,6 +689,12 @@ const CreateQuiz = () => {
                     width: 85%;
                     text-align: left;
                 }
+
+                /* Reset for inputs and form controls */
+                input[type="radio"], textarea {
+                    display: inline-block;
+                    margin: 5px;
+                }
             `}
             </style>
         </>

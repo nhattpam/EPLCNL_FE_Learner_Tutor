@@ -191,7 +191,7 @@ const EditClassTopicQuiz = () => {
                         </tr>
                         <tr>
                           <th>Created Date:</th>
-                          <td>{quiz.createdDate}</td>
+                          <td>{new Date(quiz.createdDate).toLocaleString('en-US')}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -228,7 +228,7 @@ const EditClassTopicQuiz = () => {
                                 <tr key={question.id}>
                                   <td>{index + 1}</td>
                                   <td>{question.defaultGrade}</td>
-                                  <td>{question.createdDate}</td>
+                                  <td>{new Date(question.createdDate).toLocaleString('en-US')}</td>
                                   <td>
                                     <Link to={`/tutor/courses/edit-topic-question/${question.id}`} className='text-secondary'>
                                       <i class="fa-regular fa-eye"></i>
